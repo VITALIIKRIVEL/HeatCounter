@@ -1,0 +1,6 @@
+MODE 5xx_family COM1
+RX_PASSWORD app_pass.txt
+ERASE_SEGMENT 0x1800
+DELAY 1000
+RX_DATA_BLOCK write_dataFrequency.txt
+TX_BSL_VERSION

@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>FormCalibration</class>
+ <widget class="QWidget" name="FormCalibration">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>697</width>
+    <height>530</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <widget class="QLineEdit" name="lineEdit_selectConfigFile">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>90</y>
+     <width>261</width>
+     <height>20</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QToolButton" name="toolButton_selectConfigFile">
+   <property name="geometry">
+    <rect>
+     <x>310</x>
+     <y>90</y>
+     <width>201</width>
+     <height>19</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Выбрать конфигурационный файл</string>
+   </property>
+  </widget>
+  <widget class="QToolButton" name="toolButton_startCalibration">
+   <property name="geometry">
+    <rect>
+     <x>400</x>
+     <y>380</y>
+     <width>201</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Запустить калибровку</string>
+   </property>
+  </widget>
+  <widget class="QComboBox" name="comboBox_RTD_Type">
+   <property name="geometry">
+    <rect>
+     <x>310</x>
+     <y>50</y>
+     <width>111</width>
+     <height>22</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_5">
+   <property name="geometry">
+    <rect>
+     <x>60</x>
+     <y>50</y>
+     <width>231</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Тип термометров сопротивления RTD_Type</string>
+   </property>
+  </widget>
+  <widget class="QWidget" name="layoutWidget">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>141</y>
+     <width>501</width>
+     <height>221</height>
+    </rect>
+   </property>
+   <layout class="QGridLayout" name="gridLayout">
+    <item row="0" column="0">
+     <widget class="QLabel" name="label">
+      <property name="text">
+       <string>R_Real1</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="1">
+     <widget class="QLineEdit" name="lineEdit_R_Real1"/>
+    </item>
+    <item row="0" column="2">
+     <widget class="QLabel" name="label_3">
+      <property name="text">
+       <string>Температура 1 </string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="3">
+     <widget class="QLineEdit" name="lineEdit_Temperature1"/>
+    </item>
+    <item row="1" column="0">
+     <widget class="QLabel" name="label_2">
+      <property name="text">
+       <string>R_Real2</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="1">
+     <widget class="QLineEdit" name="lineEdit_R_Real2"/>
+    </item>
+    <item row="1" column="2">
+     <widget class="QLabel" name="label_4">
+      <property name="text">
+       <string>Температура 2</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="3">
+     <widget class="QLineEdit" name="lineEdit_Temperature2"/>
+    </item>
+    <item row="2" column="0">
+     <widget class="QLabel" name="label_6">
+      <property name="text">
+       <string>Acceptable_R_Ref1</string>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="1">
+     <widget class="QLineEdit" name="lineEdit_Acceptable_R_Ref1"/>
+    </item>
+    <item row="2" column="2">
+     <widget class="QLabel" name="label_10">
+      <property name="text">
+       <string>Acceptable_R_Ref2</string>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="3">
+     <widget class="QLineEdit" name="lineEdit_Acceptable_R_Ref2"/>
+    </item>
+    <item row="3" column="0">
+     <widget class="QLabel" name="label_7">
+      <property name="text">
+       <string>Acceptable_TMeasDir</string>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="1">
+     <widget class="QLineEdit" name="lineEdit_Acceptable_TMeasDir"/>
+    </item>
+    <item row="3" column="2">
+     <widget class="QLabel" name="label_11">
+      <property name="text">
+       <string>Acceptable_TMeasRev</string>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="3">
+     <widget class="QLineEdit" name="lineEdit_Acceptable_TMeasRev"/>
+    </item>
+    <item row="4" column="0">
+     <widget class="QLabel" name="label_8">
+      <property name="text">
+       <string>Error_R_Reff1</string>
+      </property>
+     </widget>
+    </item>
+    <item row="4" column="1">
+     <widget class="QLineEdit" name="lineEdit_Error_R_Reff1"/>
+    </item>
+    <item row="4" column="2">
+     <widget class="QLabel" name="label_12">
+      <property name="text">
+       <string>Error_R_Reff2</string>
+      </property>
+     </widget>
+    </item>
+    <item row="4" column="3">
+     <widget class="QLineEdit" name="lineEdit_Error_R_Reff2"/>
+    </item>
+    <item row="5" column="0">
+     <widget class="QLabel" name="label_9">
+      <property name="text">
+       <string>Error_TMeasDir</string>
+      </property>
+     </widget>
+    </item>
+    <item row="5" column="1">
+     <widget class="QLineEdit" name="lineEdit_Error_TMeasDir"/>
+    </item>
+    <item row="5" column="2">
+     <widget class="QLabel" name="label_13">
+      <property name="text">
+       <string>Error_TMeasRev</string>
+      </property>
+     </widget>
+    </item>
+    <item row="5" column="3">
+     <widget class="QLineEdit" name="lineEdit_Error_TMeasRev"/>
+    </item>
+   </layout>
+  </widget>
+  <widget class="Line" name="line">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>420</y>
+     <width>651</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="orientation">
+    <enum>Qt::Horizontal</enum>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="lineEdit_periodBetweenPulses">
+   <property name="geometry">
+    <rect>
+     <x>200</x>
+     <y>470</y>
+     <width>181</width>
+     <height>20</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_14">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>470</y>
+     <width>191</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Период следования импульсов </string>
+   </property>
+  </widget>
+  <widget class="QToolButton" name="toolButton_realClockCalibration">
+   <property name="geometry">
+    <rect>
+     <x>470</x>
+     <y>470</y>
+     <width>211</width>
+     <height>19</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Калибровка генератора часов</string>
+   </property>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

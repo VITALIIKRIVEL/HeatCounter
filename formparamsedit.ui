@@ -1,0 +1,1880 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>FormParamsEdit</class>
+ <widget class="QWidget" name="FormParamsEdit">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1026</width>
+    <height>667</height>
+   </rect>
+  </property>
+  <property name="focusPolicy">
+   <enum>Qt::NoFocus</enum>
+  </property>
+  <property name="windowTitle">
+   <string>Параметры</string>
+  </property>
+  <widget class="QGroupBox" name="groupBox_8">
+   <property name="geometry">
+    <rect>
+     <x>490</x>
+     <y>260</y>
+     <width>241</width>
+     <height>211</height>
+    </rect>
+   </property>
+   <property name="title">
+    <string>External Interface Settings</string>
+   </property>
+   <layout class="QGridLayout" name="gridLayout">
+    <item row="0" column="0">
+     <widget class="QLabel" name="label_39">
+      <property name="text">
+       <string>Addr</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="1">
+     <widget class="QSpinBox" name="spinBox_Addr">
+      <property name="maximumSize">
+       <size>
+        <width>100</width>
+        <height>16777215</height>
+       </size>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="0">
+     <widget class="QLabel" name="label_40">
+      <property name="text">
+       <string>BaudRate</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="1">
+     <widget class="QComboBox" name="comboBox_BaudRate">
+      <property name="maximumSize">
+       <size>
+        <width>100</width>
+        <height>16777215</height>
+       </size>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="0">
+     <widget class="QLabel" name="label_42">
+      <property name="text">
+       <string>HMP_Trans</string>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="1">
+     <widget class="QLineEdit" name="lineEdit_HMP_Trans">
+      <property name="maximumSize">
+       <size>
+        <width>100</width>
+        <height>16777215</height>
+       </size>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="0">
+     <widget class="QLabel" name="label_43">
+      <property name="text">
+       <string>EPP_Trans</string>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="1">
+     <widget class="QLineEdit" name="lineEdit_EPP_Trans">
+      <property name="maximumSize">
+       <size>
+        <width>100</width>
+        <height>16777215</height>
+       </size>
+      </property>
+     </widget>
+    </item>
+    <item row="4" column="0">
+     <widget class="QLabel" name="label_44">
+      <property name="text">
+       <string>P1 PrimAddr</string>
+      </property>
+     </widget>
+    </item>
+    <item row="5" column="0">
+     <widget class="QLabel" name="label_45">
+      <property name="text">
+       <string>P2 PrimAddr</string>
+      </property>
+     </widget>
+    </item>
+    <item row="6" column="0" rowspan="2">
+     <widget class="QLabel" name="label_46">
+      <property name="text">
+       <string>ProtType</string>
+      </property>
+     </widget>
+    </item>
+    <item row="7" column="1">
+     <widget class="QLineEdit" name="lineEdit_ProtType">
+      <property name="maximumSize">
+       <size>
+        <width>100</width>
+        <height>16777215</height>
+       </size>
+      </property>
+     </widget>
+    </item>
+    <item row="4" column="1">
+     <widget class="QSpinBox" name="spinBox_P1PrimAddr"/>
+    </item>
+    <item row="5" column="1">
+     <widget class="QSpinBox" name="spinBox_P2PrimAddr"/>
+    </item>
+    <item row="0" column="2">
+     <widget class="QLineEdit" name="lineEdit_AddrHex"/>
+    </item>
+    <item row="1" column="2">
+     <widget class="QLineEdit" name="lineEdit_BaudRateHex"/>
+    </item>
+    <item row="2" column="2">
+     <widget class="QLineEdit" name="lineEdit_HMP_TransHex"/>
+    </item>
+    <item row="3" column="2">
+     <widget class="QLineEdit" name="lineEdit_EPP_TransHex"/>
+    </item>
+    <item row="4" column="2">
+     <widget class="QLineEdit" name="lineEdit_P1PrimAddrHex"/>
+    </item>
+    <item row="5" column="2">
+     <widget class="QLineEdit" name="lineEdit_P2PrimAddrHex"/>
+    </item>
+    <item row="7" column="2">
+     <widget class="QLineEdit" name="lineEdit_ProtTypeHex"/>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QGroupBox" name="groupBox">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>20</y>
+     <width>241</width>
+     <height>291</height>
+    </rect>
+   </property>
+   <property name="title">
+    <string>Hardware Configuration</string>
+   </property>
+   <layout class="QGridLayout" name="gridLayout_8">
+    <item row="8" column="1">
+     <widget class="QLineEdit" name="lineEdit_PCB_SN2">
+      <property name="maximumSize">
+       <size>
+        <width>103</width>
+        <height>16777215</height>
+       </size>
+      </property>
+     </widget>
+    </item>
+    <item row="9" column="1">
+     <widget class="QLineEdit" name="lineEdit_PCB_SN3">
+      <property name="maximumSize">
+       <size>
+        <width>103</width>
+        <height>16777215</height>
+       </size>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="2">
+     <widget class="QLineEdit" name="lineEdit_serialHex2">
+      <property name="maximumSize">
+       <size>
+        <width>20</width>
+        <height>16777215</height>
+       </size>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="2">
+     <widget class="QLineEdit" name="lineEdit_serialHex4">
+      <property name="maximumSize">
+       <size>
+        <width>20</width>
+        <height>16777215</height>
+       </size>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="2">
+     <widget class="QLineEdit" name="lineEdit_serialHex3">
+      <property name="maximumSize">
+       <size>
+        <width>20</width>
+        <height>16777215</height>
+       </size>
+      </property>
+     </widget>
+    </item>
+    <item row="9" column="2">
+     <widget class="QLineEdit" name="lineEdit_PCB_SNHex3">
+      <property name="maximumSize">
+       <size>
+        <width>20</width>
+        <height>16777215</height>
+       </size>
+      </property>
+     </widget>
+    </item>
+    <item row="8" column="2">
+     <widget class="QLineEdit" name="lineEdit_PCB_SNHex2">
+      <property name="maximumSize">
+       <size>
+        <width>20</width>
+        <height>16777215</height>
+       </size>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="1">
+     <widget class="QLineEdit" name="lineEdit_serial4">
+      <property name="maximumSize">
+       <size>
+        <width>100</width>
+        <height>16777215</height>
+       </size>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="1">
+     <widget class="QLineEdit" name="lineEdit_serial3">
+      <property name="maximumSize">
+       <size>
+        <width>100</width>
+        <height>16777215</height>
+       </size>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="1">
+     <widget class="QLineEdit" name="lineEdit_serial2">
+      <property name="maximumSize">
+       <size>
+        <width>100</width>
+        <height>16777215</height>
+       </size>
+      </property>
+     </widget>
+    </item>
+    <item row="5" column="2">
+     <widget class="QLineEdit" name="lineEdit_DevTypeHex">
+      <property name="maximumSize">
+       <size>
+        <width>20</width>
+        <height>16777215</height>
+       </size>
+      </property>
+     </widget>
+    </item>
+    <item row="7" column="2">
+     <widget class="QLineEdit" name="lineEdit_PCB_SNHex">
+      <property name="maximumSize">
+       <size>
+        <width>20</width>
+        <height>16777215</height>
+       </size>
+      </property>
+     </widget>
+    </item>
+    <item row="6" column="0">
+     <widget class="QLabel" name="label_6">
+      <property name="text">
+       <string>DN</string>
+      </property>
+     </widget>
+    </item>
+    <item row="6" column="1">
+     <widget class="QComboBox" name="comboBox_DN">
+      <property name="maximumSize">
+       <size>
+        <width>100</width>
+        <height>16777215</height>
+       </size>
+      </property>
+     </widget>
+    </item>
+    <item row="5" column="0">
+     <widget class="QLabel" name="label_5">
+      <property name="text">
+       <string>DevType</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="0">
+     <widget class="QLabel" name="label_3">
+      <property name="text">
+       <string>Serial1</string>
+      </property>
+     </widget>
+    </item>
+    <item row="4" column="2">
+     <widget class="QLineEdit" name="lineEdit_ManCodeHex">
+      <property name="maximumSize">
+       <size>
+        <width>20</width>
+        <height>16777215</height>
+       </size>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="1">
+     <widget class="QLineEdit" name="lineEdit_serial">
+      <property name="maximumSize">
+       <size>
+        <width>100</width>
+        <height>16777215</height>
+       </size>
+      </property>
+     </widget>
+    </item>
+    <item row="4" column="0">
+     <widget class="QLabel" name="label_4">
+      <property name="text">
+       <string>ManCode</string>
+      </property>
+     </widget>
+    </item>
+    <item row="6" column="2">
+     <widget class="QLineEdit" name="lineEdit_DNHex">
+      <property name="maximumSize">
+       <size>
+        <width>20</width>
+        <height>16777215</height>
+       </size>
+      </property>
+     </widget>
+    </item>
+    <item row="7" column="1">
+     <widget class="QLineEdit" name="lineEdit_PCB_SN">
+      <property name="minimumSize">
+       <size>
+        <width>103</width>
+        <height>0</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>100</width>
+        <height>16777215</height>
+       </size>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="2">
+     <widget class="QLineEdit" name="lineEdit_serialHex">
+      <property name="maximumSize">
+       <size>
+        <width>20</width>
+        <height>16777215</height>
+       </size>
+      </property>
+     </widget>
+    </item>
+    <item row="5" column="1">
+     <widget class="QComboBox" name="comboBox_DevType">
+      <property name="maximumSize">
+       <size>
+        <width>100</width>
+        <height>16777215</height>
+       </size>
+      </property>
+     </widget>
+    </item>
+    <item row="7" column="0">
+     <widget class="QLabel" name="label_41">
+      <property name="text">
+       <string>PCB_SN1</string>
+      </property>
+     </widget>
+    </item>
+    <item row="4" column="1">
+     <widget class="QComboBox" name="comboBox_ManCode">
+      <property name="minimumSize">
+       <size>
+        <width>0</width>
+        <height>0</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>100</width>
+        <height>16777215</height>
+       </size>
+      </property>
+     </widget>
+    </item>
+    <item row="10" column="1">
+     <widget class="QLineEdit" name="lineEdit_PCB_SN4">
+      <property name="maximumSize">
+       <size>
+        <width>103</width>
+        <height>16777215</height>
+       </size>
+      </property>
+     </widget>
+    </item>
+    <item row="10" column="2">
+     <widget class="QLineEdit" name="lineEdit_PCB_SNHex4">
+      <property name="maximumSize">
+       <size>
+        <width>20</width>
+        <height>16777215</height>
+       </size>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="0">
+     <widget class="QLabel" name="label">
+      <property name="text">
+       <string>Serial2</string>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="0">
+     <widget class="QLabel" name="label_2">
+      <property name="text">
+       <string>Serial3</string>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="0">
+     <widget class="QLabel" name="label_59">
+      <property name="text">
+       <string>Serial4</string>
+      </property>
+     </widget>
+    </item>
+    <item row="8" column="0">
+     <widget class="QLabel" name="label_60">
+      <property name="text">
+       <string>PCB_SN2</string>
+      </property>
+     </widget>
+    </item>
+    <item row="9" column="0">
+     <widget class="QLabel" name="label_61">
+      <property name="text">
+       <string>PCB_SN3</string>
+      </property>
+     </widget>
+    </item>
+    <item row="10" column="0">
+     <widget class="QLabel" name="label_62">
+      <property name="text">
+       <string>PCB_SN4</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QGroupBox" name="groupBox_4">
+   <property name="geometry">
+    <rect>
+     <x>280</x>
+     <y>490</y>
+     <width>191</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <property name="title">
+    <string>Calibration Factor</string>
+   </property>
+   <layout class="QGridLayout" name="gridLayout_5">
+    <item row="0" column="0">
+     <widget class="QLabel" name="label_31">
+      <property name="text">
+       <string>FS_DiffThrs</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="1">
+     <widget class="QLineEdit" name="lineEdit_FS_DiffThrs">
+      <property name="maximumSize">
+       <size>
+        <width>100</width>
+        <height>16777215</height>
+       </size>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="2">
+     <widget class="QLineEdit" name="lineEdit_FS_DiffThrsHex">
+      <property name="maximumSize">
+       <size>
+        <width>20</width>
+        <height>16777215</height>
+       </size>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QGroupBox" name="groupBox_2">
+   <property name="geometry">
+    <rect>
+     <x>280</x>
+     <y>20</y>
+     <width>191</width>
+     <height>209</height>
+    </rect>
+   </property>
+   <property name="title">
+    <string>Sensor Parameters</string>
+   </property>
+   <layout class="QGridLayout" name="gridLayout_9">
+    <item row="2" column="4">
+     <widget class="QLineEdit" name="lineEdit_RTD_TypeHex">
+      <property name="maximumSize">
+       <size>
+        <width>10</width>
+        <height>16777215</height>
+       </size>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="0">
+     <widget class="QLabel" name="label_20">
+      <property name="text">
+       <string>Pressure</string>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="0">
+     <widget class="QLabel" name="label_22">
+      <property name="text">
+       <string>R_RTD</string>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="3">
+     <widget class="QLineEdit" name="lineEdit_R_RTDHex"/>
+    </item>
+    <item row="6" column="2">
+     <widget class="QComboBox" name="comboBox_FlowNom">
+      <property name="maximumSize">
+       <size>
+        <width>60</width>
+        <height>16777215</height>
+       </size>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="0">
+     <widget class="QLabel" name="label_19">
+      <property name="text">
+       <string>FlowRate</string>
+      </property>
+     </widget>
+    </item>
+    <item row="4" column="3">
+     <widget class="QLineEdit" name="lineEdit_RWire1Hex"/>
+    </item>
+    <item row="0" column="2">
+     <widget class="QComboBox" name="comboBox_FlowRate">
+      <property name="maximumSize">
+       <size>
+        <width>60</width>
+        <height>16777215</height>
+       </size>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="3">
+     <widget class="QLineEdit" name="lineEdit_PressureHex"/>
+    </item>
+    <item row="5" column="3">
+     <widget class="QLineEdit" name="lineEdit_RWire2Hex"/>
+    </item>
+    <item row="6" column="3">
+     <widget class="QLineEdit" name="lineEdit_FlowNomHex"/>
+    </item>
+    <item row="5" column="0">
+     <widget class="QLabel" name="label_24">
+      <property name="text">
+       <string>RWIRE2</string>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="2">
+     <widget class="QLineEdit" name="lineEdit_R_RTD">
+      <property name="maximumSize">
+       <size>
+        <width>60</width>
+        <height>16777215</height>
+       </size>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="2">
+     <widget class="QLineEdit" name="lineEdit_Pressure">
+      <property name="maximumSize">
+       <size>
+        <width>60</width>
+        <height>16777215</height>
+       </size>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="3">
+     <widget class="QLineEdit" name="lineEdit_FlowRateHex"/>
+    </item>
+    <item row="6" column="0">
+     <widget class="QLabel" name="label_25">
+      <property name="text">
+       <string>FlowNom</string>
+      </property>
+     </widget>
+    </item>
+    <item row="4" column="0">
+     <widget class="QLabel" name="label_23">
+      <property name="text">
+       <string>RWIRE1</string>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="2" colspan="2">
+     <widget class="QComboBox" name="comboBox_RTD_Type">
+      <property name="minimumSize">
+       <size>
+        <width>113</width>
+        <height>0</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>200</width>
+        <height>16777215</height>
+       </size>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="0">
+     <widget class="QLabel" name="label_21">
+      <property name="text">
+       <string>RTD_Type</string>
+      </property>
+     </widget>
+    </item>
+    <item row="4" column="2">
+     <widget class="QLineEdit" name="lineEdit_RWire1">
+      <property name="maximumSize">
+       <size>
+        <width>60</width>
+        <height>16777215</height>
+       </size>
+      </property>
+     </widget>
+    </item>
+    <item row="5" column="2">
+     <widget class="QLineEdit" name="lineEdit_RWire2">
+      <property name="maximumSize">
+       <size>
+        <width>60</width>
+        <height>16777215</height>
+       </size>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="1">
+     <spacer name="horizontalSpacer_2">
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>40</width>
+        <height>20</height>
+       </size>
+      </property>
+     </spacer>
+    </item>
+    <item row="0" column="1">
+     <spacer name="horizontalSpacer_3">
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>40</width>
+        <height>20</height>
+       </size>
+      </property>
+     </spacer>
+    </item>
+    <item row="1" column="1">
+     <spacer name="horizontalSpacer_4">
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>40</width>
+        <height>20</height>
+       </size>
+      </property>
+     </spacer>
+    </item>
+    <item row="3" column="1">
+     <spacer name="horizontalSpacer_5">
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>40</width>
+        <height>20</height>
+       </size>
+      </property>
+     </spacer>
+    </item>
+    <item row="4" column="1">
+     <spacer name="horizontalSpacer_6">
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>40</width>
+        <height>20</height>
+       </size>
+      </property>
+     </spacer>
+    </item>
+    <item row="5" column="1">
+     <spacer name="horizontalSpacer_7">
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>40</width>
+        <height>20</height>
+       </size>
+      </property>
+     </spacer>
+    </item>
+    <item row="6" column="1">
+     <spacer name="horizontalSpacer_8">
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>40</width>
+        <height>20</height>
+       </size>
+      </property>
+     </spacer>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QGroupBox" name="groupBox_3">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>320</y>
+     <width>241</width>
+     <height>339</height>
+    </rect>
+   </property>
+   <property name="title">
+    <string>Software Configuration</string>
+   </property>
+   <layout class="QGridLayout" name="gridLayout_2">
+    <item row="8" column="2">
+     <widget class="QLineEdit" name="lineEdit_PulsesMode1Hex">
+      <property name="maximumSize">
+       <size>
+        <width>20</width>
+        <height>16777215</height>
+       </size>
+      </property>
+     </widget>
+    </item>
+    <item row="4" column="2">
+     <widget class="QLineEdit" name="lineEdit_Tout_minHex">
+      <property name="maximumSize">
+       <size>
+        <width>20</width>
+        <height>16777215</height>
+       </size>
+      </property>
+     </widget>
+    </item>
+    <item row="6" column="2">
+     <widget class="QLineEdit" name="lineEdit_ReportDataHex">
+      <property name="maximumSize">
+       <size>
+        <width>20</width>
+        <height>16777215</height>
+       </size>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="2">
+     <widget class="QLineEdit" name="lineEdit_Tin_minHex">
+      <property name="maximumSize">
+       <size>
+        <width>20</width>
+        <height>16777215</height>
+       </size>
+      </property>
+     </widget>
+    </item>
+    <item row="10" column="2">
+     <widget class="QLineEdit" name="lineEdit_PulsesValue1Hex">
+      <property name="maximumSize">
+       <size>
+        <width>20</width>
+        <height>16777215</height>
+       </size>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="2">
+     <widget class="QLineEdit" name="lineEdit_Flow_minHex">
+      <property name="maximumSize">
+       <size>
+        <width>20</width>
+        <height>16777215</height>
+       </size>
+      </property>
+     </widget>
+    </item>
+    <item row="9" column="2">
+     <widget class="QLineEdit" name="lineEdit_PulsesMode2Hex">
+      <property name="maximumSize">
+       <size>
+        <width>20</width>
+        <height>16777215</height>
+       </size>
+      </property>
+     </widget>
+    </item>
+    <item row="11" column="2">
+     <widget class="QLineEdit" name="lineEdit_PulsesValue2Hex">
+      <property name="maximumSize">
+       <size>
+        <width>20</width>
+        <height>16777215</height>
+       </size>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="2">
+     <widget class="QLineEdit" name="lineEdit_Flow_maxHex">
+      <property name="maximumSize">
+       <size>
+        <width>20</width>
+        <height>16777215</height>
+       </size>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="2">
+     <widget class="QLineEdit" name="lineEdit_Tin_maxHex">
+      <property name="maximumSize">
+       <size>
+        <width>20</width>
+        <height>16777215</height>
+       </size>
+      </property>
+     </widget>
+    </item>
+    <item row="7" column="2">
+     <widget class="QLineEdit" name="lineEdit_Average_THex">
+      <property name="maximumSize">
+       <size>
+        <width>20</width>
+        <height>16777215</height>
+       </size>
+      </property>
+     </widget>
+    </item>
+    <item row="5" column="2">
+     <widget class="QLineEdit" name="lineEdit_Tout_maxHex">
+      <property name="maximumSize">
+       <size>
+        <width>20</width>
+        <height>16777215</height>
+       </size>
+      </property>
+     </widget>
+    </item>
+    <item row="11" column="1">
+     <widget class="QLineEdit" name="lineEdit_PulsesValue2">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>100</width>
+        <height>16777215</height>
+       </size>
+      </property>
+     </widget>
+    </item>
+    <item row="10" column="0">
+     <widget class="QLabel" name="label_16">
+      <property name="text">
+       <string>PulsesValue1</string>
+      </property>
+     </widget>
+    </item>
+    <item row="9" column="0">
+     <widget class="QLabel" name="label_15">
+      <property name="text">
+       <string>PulsesMode2</string>
+      </property>
+     </widget>
+    </item>
+    <item row="4" column="0">
+     <widget class="QLabel" name="label_11">
+      <property name="text">
+       <string>Tout_min</string>
+      </property>
+     </widget>
+    </item>
+    <item row="11" column="0">
+     <widget class="QLabel" name="label_17">
+      <property name="text">
+       <string>PulsesValue2</string>
+      </property>
+     </widget>
+    </item>
+    <item row="8" column="0">
+     <widget class="QLabel" name="label_14">
+      <property name="text">
+       <string>PulsesMode1</string>
+      </property>
+     </widget>
+    </item>
+    <item row="7" column="0">
+     <widget class="QLabel" name="label_13">
+      <property name="text">
+       <string>Average_T</string>
+      </property>
+     </widget>
+    </item>
+    <item row="10" column="1">
+     <widget class="QLineEdit" name="lineEdit_PulsesValue1">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>100</width>
+        <height>16777215</height>
+       </size>
+      </property>
+     </widget>
+    </item>
+    <item row="5" column="0">
+     <widget class="QLabel" name="label_12">
+      <property name="text">
+       <string>Tout_max</string>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="0">
+     <widget class="QLabel" name="label_9">
+      <property name="text">
+       <string>Tin_min</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="1">
+     <widget class="QLineEdit" name="lineEdit_Flow_min">
+      <property name="maximumSize">
+       <size>
+        <width>100</width>
+        <height>16777215</height>
+       </size>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="0">
+     <widget class="QLabel" name="label_10">
+      <property name="text">
+       <string>Tin_max</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="0">
+     <widget class="QLabel" name="label_7">
+      <property name="text">
+       <string>Flow_min</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="0">
+     <widget class="QLabel" name="label_8">
+      <property name="text">
+       <string>Flow_max</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="1">
+     <widget class="QLineEdit" name="lineEdit_Flow_max">
+      <property name="maximumSize">
+       <size>
+        <width>100</width>
+        <height>16777215</height>
+       </size>
+      </property>
+     </widget>
+    </item>
+    <item row="6" column="0">
+     <widget class="QLabel" name="label_18">
+      <property name="text">
+       <string>ReportData</string>
+      </property>
+     </widget>
+    </item>
+    <item row="7" column="1">
+     <widget class="QComboBox" name="comboBox_Average_T"/>
+    </item>
+    <item row="8" column="1">
+     <widget class="QComboBox" name="comboBox_PulsesMode1">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+     </widget>
+    </item>
+    <item row="9" column="1">
+     <widget class="QComboBox" name="comboBox_PulsesMode2">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+     </widget>
+    </item>
+    <item row="6" column="1">
+     <widget class="QSpinBox" name="spinBox_ReportData"/>
+    </item>
+    <item row="5" column="1">
+     <widget class="QSpinBox" name="spinBox_Tout_max"/>
+    </item>
+    <item row="4" column="1">
+     <widget class="QSpinBox" name="spinBox_Tout_min"/>
+    </item>
+    <item row="3" column="1">
+     <widget class="QSpinBox" name="spinBox_Tin_max"/>
+    </item>
+    <item row="2" column="1">
+     <widget class="QSpinBox" name="spinBox_Tin_min"/>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QGroupBox" name="groupBox_6">
+   <property name="geometry">
+    <rect>
+     <x>280</x>
+     <y>270</y>
+     <width>191</width>
+     <height>183</height>
+    </rect>
+   </property>
+   <property name="title">
+    <string>Flow Coefficient</string>
+   </property>
+   <layout class="QGridLayout" name="gridLayout_4">
+    <item row="0" column="0">
+     <widget class="QLabel" name="label_26">
+      <property name="text">
+       <string>coef0</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="1">
+     <widget class="QLineEdit" name="lineEdit_coef0">
+      <property name="maximumSize">
+       <size>
+        <width>100</width>
+        <height>16777215</height>
+       </size>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="2">
+     <widget class="QLineEdit" name="lineEdit_coef0Hex">
+      <property name="maximumSize">
+       <size>
+        <width>20</width>
+        <height>16777215</height>
+       </size>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="0">
+     <widget class="QLabel" name="label_27">
+      <property name="text">
+       <string>coef1</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="1">
+     <widget class="QLineEdit" name="lineEdit_coef1">
+      <property name="maximumSize">
+       <size>
+        <width>100</width>
+        <height>16777215</height>
+       </size>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="2">
+     <widget class="QLineEdit" name="lineEdit_coef1Hex">
+      <property name="maximumSize">
+       <size>
+        <width>20</width>
+        <height>16777215</height>
+       </size>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="0">
+     <widget class="QLabel" name="label_28">
+      <property name="text">
+       <string>coef2</string>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="1">
+     <widget class="QLineEdit" name="lineEdit_coef2">
+      <property name="maximumSize">
+       <size>
+        <width>100</width>
+        <height>16777215</height>
+       </size>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="2">
+     <widget class="QLineEdit" name="lineEdit_coef2Hex">
+      <property name="maximumSize">
+       <size>
+        <width>20</width>
+        <height>16777215</height>
+       </size>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="0">
+     <widget class="QLabel" name="label_29">
+      <property name="text">
+       <string>coef3</string>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="1">
+     <widget class="QLineEdit" name="lineEdit_coef3">
+      <property name="maximumSize">
+       <size>
+        <width>100</width>
+        <height>16777215</height>
+       </size>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="2">
+     <widget class="QLineEdit" name="lineEdit_coef3Hex">
+      <property name="maximumSize">
+       <size>
+        <width>20</width>
+        <height>16777215</height>
+       </size>
+      </property>
+     </widget>
+    </item>
+    <item row="4" column="0">
+     <widget class="QLabel" name="label_30">
+      <property name="text">
+       <string>coef4</string>
+      </property>
+     </widget>
+    </item>
+    <item row="4" column="1">
+     <widget class="QLineEdit" name="lineEdit_coef4">
+      <property name="maximumSize">
+       <size>
+        <width>100</width>
+        <height>16777215</height>
+       </size>
+      </property>
+     </widget>
+    </item>
+    <item row="4" column="2">
+     <widget class="QLineEdit" name="lineEdit_coef4Hex">
+      <property name="maximumSize">
+       <size>
+        <width>20</width>
+        <height>16777215</height>
+       </size>
+      </property>
+     </widget>
+    </item>
+    <item row="5" column="0">
+     <widget class="QLabel" name="label_38">
+      <property name="text">
+       <string>coef5</string>
+      </property>
+     </widget>
+    </item>
+    <item row="5" column="1">
+     <widget class="QLineEdit" name="lineEdit_coef5">
+      <property name="maximumSize">
+       <size>
+        <width>100</width>
+        <height>16777215</height>
+       </size>
+      </property>
+     </widget>
+    </item>
+    <item row="5" column="2">
+     <widget class="QLineEdit" name="lineEdit_coef5Hex">
+      <property name="maximumSize">
+       <size>
+        <width>20</width>
+        <height>16777215</height>
+       </size>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QGroupBox" name="groupBox_5">
+   <property name="geometry">
+    <rect>
+     <x>490</x>
+     <y>20</y>
+     <width>241</width>
+     <height>79</height>
+    </rect>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>200</width>
+     <height>0</height>
+    </size>
+   </property>
+   <property name="title">
+    <string>Real Clock</string>
+   </property>
+   <layout class="QGridLayout" name="gridLayout_7">
+    <item row="0" column="0" colspan="2">
+     <widget class="QLabel" name="label_32">
+      <property name="minimumSize">
+       <size>
+        <width>70</width>
+        <height>0</height>
+       </size>
+      </property>
+      <property name="text">
+       <string>Дата/время</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="2" colspan="4">
+     <widget class="QDateTimeEdit" name="dateTimeEdit_realClock">
+      <property name="minimumSize">
+       <size>
+        <width>150</width>
+        <height>0</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>70</width>
+        <height>16777215</height>
+       </size>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="0">
+     <widget class="QLabel" name="label_33">
+      <property name="text">
+       <string>ASW_flag</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="3">
+     <widget class="QComboBox" name="comboBox_ASW_flag">
+      <property name="minimumSize">
+       <size>
+        <width>50</width>
+        <height>0</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>100</width>
+        <height>16777215</height>
+       </size>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="5">
+     <widget class="QLineEdit" name="lineEdit_ASW_flagHex">
+      <property name="maximumSize">
+       <size>
+        <width>50</width>
+        <height>16777215</height>
+       </size>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="4">
+     <spacer name="horizontalSpacer">
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>41</width>
+        <height>20</height>
+       </size>
+      </property>
+     </spacer>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QGroupBox" name="groupBox_9">
+   <property name="geometry">
+    <rect>
+     <x>750</x>
+     <y>20</y>
+     <width>251</width>
+     <height>339</height>
+    </rect>
+   </property>
+   <property name="title">
+    <string>External Device Settings</string>
+   </property>
+   <layout class="QGridLayout" name="gridLayout_3">
+    <item row="0" column="0">
+     <widget class="QLabel" name="label_47">
+      <property name="text">
+       <string>Serial_P1</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="1">
+     <widget class="QLineEdit" name="lineEdit_Serial_P1">
+      <property name="maximumSize">
+       <size>
+        <width>100</width>
+        <height>16777215</height>
+       </size>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="2">
+     <widget class="QLineEdit" name="lineEdit_Serial_P1Hex">
+      <property name="maximumSize">
+       <size>
+        <width>20</width>
+        <height>16777215</height>
+       </size>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="0">
+     <widget class="QLabel" name="label_48">
+      <property name="text">
+       <string>ManCode_P1</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="1">
+     <widget class="QLineEdit" name="lineEdit_ManCode_P1">
+      <property name="maximumSize">
+       <size>
+        <width>100</width>
+        <height>16777215</height>
+       </size>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="2">
+     <widget class="QLineEdit" name="lineEdit_ManCode_P1Hex">
+      <property name="maximumSize">
+       <size>
+        <width>20</width>
+        <height>16777215</height>
+       </size>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="0">
+     <widget class="QLabel" name="label_49">
+      <property name="text">
+       <string>DevType_P1</string>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="1">
+     <widget class="QLineEdit" name="lineEdit_DevType_P1">
+      <property name="maximumSize">
+       <size>
+        <width>100</width>
+        <height>16777215</height>
+       </size>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="2">
+     <widget class="QLineEdit" name="lineEdit_DevType_P1Hex">
+      <property name="maximumSize">
+       <size>
+        <width>20</width>
+        <height>16777215</height>
+       </size>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="0">
+     <widget class="QLabel" name="label_50">
+      <property name="text">
+       <string>Version_P1</string>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="1">
+     <widget class="QLineEdit" name="lineEdit_Version_P1">
+      <property name="maximumSize">
+       <size>
+        <width>100</width>
+        <height>16777215</height>
+       </size>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="2">
+     <widget class="QLineEdit" name="lineEdit_Version_P1Hex">
+      <property name="maximumSize">
+       <size>
+        <width>20</width>
+        <height>16777215</height>
+       </size>
+      </property>
+     </widget>
+    </item>
+    <item row="4" column="0">
+     <widget class="QLabel" name="label_51">
+      <property name="text">
+       <string>Initial_value_P1</string>
+      </property>
+     </widget>
+    </item>
+    <item row="4" column="1">
+     <widget class="QLineEdit" name="lineEdit_Initial_value_P1">
+      <property name="maximumSize">
+       <size>
+        <width>100</width>
+        <height>16777215</height>
+       </size>
+      </property>
+     </widget>
+    </item>
+    <item row="4" column="2">
+     <widget class="QLineEdit" name="lineEdit_Initial_value_P1Hex">
+      <property name="maximumSize">
+       <size>
+        <width>20</width>
+        <height>16777215</height>
+       </size>
+      </property>
+     </widget>
+    </item>
+    <item row="5" column="0">
+     <widget class="QLabel" name="label_52">
+      <property name="text">
+       <string>Service_P1</string>
+      </property>
+     </widget>
+    </item>
+    <item row="5" column="1">
+     <widget class="QLineEdit" name="lineEdit_Service_P1">
+      <property name="maximumSize">
+       <size>
+        <width>100</width>
+        <height>16777215</height>
+       </size>
+      </property>
+     </widget>
+    </item>
+    <item row="5" column="2">
+     <widget class="QLineEdit" name="lineEdit_Service_P1Hex">
+      <property name="maximumSize">
+       <size>
+        <width>20</width>
+        <height>16777215</height>
+       </size>
+      </property>
+     </widget>
+    </item>
+    <item row="6" column="0">
+     <widget class="QLabel" name="label_53">
+      <property name="text">
+       <string>Serial_P2</string>
+      </property>
+     </widget>
+    </item>
+    <item row="6" column="1">
+     <widget class="QLineEdit" name="lineEdit_Serial_P2">
+      <property name="maximumSize">
+       <size>
+        <width>100</width>
+        <height>16777215</height>
+       </size>
+      </property>
+     </widget>
+    </item>
+    <item row="6" column="2">
+     <widget class="QLineEdit" name="lineEdit_Serial_P2Hex">
+      <property name="maximumSize">
+       <size>
+        <width>20</width>
+        <height>16777215</height>
+       </size>
+      </property>
+     </widget>
+    </item>
+    <item row="7" column="0">
+     <widget class="QLabel" name="label_54">
+      <property name="text">
+       <string>ManCode_P2</string>
+      </property>
+     </widget>
+    </item>
+    <item row="7" column="1">
+     <widget class="QLineEdit" name="lineEdit_ManCode_P2">
+      <property name="maximumSize">
+       <size>
+        <width>100</width>
+        <height>16777215</height>
+       </size>
+      </property>
+     </widget>
+    </item>
+    <item row="7" column="2">
+     <widget class="QLineEdit" name="lineEdit_ManCode_P2Hex">
+      <property name="maximumSize">
+       <size>
+        <width>20</width>
+        <height>16777215</height>
+       </size>
+      </property>
+     </widget>
+    </item>
+    <item row="8" column="0">
+     <widget class="QLabel" name="label_55">
+      <property name="text">
+       <string>DevType_P2</string>
+      </property>
+     </widget>
+    </item>
+    <item row="8" column="1">
+     <widget class="QLineEdit" name="lineEdit_DevType_P2">
+      <property name="maximumSize">
+       <size>
+        <width>100</width>
+        <height>16777215</height>
+       </size>
+      </property>
+     </widget>
+    </item>
+    <item row="8" column="2">
+     <widget class="QLineEdit" name="lineEdit_DevType_P2Hex">
+      <property name="maximumSize">
+       <size>
+        <width>20</width>
+        <height>16777215</height>
+       </size>
+      </property>
+     </widget>
+    </item>
+    <item row="9" column="0">
+     <widget class="QLabel" name="label_56">
+      <property name="text">
+       <string>Version_P2</string>
+      </property>
+     </widget>
+    </item>
+    <item row="9" column="1">
+     <widget class="QLineEdit" name="lineEdit_Version_P2">
+      <property name="maximumSize">
+       <size>
+        <width>100</width>
+        <height>16777215</height>
+       </size>
+      </property>
+     </widget>
+    </item>
+    <item row="9" column="2">
+     <widget class="QLineEdit" name="lineEdit_Version_P2Hex">
+      <property name="maximumSize">
+       <size>
+        <width>20</width>
+        <height>16777215</height>
+       </size>
+      </property>
+     </widget>
+    </item>
+    <item row="10" column="0">
+     <widget class="QLabel" name="label_57">
+      <property name="text">
+       <string>Initial_value_P2</string>
+      </property>
+     </widget>
+    </item>
+    <item row="10" column="1">
+     <widget class="QLineEdit" name="lineEdit_Initial_value_P2">
+      <property name="maximumSize">
+       <size>
+        <width>100</width>
+        <height>16777215</height>
+       </size>
+      </property>
+     </widget>
+    </item>
+    <item row="10" column="2">
+     <widget class="QLineEdit" name="lineEdit_Initial_value_P2Hex">
+      <property name="maximumSize">
+       <size>
+        <width>20</width>
+        <height>16777215</height>
+       </size>
+      </property>
+     </widget>
+    </item>
+    <item row="11" column="0">
+     <widget class="QLabel" name="label_58">
+      <property name="text">
+       <string>Service_P2</string>
+      </property>
+     </widget>
+    </item>
+    <item row="11" column="1">
+     <widget class="QLineEdit" name="lineEdit_Service_P2">
+      <property name="minimumSize">
+       <size>
+        <width>100</width>
+        <height>0</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>100</width>
+        <height>16777215</height>
+       </size>
+      </property>
+     </widget>
+    </item>
+    <item row="11" column="2">
+     <widget class="QLineEdit" name="lineEdit_Service_P2Hex">
+      <property name="maximumSize">
+       <size>
+        <width>20</width>
+        <height>16777215</height>
+       </size>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QGroupBox" name="groupBox_7">
+   <property name="geometry">
+    <rect>
+     <x>490</x>
+     <y>120</y>
+     <width>241</width>
+     <height>131</height>
+    </rect>
+   </property>
+   <property name="title">
+    <string>Calibration Factor</string>
+   </property>
+   <layout class="QGridLayout" name="gridLayout_6">
+    <item row="0" column="0">
+     <widget class="QLabel" name="label_34">
+      <property name="text">
+       <string>Shift_T1</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="1">
+     <widget class="QLineEdit" name="lineEdit_Shift_T1">
+      <property name="maximumSize">
+       <size>
+        <width>100</width>
+        <height>16777215</height>
+       </size>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="0">
+     <widget class="QLabel" name="label_35">
+      <property name="text">
+       <string>Shift_T2</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="1">
+     <widget class="QLineEdit" name="lineEdit_Shift_T2">
+      <property name="maximumSize">
+       <size>
+        <width>100</width>
+        <height>16777215</height>
+       </size>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="0">
+     <widget class="QLabel" name="label_36">
+      <property name="text">
+       <string>Scale_T1</string>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="1">
+     <widget class="QLineEdit" name="lineEdit_Scale_T1">
+      <property name="maximumSize">
+       <size>
+        <width>100</width>
+        <height>16777215</height>
+       </size>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="0">
+     <widget class="QLabel" name="label_37">
+      <property name="text">
+       <string>Scale_T2</string>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="1">
+     <widget class="QLineEdit" name="lineEdit_Scale_T2">
+      <property name="maximumSize">
+       <size>
+        <width>100</width>
+        <height>16777215</height>
+       </size>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="2">
+     <widget class="QLineEdit" name="lineEdit_Shift_T1Hex"/>
+    </item>
+    <item row="1" column="2">
+     <widget class="QLineEdit" name="lineEdit_Shift_T2Hex"/>
+    </item>
+    <item row="2" column="2">
+     <widget class="QLineEdit" name="lineEdit_Scale_T1Hex"/>
+    </item>
+    <item row="3" column="2">
+     <widget class="QLineEdit" name="lineEdit_Scale_T2Hex"/>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QTextBrowser" name="textBrowser">
+   <property name="geometry">
+    <rect>
+     <x>530</x>
+     <y>510</y>
+     <width>181</width>
+     <height>16</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QToolButton" name="toolButton_saveTemplate">
+   <property name="geometry">
+    <rect>
+     <x>800</x>
+     <y>520</y>
+     <width>191</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Сохранить параметры в файл</string>
+   </property>
+  </widget>
+  <widget class="QToolButton" name="toolButton_loadTemplate">
+   <property name="geometry">
+    <rect>
+     <x>770</x>
+     <y>450</y>
+     <width>191</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Загрузить параметры из файла</string>
+   </property>
+  </widget>
+  <widget class="QToolButton" name="toolButton_readParams">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="geometry">
+    <rect>
+     <x>800</x>
+     <y>490</y>
+     <width>191</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Прочитать параметры</string>
+   </property>
+  </widget>
+  <widget class="QToolButton" name="toolButton_writeParams">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="geometry">
+    <rect>
+     <x>770</x>
+     <y>400</y>
+     <width>191</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Записать параметры</string>
+   </property>
+  </widget>
+  <zorder>toolButton_readParams</zorder>
+  <zorder>groupBox_8</zorder>
+  <zorder>groupBox</zorder>
+  <zorder>groupBox_4</zorder>
+  <zorder>groupBox_2</zorder>
+  <zorder>groupBox_3</zorder>
+  <zorder>groupBox_6</zorder>
+  <zorder>groupBox_5</zorder>
+  <zorder>groupBox_9</zorder>
+  <zorder>groupBox_7</zorder>
+  <zorder>textBrowser</zorder>
+  <zorder>toolButton_saveTemplate</zorder>
+  <zorder>toolButton_loadTemplate</zorder>
+  <zorder>toolButton_writeParams</zorder>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

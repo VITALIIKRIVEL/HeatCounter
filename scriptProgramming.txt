@@ -1,0 +1,8 @@
+MODE 5xx_family COM1
+MASS_ERASE
+RX_PASSWORD
+DELAY 1000
+ERASE_SEGMENT 0x1800
+ERASE_SEGMENT 0x1880
+RX_DATA_BLOCK D:/Work/QTProject/build-Calibration-Desktop_Qt_5_9_2_MinGW_32bit-Release/eso.txt
+TX_BSL_VERSION

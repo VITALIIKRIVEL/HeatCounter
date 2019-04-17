@@ -1,0 +1,1 @@
+cmd BSL_Scripter
