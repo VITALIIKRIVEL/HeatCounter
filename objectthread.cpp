@@ -5962,7 +5962,7 @@ void ObjectThread::slotCalibration(QSerialPort *port1, QSerialPort *port2, QSeri
 
                       qDebug()<<"R_Ref1Float "<<R_Ref1Float;
 
-                      r_ref1Result = QString::number(R_Ref1Float);
+                      r_ref1Result = QString::number(R_Ref1Float, 'f', 6);
                       //
 
                       //
@@ -5976,7 +5976,7 @@ void ObjectThread::slotCalibration(QSerialPort *port1, QSerialPort *port2, QSeri
 
                       qDebug()<<"R_Ref2Float "<<R_Ref2Float;
 
-                      r_ref2Result = QString::number(R_Ref2Float);
+                      r_ref2Result = QString::number(R_Ref2Float, 'f', 6);
                       //
 
 
@@ -6058,7 +6058,7 @@ void ObjectThread::slotCalibration(QSerialPort *port1, QSerialPort *port2, QSeri
 
                       qDebug()<<"R_Ref1Float "<<R_Ref1Float;
 
-                      r_ref1Result2 = QString::number(R_Ref1Float);
+                      r_ref1Result2 = QString::number(R_Ref1Float, 'f', 6);
                       //
 
                       //
@@ -6072,7 +6072,7 @@ void ObjectThread::slotCalibration(QSerialPort *port1, QSerialPort *port2, QSeri
 
                       qDebug()<<"R_Ref2Float "<<R_Ref2Float;
 
-                      r_ref2Result2 = QString::number(R_Ref2Float);
+                      r_ref2Result2 = QString::number(R_Ref2Float, 'f', 6);
                       //
 
                       if( R_Ref1Float>=(Acceptable_R_Ref1Float2 - Acceptable_R_Ref1Float2/100) &&
@@ -6156,7 +6156,7 @@ void ObjectThread::slotCalibration(QSerialPort *port1, QSerialPort *port2, QSeri
 
                       qDebug()<<"R_Ref1Float "<<R_Ref1Float;
 
-                      r_ref1Result3 = QString::number(R_Ref1Float);
+                      r_ref1Result3 = QString::number(R_Ref1Float, 'f', 6);
                       //
 
                       //
@@ -6170,7 +6170,8 @@ void ObjectThread::slotCalibration(QSerialPort *port1, QSerialPort *port2, QSeri
 
                       qDebug()<<"R_Ref2Float "<<R_Ref2Float;
 
-                      r_ref2Result3 = QString::number(R_Ref2Float);
+                      r_ref2Result3 = QString::number(R_Ref2Float, 'f', 6);
+                      //
                       //
 
 
@@ -6253,7 +6254,7 @@ void ObjectThread::slotCalibration(QSerialPort *port1, QSerialPort *port2, QSeri
 
                       qDebug()<<"R_Ref1Float "<<R_Ref1Float;
 
-                      r_ref1Result4 = QString::number(R_Ref1Float);
+                      r_ref1Result4 = QString::number(R_Ref1Float, 'f', 6);
                       //
 
                       //
@@ -6267,7 +6268,7 @@ void ObjectThread::slotCalibration(QSerialPort *port1, QSerialPort *port2, QSeri
 
                       qDebug()<<"R_Ref2Float "<<R_Ref2Float;
 
-                      r_ref2Result4 = QString::number(R_Ref2Float);
+                      r_ref2Result4 = QString::number(R_Ref2Float, 'f', 6);
                       //
 
 

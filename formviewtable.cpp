@@ -126,7 +126,7 @@ void FormViewTable::slotGetTableList(QStringList tableList, QString userName, QM
     ui->tableWidget->setHorizontalHeaderItem(0, element);
     element = new QTableWidgetItem(tr("Сер.номер"));
     ui->tableWidget->setHorizontalHeaderItem(1, element);
-    element = new QTableWidgetItem(tr("Номер PCB"));
+    element = new QTableWidgetItem(tr("Номер ЭБ"));
     ui->tableWidget->setHorizontalHeaderItem(2, element);
     element = new QTableWidgetItem(tr("Дата/время записи"));
     ui->tableWidget->setHorizontalHeaderItem(3, element);
@@ -174,19 +174,24 @@ void FormViewTable::slotGetTableList(QStringList tableList, QString userName, QM
 
         //время/дата записи
         QString timeStr = listCurrentRow.at(2);
+        timeStr.remove(timeStr.length() - 4, 4);
 
         QString dateStrTmp = timeStr.left(10);
         QStringList dateListTmp = dateStrTmp.split('-');
+        QString timeStrDateReverse;
 
         QDate dateTmp;
 
         if(dateListTmp.size()>=3) {
            dateTmp.setDate(dateListTmp.at(0).toInt(), dateListTmp.at(1).toInt(), dateListTmp.at(2).toInt());
+
+           QStringList timeListTwoElements = timeStr.split('T');
+           timeStrDateReverse = dateListTmp.at(2) + "-" + dateListTmp.at(1) + "-" +
+                                        dateListTmp.at(0) + "  " + timeListTwoElements.at(1);
+
         }
 
-  //      timeStr.replace('T', ' ');
-
-        element = new QTableWidgetItem(timeStr);
+        element = new QTableWidgetItem(timeStrDateReverse); //(timeStr);
         ui->tableWidget->setItem(ui->tableWidget->rowCount() - 1, 3, element);
 
         //результат проверки, разбиваем строку Json на rref1, rref2, usable, engineer
@@ -210,12 +215,48 @@ void FormViewTable::slotGetTableList(QStringList tableList, QString userName, QM
         QString rref1Str = jsonList.at(0);
         rref1Str.remove("Rref1: ");
 
+        //
+        QStringList rref1StrListTwoElements = rref1Str.split('.');
+        QString rref1FirstPartStr =  rref1StrListTwoElements.at(0);
+        QString rref1SecondPartStr = rref1StrListTwoElements.at(1);
+
+        if(rref1SecondPartStr.length()<6) { //дополняем нулями дробную часть
+            int lenSecondpart = rref1SecondPartStr.length();
+            int difference = 6 - lenSecondpart;
+
+            for(int c=0; c<difference; c++) {
+                rref1SecondPartStr.append('0');
+            }
+
+            rref1Str = rref1FirstPartStr + "." + rref1SecondPartStr;
+
+        }
+        //
+
         element = new QTableWidgetItem(rref1Str);
         ui->tableWidget->setItem(ui->tableWidget->rowCount() - 1, 4, element);
 
         //rref2
         QString rref2Str = jsonList.at(1);
         rref2Str.remove("Rref2: ");
+
+        //
+        QStringList rref2StrListTwoElements = rref2Str.split('.');
+        QString rref2FirstPartStr =  rref2StrListTwoElements.at(0);
+        QString rref2SecondPartStr = rref2StrListTwoElements.at(1);
+
+        if(rref2SecondPartStr.length()<6) { //дополняем нулями дробную часть
+            int lenSecondpart = rref2SecondPartStr.length();
+            int difference = 6 - lenSecondpart;
+
+            for(int c=0; c<difference; c++) {
+                rref2SecondPartStr.append('0');
+            }
+
+            rref2Str = rref2FirstPartStr + "." + rref2SecondPartStr;
+
+        }
+        //
 
         element = new QTableWidgetItem(rref2Str);
         ui->tableWidget->setItem(ui->tableWidget->rowCount() - 1, 5, element);
@@ -309,4 +350,26 @@ void FormViewTable::slotGetUserList(QStringList list)
 {
     ui->comboBox_user->addItem(tr("Все"));
     ui->comboBox_user->addItems(list);
+}
+
+void FormViewTable::on_toolButton_filtersReset_clicked()
+{
+    ui->checkBox_date->setChecked(false);
+    on_checkBox_date_clicked(false);
+
+    ui->comboBox_type->setCurrentIndex(0);
+    on_comboBox_type_currentIndexChanged(ui->comboBox_type->currentText());
+
+    ui->comboBox_usable->setCurrentIndex(0);
+    on_comboBox_usable_currentIndexChanged(ui->comboBox_usable->currentText());
+
+    ui->comboBox_user->setCurrentIndex(0);
+    on_comboBox_user_currentIndexChanged(ui->comboBox_user->currentText());
+
+
+}
+
+void FormViewTable::on_checkBox_date_clicked(bool checked)
+{
+    isDateUse = checked;
 }

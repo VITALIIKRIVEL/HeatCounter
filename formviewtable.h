@@ -41,12 +41,17 @@ private slots:
 
     void slotGetUserList(QStringList list);
 
+    void on_toolButton_filtersReset_clicked();
+
+    void on_checkBox_date_clicked(bool checked);
+
 private:
     Ui::FormViewTable *ui;
 
     QDate dateStart;
     QDate dateStop;
     bool isAllNotesDisplay;
+    bool isDateUse;
 
     int userId;
 
