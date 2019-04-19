@@ -6,9 +6,21 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1169</width>
+    <width>1167</width>
     <height>769</height>
    </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>1167</width>
+    <height>769</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>1167</width>
+    <height>769</height>
+   </size>
   </property>
   <property name="windowTitle">
    <string>Гефест Проверка 1.12</string>
@@ -3286,7 +3298,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1169</width>
+     <width>1167</width>
      <height>21</height>
     </rect>
    </property>

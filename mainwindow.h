@@ -130,6 +130,7 @@ protected:
 //    virtual bool eventFilter(QObject *watched, QEvent *event);
 
 signals:
+    sendParamsConnectFromSettings(QStringList listParamsConnection);
     sendUserList(QStringList list);
     sendTableListToTableForm(QStringList, QString userName, QMap<int, QString> userMap, QStringList, QList<int>);
 
@@ -207,6 +208,8 @@ private slots:
 //    void slotNewThreadTwo();
 //    void slotNewThreadThree();
 //    void slotNewThreadFour();
+    void slotGetSignalShowConnPar();
+    void slotGetParamsConnection(QStringList);
     void slotGetLoginPassword(QString login, QString password, bool isRememberLogin);
     void slotGetSignalCloseLogin();
 

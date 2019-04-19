@@ -39,7 +39,8 @@ SOURCES += \
     dialogwritingdb.cpp \
     formviewtable.cpp \
     form.cpp \
-    formconnectionparams.cpp
+    formconnectionparams.cpp \
+    formusercontrol.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -55,7 +56,8 @@ HEADERS += \
     dialogwritingdb.h \
     formviewtable.h \
     form.h \
-    formconnectionparams.h
+    formconnectionparams.h \
+    formusercontrol.h
 
 FORMS += \
         mainwindow.ui \
@@ -67,4 +69,5 @@ FORMS += \
     dialogwritingdb.ui \
     formviewtable.ui \
     form.ui \
-    formconnectionparams.ui
+    formconnectionparams.ui \
+    formusercontrol.ui

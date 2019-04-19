@@ -2,6 +2,8 @@
 #define DIALOGLOGINDATABASE_H
 
 #include <QDialog>
+#include <QMenuBar>
+#include "formconnectionparams.h"
 
 namespace Ui {
 class DialogLoginDataBase;
@@ -20,6 +22,7 @@ protected:
 
 signals:
     sendLoginPassword(QString, QString, bool);
+    signalShowConnectParams();
     signalClose();
 
 private slots:
@@ -33,8 +36,14 @@ private slots:
 
     void slotGetUserList(QStringList list);
 
+    void actionIK_Settings();
+
 private:
     Ui::DialogLoginDataBase *ui;
+
+    FormConnectionParams * formConnectionParams;
+
+    QMenuBar *menuBar;
 
     bool isRememberLogin;
 

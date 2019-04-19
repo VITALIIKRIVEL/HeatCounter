@@ -23,6 +23,8 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    ui->textBrowser->setVisible(false);
+
     ui->toolButton_stopThreads->setVisible(false);
     ui->checkBox_OneWorkPlace->setVisible(false);
     ui->toolButton_result->setVisible(false);
@@ -49,8 +51,10 @@ MainWindow::MainWindow(QWidget *parent) :
     formLog = new FormLog();
     formViewTable = new FormViewTable();
     formConnectionParams = new FormConnectionParams();
+    formConnectionParams->setWindowModality(Qt::WindowModal);
+
     dialogUpdateNote = new DialogUpdateNote(this);
-    dialogLoginDataBase = new DialogLoginDataBase(this);
+    dialogLoginDataBase = new DialogLoginDataBase();//(this);
     dialogWritingDB = new DialogWritingDB(this);    
 
     formCalibration->setWindowTitle("Калибровка");
@@ -648,6 +652,10 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(this, SIGNAL(sendUserList(QStringList)), dialogLoginDataBase, SLOT(slotGetUserList(QStringList)));
     connect(this, SIGNAL(sendUserList(QStringList)), formViewTable, SLOT(slotGetUserList(QStringList)));
 
+    connect(formConnectionParams, SIGNAL(sendParamsConnection(QStringList)), this, SLOT(slotGetParamsConnection(QStringList)));
+    connect(this, SIGNAL(sendParamsConnectFromSettings(QStringList)), formConnectionParams, SLOT(slotGetConnectParamsFromMW(QStringList)));
+    connect(dialogLoginDataBase, SIGNAL(signalShowConnectParams()), this, SLOT(slotGetSignalShowConnPar()));
+
     //    void slotTimerWriteParams();
     //    void slotTimerCalibration();
     //    void slotTimerPulsesOutputHeat();
@@ -908,6 +916,11 @@ MainWindow::MainWindow(QWidget *parent) :
 
     //прочитать таблицу user, передать список пользователей в форму
 
+ //   this->setVisible(false);
+ //   this->hide();
+
+//    QSize mainWindowSize = this->size();
+//    dialogLoginDataBase->resize(mainWindowSize);
 
     dialogLoginDataBase->show();
 
@@ -2599,6 +2612,10 @@ void MainWindow::loadSettings()
     dataBaseName = settings.value("dataBaseName", "gefest").toString();
     dataBaseUserName = settings.value("dataBaseUserName", "gefest").toString();
     dataBasePassword = settings.value("dataBasePassword", "gefest").toString();
+
+    QStringList listParamsConnection = QStringList()<<hostName<<dataBaseName<<dataBaseUserName<<dataBasePassword;
+
+    emit sendParamsConnectFromSettings(listParamsConnection);
 
     portOptical->setPortName(settings.value("portName1", "COM1").toString());
     ui->comboBox_portListOptical->setCurrentText(settings.value("portName1", "COM1").toString());
@@ -37399,6 +37416,32 @@ void MainWindow::updateDataBaseNote(QString numberStr, int workPlace)
 
 }
 
+void MainWindow::slotGetSignalShowConnPar()
+{
+    formConnectionParams->show();
+}
+
+void MainWindow::slotGetParamsConnection(QStringList paramsList)
+{
+    dataBase.close();
+
+    hostName = paramsList.at(0);
+    dataBaseName = paramsList.at(1);
+    dataBaseUserName = paramsList.at(2);
+    dataBasePassword = paramsList.at(3);
+
+    //соединение с сервером
+    serverConnectWithPasswordExtServ("", "");
+
+//    isLoginPasswordOk = false;
+
+    QStringList userList = readUserTable();
+
+    emit sendUserList(userList);
+
+    emit sendLogPasFromSettings(ui->lineEdit_humanName->text(), QString());
+}
+
 void MainWindow::slotGetLoginPassword(QString login, QString password, bool isRememberLogin)
 {
     loginDB = login;
@@ -37414,6 +37457,7 @@ void MainWindow::slotGetLoginPassword(QString login, QString password, bool isRe
         isLoginPasswordOk = true;
         ui->lineEdit_humanName->setText(login);
         dialogLoginDataBase->close();
+        this->show();//setVisible(true);
 
 //        QMessageBox::information(this, "", tr("Подключение установлено"));
     }
@@ -38520,3 +38564,4 @@ void MainWindow::on_connectionParams_triggered()
 {
     formConnectionParams->show();
 }
+

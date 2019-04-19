@@ -15,6 +15,13 @@ public:
     explicit FormConnectionParams(QWidget *parent = nullptr);
     ~FormConnectionParams();
 
+signals:
+    sendParamsConnection(QStringList paramsList);
+
+private slots:
+    void on_toolButton_OK_clicked();
+    void slotGetConnectParamsFromMW(QStringList list);
+
 private:
     Ui::FormConnectionParams *ui;
 };

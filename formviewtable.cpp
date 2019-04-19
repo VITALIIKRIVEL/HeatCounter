@@ -7,6 +7,9 @@ FormViewTable::FormViewTable(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    ui->checkBox_allNotes->setChecked(false);
+    ui->checkBox_allNotes->setVisible(false);
+
     //заполняем комбобокс типов теплосчётчика
 
     ui->comboBox_type->addItem("Все");
@@ -216,19 +219,23 @@ void FormViewTable::slotGetTableList(QStringList tableList, QString userName, QM
         rref1Str.remove("Rref1: ");
 
         //
-        QStringList rref1StrListTwoElements = rref1Str.split('.');
-        QString rref1FirstPartStr =  rref1StrListTwoElements.at(0);
-        QString rref1SecondPartStr = rref1StrListTwoElements.at(1);
+        if(!rref1Str.isEmpty() && rref1Str.contains('.')) {
 
-        if(rref1SecondPartStr.length()<6) { //дополняем нулями дробную часть
-            int lenSecondpart = rref1SecondPartStr.length();
-            int difference = 6 - lenSecondpart;
+           QStringList rref1StrListTwoElements = rref1Str.split('.');
+           QString rref1FirstPartStr =  rref1StrListTwoElements.at(0);
+           QString rref1SecondPartStr = rref1StrListTwoElements.at(1);
 
-            for(int c=0; c<difference; c++) {
-                rref1SecondPartStr.append('0');
-            }
+           if(rref1SecondPartStr.length()<6) { //дополняем нулями дробную часть
+               int lenSecondpart = rref1SecondPartStr.length();
+               int difference = 6 - lenSecondpart;
 
-            rref1Str = rref1FirstPartStr + "." + rref1SecondPartStr;
+               for(int c=0; c<difference; c++) {
+                   rref1SecondPartStr.append('0');
+               }
+
+               rref1Str = rref1FirstPartStr + "." + rref1SecondPartStr;
+
+           }
 
         }
         //
@@ -241,19 +248,23 @@ void FormViewTable::slotGetTableList(QStringList tableList, QString userName, QM
         rref2Str.remove("Rref2: ");
 
         //
-        QStringList rref2StrListTwoElements = rref2Str.split('.');
-        QString rref2FirstPartStr =  rref2StrListTwoElements.at(0);
-        QString rref2SecondPartStr = rref2StrListTwoElements.at(1);
+        if(!rref2Str.isEmpty() && rref2Str.contains('.')) {
 
-        if(rref2SecondPartStr.length()<6) { //дополняем нулями дробную часть
-            int lenSecondpart = rref2SecondPartStr.length();
-            int difference = 6 - lenSecondpart;
+           QStringList rref2StrListTwoElements = rref2Str.split('.');
+           QString rref2FirstPartStr =  rref2StrListTwoElements.at(0);
+           QString rref2SecondPartStr = rref2StrListTwoElements.at(1);
 
-            for(int c=0; c<difference; c++) {
-                rref2SecondPartStr.append('0');
-            }
+           if(rref2SecondPartStr.length()<6) { //дополняем нулями дробную часть
+               int lenSecondpart = rref2SecondPartStr.length();
+               int difference = 6 - lenSecondpart;
 
-            rref2Str = rref2FirstPartStr + "." + rref2SecondPartStr;
+               for(int c=0; c<difference; c++) {
+                   rref2SecondPartStr.append('0');
+               }
+
+               rref2Str = rref2FirstPartStr + "." + rref2SecondPartStr;
+
+           }
 
         }
         //
