@@ -25,6 +25,7 @@
 #include "dialogwritingdb.h"
 #include "formviewtable.h"
 #include "formconnectionparams.h"
+#include "formusercontrol.h"
 #include "objectthread.h"
 #include "gefest.h"
 
@@ -130,6 +131,9 @@ protected:
 //    virtual bool eventFilter(QObject *watched, QEvent *event);
 
 signals:
+    sendCurrentUser(QString user);
+
+    sendUserTable(QStringList list);
     sendParamsConnectFromSettings(QStringList listParamsConnection);
     sendUserList(QStringList list);
     sendTableListToTableForm(QStringList, QString userName, QMap<int, QString> userMap, QStringList, QList<int>);
@@ -183,6 +187,12 @@ signals:
     signalLog(QString str);
 
 public slots:
+
+
+    void slotAddUser(QVector<QString> vector);
+    void slotChangeUser(QVector<QString> vector);
+    void slotDeleteUser(QVector<QString> vector);
+
     void slotWorkPlaceOff(int);
     void slotCheckWritingError(int);
     void slotCheckCalibrationError(int currentIndicator);
@@ -550,6 +560,8 @@ private slots:
 
     void on_connectionParams_triggered();
 
+    void on_action_users_triggered();
+
 private:
     Ui::MainWindow *ui;
     FormCalibration *formCalibration;
@@ -560,6 +572,7 @@ private:
     DialogWritingDB *dialogWritingDB;
     FormViewTable * formViewTable;
     FormConnectionParams * formConnectionParams;
+    Formusercontrol * formUserControl;
 
     ObjectThread *ObjectThread1;
     ObjectThread *ObjectThread2;
@@ -848,6 +861,8 @@ private:
     int userId;
 
     QString hostName, dataBaseName, dataBaseUserName, dataBasePassword;
+
+    QStringList userTable;
 
 };
 

@@ -51,7 +51,9 @@ MainWindow::MainWindow(QWidget *parent) :
     formLog = new FormLog();
     formViewTable = new FormViewTable();
     formConnectionParams = new FormConnectionParams();
-    formConnectionParams->setWindowModality(Qt::WindowModal);
+    formConnectionParams->setWindowModality(Qt::ApplicationModal);
+    formUserControl = new Formusercontrol();
+    formUserControl->setWindowModality(Qt::ApplicationModal);
 
     dialogUpdateNote = new DialogUpdateNote(this);
     dialogLoginDataBase = new DialogLoginDataBase();//(this);
@@ -655,6 +657,20 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(formConnectionParams, SIGNAL(sendParamsConnection(QStringList)), this, SLOT(slotGetParamsConnection(QStringList)));
     connect(this, SIGNAL(sendParamsConnectFromSettings(QStringList)), formConnectionParams, SLOT(slotGetConnectParamsFromMW(QStringList)));
     connect(dialogLoginDataBase, SIGNAL(signalShowConnectParams()), this, SLOT(slotGetSignalShowConnPar()));
+
+    connect(this, SIGNAL(sendUserTable(QStringList)), formUserControl, SLOT(slotGetListUserTable(QStringList)));
+
+    //управление пользователями
+
+    connect(formUserControl, SIGNAL(sendVectorToQueryAdd(QVector<QString>)),
+            this, SLOT(slotAddUser(QVector<QString>)));
+    connect(formUserControl, SIGNAL(sendVectorToQueryChange(QVector<QString>)),
+            this, SLOT(slotChangeUser(QVector<QString>)));
+    connect(formUserControl, SIGNAL(sendVectorToQueryRemove(QVector<QString>)),
+            this, SLOT(slotDeleteUser(QVector<QString>)));
+
+    connect(this, SIGNAL(sendCurrentUser(QString)), formUserControl, SLOT(slotGetCurrentUser(QString)));
+    //управление пользователями/
 
     //    void slotTimerWriteParams();
     //    void slotTimerCalibration();
@@ -2186,6 +2202,8 @@ void MainWindow::closeEvent(QCloseEvent *event)
     formParamsEdit->close();
     formLog->close();
     formViewTable->close();
+    formConnectionParams->close();
+    formUserControl->close();
 
 //    writeSettings();
 }
@@ -2601,6 +2619,13 @@ void MainWindow::writeSettings()
        settings.setValue("logDB", loginDB);
        settings.setValue("pasDB", passwordDB);
    }
+
+   //запоминание параметров соединения
+   settings.setValue("hostName", hostName);
+   settings.setValue("dataBaseName", dataBaseName);
+   settings.setValue("dataBaseUserName", dataBaseUserName);
+   settings.setValue("dataBasePassword", dataBasePassword);
+
 
 }
 /*************************************************************/
@@ -38530,9 +38555,10 @@ void MainWindow::on_ResultTable_triggered()
 QStringList MainWindow::readUserTable()
 {
     //прочитать таблицу user, составить список пользователей
-    QString queryString = "Select \"name\", \"status\" From \"user\";";
+    QString queryString = "Select \"name\", \"pas\", \"type\", \"status\" From \"user\";";
 
     QStringList userList;
+    QStringList listToFormUserControl;
 
     QSqlQuery sqlQuery(dataBase);
 
@@ -38544,7 +38570,13 @@ QStringList MainWindow::readUserTable()
 
     while (sqlQuery.next()) {
 
-      if(sqlQuery.value(1).toInt() == 1) {
+      listToFormUserControl.append(sqlQuery.value(0).toString() + ";" +
+                                   sqlQuery.value(1).toString() + ";" +
+                                   QString::number(sqlQuery.value(2).toInt()) + ";" +
+                                   QString::number(sqlQuery.value(3).toInt()) );
+
+
+      if(sqlQuery.value(3).toInt() == 1) { //если поле статус - активен
 
           userList.append(sqlQuery.value(0).toString());
 
@@ -38552,16 +38584,164 @@ QStringList MainWindow::readUserTable()
 
     }
 
+    emit sendUserTable(listToFormUserControl); //сигнал для формы управления пользователями
 
-    return userList;
+    userTable = listToFormUserControl;
+
+
+   return userList;
 }
-
-
-
-
 
 void MainWindow::on_connectionParams_triggered()
 {
     formConnectionParams->show();
 }
+
+
+void MainWindow::on_action_users_triggered()
+{
+    emit sendCurrentUser(ui->lineEdit_humanName->text());
+
+    formUserControl->show();
+}
+
+void MainWindow::slotAddUser(QVector<QString> vector)
+{
+    qDebug()<<"MainWindow::slotAddUser";
+
+    QString kav = QString('"');
+    QString kavOne = QString("'");
+
+    // запись в таблицу user
+
+        //"INSERT INTO \"user\" (\"name\", \"pas\", \"status\", \"type\") VALUES"
+ //   "  ('admin', md5('admin'), 1, 1), ('operator', md5('operator'), 1, 2);"
+
+     QString queryStringUser = "INSERT INTO \"user\" (" +
+             kav + "name" + kav + "," +
+             kav + "pas" + kav + "," +
+             kav + "status" + kav + "," +
+             kav + "type" + kav +
+             ") VALUES (" +
+             kavOne + vector.at(0) + kavOne + "," +
+             "md5(" + kavOne + vector.at(1) + kavOne + ")" + "," +
+            vector.at(3) + "," +
+            vector.at(2) +
+            ");";
+
+     qDebug()<<"queryStringUser "<<queryStringUser;
+
+     dataBase.transaction();
+
+     QSqlQuery sqlQueryUser(dataBase);
+
+     if(!sqlQueryUser.exec(queryStringUser)) {
+        QString lastErrorQuery = tr("Ошибка запроса SQL: ") + sqlQueryUser.lastError().text();
+        dataBase.rollback();
+        QMessageBox::information(this, "", lastErrorQuery);
+        return;
+     }
+
+     dataBase.commit();
+
+     global::pause(1000);
+
+     readUserTable();
+}
+
+void MainWindow::slotChangeUser(QVector<QString> vector)
+{
+    qDebug()<<"MainWindow::slotChangeUser";
+
+    //если новый пароль введён
+
+    qDebug()<<"MainWindow::slotAddUser";
+
+    QString kav = QString('"');
+    QString kavOne = QString("'");
+
+    // запись в таблицу user
+
+        //"INSERT INTO \"user\" (\"name\", \"pas\", \"status\", \"type\") VALUES"
+ //   "  ('admin', md5('admin'), 1, 1), ('operator', md5('operator'), 1, 2);"
+
+//    UPDATE eb_test SET "date" = current_timestamp(0), "result" = '{"a" : "1", "b" : 2, "c" : 3}', "work_user_id" = 1
+//                   WHERE "id" = 9
+//                   returning "id";
+
+    QString queryStringUser = "UPDATE \"user\" SET " +
+            kav + "pas" + kav + " = " + "md5(" + kavOne + vector.at(1) + kavOne + ")" + ", " +
+            kav + "status" + kav + " = " + vector.at(3) + ", " +
+            kav + "type" + kav + " = " +  vector.at(2) + " " +
+            " WHERE " + kav + "name" + kav + " = " + kavOne + vector.at(0) + kavOne +
+            ";";
+
+     qDebug()<<"queryStringUser "<<queryStringUser;
+
+     dataBase.transaction();
+
+     QSqlQuery sqlQueryUser(dataBase);
+
+     if(!sqlQueryUser.exec(queryStringUser)) {
+        QString lastErrorQuery = tr("Ошибка запроса SQL: ") + sqlQueryUser.lastError().text();
+        dataBase.rollback();
+        QMessageBox::information(this, "", lastErrorQuery);
+        return;
+     }
+
+     dataBase.commit();
+
+     //если новый пароль введён/
+
+     global::pause(1000);
+
+     readUserTable();
+}
+
+void MainWindow::slotDeleteUser(QVector<QString> vector)
+{
+    qDebug()<<"MainWindow::slotDeleteUser";
+
+    QString kav = QString('"');
+    QString kavOne = QString("'");
+
+    // запись в таблицу user
+
+    //DELETE FROM device WHERE CAST(serial AS text) SIMILAR TO '903%';
+
+    QString queryStringUser = "DELETE FROM \"user\" WHERE " +
+            kav + "name" + kav + " = " + kavOne + vector.at(0) + kavOne +
+            ";";
+
+     qDebug()<<"queryStringUser "<<queryStringUser;
+
+     dataBase.transaction();
+
+     QSqlQuery sqlQueryUser(dataBase);
+
+     if(!sqlQueryUser.exec(queryStringUser)) {
+        QString lastErrorQuery = tr("Ошибка запроса SQL: ") + sqlQueryUser.lastError().text();
+        dataBase.rollback();
+        QMessageBox::information(this, "", lastErrorQuery);
+        return;
+     }
+
+     dataBase.commit();
+
+     global::pause(1000);
+
+     readUserTable();
+}
+
+
+
+
+
+
+
+
+
+
+
+
 

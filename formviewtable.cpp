@@ -8,39 +8,43 @@ FormViewTable::FormViewTable(QWidget *parent) :
     ui->setupUi(this);
 
     ui->checkBox_allNotes->setChecked(false);
+    on_checkBox_allNotes_clicked(false);
+    ui->checkBox_allNotes->setChecked(false);
     ui->checkBox_allNotes->setVisible(false);
+
+    ui->tableWidget->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
     //заполняем комбобокс типов теплосчётчика
 
     ui->comboBox_type->addItem("Все");
 
-    ui->comboBox_type->addItem("Гефест 06.V1", "00"); 	//СЭТ.469333.100-00
-    ui->comboBox_type->addItem("Гефест 06.V1.М", "02"); 	//СЭТ.469333.100-02
+    ui->comboBox_type->addItem("Гефест 06.V1 (00)", "00"); 	//СЭТ.469333.100-00
+    ui->comboBox_type->addItem("Гефест 06.V1.М (02)", "02"); 	//СЭТ.469333.100-02
 
-    ui->comboBox_type->addItem("Гефест 06.V1.I", "04"); 	//СЭТ.469333.100-04
+    ui->comboBox_type->addItem("Гефест 06.V1.I (04)", "04"); 	//СЭТ.469333.100-04
 
-    ui->comboBox_type->addItem("Гефест 06.V1.IM", "06"); 	//СЭТ.469333.100-06
+    ui->comboBox_type->addItem("Гефест 06.V1.IM (06)", "06"); 	//СЭТ.469333.100-06
 
-    ui->comboBox_type->addItem("Гефест 15.V2", "08"); 	//СЭТ.469333.100-08
-    ui->comboBox_type->addItem("Гефест 15.V2.М", "10"); 	//СЭТ.469333.100-10
+    ui->comboBox_type->addItem("Гефест 15.V2 (08)", "08"); 	//СЭТ.469333.100-08
+    ui->comboBox_type->addItem("Гефест 15.V2.М (10)", "10"); 	//СЭТ.469333.100-10
 
-    ui->comboBox_type->addItem("Гефест 15.V2.I", "12"); 	//СЭТ.469333.100-12
+    ui->comboBox_type->addItem("Гефест 15.V2.I (12)", "12"); 	//СЭТ.469333.100-12
 
-    ui->comboBox_type->addItem("Гефест 15.V2.IM", "14"); 	//СЭТ.469333.100-14
+    ui->comboBox_type->addItem("Гефест 15.V2.IM (14)", "14"); 	//СЭТ.469333.100-14
 
-    ui->comboBox_type->addItem("Гефест 06.V1.R", "16"); 	//СЭТ.469333.100-16
-    ui->comboBox_type->addItem("Гефест 06.V1.IR", "18");  	//СЭТ.469333.100-18
+    ui->comboBox_type->addItem("Гефест 06.V1.R (16)", "16"); 	//СЭТ.469333.100-16
+    ui->comboBox_type->addItem("Гефест 06.V1.IR (18)", "18");  	//СЭТ.469333.100-18
 
-    ui->comboBox_type->addItem("Гефест 15.V2.R", "20"); 	//СЭТ.469333.100-20
-    ui->comboBox_type->addItem("Гефест 15.V2.IR", "22"); 	//СЭТ.469333.100-22
+    ui->comboBox_type->addItem("Гефест 15.V2.R (20)", "20"); 	//СЭТ.469333.100-20
+    ui->comboBox_type->addItem("Гефест 15.V2.IR (22)", "22"); 	//СЭТ.469333.100-22
 
-    ui->comboBox_type->addItem("Гефест 06.V1.F", "24"); 	//СЭТ.469333.100-24
-    ui->comboBox_type->addItem("Гефест 06.V1.IF", "26"); 	//СЭТ.469333.100-26
+    ui->comboBox_type->addItem("Гефест 06.V1.F (24)", "24"); 	//СЭТ.469333.100-24
+    ui->comboBox_type->addItem("Гефест 06.V1.IF (26)", "26"); 	//СЭТ.469333.100-26
 
-    ui->comboBox_type->addItem("Гефест 15.V2.F", "28"); 	//СЭТ.469333.100-28
-    ui->comboBox_type->addItem("Гефест 15.V2.IF", "30"); 	//СЭТ.469333.100-30
+    ui->comboBox_type->addItem("Гефест 15.V2.F (28)", "28"); 	//СЭТ.469333.100-28
+    ui->comboBox_type->addItem("Гефест 15.V2.IF (30)", "30"); 	//СЭТ.469333.100-30
 
-    ui->comboBox_type->addItem("Гефест 06.V1.N"); 	//СЭТ.469333.100-72
+    ui->comboBox_type->addItem("Гефест 06.V1.N ()"); 	//СЭТ.469333.100-72
     ui->comboBox_type->addItem("Гефест 06.V1.N.Км"); 	//СЭТ.469333.100-72.01
     ui->comboBox_type->addItem("Гефест 06.V1.N.Кр"); 	//СЭТ.469333.100-72.02
     ui->comboBox_type->addItem("Гефест 06.V1.N.КмКр"); 	//СЭТ.469333.100-72.03
@@ -60,8 +64,6 @@ FormViewTable::FormViewTable(QWidget *parent) :
 
     //заполняем комбобокс типов теплосчётчика/
 
-    ui->checkBox_allNotes->setChecked(true);
-    on_checkBox_allNotes_clicked(true);
 }
 
 FormViewTable::~FormViewTable()
@@ -113,8 +115,8 @@ void FormViewTable::slotGetTableList(QStringList tableList, QString userName, QM
     ui->tableWidget->horizontalHeader()->resizeSection(1, 90);
     ui->tableWidget->horizontalHeader()->resizeSection(2, 130);
     ui->tableWidget->horizontalHeader()->resizeSection(3, 150);
-    ui->tableWidget->horizontalHeader()->resizeSection(4, 70);
-    ui->tableWidget->horizontalHeader()->resizeSection(5, 70);
+    ui->tableWidget->horizontalHeader()->resizeSection(4, 90);
+    ui->tableWidget->horizontalHeader()->resizeSection(5, 90);
     ui->tableWidget->horizontalHeader()->resizeSection(6, 70);
     ui->tableWidget->horizontalHeader()->resizeSection(7, 110);
 

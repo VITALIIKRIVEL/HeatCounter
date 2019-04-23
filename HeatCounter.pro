@@ -40,7 +40,8 @@ SOURCES += \
     formviewtable.cpp \
     form.cpp \
     formconnectionparams.cpp \
-    formusercontrol.cpp
+    formusercontrol.cpp \
+    dialogsaveuserchanges.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -57,7 +58,8 @@ HEADERS += \
     formviewtable.h \
     form.h \
     formconnectionparams.h \
-    formusercontrol.h
+    formusercontrol.h \
+    dialogsaveuserchanges.h
 
 FORMS += \
         mainwindow.ui \
@@ -70,4 +72,5 @@ FORMS += \
     formviewtable.ui \
     form.ui \
     formconnectionparams.ui \
-    formusercontrol.ui
+    formusercontrol.ui \
+    dialogsaveuserchanges.ui

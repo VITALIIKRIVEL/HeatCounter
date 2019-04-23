@@ -23,7 +23,7 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>Гефест Проверка 1.12</string>
+   <string>Гефест Проверка 1.13</string>
   </property>
   <widget class="QWidget" name="centralWidget">
    <widget class="QToolButton" name="toolButton_selectProgrammingFile">
@@ -3308,9 +3308,9 @@
     </property>
     <addaction name="action"/>
     <addaction name="ResultTable"/>
+    <addaction name="action_users"/>
     <addaction name="action_3"/>
     <addaction name="separator"/>
-    <addaction name="connectionParams"/>
    </widget>
    <addaction name="menu"/>
   </widget>
@@ -3349,6 +3349,11 @@
    </property>
    <property name="text">
     <string>Параметры соединения</string>
+   </property>
+  </action>
+  <action name="action_users">
+   <property name="text">
+    <string>Пользователи</string>
    </property>
   </action>
  </widget>
