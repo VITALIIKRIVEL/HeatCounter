@@ -299,8 +299,20 @@ void FormViewTable::slotGetTableList(QStringList tableList, QString userName, QM
 
         //если дата последней сформированной строки не попадает в интервал, тогда удаляем её
         if( !isAllNotesDisplay  || !dateTmp.isValid() ) {
-            if( !(dateStart.daysTo(dateTmp)>=0 && dateTmp.daysTo(dateStop)>=0 && !ui->checkBox_date->isChecked())
-                 || !dateTmp.isValid() ||
+
+//            int dateFragment1 = dateStart.daysTo(dateTmp);
+//            int dateFragment2 = dateTmp.daysTo(dateStop);
+
+//            bool elem1 = !(dateStart.daysTo(dateTmp)>=0 && dateTmp.daysTo(dateStop)>=0 && !ui->checkBox_date->isChecked());
+//            bool elem2 = !dateTmp.isValid();
+//            bool elem3 = usableStr != usableStrGlobal && ui->comboBox_usable->currentText() != "Все";
+//            bool elem4 = engineerStr != userStrGlobal && ui->comboBox_user->currentText() != "Все";
+//            bool elem5 = typeStr != typeCounterStr && ui->comboBox_type->currentText() != "Все";
+
+
+
+            if( ( !(dateStart.daysTo(dateTmp)>=0 && dateTmp.daysTo(dateStop)>=0) && ui->checkBox_date->isChecked() ) ||
+                 !dateTmp.isValid() ||
                  (usableStr != usableStrGlobal && ui->comboBox_usable->currentText() != "Все" ) ||
                  (engineerStr != userStrGlobal && ui->comboBox_user->currentText() != "Все") ||
                  (typeStr != typeCounterStr && ui->comboBox_type->currentText() != "Все") ) {
@@ -359,8 +371,17 @@ void FormViewTable::on_comboBox_usable_currentIndexChanged(const QString &arg1)
     usableStrGlobal = arg1;
 }
 
-void FormViewTable::slotGetUserList(QStringList list)
+void FormViewTable::slotGetUserList(QStringList userTable)
 {
+    QStringList list;
+
+    for(int u=0; u<userTable.size(); u++) {
+
+        QStringList curRowList = userTable.at(u).split(";");
+        list.append(curRowList.at(0));
+
+    }
+
     ui->comboBox_user->addItem(tr("Все"));
     ui->comboBox_user->addItems(list);
 }

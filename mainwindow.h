@@ -562,6 +562,8 @@ private slots:
 
     void on_action_users_triggered();
 
+    void on_toolButton_calibrationModeOffRepeat_clicked();
+
 private:
     Ui::MainWindow *ui;
     FormCalibration *formCalibration;
@@ -863,6 +865,8 @@ private:
     QString hostName, dataBaseName, dataBaseUserName, dataBasePassword;
 
     QStringList userTable;
+
+    int repeatParameter;
 
 };
 

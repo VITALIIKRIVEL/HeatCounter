@@ -10925,7 +10925,7 @@ void ObjectThread::slotCalibrationModeOff(QSerialPort *port1, QSerialPort *port2
             portTmp->setStopBits(QSerialPort::OneStop);
 
 
-            for(int i=0; i<3;i++) {
+            for(int i=0; i<1/*3*/;i++) {
 
                portTmp->clear();
                packetToRead.clear();
@@ -10988,7 +10988,7 @@ void ObjectThread::slotCalibrationModeOff(QSerialPort *port1, QSerialPort *port2
                if(!buffer.isEmpty()) emit textBrowser("<< " + portTmp->portName() + " " + buffer.toHex());
 
                if(buffer.isEmpty()) {
-                   if(i==2) {
+                   if(i==0/*2*/) {
                        portTmp->setBaudRate(QSerialPort::Baud19200);
                        portTmp->setDataBits(QSerialPort::Data8);
                        portTmp->setParity(QSerialPort::NoParity);
@@ -11038,7 +11038,7 @@ void ObjectThread::slotCalibrationModeOff(QSerialPort *port1, QSerialPort *port2
                       break;
                    }
                    else {
-                       if(i==2) {
+                       if(i==0/*2*/) {
                            portTmp->setBaudRate(QSerialPort::Baud19200);
                            portTmp->setDataBits(QSerialPort::Data8);
                            portTmp->setParity(QSerialPort::NoParity);

@@ -39,7 +39,7 @@ private slots:
 
     void on_comboBox_usable_currentIndexChanged(const QString &arg1);
 
-    void slotGetUserList(QStringList list);
+    void slotGetUserList(QStringList userTable);
 
     void on_toolButton_filtersReset_clicked();
 

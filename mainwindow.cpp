@@ -23,6 +23,8 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    repeatParameter = 0;
+
     ui->textBrowser->setVisible(false);
 
     ui->toolButton_stopThreads->setVisible(false);
@@ -652,7 +654,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(formViewTable, SIGNAL(updateTable()), this, SLOT(on_ResultTable_triggered()));
 
     connect(this, SIGNAL(sendUserList(QStringList)), dialogLoginDataBase, SLOT(slotGetUserList(QStringList)));
-    connect(this, SIGNAL(sendUserList(QStringList)), formViewTable, SLOT(slotGetUserList(QStringList)));
+    connect(this, SIGNAL(sendUserTable(QStringList)), formViewTable, SLOT(slotGetUserList(QStringList)));
 
     connect(formConnectionParams, SIGNAL(sendParamsConnection(QStringList)), this, SLOT(slotGetParamsConnection(QStringList)));
     connect(this, SIGNAL(sendParamsConnectFromSettings(QStringList)), formConnectionParams, SLOT(slotGetConnectParamsFromMW(QStringList)));
@@ -914,7 +916,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     isLoginPasswordOk = false;
 
-    QStringList userList = readUserTable();
+    QStringList userList;// = readUserTable();
 
     emit sendUserList(userList);
 
@@ -4032,7 +4034,7 @@ void MainWindow::on_toolButton_loadTemplate_clicked()
     QFileDialog fileDialog;
     fileDialog.setFileMode(QFileDialog::Directory);
     QString fileName = fileDialog.getOpenFileName(this, tr("Open File"),
-                                                  QDir::currentPath(),
+                                                  QDir::currentPath() + "/cfg",
                                                   tr("Текст (*.prm)"));
     qDebug()<<"fileName"<<fileName;
     ui->lineEdit_loadParamsFile->setText(fileName);
@@ -25038,7 +25040,7 @@ void MainWindow::on_toolButton_selectConfigFile_clicked()
     QFileDialog fileDialog;
     fileDialog.setFileMode(QFileDialog::Directory);
     QString fileName = fileDialog.getOpenFileName(this, tr("Open File"),
-                                                  QDir::currentPath(),
+                                                  QDir::currentPath() + "/cfg",
                                                   tr("Текст (*.cfg)"));
     qDebug()<<"fileName"<<fileName;
     ui->lineEdit_selectConfigFile->setText(fileName);
@@ -32982,10 +32984,10 @@ void MainWindow::saveCounterCheckingResult(int workplace, QString marker)
     //открываем файл для записи
     if(!saveResult.open(QIODevice::ReadWrite | QIODevice::Text)) {
 
-        QMessageBox box;
-        box.setText("Не удалось открыть файл");
-        box.exec();
-        qDebug()<<"не удалось открыть файл";
+//        QMessageBox box;
+//        box.setText("Не удалось открыть файл");
+//        box.exec();
+//        qDebug()<<"не удалось открыть файл";
         return;
 
     }
@@ -33435,7 +33437,7 @@ void MainWindow::on_toolButton_selectConfigFile_2_clicked()
         QFileDialog fileDialog;
         fileDialog.setFileMode(QFileDialog::Directory);
         QString fileName = fileDialog.getOpenFileName(this, tr("Open File"),
-                                                      QDir::currentPath(),
+                                                      QDir::currentPath() + "/cfg",
                                                       tr("Текст (*.cfg)"));
         qDebug()<<"fileName"<<fileName;
         ui->lineEdit_selectConfigFile_2->setText(fileName);
@@ -33656,7 +33658,7 @@ void MainWindow::on_toolButton_selectConfigFile_3_clicked()
         QFileDialog fileDialog;
         fileDialog.setFileMode(QFileDialog::Directory);
         QString fileName = fileDialog.getOpenFileName(this, tr("Open File"),
-                                                      QDir::currentPath(),
+                                                      QDir::currentPath() + "/cfg",
                                                       tr("Текст (*.cfg)"));
         qDebug()<<"fileName"<<fileName;
         ui->lineEdit_selectConfigFile_3->setText(fileName);
@@ -33876,7 +33878,7 @@ void MainWindow::on_toolButton_selectConfigFile_4_clicked()
         QFileDialog fileDialog;
         fileDialog.setFileMode(QFileDialog::Directory);
         QString fileName = fileDialog.getOpenFileName(this, tr("Open File"),
-                                                      QDir::currentPath(),
+                                                      QDir::currentPath() + "/cfg",
                                                       tr("Текст (*.cfg)"));
         qDebug()<<"fileName"<<fileName;
         ui->lineEdit_selectConfigFile_4->setText(fileName);
@@ -34394,9 +34396,25 @@ void MainWindow::on_toolButton_executeCommands_clicked()
     ObjectThread3->setWorkPlace(2);
     ObjectThread4->setWorkPlace(3);
 
-    for(int r=0; r<vectorIndicatorStateMatrix.size(); r++) {
-        vectorIndicatorStateMatrix[r].fill(false);
+
+    if(repeatParameter == 0) {
+       for(int r=0; r<vectorIndicatorStateMatrix.size(); r++) {
+           vectorIndicatorStateMatrix[r].fill(false);
+       }
     }
+
+    if(repeatParameter == 1) {
+       for(int r=1; r<vectorIndicatorStateMatrix.size(); r++) {
+           vectorIndicatorStateMatrix[r].fill(false);
+       }
+    }
+
+    if(repeatParameter == 2) {
+       for(int r=7; r<vectorIndicatorStateMatrix.size(); r++) {
+           vectorIndicatorStateMatrix[r].fill(false);
+       }
+    }
+
 
     ObjectThread1->setVectorIndicatorStateMatrix(vectorIndicatorStateMatrix);
     ObjectThread2->setVectorIndicatorStateMatrix(vectorIndicatorStateMatrix);
@@ -34433,55 +34451,70 @@ void MainWindow::on_toolButton_executeCommands_clicked()
 
     errorString.clear();
 
-    isWritingFinished1 = false;
-    isWritingFinished2 = false;
-    isWritingFinished3 = false;
-    isWritingFinished4 = false;
+    if(repeatParameter == 0) {
+        isWritingFinished1 = false;
+        isWritingFinished2 = false;
+        isWritingFinished3 = false;
+        isWritingFinished4 = false;
+    }
 
-    isCalibrationFinished1 = false;
-    isCalibrationFinished2 = false;
-    isCalibrationFinished3 = false;
-    isCalibrationFinished4 = false;
+    if(repeatParameter == 0 || repeatParameter == 1) {
 
-    isPulsesOutputHeat1 = false;
-    isPulsesOutputHeat2 = false;
-    isPulsesOutputHeat3 = false;
-    isPulsesOutputHeat4 = false;
+        isCalibrationFinished1 = false;
+        isCalibrationFinished2 = false;
+        isCalibrationFinished3 = false;
+        isCalibrationFinished4 = false;
 
-    isPulsesInputVolume1 = false;
-    isPulsesInputVolume2 = false;
-    isPulsesInputVolume3 = false;
-    isPulsesInputVolume4 = false;
 
-    isPulsesOutputDefault1 = false;
-    isPulsesOutputDefault2 = false;
-    isPulsesOutputDefault3 = false;
-    isPulsesOutputDefault4 = false;
 
-    isMBusOn1 = false;
-    isMBusOn2 = false;
-    isMBusOn3 = false;
-    isMBusOn4 = false;
+        isPulsesOutputHeat1 = false;
+        isPulsesOutputHeat2 = false;
+        isPulsesOutputHeat3 = false;
+        isPulsesOutputHeat4 = false;
 
-    isMBusCheck1 = false;
-    isMBusCheck2 = false;
-    isMBusCheck3 = false;
-    isMBusCheck4 = false;
+
+
+        isPulsesInputVolume1 = false;
+        isPulsesInputVolume2 = false;
+        isPulsesInputVolume3 = false;
+        isPulsesInputVolume4 = false;
+
+
+        isPulsesOutputDefault1 = false;
+        isPulsesOutputDefault2 = false;
+        isPulsesOutputDefault3 = false;
+        isPulsesOutputDefault4 = false;
+
+        isMBusOn1 = false;
+        isMBusOn2 = false;
+        isMBusOn3 = false;
+        isMBusOn4 = false;
+
+        isMBusCheck1 = false;
+        isMBusCheck2 = false;
+        isMBusCheck3 = false;
+        isMBusCheck4 = false;
+
+    }
+
+    if(repeatParameter == 0 || repeatParameter == 1 || repeatParameter == 2) {
+
+        isWireInterfaceChecking1 = false;
+        isWireInterfaceChecking2 = false;
+        isWireInterfaceChecking3 = false;
+        isWireInterfaceChecking4 = false;
+
+        isMBusOff1 = false;
+        isMBusOff2 = false;
+        isMBusOff3 = false;
+        isMBusOff4 = false;
+
+    }
 
     isCalibrationModeOff1 = false;
     isCalibrationModeOff2 = false;
     isCalibrationModeOff3 = false;
     isCalibrationModeOff4 = false;
-
-    isWireInterfaceChecking1 = false;
-    isWireInterfaceChecking2 = false;
-    isWireInterfaceChecking3 = false;
-    isWireInterfaceChecking4 = false;
-
-    isMBusOff1 = false;
-    isMBusOff2 = false;
-    isMBusOff3 = false;
-    isMBusOff4 = false;
 
 
     repaint();
@@ -34490,7 +34523,7 @@ void MainWindow::on_toolButton_executeCommands_clicked()
 
     //запись    
 
-    if(vectorIsCommandUse.at(0)) {
+    if(vectorIsCommandUse.at(0) && (repeatParameter == 0)) {
 
         ObjectThread1->setIsWorkPlaceUseVector(vectorIsWorkPlaceUse);
         ObjectThread2->setIsWorkPlaceUseVector(vectorIsWorkPlaceUse);
@@ -34609,7 +34642,7 @@ void MainWindow::on_toolButton_executeCommands_clicked()
 
     //калибровка
 
-    if(vectorIsCommandUse.at(1)) {
+    if(vectorIsCommandUse.at(1) && (repeatParameter == 0 || repeatParameter == 1) ) {
 
         ObjectThread1->setCalibrationMap(calibrationMap);
         ObjectThread2->setCalibrationMap(calibrationMap);
@@ -34715,7 +34748,7 @@ void MainWindow::on_toolButton_executeCommands_clicked()
 
     //импульсный выход по теплу
 
-    if(vectorIsCommandUse.at(2)) {
+    if(vectorIsCommandUse.at(2) && (repeatParameter == 0 || repeatParameter == 1) ) {
 
         ObjectThread1->setIsWorkPlaceUseVector(vectorIsWorkPlaceUse);
         ObjectThread2->setIsWorkPlaceUseVector(vectorIsWorkPlaceUse);
@@ -34817,7 +34850,7 @@ void MainWindow::on_toolButton_executeCommands_clicked()
 
     //импульсный вход по объему
 
-    if(vectorIsCommandUse.at(3)) { 
+    if(vectorIsCommandUse.at(3) && (repeatParameter == 0 || repeatParameter == 1) ) {
 
 
 
@@ -34965,7 +34998,7 @@ void MainWindow::on_toolButton_executeCommands_clicked()
 
     //импульсный выход - по умолчанию
 
-    if(vectorIsCommandUse.at(4)) {
+    if(vectorIsCommandUse.at(4) && (repeatParameter == 0 || repeatParameter == 1) ) {
 
         ui->label_StatusBar->setFocus(Qt::MouseFocusReason);
 
@@ -35099,7 +35132,7 @@ void MainWindow::on_toolButton_executeCommands_clicked()
 
     //включить протокол MBus
 
-    if(vectorIsCommandUse.at(5)) {
+    if(vectorIsCommandUse.at(5) && (repeatParameter == 0 || repeatParameter == 1) ) {
 
         ObjectThread1->setIsWorkPlaceUseVector(vectorIsWorkPlaceUse);
         ObjectThread2->setIsWorkPlaceUseVector(vectorIsWorkPlaceUse);
@@ -35196,7 +35229,7 @@ void MainWindow::on_toolButton_executeCommands_clicked()
 
     //проверить протокол MBus
 
-    if(vectorIsCommandUse.at(6)) {
+    if(vectorIsCommandUse.at(6) && (repeatParameter == 0 || repeatParameter == 1) ) {
 
         ObjectThread1->setIsWorkPlaceUseVector(vectorIsWorkPlaceUse);
         ObjectThread2->setIsWorkPlaceUseVector(vectorIsWorkPlaceUse);
@@ -35291,7 +35324,7 @@ void MainWindow::on_toolButton_executeCommands_clicked()
 
     //проверка проводных интерфейсов
 
-    if(vectorIsCommandUse.at(7)) {
+    if(vectorIsCommandUse.at(7) && (repeatParameter == 0 || repeatParameter == 1 || repeatParameter == 2) ) {
 
         portOptical->close();
         portOptical2->close();
@@ -35346,6 +35379,17 @@ void MainWindow::on_toolButton_executeCommands_clicked()
         }
 
       }
+
+      int u=0;
+
+  //    repaint();
+
+      //Ждём завершения
+//      while(!isWireInterfaceChecking1 || !isWireInterfaceChecking2 || !isWireInterfaceChecking3 || !isWireInterfaceChecking4) {
+//          global::pause(100);
+//      }
+      //Ждём завершения/
+
 
 //                    if(!portDigitalInterfaceChecking->isOpen()) {
 //                        if(!portDigitalInterfaceChecking->open(QIODevice::ReadWrite)) {
@@ -35430,7 +35474,7 @@ void MainWindow::on_toolButton_executeCommands_clicked()
 
     //включить протокол СЭТ
 
-    if(vectorIsCommandUse.at(8)) {
+    if(vectorIsCommandUse.at(8) && (repeatParameter == 0 || repeatParameter == 1 || repeatParameter == 2) ) {
 
         ObjectThread1->setIsWorkPlaceUseVector(vectorIsWorkPlaceUse);
         ObjectThread2->setIsWorkPlaceUseVector(vectorIsWorkPlaceUse);
@@ -35468,7 +35512,7 @@ void MainWindow::on_toolButton_executeCommands_clicked()
 
         emit signalMBusOffToThread(portOptical, portOptical2, portOptical3, portOptical4);
 
-        //-------------------------Ждём завершения Выключение режима калибровки------------------
+        //-------------------------Ждём завершения включения СЭТ------------------
 
         bool isMBusOffTmp1 = true;
         bool isMBusOffTmp2 = true;
@@ -35511,7 +35555,7 @@ void MainWindow::on_toolButton_executeCommands_clicked()
           }
 
 
-        //-------------------------Ждём завершения Выключение режима калибровки------------------/
+        //-------------------------Ждём завершения включения СЭТ------------------/
 
       ui->toolButton_MBusOff->setPalette(palettePrime);
 
@@ -35519,10 +35563,22 @@ void MainWindow::on_toolButton_executeCommands_clicked()
 
     //включить протокол СЭТ/
 
+//    global::pause(5000);
 
     //выключение режима калибровки
 
     if(vectorIsCommandUse.at(9)) {
+
+        portOptical->close();
+        portOptical2->close();
+        portOptical3->close();
+        portOptical4->close();
+        portDigitalInterfaceChecking->close();
+        portOptical->clear();
+        portOptical2->clear();
+        portOptical3->clear();
+        portOptical4->clear();
+        portDigitalInterfaceChecking->clear();
 
         ObjectThread1->setIsWorkPlaceUseVector(vectorIsWorkPlaceUse);
         ObjectThread2->setIsWorkPlaceUseVector(vectorIsWorkPlaceUse);
@@ -35569,7 +35625,7 @@ void MainWindow::on_toolButton_executeCommands_clicked()
 //          if(!vectorIsWorkPlaceUse.at(2)) isPulsesInputVolumeTmp3 = true;
 //          if(!vectorIsWorkPlaceUse.at(3)) isPulsesInputVolumeTmp4 = true;
 
-          for(int e=0; e<50; e++) { //5 sec
+          for(int e=0; e<75; e++) { //5 sec
               global::pause(100);
 
               if(ui->checkBox_workPlace1->isChecked()) {
@@ -35793,6 +35849,8 @@ void MainWindow::on_toolButton_executeCommands_clicked()
 
 //       }
 
+
+    repeatParameter = 0;
 
     //изменение порядка табуляции/
 
@@ -36189,6 +36247,81 @@ void MainWindow::updateVectorStateMatrix(int currentIndicator)
         }
     }
 
+//    //если какой-то кружок красный(true) , то остальные под ним тоже делаем красными
+//    bool isErrorOccured1 = false;
+//    bool isErrorOccured2 = false;
+//    bool isErrorOccured3 = false;
+//    bool isErrorOccured4 = false;
+
+//    int fistRowError1; int fistRowError2; int fistRowError3; int fistRowError4;//номер команды, в которой есть ошибка
+
+//    for(int m=0; m<vectorIndicatorStateMatrix.size(); m++) {
+//        if(vectorIndicatorStateMatrix.at(m).at(0) == true) {
+//            isErrorOccured1 = true;
+//            fistRowError1 = m;
+//            break;
+//        }
+//    }
+
+//    for(int m=0; m<vectorIndicatorStateMatrix.size(); m++) {
+//        if(vectorIndicatorStateMatrix.at(m).at(1) == true) {
+//            isErrorOccured2 = true;
+//            fistRowError2 = m;
+//            break;
+//        }
+//    }
+
+//    for(int m=0; m<vectorIndicatorStateMatrix.size(); m++) {
+//        if(vectorIndicatorStateMatrix.at(m).at(2) == true) {
+//            isErrorOccured3 = true;
+//            fistRowError3 = m;
+//            break;
+//        }
+//    }
+
+//    for(int m=0; m<vectorIndicatorStateMatrix.size(); m++) {
+//        if(vectorIndicatorStateMatrix.at(m).at(3) == true) {
+//            isErrorOccured4 = true;
+//            fistRowError4 = m;
+//            break;
+//        }
+//    }
+
+//    //ниже команды, в которой есть ошибка, забраковываем все кружки
+//    if(isErrorOccured1) {
+
+//       for(int r=fistRowError1+1; r<vectorIndicatorStateMatrix.size(); r++) {
+//           vectorIndicatorStateMatrix[r][0] = true;
+//       }
+//    }
+//    //
+
+//    if(isErrorOccured2) {
+
+//       for(int r=fistRowError2+1; r<vectorIndicatorStateMatrix.size(); r++) {
+//           vectorIndicatorStateMatrix[r][1] = true;
+//       }
+//    }
+//    //
+
+//    if(isErrorOccured3) {
+
+//       for(int r=fistRowError3+1; r<vectorIndicatorStateMatrix.size(); r++) {
+//           vectorIndicatorStateMatrix[r][2] = true;
+//       }
+//    }
+//    //
+
+//    if(isErrorOccured4) {
+
+//       for(int r=fistRowError4+1; r<vectorIndicatorStateMatrix.size(); r++) {
+//           vectorIndicatorStateMatrix[r][3] = true;
+//       }
+//    }
+
+//    qDebug()<<"";
+
+
 }
 
 void MainWindow::on_spinBox_serial__valueChanged(const QString &arg1)
@@ -36377,196 +36510,134 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
 
 void MainWindow::on_toolButton_wireInterfaceCheckRepeat_clicked()
 {
-    ui->label_StatusBar->clear();
 
-    isCommandsEnded = false;
+    repeatParameter = 2;
 
-    if(ui->checkBox_workPlace1->isChecked()) vectorIsWorkPlaceUse[0] = true;
-    if(ui->checkBox_workPlace2->isChecked()) vectorIsWorkPlaceUse[1] = true;
-    if(ui->checkBox_workPlace3->isChecked()) vectorIsWorkPlaceUse[2] = true;
-    if(ui->checkBox_workPlace4->isChecked()) vectorIsWorkPlaceUse[3] = true;
+    on_toolButton_executeCommands_clicked();
 
-    isWireInterfaceChecking1 = false;
-    isWireInterfaceChecking2 = false;
-    isWireInterfaceChecking3 = false;
-    isWireInterfaceChecking4 = false;
+//    ui->label_StatusBar->clear();
 
-    vectorIndicatorStateMatrix[7].fill(false);
+//    isCommandsEnded = false;
 
-    ObjectThread1->setVectorIndicatorStateMatrix(vectorIndicatorStateMatrix);
-    ObjectThread2->setVectorIndicatorStateMatrix(vectorIndicatorStateMatrix);
-    ObjectThread3->setVectorIndicatorStateMatrix(vectorIndicatorStateMatrix);
-    ObjectThread4->setVectorIndicatorStateMatrix(vectorIndicatorStateMatrix);
+//    if(ui->checkBox_workPlace1->isChecked()) vectorIsWorkPlaceUse[0] = true;
+//    if(ui->checkBox_workPlace2->isChecked()) vectorIsWorkPlaceUse[1] = true;
+//    if(ui->checkBox_workPlace3->isChecked()) vectorIsWorkPlaceUse[2] = true;
+//    if(ui->checkBox_workPlace4->isChecked()) vectorIsWorkPlaceUse[3] = true;
 
-    repaint();
+//    isWireInterfaceChecking1 = false;
+//    isWireInterfaceChecking2 = false;
+//    isWireInterfaceChecking3 = false;
+//    isWireInterfaceChecking4 = false;
 
-    //проверка проводных интерфейсов
+//    vectorIndicatorStateMatrix[7].fill(false);
 
-    if(vectorIsCommandUse.at(7)) {
+//    ObjectThread1->setVectorIndicatorStateMatrix(vectorIndicatorStateMatrix);
+//    ObjectThread2->setVectorIndicatorStateMatrix(vectorIndicatorStateMatrix);
+//    ObjectThread3->setVectorIndicatorStateMatrix(vectorIndicatorStateMatrix);
+//    ObjectThread4->setVectorIndicatorStateMatrix(vectorIndicatorStateMatrix);
 
-        portOptical->close();
-        portOptical2->close();
-        portOptical3->close();
-        portOptical4->close();
-        portDigitalInterfaceChecking->close();
-        portOptical->clear();
-        portOptical2->clear();
-        portOptical3->clear();
-        portOptical4->clear();
-        portDigitalInterfaceChecking->clear();
+//    repaint();
 
-        ObjectThread1->moveToThread(&Thread1);
-        ObjectThread2->moveToThread(&Thread2);
-        ObjectThread3->moveToThread(&Thread3);
-        ObjectThread4->moveToThread(&Thread4);
+//    //проверка проводных интерфейсов
 
-        Thread1.start();
-        Thread2.start();
-        Thread3.start();
-        Thread4.start();
+//    if(vectorIsCommandUse.at(7)) {
 
-        ObjectThread1->setIsWorkPlaceUseVector(vectorIsWorkPlaceUse);
-        ObjectThread2->setIsWorkPlaceUseVector(vectorIsWorkPlaceUse);
-        ObjectThread3->setIsWorkPlaceUseVector(vectorIsWorkPlaceUse);
-        ObjectThread4->setIsWorkPlaceUseVector(vectorIsWorkPlaceUse);
+//        portOptical->close();
+//        portOptical2->close();
+//        portOptical3->close();
+//        portOptical4->close();
+//        portDigitalInterfaceChecking->close();
+//        portOptical->clear();
+//        portOptical2->clear();
+//        portOptical3->clear();
+//        portOptical4->clear();
+//        portDigitalInterfaceChecking->clear();
 
-        QPalette palettePrime = ui->toolButton_digitalWireInterfaceChecking->palette();
-        QColor backgroundColorPrime = palettePrime.color(QPalette::Button);
+//        ObjectThread1->moveToThread(&Thread1);
+//        ObjectThread2->moveToThread(&Thread2);
+//        ObjectThread3->moveToThread(&Thread3);
+//        ObjectThread4->moveToThread(&Thread4);
 
-        QPalette palette = palettePrime;
-        palette.setColor( QPalette::Button, QColor( Qt::red )  );
+//        Thread1.start();
+//        Thread2.start();
+//        Thread3.start();
+//        Thread4.start();
 
-        QColor backgroundColor = palette.color(QPalette::Button);
+//        ObjectThread1->setIsWorkPlaceUseVector(vectorIsWorkPlaceUse);
+//        ObjectThread2->setIsWorkPlaceUseVector(vectorIsWorkPlaceUse);
+//        ObjectThread3->setIsWorkPlaceUseVector(vectorIsWorkPlaceUse);
+//        ObjectThread4->setIsWorkPlaceUseVector(vectorIsWorkPlaceUse);
 
-        qDebug()<<"palette "<<palette
-                <<"backgroundColor "<<backgroundColor.name()
-                <<"backgroundColorPrime "<<backgroundColorPrime.name();
+//        QPalette palettePrime = ui->toolButton_digitalWireInterfaceChecking->palette();
+//        QColor backgroundColorPrime = palettePrime.color(QPalette::Button);
 
-        ui->toolButton_digitalWireInterfaceChecking->setAutoFillBackground(true);
-        ui->toolButton_digitalWireInterfaceChecking->setPalette( palette );
+//        QPalette palette = palettePrime;
+//        palette.setColor( QPalette::Button, QColor( Qt::red )  );
 
- //       global::pause(10000);
+//        QColor backgroundColor = palette.color(QPalette::Button);
 
-        emit signalLog("<font color = \"#0000ff\">" + QString("Проверка проводных интерфейсов")  + '\n' + "</font>");
+//        qDebug()<<"palette "<<palette
+//                <<"backgroundColor "<<backgroundColor.name()
+//                <<"backgroundColorPrime "<<backgroundColorPrime.name();
 
-      for(int l=0; l<4; l++) {
+//        ui->toolButton_digitalWireInterfaceChecking->setAutoFillBackground(true);
+//        ui->toolButton_digitalWireInterfaceChecking->setPalette( palette );
 
-        if(vectorIsWorkPlaceUse.at(l)) {
-            emit signalWireInterfaceChecking(l);
-
-        }
-
-      }
-
-//                    if(!portDigitalInterfaceChecking->isOpen()) {
-//                        if(!portDigitalInterfaceChecking->open(QIODevice::ReadWrite)) {
-//             //               QMessageBox::information(this, "", "Не удалось открыть порт: Проводные интерфейсы");
-//                            slotError(tr("Не удалось открыть порт: Проводные интерфейсы")  + '\n');
-//         //                                                 ". Рабочее место: " + QString::number(workPlaceNumber+1));
-//         //                   emit errorStringSignal(label_StatusBar + '\n');
-
-//         //                   vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
-
-//         //                   emit checkWireInterfaceChecking(currentIndicatorNumber);
-//                            return;
-//                        }
-//                    }
-
-
+// //       global::pause(10000);
 
 //        emit signalLog("<font color = \"#0000ff\">" + QString("Проверка проводных интерфейсов")  + '\n' + "</font>");
 
-//        emit signalDigitalInterfaceToThread(portOptical, portOptical2, portOptical3, portOptical4, portDigitalInterfaceChecking);
+//      for(int l=0; l<4; l++) {
 
-        //-------------------------Ждём завершения Проверка проводных интерфейсов------------------
+//        if(vectorIsWorkPlaceUse.at(l)) {
+//            emit signalWireInterfaceChecking(l);
 
-//        bool isWireInterfaceCheckingTmp1 = true;
-//        bool isWireInterfaceCheckingTmp2 = true;
-//        bool isWireInterfaceCheckingTmp3 = true;
-//        bool isWireInterfaceCheckingTmp4 = true;
+//        }
 
-// //          if(!vectorIsWorkPlaceUse.at(0)) isPulsesInputVolumeTmp1 = true;
-// //          if(!vectorIsWorkPlaceUse.at(1)) isPulsesInputVolumeTmp2 = true;
-// //          if(!vectorIsWorkPlaceUse.at(2)) isPulsesInputVolumeTmp3 = true;
-// //          if(!vectorIsWorkPlaceUse.at(3)) isPulsesInputVolumeTmp4 = true;
+//      }
 
-//          for(int e=0; e<100; e++) { //10 sec
-//              global::pause(100);
-
-//              if(ui->checkBox_workPlace1->isChecked()) {
-//                  isWireInterfaceCheckingTmp1 = isWireInterfaceChecking1;
-
-//                  if(!vectorIsWorkPlaceUse.at(0)) isWireInterfaceCheckingTmp1 = true;
-//              }
-
-//              if(ui->checkBox_workPlace2->isChecked()) {
-//                  isWireInterfaceCheckingTmp2 = isWireInterfaceChecking2;
-
-//                  if(!vectorIsWorkPlaceUse.at(1)) isWireInterfaceCheckingTmp2 = true;
-//              }
-
-//              if(ui->checkBox_workPlace3->isChecked()) {
-//                  isWireInterfaceCheckingTmp3 = isWireInterfaceChecking3;
-
-//                  if(!vectorIsWorkPlaceUse.at(2)) isWireInterfaceCheckingTmp3 = true;
-//              }
-
-//              if(ui->checkBox_workPlace4->isChecked()) {
-//                  isWireInterfaceCheckingTmp4 = isWireInterfaceChecking4;
-
-//                  if(!vectorIsWorkPlaceUse.at(3)) isWireInterfaceCheckingTmp4 = true;
-//              }
-// //              if(vectorIsWorkPlaceUse.at(0)) isWireInterfaceCheckingTmp1 = isWireInterfaceChecking1;
-// //              if(vectorIsWorkPlaceUse.at(1)) isWireInterfaceCheckingTmp2 = isWireInterfaceChecking2;
-// //              if(vectorIsWorkPlaceUse.at(2)) isWireInterfaceCheckingTmp3 = isWireInterfaceChecking3;
-// //              if(vectorIsWorkPlaceUse.at(3)) isWireInterfaceCheckingTmp4 = isWireInterfaceChecking4;
-
-//              if(isWireInterfaceCheckingTmp1 && isWireInterfaceCheckingTmp2 &&
-//                      isWireInterfaceCheckingTmp3 && isWireInterfaceCheckingTmp4)
-//                  break;
-
-//          }
+//        //-------------------------Ждём завершения Проверка проводных интерфейсов------------------
 
 
-        //-------------------------Ждём завершения Проверка проводных интерфейсов------------------/
+//        //-------------------------Ждём завершения Проверка проводных интерфейсов------------------/
 
-      ui->toolButton_digitalWireInterfaceChecking->setPalette(palettePrime);
+//      ui->toolButton_digitalWireInterfaceChecking->setPalette(palettePrime);
 
-    }
+//    }
 
 
-    isCommandsEnded = true;
-    repaint();
+//    isCommandsEnded = true;
+//    repaint();
 
-    //проверка проводных интерфейсов/
+//    //проверка проводных интерфейсов/
 
-    global::pause(500);
+//    global::pause(500);
 
-    //если хотя бы один результат Не годен, спрашиваем о необходимости записи в бд
-    if(workPlace1ResultString == tr("Не годен") || workPlace2ResultString == tr("Не годен") ||
-            workPlace3ResultString == tr("Не годен") || workPlace4ResultString == tr("Не годен")) {
+//    //если хотя бы один результат Не годен, спрашиваем о необходимости записи в бд
+//    if(workPlace1ResultString == tr("Не годен") || workPlace2ResultString == tr("Не годен") ||
+//            workPlace3ResultString == tr("Не годен") || workPlace4ResultString == tr("Не годен")) {
 
-        if(dialogWritingDB->exec() == QDialog::Accepted) {
+//        if(dialogWritingDB->exec() == QDialog::Accepted) {
 
-            isNoteWriting = true;
+//            isNoteWriting = true;
 
-            on_toolButton_externalServerConnect_clicked();
+//            on_toolButton_externalServerConnect_clicked();
 
-        }
-        else {
-            isNoteWriting = false;
+//        }
+//        else {
+//            isNoteWriting = false;
 
-            saveCounterCheckingResult(1, QString());
-        }
+//            saveCounterCheckingResult(1, QString());
+//        }
 
-    }
-    else {
+//    }
+//    else {
 
-        isNoteWriting = true;
+//        isNoteWriting = true;
 
-        on_toolButton_externalServerConnect_clicked();
+//        on_toolButton_externalServerConnect_clicked();
 
-    }
+//    }
 
 
 }
@@ -36655,12 +36726,6 @@ bool MainWindow::serverConnectWithPasswordExtServ(QString username, QString pass
         dataBase.setUserName(dataBaseUserName);//(username);//("gefest");
         dataBase.setPassword(dataBasePassword);//(password);//("gefest");
         dataBase.setPort(5432);
-
-//            dataBase.setHostName("localhost");
-//            dataBase.setDatabaseName("postgres");//("device");
-//            dataBase.setUserName(username);//("postgres");
-//            dataBase.setPassword(password);
-//            dataBase.setPort(5432);
 
         QStringList driversList = QSqlDatabase::drivers();
 
@@ -37699,18 +37764,18 @@ void MainWindow::on_toolButton_externalServerConnect_clicked()
 
 
 
-//          QString queryString = "INSERT INTO eb_test (" +
-//                                kav + "serial" + kav + "," +
-//                                kav + "eb_result" + kav + "," +
-//                                kav + "eb_date" + kav +
-//                                ") VALUES (" +
-//                              kavOne + serialNumber.toHex() + kavOne + "," +
-//             kavOne + QString(QJsonDocument(currentJsonObject1).toJson(QJsonDocument::Compact)) + kavOne + "," +
-//                              "current_timestamp(0)" + ");";
+ //          QString queryString = "INSERT INTO eb_test (" +
+ //                                kav + "serial" + kav + "," +
+ //                                kav + "eb_result" + kav + "," +
+ //                                kav + "eb_date" + kav +
+ //                                ") VALUES (" +
+ //                              kavOne + serialNumber.toHex() + kavOne + "," +
+ //             kavOne + QString(QJsonDocument(currentJsonObject1).toJson(QJsonDocument::Compact)) + kavOne + "," +
+ //                              "current_timestamp(0)" + ");";
 
-//          qDebug()<<"queryString " + queryString;
+ //          qDebug()<<"queryString " + queryString;
 
-//          bool que = execQuery(queryString);
+ //          bool que = execQuery(queryString);
 
 
 
@@ -37810,16 +37875,16 @@ void MainWindow::on_toolButton_externalServerConnect_clicked()
 
              //запись в таблицу dev/
 
-//          QString queryString = "INSERT INTO device (" +
-//                                kav + "serial" + kav + "," +
-//                                kav + "eb_result" + kav + "," +
-//                                kav + "eb_date" + kav +
-//                                ") VALUES (" +
-//                              kavOne + serialNumber2.toHex() + kavOne + "," + kavOne +
-//            QString(QJsonDocument(currentJsonObject2).toJson(QJsonDocument::Compact)) + kavOne + "," +
-//                              "current_timestamp(0)" + ");";
+ //          QString queryString = "INSERT INTO device (" +
+ //                                kav + "serial" + kav + "," +
+ //                                kav + "eb_result" + kav + "," +
+ //                                kav + "eb_date" + kav +
+ //                                ") VALUES (" +
+ //                              kavOne + serialNumber2.toHex() + kavOne + "," + kavOne +
+ //            QString(QJsonDocument(currentJsonObject2).toJson(QJsonDocument::Compact)) + kavOne + "," +
+ //                              "current_timestamp(0)" + ");";
 
-//          bool que = execQuery(queryString);
+ //          bool que = execQuery(queryString);
        }
 
        if(isDublExist2 && ui->checkBox_workPlace2->isChecked()) {
@@ -37910,16 +37975,16 @@ void MainWindow::on_toolButton_externalServerConnect_clicked()
 
              //запись в таблицу dev/
 
-//          QString queryString = "INSERT INTO device (" +
-//                                kav + "serial" + kav + "," +
-//                                kav + "eb_result" + kav + "," +
-//                                kav + "eb_date" + kav +
-//                                ") VALUES (" +
-//                              kavOne + serialNumber3.toHex() + kavOne + "," + kavOne +
-//            QString(QJsonDocument(currentJsonObject3).toJson(QJsonDocument::Compact)) + kavOne + "," +
-//                              "current_timestamp(0)" + ");";
+ //          QString queryString = "INSERT INTO device (" +
+ //                                kav + "serial" + kav + "," +
+ //                                kav + "eb_result" + kav + "," +
+ //                                kav + "eb_date" + kav +
+ //                                ") VALUES (" +
+ //                              kavOne + serialNumber3.toHex() + kavOne + "," + kavOne +
+ //            QString(QJsonDocument(currentJsonObject3).toJson(QJsonDocument::Compact)) + kavOne + "," +
+ //                              "current_timestamp(0)" + ");";
 
-//          bool que = execQuery(queryString);
+ //          bool que = execQuery(queryString);
        }
 
        if(isDublExist3 && ui->checkBox_workPlace3->isChecked()) {
@@ -38010,16 +38075,16 @@ void MainWindow::on_toolButton_externalServerConnect_clicked()
 
              //запись в таблицу dev/
 
-//          QString queryString = "INSERT INTO device (" +
-//                                kav + "serial" + kav + "," +
-//                                kav + "eb_result" + kav + "," +
-//                                kav + "eb_date" + kav +
-//                                ") VALUES (" +
-//                              kavOne + serialNumber4.toHex() + kavOne + "," + kavOne +
-//             QString(QJsonDocument(currentJsonObject4).toJson(QJsonDocument::Compact)) + kavOne + "," +
-//                              "current_timestamp(0)" + ");";
+ //          QString queryString = "INSERT INTO device (" +
+ //                                kav + "serial" + kav + "," +
+ //                                kav + "eb_result" + kav + "," +
+ //                                kav + "eb_date" + kav +
+ //                                ") VALUES (" +
+ //                              kavOne + serialNumber4.toHex() + kavOne + "," + kavOne +
+ //             QString(QJsonDocument(currentJsonObject4).toJson(QJsonDocument::Compact)) + kavOne + "," +
+ //                              "current_timestamp(0)" + ");";
 
-//          bool que = execQuery(queryString);
+ //          bool que = execQuery(queryString);
        }
 
        if(isDublExist4 && ui->checkBox_workPlace4->isChecked()) {
@@ -38101,184 +38166,189 @@ void MainWindow::on_toolButton_resetAllCommands_clicked()
 
 void MainWindow::on_toolButton_calibrationRepeat_clicked()
 {
-    ui->label_StatusBar->clear();
 
-    isCommandsEnded = false;
+    repeatParameter = 1;
 
-    if(ui->checkBox_workPlace1->isChecked()) vectorIsWorkPlaceUse[0] = true;
-    if(ui->checkBox_workPlace2->isChecked()) vectorIsWorkPlaceUse[1] = true;
-    if(ui->checkBox_workPlace3->isChecked()) vectorIsWorkPlaceUse[2] = true;
-    if(ui->checkBox_workPlace4->isChecked()) vectorIsWorkPlaceUse[3] = true;
+    on_toolButton_executeCommands_clicked();
 
-    isCalibrationFinished1 = false;
-    isCalibrationFinished2 = false;
-    isCalibrationFinished3 = false;
-    isCalibrationFinished4 = false;
+//    ui->label_StatusBar->clear();
 
-    vectorIndicatorStateMatrix[1].fill(false);
+//    isCommandsEnded = false;
 
-    ObjectThread1->setVectorIndicatorStateMatrix(vectorIndicatorStateMatrix);
-    ObjectThread2->setVectorIndicatorStateMatrix(vectorIndicatorStateMatrix);
-    ObjectThread3->setVectorIndicatorStateMatrix(vectorIndicatorStateMatrix);
-    ObjectThread4->setVectorIndicatorStateMatrix(vectorIndicatorStateMatrix);
+//    if(ui->checkBox_workPlace1->isChecked()) vectorIsWorkPlaceUse[0] = true;
+//    if(ui->checkBox_workPlace2->isChecked()) vectorIsWorkPlaceUse[1] = true;
+//    if(ui->checkBox_workPlace3->isChecked()) vectorIsWorkPlaceUse[2] = true;
+//    if(ui->checkBox_workPlace4->isChecked()) vectorIsWorkPlaceUse[3] = true;
 
-    repaint();
+//    isCalibrationFinished1 = false;
+//    isCalibrationFinished2 = false;
+//    isCalibrationFinished3 = false;
+//    isCalibrationFinished4 = false;
 
-    //калибровка
+//    vectorIndicatorStateMatrix[1].fill(false);
 
-    if(vectorIsCommandUse.at(1)) {
+//    ObjectThread1->setVectorIndicatorStateMatrix(vectorIndicatorStateMatrix);
+//    ObjectThread2->setVectorIndicatorStateMatrix(vectorIndicatorStateMatrix);
+//    ObjectThread3->setVectorIndicatorStateMatrix(vectorIndicatorStateMatrix);
+//    ObjectThread4->setVectorIndicatorStateMatrix(vectorIndicatorStateMatrix);
 
-        portOptical->clear();
-        portOptical2->clear();
-        portOptical3->clear();
-        portOptical4->clear();
-        portOptical->close();
-        portOptical2->close();
-        portOptical3->close();
-        portOptical4->close();
+//    repaint();
 
-        ObjectThread1->moveToThread(&Thread1);
-        ObjectThread2->moveToThread(&Thread2);
-        ObjectThread3->moveToThread(&Thread3);
-        ObjectThread4->moveToThread(&Thread4);
+//    //калибровка
 
-        Thread1.start();
-        Thread2.start();
-        Thread3.start();
-        Thread4.start();
+//    if(vectorIsCommandUse.at(1)) {
 
-        ObjectThread1->setCalibrationMap(calibrationMap);
-        ObjectThread2->setCalibrationMap(calibrationMap);
-        ObjectThread3->setCalibrationMap(calibrationMap);
-        ObjectThread4->setCalibrationMap(calibrationMap);
+//        portOptical->clear();
+//        portOptical2->clear();
+//        portOptical3->clear();
+//        portOptical4->clear();
+//        portOptical->close();
+//        portOptical2->close();
+//        portOptical3->close();
+//        portOptical4->close();
 
-        ObjectThread1->setCalibrationFloatMap(calibrationFloatMap);
-        ObjectThread2->setCalibrationFloatMap(calibrationFloatMap);
-        ObjectThread3->setCalibrationFloatMap(calibrationFloatMap);
-        ObjectThread4->setCalibrationFloatMap(calibrationFloatMap);
+//        ObjectThread1->moveToThread(&Thread1);
+//        ObjectThread2->moveToThread(&Thread2);
+//        ObjectThread3->moveToThread(&Thread3);
+//        ObjectThread4->moveToThread(&Thread4);
 
-        ObjectThread1->setIsWorkPlaceUseVector(vectorIsWorkPlaceUse);
-        ObjectThread2->setIsWorkPlaceUseVector(vectorIsWorkPlaceUse);
-        ObjectThread3->setIsWorkPlaceUseVector(vectorIsWorkPlaceUse);
-        ObjectThread4->setIsWorkPlaceUseVector(vectorIsWorkPlaceUse);
+//        Thread1.start();
+//        Thread2.start();
+//        Thread3.start();
+//        Thread4.start();
 
-        QPalette palettePrime = ui->toolButton_startCalibration->palette();
-        QColor backgroundColorPrime = palettePrime.color(QPalette::Button);
+//        ObjectThread1->setCalibrationMap(calibrationMap);
+//        ObjectThread2->setCalibrationMap(calibrationMap);
+//        ObjectThread3->setCalibrationMap(calibrationMap);
+//        ObjectThread4->setCalibrationMap(calibrationMap);
 
-        QPalette palette = palettePrime;
-        palette.setColor( QPalette::Button, QColor( Qt::red )  );
+//        ObjectThread1->setCalibrationFloatMap(calibrationFloatMap);
+//        ObjectThread2->setCalibrationFloatMap(calibrationFloatMap);
+//        ObjectThread3->setCalibrationFloatMap(calibrationFloatMap);
+//        ObjectThread4->setCalibrationFloatMap(calibrationFloatMap);
 
-        QColor backgroundColor = palette.color(QPalette::Button);
+//        ObjectThread1->setIsWorkPlaceUseVector(vectorIsWorkPlaceUse);
+//        ObjectThread2->setIsWorkPlaceUseVector(vectorIsWorkPlaceUse);
+//        ObjectThread3->setIsWorkPlaceUseVector(vectorIsWorkPlaceUse);
+//        ObjectThread4->setIsWorkPlaceUseVector(vectorIsWorkPlaceUse);
 
-        qDebug()<<"palette "<<palette
-                <<"backgroundColor "<<backgroundColor.name()
-                <<"backgroundColorPrime "<<backgroundColorPrime.name();
+//        QPalette palettePrime = ui->toolButton_startCalibration->palette();
+//        QColor backgroundColorPrime = palettePrime.color(QPalette::Button);
 
-        ui->toolButton_startCalibration->setAutoFillBackground(true);
-        ui->toolButton_startCalibration->setPalette( palette );
+//        QPalette palette = palettePrime;
+//        palette.setColor( QPalette::Button, QColor( Qt::red )  );
 
-//        for(int l=0; l<4; l++) {
+//        QColor backgroundColor = palette.color(QPalette::Button);
 
-//          if(vectorIsWorkPlaceUse.at(l)) {
-//              emit signalCalibration(l);
+//        qDebug()<<"palette "<<palette
+//                <<"backgroundColor "<<backgroundColor.name()
+//                <<"backgroundColorPrime "<<backgroundColorPrime.name();
 
+//        ui->toolButton_startCalibration->setAutoFillBackground(true);
+//        ui->toolButton_startCalibration->setPalette( palette );
+
+// //        for(int l=0; l<4; l++) {
+
+// //          if(vectorIsWorkPlaceUse.at(l)) {
+// //              emit signalCalibration(l);
+
+// //          }
+
+// //        }
+
+//        emit signalCalibrationToThread(portOptical, portOptical2, portOptical3, portOptical4);
+
+//        emit signalLog("<font color = \"#0000ff\">" + QString("Начало калибровки") + '\n' + "</font>");
+
+
+//        //-------------------------Ждём завершения калибровки------------------
+
+//          bool isCalibrationFinishedTmp1 = true;
+//          bool isCalibrationFinishedTmp2 = true;
+//          bool isCalibrationFinishedTmp3 = true;
+//          bool isCalibrationFinishedTmp4 = true;
+
+// //          if(!vectorIsWorkPlaceUse.at(0)) isCalibrationFinishedTmp1 = true;
+// //          if(!vectorIsWorkPlaceUse.at(1)) isCalibrationFinishedTmp2 = true;
+// //          if(!vectorIsWorkPlaceUse.at(2)) isCalibrationFinishedTmp3 = true;
+// //          if(!vectorIsWorkPlaceUse.at(3)) isCalibrationFinishedTmp4 = true;
+
+//          for(int e=0; e<200; e++) { //20 sec
+//              global::pause(100);
+
+// //              if(vectorIsWorkPlaceUse.at(0)) isCalibrationFinishedTmp1 = isCalibrationFinished1;
+// //              if(vectorIsWorkPlaceUse.at(1)) isCalibrationFinishedTmp2 = isCalibrationFinished2;
+// //              if(vectorIsWorkPlaceUse.at(2)) isCalibrationFinishedTmp3 = isCalibrationFinished3;
+// //              if(vectorIsWorkPlaceUse.at(3)) isCalibrationFinishedTmp4 = isCalibrationFinished4;
+
+//              if(ui->checkBox_workPlace1->isChecked()) {
+//                  isCalibrationFinishedTmp1 = isCalibrationFinished1;
+
+//                  if(!vectorIsWorkPlaceUse.at(0)) isCalibrationFinishedTmp1 = true;
+//              }
+
+//              if(ui->checkBox_workPlace2->isChecked()) {
+//                  isCalibrationFinishedTmp2 = isCalibrationFinished2;
+
+//                  if(!vectorIsWorkPlaceUse.at(1)) isCalibrationFinishedTmp2 = true;
+//              }
+
+//              if(ui->checkBox_workPlace3->isChecked()) {
+//                  isCalibrationFinishedTmp3 = isCalibrationFinished3;
+
+//                  if(!vectorIsWorkPlaceUse.at(2)) isCalibrationFinishedTmp3 = true;
+//              }
+
+//              if(ui->checkBox_workPlace4->isChecked()) {
+//                  isCalibrationFinishedTmp4 = isCalibrationFinished4;
+
+//                  if(!vectorIsWorkPlaceUse.at(3)) isCalibrationFinishedTmp4 = true;
+//              }
+
+
+//              if(isCalibrationFinishedTmp1 && isCalibrationFinishedTmp2 && isCalibrationFinishedTmp3 && isCalibrationFinishedTmp4)
+//                  break;
 //          }
 
+
+//        //-------------------------Ждём завершения калибровки------------------/
+
+//          ui->toolButton_startCalibration->setPalette(palettePrime);
+
+//    }
+
+//    isCommandsEnded = true;
+//    repaint();
+
+//    //калибровка/
+
+//    global::pause(500);
+
+//    //если хотя бы один результат Не годен, спрашиваем о необходимости записи в бд
+//    if(workPlace1ResultString == tr("Не годен") || workPlace2ResultString == tr("Не годен") ||
+//            workPlace3ResultString == tr("Не годен") || workPlace4ResultString == tr("Не годен")) {
+
+//        if(dialogWritingDB->exec() == QDialog::Accepted) {
+
+//            isNoteWriting = true;
+
+//            on_toolButton_externalServerConnect_clicked();
+
+//        }
+//        else {
+//            isNoteWriting = false;
+
+//            saveCounterCheckingResult(1, QString());
 //        }
 
-        emit signalCalibrationToThread(portOptical, portOptical2, portOptical3, portOptical4);
+//    }
+//    else {
 
-        emit signalLog("<font color = \"#0000ff\">" + QString("Начало калибровки") + '\n' + "</font>");
+//        isNoteWriting = true;
 
+//        on_toolButton_externalServerConnect_clicked();
 
-        //-------------------------Ждём завершения калибровки------------------
-
-          bool isCalibrationFinishedTmp1 = true;
-          bool isCalibrationFinishedTmp2 = true;
-          bool isCalibrationFinishedTmp3 = true;
-          bool isCalibrationFinishedTmp4 = true;
-
-//          if(!vectorIsWorkPlaceUse.at(0)) isCalibrationFinishedTmp1 = true;
-//          if(!vectorIsWorkPlaceUse.at(1)) isCalibrationFinishedTmp2 = true;
-//          if(!vectorIsWorkPlaceUse.at(2)) isCalibrationFinishedTmp3 = true;
-//          if(!vectorIsWorkPlaceUse.at(3)) isCalibrationFinishedTmp4 = true;
-
-          for(int e=0; e<200; e++) { //20 sec
-              global::pause(100);
-
-//              if(vectorIsWorkPlaceUse.at(0)) isCalibrationFinishedTmp1 = isCalibrationFinished1;
-//              if(vectorIsWorkPlaceUse.at(1)) isCalibrationFinishedTmp2 = isCalibrationFinished2;
-//              if(vectorIsWorkPlaceUse.at(2)) isCalibrationFinishedTmp3 = isCalibrationFinished3;
-//              if(vectorIsWorkPlaceUse.at(3)) isCalibrationFinishedTmp4 = isCalibrationFinished4;
-
-              if(ui->checkBox_workPlace1->isChecked()) {
-                  isCalibrationFinishedTmp1 = isCalibrationFinished1;
-
-                  if(!vectorIsWorkPlaceUse.at(0)) isCalibrationFinishedTmp1 = true;
-              }
-
-              if(ui->checkBox_workPlace2->isChecked()) {
-                  isCalibrationFinishedTmp2 = isCalibrationFinished2;
-
-                  if(!vectorIsWorkPlaceUse.at(1)) isCalibrationFinishedTmp2 = true;
-              }
-
-              if(ui->checkBox_workPlace3->isChecked()) {
-                  isCalibrationFinishedTmp3 = isCalibrationFinished3;
-
-                  if(!vectorIsWorkPlaceUse.at(2)) isCalibrationFinishedTmp3 = true;
-              }
-
-              if(ui->checkBox_workPlace4->isChecked()) {
-                  isCalibrationFinishedTmp4 = isCalibrationFinished4;
-
-                  if(!vectorIsWorkPlaceUse.at(3)) isCalibrationFinishedTmp4 = true;
-              }
-
-
-              if(isCalibrationFinishedTmp1 && isCalibrationFinishedTmp2 && isCalibrationFinishedTmp3 && isCalibrationFinishedTmp4)
-                  break;
-          }
-
-
-        //-------------------------Ждём завершения калибровки------------------/
-
-          ui->toolButton_startCalibration->setPalette(palettePrime);
-
-    }
-
-    isCommandsEnded = true;
-    repaint();
-
-    //калибровка/
-
-    global::pause(500);
-
-    //если хотя бы один результат Не годен, спрашиваем о необходимости записи в бд
-    if(workPlace1ResultString == tr("Не годен") || workPlace2ResultString == tr("Не годен") ||
-            workPlace3ResultString == tr("Не годен") || workPlace4ResultString == tr("Не годен")) {
-
-        if(dialogWritingDB->exec() == QDialog::Accepted) {
-
-            isNoteWriting = true;
-
-            on_toolButton_externalServerConnect_clicked();
-
-        }
-        else {
-            isNoteWriting = false;
-
-            saveCounterCheckingResult(1, QString());
-        }
-
-    }
-    else {
-
-        isNoteWriting = true;
-
-        on_toolButton_externalServerConnect_clicked();
-
-    }
+//    }
 
 }
 
@@ -38732,6 +38802,191 @@ void MainWindow::slotDeleteUser(QVector<QString> vector)
 
      readUserTable();
 }
+
+
+
+void MainWindow::on_toolButton_calibrationModeOffRepeat_clicked()
+{
+    ui->label_StatusBar->clear();
+
+    isCommandsEnded = false;
+
+    if(ui->checkBox_workPlace1->isChecked()) vectorIsWorkPlaceUse[0] = true;
+    if(ui->checkBox_workPlace2->isChecked()) vectorIsWorkPlaceUse[1] = true;
+    if(ui->checkBox_workPlace3->isChecked()) vectorIsWorkPlaceUse[2] = true;
+    if(ui->checkBox_workPlace4->isChecked()) vectorIsWorkPlaceUse[3] = true;
+
+    isCalibrationModeOff1 = false;
+    isCalibrationModeOff2 = false;
+    isCalibrationModeOff3 = false;
+    isCalibrationModeOff4 = false;
+
+    vectorIndicatorStateMatrix[9].fill(false);
+
+    ObjectThread1->setVectorIndicatorStateMatrix(vectorIndicatorStateMatrix);
+    ObjectThread2->setVectorIndicatorStateMatrix(vectorIndicatorStateMatrix);
+    ObjectThread3->setVectorIndicatorStateMatrix(vectorIndicatorStateMatrix);
+    ObjectThread4->setVectorIndicatorStateMatrix(vectorIndicatorStateMatrix);
+
+    repaint();
+
+    //выключение режима калибровки
+
+    if(vectorIsCommandUse.at(9)) {
+
+        portOptical->close();
+        portOptical2->close();
+        portOptical3->close();
+        portOptical4->close();
+        portDigitalInterfaceChecking->close();
+        portOptical->clear();
+        portOptical2->clear();
+        portOptical3->clear();
+        portOptical4->clear();
+        portDigitalInterfaceChecking->clear();
+
+        ObjectThread1->setIsWorkPlaceUseVector(vectorIsWorkPlaceUse);
+        ObjectThread2->setIsWorkPlaceUseVector(vectorIsWorkPlaceUse);
+        ObjectThread3->setIsWorkPlaceUseVector(vectorIsWorkPlaceUse);
+        ObjectThread4->setIsWorkPlaceUseVector(vectorIsWorkPlaceUse);
+
+        QPalette palettePrime = ui->toolButton_calibrationModeOff->palette();
+        QColor backgroundColorPrime = palettePrime.color(QPalette::Button);
+
+        QPalette palette = palettePrime;
+        palette.setColor( QPalette::Button, QColor( Qt::red )  );
+
+        QColor backgroundColor = palette.color(QPalette::Button);
+
+        qDebug()<<"palette "<<palette
+                <<"backgroundColor "<<backgroundColor.name()
+                <<"backgroundColorPrime "<<backgroundColorPrime.name();
+
+        ui->toolButton_calibrationModeOff->setAutoFillBackground(true);
+        ui->toolButton_calibrationModeOff->setPalette( palette );
+
+//      for(int l=0; l<4; l++) {
+
+//        if(vectorIsWorkPlaceUse.at(l)) {
+//            emit signalCalibrationModeOff(l);
+
+//        }
+
+//      }
+
+        emit signalLog("<font color = \"#0000ff\">" + QString("Выключение режима калибровки")  + '\n' + "</font>");
+
+        emit signalCalibModeOffToThread(portOptical, portOptical2, portOptical3, portOptical4);
+
+        //-------------------------Ждём завершения Выключение режима калибровки------------------
+
+        bool isCalibrationModeOffTmp1 = true;
+        bool isCalibrationModeOffTmp2 = true;
+        bool isCalibrationModeOffTmp3 = true;
+        bool isCalibrationModeOffTmp4 = true;
+
+//          if(!vectorIsWorkPlaceUse.at(0)) isPulsesInputVolumeTmp1 = true;
+//          if(!vectorIsWorkPlaceUse.at(1)) isPulsesInputVolumeTmp2 = true;
+//          if(!vectorIsWorkPlaceUse.at(2)) isPulsesInputVolumeTmp3 = true;
+//          if(!vectorIsWorkPlaceUse.at(3)) isPulsesInputVolumeTmp4 = true;
+
+          for(int e=0; e<75; e++) { //5 sec
+              global::pause(100);
+
+              if(ui->checkBox_workPlace1->isChecked()) {
+                 isCalibrationModeOffTmp1 = isCalibrationModeOff1;
+
+                 if(!vectorIsWorkPlaceUse.at(0)) isCalibrationModeOffTmp1 = true;
+              }
+
+              if(ui->checkBox_workPlace2->isChecked()) {
+                 isCalibrationModeOffTmp2 = isCalibrationModeOff2;
+
+                 if(!vectorIsWorkPlaceUse.at(1)) isCalibrationModeOffTmp2 = true;
+              }
+
+              if(ui->checkBox_workPlace3->isChecked()) {
+                 isCalibrationModeOffTmp3 = isCalibrationModeOff3;
+
+                 if(!vectorIsWorkPlaceUse.at(2)) isCalibrationModeOffTmp3 = true;
+              }
+
+              if(ui->checkBox_workPlace4->isChecked()) {
+                 isCalibrationModeOffTmp4 = isCalibrationModeOff4;
+
+                 if(!vectorIsWorkPlaceUse.at(3)) isCalibrationModeOffTmp4 = true;
+              }
+//              if(vectorIsWorkPlaceUse.at(0)) isCalibrationModeOffTmp1 = isCalibrationModeOff1;
+//              if(vectorIsWorkPlaceUse.at(1)) isCalibrationModeOffTmp2 = isCalibrationModeOff2;
+//              if(vectorIsWorkPlaceUse.at(2)) isCalibrationModeOffTmp3 = isCalibrationModeOff3;
+//              if(vectorIsWorkPlaceUse.at(3)) isCalibrationModeOffTmp4 = isCalibrationModeOff4;
+
+              if(isCalibrationModeOffTmp1 && isCalibrationModeOffTmp2 &&
+                      isCalibrationModeOffTmp3 && isCalibrationModeOffTmp4)
+                  break;
+
+          }
+
+
+        //-------------------------Ждём завершения Выключение режима калибровки------------------/
+
+      ui->toolButton_calibrationModeOff->setPalette(palettePrime);
+
+    }
+
+    isCommandsEnded = true;
+    repaint();
+
+    //проверка проводных интерфейсов/
+
+    global::pause(500);
+
+    //если хотя бы один результат Не годен, спрашиваем о необходимости записи в бд
+    if(workPlace1ResultString == tr("Не годен") || workPlace2ResultString == tr("Не годен") ||
+            workPlace3ResultString == tr("Не годен") || workPlace4ResultString == tr("Не годен")) {
+
+        if(dialogWritingDB->exec() == QDialog::Accepted) {
+
+            isNoteWriting = true;
+
+            on_toolButton_externalServerConnect_clicked();
+
+        }
+        else {
+            isNoteWriting = false;
+
+            saveCounterCheckingResult(1, QString());
+        }
+
+    }
+    else {
+
+        isNoteWriting = true;
+
+        on_toolButton_externalServerConnect_clicked();
+
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
