@@ -41,7 +41,8 @@ SOURCES += \
     form.cpp \
     formconnectionparams.cpp \
     formusercontrol.cpp \
-    dialogsaveuserchanges.cpp
+    dialogsaveuserchanges.cpp \
+    dialogisrunwithoutconnect.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -59,7 +60,8 @@ HEADERS += \
     form.h \
     formconnectionparams.h \
     formusercontrol.h \
-    dialogsaveuserchanges.h
+    dialogsaveuserchanges.h \
+    dialogisrunwithoutconnect.h
 
 FORMS += \
         mainwindow.ui \
@@ -73,4 +75,5 @@ FORMS += \
     form.ui \
     formconnectionparams.ui \
     formusercontrol.ui \
-    dialogsaveuserchanges.ui
+    dialogsaveuserchanges.ui \
+    dialogisrunwithoutconnect.ui

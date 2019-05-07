@@ -23,7 +23,7 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>Гефест Проверка 1.14</string>
+   <string>Гефест Проверка 1.15</string>
   </property>
   <widget class="QWidget" name="centralWidget">
    <widget class="QToolButton" name="toolButton_selectProgrammingFile">
@@ -3356,7 +3356,7 @@
   </action>
   <action name="ResultTable">
    <property name="enabled">
-    <bool>false</bool>
+    <bool>true</bool>
    </property>
    <property name="text">
     <string>Результаты проверки </string>
@@ -3372,7 +3372,7 @@
   </action>
   <action name="action_users">
    <property name="enabled">
-    <bool>false</bool>
+    <bool>true</bool>
    </property>
    <property name="text">
     <string>Пользователи</string>

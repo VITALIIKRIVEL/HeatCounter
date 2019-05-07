@@ -24,6 +24,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
 
     repeatParameter = 0;
+    connectCondition = false;
+    isRunWithoutConnect = false;
 
     ui->textBrowser->setVisible(false);
 
@@ -59,7 +61,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
     dialogUpdateNote = new DialogUpdateNote(this);
     dialogLoginDataBase = new DialogLoginDataBase();//(this);
-    dialogWritingDB = new DialogWritingDB(this);    
+    dialogWritingDB = new DialogWritingDB(this);
+    dialogIsRunWithoutConnect = new DialogIsRunWithoutConnect();
 
     formCalibration->setWindowTitle("Калибровка");
     formParamsEdit->setWindowTitle("Параметры");
@@ -916,31 +919,27 @@ MainWindow::MainWindow(QWidget *parent) :
 
     isLoginPasswordOk = false;
 
-    QStringList userList;// = readUserTable();
+   if(!isRunWithoutConnect) {
 
-    emit sendUserList(userList);
+      QStringList userList = readUserTable();
 
-    emit sendLogPasFromSettings(ui->lineEdit_humanName->text(), QString());
+      emit sendUserList(userList);
 
+      emit sendLogPasFromSettings(ui->lineEdit_humanName->text(), QString());
 
-
-    //диалог ввода логина
-    dialogLoginDataBase->setModal(true);
-//    dialogLoginDataBase->setWindowFlags(Qt::Window
-//       | Qt::WindowMinimizeButtonHint
-//       | Qt::WindowMaximizeButtonHint
-//       | Qt::CustomizeWindowHint);
-
+      //диалог ввода логина
+      dialogLoginDataBase->setModal(true);
 
     //прочитать таблицу user, передать список пользователей в форму
 
- //   this->setVisible(false);
- //   this->hide();
+      dialogLoginDataBase->show();
 
-//    QSize mainWindowSize = this->size();
-//    dialogLoginDataBase->resize(mainWindowSize);
+   }
 
-    dialogLoginDataBase->show();
+   else {
+       ui->ResultTable->setEnabled(false);
+       ui->action_users->setEnabled(false);
+   }
 
 }
 /*************************************************************/
@@ -34465,20 +34464,15 @@ void MainWindow::on_toolButton_executeCommands_clicked()
         isCalibrationFinished3 = false;
         isCalibrationFinished4 = false;
 
-
-
         isPulsesOutputHeat1 = false;
         isPulsesOutputHeat2 = false;
         isPulsesOutputHeat3 = false;
         isPulsesOutputHeat4 = false;
 
-
-
         isPulsesInputVolume1 = false;
         isPulsesInputVolume2 = false;
         isPulsesInputVolume3 = false;
         isPulsesInputVolume4 = false;
-
 
         isPulsesOutputDefault1 = false;
         isPulsesOutputDefault2 = false;
@@ -35854,9 +35848,9 @@ void MainWindow::on_toolButton_executeCommands_clicked()
 
     //изменение порядка табуляции/
 
-    global::pause(500);
+  if(!isRunWithoutConnect) {
 
- //   workPlace1ResultString = tr("Не годен");
+    global::pause(500);
 
     //если хотя бы один результат Не годен, спрашиваем о необходимости записи в бд
     if(workPlace1ResultString == tr("Не годен") || workPlace2ResultString == tr("Не годен") ||
@@ -35885,6 +35879,7 @@ void MainWindow::on_toolButton_executeCommands_clicked()
     }
 
 
+  }//if(!isRunWithoutConnect)
 
 
 }
@@ -36735,10 +36730,27 @@ bool MainWindow::serverConnectWithPasswordExtServ(QString username, QString pass
 
         bool connected = dataBase.open();
 
+        connectCondition = connected;
+
         QStringList tableList = dataBase.tables(QSql::Tables);
 
         if(!connected) {
-            QMessageBox::information(this, "", tr("Не удалось подключиться к серверу. Ошибка: ") + dataBase.lastError().text());
+
+            dialogIsRunWithoutConnect->setText(tr("Не удалось подключиться к серверу. Ошибка: ") + dataBase.lastError().text());
+
+            //установить текс на диалог tr("Не удалось подключиться к серверу. Ошибка: ") + dataBase.lastError().text()
+
+            if(dialogIsRunWithoutConnect->exec() == QDialog::Accepted) {
+                isRunWithoutConnect = true;
+                isLoginPasswordOk = true;
+                dialogLoginDataBase->close();
+                dialogIsRunWithoutConnect->close();
+                this->show();
+
+                ui->ResultTable->setEnabled(false);
+                ui->action_users->setEnabled(false);
+            }
+     //       QMessageBox::information(this, "", tr("Не удалось подключиться к серверу. Ошибка: ") + dataBase.lastError().text());
             ui->label_messageBar->setText("<font color = \"#ff0000\">" + tr("Соединение с базой данных не установлено") + "</font>");
             return false;
         }
@@ -37623,6 +37635,9 @@ void MainWindow::slotGetSignalCloseLogin()
 
 void MainWindow::on_toolButton_externalServerConnect_clicked()
 {
+
+    if(!connectCondition) return;
+
     //запись результата в текстовый файл result_
     saveCounterCheckingResult(1, QString());
 
@@ -38939,6 +38954,8 @@ void MainWindow::on_toolButton_calibrationModeOffRepeat_clicked()
 
     //проверка проводных интерфейсов/
 
+  if(!isRunWithoutConnect) {
+
     global::pause(500);
 
     //если хотя бы один результат Не годен, спрашиваем о необходимости записи в бд
@@ -38966,6 +38983,10 @@ void MainWindow::on_toolButton_calibrationModeOffRepeat_clicked()
         on_toolButton_externalServerConnect_clicked();
 
     }
+
+  }
+
+
 }
 
 

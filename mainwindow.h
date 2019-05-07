@@ -23,6 +23,7 @@
 #include "dialogupdatenote.h"
 #include "dialoglogindatabase.h"
 #include "dialogwritingdb.h"
+#include "dialogisrunwithoutconnect.h"
 #include "formviewtable.h"
 #include "formconnectionparams.h"
 #include "formusercontrol.h"
@@ -572,6 +573,7 @@ private:
     DialogUpdateNote *dialogUpdateNote;
     DialogLoginDataBase *dialogLoginDataBase;
     DialogWritingDB *dialogWritingDB;
+    DialogIsRunWithoutConnect * dialogIsRunWithoutConnect;
     FormViewTable * formViewTable;
     FormConnectionParams * formConnectionParams;
     Formusercontrol * formUserControl;
@@ -867,6 +869,9 @@ private:
     QStringList userTable;
 
     int repeatParameter;
+
+    bool connectCondition;
+    bool isRunWithoutConnect;
 
 };
 
