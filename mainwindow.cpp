@@ -35848,7 +35848,7 @@ void MainWindow::on_toolButton_executeCommands_clicked()
 
     //изменение порядка табуляции/
 
-  if(!isRunWithoutConnect) {
+  if(!isRunWithoutConnect) {//если связь с сервером есть
 
     global::pause(500);
 
@@ -36751,7 +36751,7 @@ bool MainWindow::serverConnectWithPasswordExtServ(QString username, QString pass
                 ui->action_users->setEnabled(false);
             }
      //       QMessageBox::information(this, "", tr("Не удалось подключиться к серверу. Ошибка: ") + dataBase.lastError().text());
-            ui->label_messageBar->setText("<font color = \"#ff0000\">" + tr("Соединение с базой данных не установлено") + "</font>");
+            ui->label_messageBar->setText(/*"<font color = \"#ff0000\">" +*/ tr("Соединение с базой данных не установлено") /*+ "</font>"*/);
             return false;
         }
 
@@ -38164,19 +38164,6 @@ void MainWindow::on_toolButton_resetAllCommands_clicked()
     on_checkBox_calibrationModeOffUse_clicked(false);
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 void MainWindow::on_toolButton_calibrationRepeat_clicked()
