@@ -1,0 +1,23 @@
+#ifndef SMARTSTEND_H
+#define SMARTSTEND_H
+
+#include <QObject>
+#include <QSerialPort>
+
+class SmartStend : public QObject
+{
+    Q_OBJECT
+public:
+    explicit SmartStend(QObject *parent = nullptr);
+    
+    void sendCommandToController(QString);
+    QString getAnswerFromController(QString);
+
+signals:
+
+public slots:
+    void slotGetAnswerFromController(QString);
+    
+};
+
+#endif // SMARTSTEND_H

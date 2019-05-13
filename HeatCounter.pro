@@ -28,6 +28,7 @@ SOURCES += \
         main.cpp \
         mainwindow.cpp \
     global.cpp \
+    smartstend.cpp \
     wmbus.cpp \
     formcalibration.cpp \
     formparamsedit.cpp \
@@ -47,6 +48,7 @@ SOURCES += \
 HEADERS += \
         mainwindow.h \
     global.h \
+    smartstend.h \
     wmbus.h \
     formcalibration.h \
     formparamsedit.h \
