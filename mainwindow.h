@@ -29,6 +29,7 @@
 #include "formusercontrol.h"
 #include "objectthread.h"
 #include "gefest.h"
+#include "smartstend.h"
 
 using namespace gefest;
 
@@ -578,6 +579,8 @@ private:
     FormConnectionParams * formConnectionParams;
     Formusercontrol * formUserControl;
 
+    SmartStend * smartStend;
+
     ObjectThread *ObjectThread1;
     ObjectThread *ObjectThread2;
     ObjectThread *ObjectThread3;
@@ -628,6 +631,7 @@ private:
     QSerialPort *portOptical, *portOptical2, *portOptical3, *portOptical4;
     QSerialPort *portCurrentOptical;
     QSerialPort *portDigitalInterfaceChecking;
+    QSerialPort *portController;
     QString portName;
     QString portNameOptical, portNameOptical2, portNameOptical3, portNameOptical4;
     QString portNameInterfaceChecking;

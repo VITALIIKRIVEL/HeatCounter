@@ -64,11 +64,13 @@ MainWindow::MainWindow(QWidget *parent) :
     dialogWritingDB = new DialogWritingDB(this);
     dialogIsRunWithoutConnect = new DialogIsRunWithoutConnect();
 
+    smartStend = new SmartStend();
+
     formCalibration->setWindowTitle("Калибровка");
     formParamsEdit->setWindowTitle("Параметры");
     formLog->setWindowTitle("Лог");
  //   dialogLoginDataBase->setWindowTitle("Вход");
-    dialogUpdateNote->setWindowTitle("Проверка уникальности серийного номера");
+    dialogUpdateNote->setWindowTitle("Проверка уникальности серийного номера");   
 
     ObjectThread1 = new ObjectThread(parent = 0);
     ObjectThread2 = new ObjectThread(parent = 0);
