@@ -943,6 +943,11 @@ MainWindow::MainWindow(QWidget *parent) :
        ui->action_users->setEnabled(false);
    }
 
+   on_checkBox_workPlace1_clicked(ui->checkBox_workPlace1->isChecked());
+   on_checkBox_workPlace2_clicked(ui->checkBox_workPlace2->isChecked());
+   on_checkBox_workPlace3_clicked(ui->checkBox_workPlace3->isChecked());
+   on_checkBox_workPlace4_clicked(ui->checkBox_workPlace4->isChecked());
+
 }
 /*************************************************************/
 MainWindow::~MainWindow()
@@ -34188,11 +34193,16 @@ void MainWindow::currentWorkPlaceCheckBoxOff(int workPlaceNumber)
 void MainWindow::on_checkBox_workPlace1_clicked(bool checked)
 {
     if(checked) {
-        vectorIsWorkPlaceUse[0] = true;
+        vectorIsWorkPlaceUse[0] = true;        
+        ui->groupBox_workPlace1->setEnabled(true);
+        ui->groupBox_workPlace1->setStyleSheet("QGroupBox {background-color: transparent}");
     }
     else {
         vectorIsWorkPlaceUse[0] = false;
-        portOptical->close();
+        ui->groupBox_workPlace1->setStyleSheet("QGroupBox {background-color: lightGrey}");
+        ui->groupBox_workPlace1->setEnabled(false);
+
+        portOptical->close();        
     }
 }
 
@@ -34200,9 +34210,13 @@ void MainWindow::on_checkBox_workPlace2_clicked(bool checked)
 {
     if(checked) {
         vectorIsWorkPlaceUse[1] = true;
+        ui->groupBox_workPlace2->setEnabled(true);
+        ui->groupBox_workPlace2->setStyleSheet("QGroupBox {background-color: transparent}");
     }
     else {
         vectorIsWorkPlaceUse[1] = false;
+        ui->groupBox_workPlace2->setStyleSheet("QGroupBox {background-color: lightGrey}");
+        ui->groupBox_workPlace2->setEnabled(false);
         portOptical2->close();
     }
 }
@@ -34211,9 +34225,13 @@ void MainWindow::on_checkBox_workPlace3_clicked(bool checked)
 {
     if(checked) {
         vectorIsWorkPlaceUse[2] = true;
+        ui->groupBox_workPlace3->setEnabled(true);
+        ui->groupBox_workPlace3->setStyleSheet("QGroupBox {background-color: transparent}");
     }
     else {
         vectorIsWorkPlaceUse[2] = false;
+        ui->groupBox_workPlace3->setStyleSheet("QGroupBox {background-color: lightGrey}");
+        ui->groupBox_workPlace3->setEnabled(false);
         portOptical3->close();
     }
 }
@@ -34222,9 +34240,13 @@ void MainWindow::on_checkBox_workPlace4_clicked(bool checked)
 {
     if(checked) {
         vectorIsWorkPlaceUse[3] = true;
+        ui->groupBox_workPlace4->setEnabled(true);
+        ui->groupBox_workPlace4->setStyleSheet("QGroupBox {background-color: transparent}");
     }
     else {
         vectorIsWorkPlaceUse[3] = false;
+        ui->groupBox_workPlace4->setEnabled(false);
+        ui->groupBox_workPlace4->setStyleSheet("QGroupBox {background-color: lightGrey}");
         portOptical4->close();
     }
 }
