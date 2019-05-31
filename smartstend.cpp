@@ -1,8 +1,20 @@
 #include "smartstend.h"
+#include "global.h"
 
 SmartStend::SmartStend(QObject *parent) : QObject(parent)
 {
     portStend = new QSerialPort();
+
+//    Обмен с компьютером UART2
+//    Скорость 115200
+//    Длина слова 8 бит
+//    1 стоп-бит
+//    Контроля чётности нет
+    portStend->setBaudRate(QSerialPort::Baud115200);
+    portStend->setDataBits(QSerialPort::Data8);
+    portStend->setParity(QSerialPort::NoParity);
+    portStend->setStopBits(QSerialPort::OneStop);
+
 }
 
 SmartStend::~SmartStend()
@@ -49,9 +61,47 @@ void SmartStend::slotGetAnsFromStend(QString answer)
 
 }
 
+//------------------Проверка импульсных выходов-------------------
+
 void SmartStend::readPulsesChannel1()
 {
    //Чтение значения счётчика импульсов, канал 1	CNT1?	CNT1=xxx
+    QByteArray buffer;
+    QString bufferStr;
+
+    portStend->clear();
+
+    if(!portStend->isOpen()) {
+        if(!portStend->open(QIODevice::ReadWrite)) {
+//                  QMessageBox::information(this, "", "Не удалось открыть порт УСО-2. Рабочее место: " + QString::number(workPlaceNumber + 1));
+            portStend->close();
+//            label_StatusBar = ("Не удалось открыть порт УСО-2. Рабочее место: " +
+//                                         QString::number(workPlaceNumber + 1));
+//            emit errorStringSignal(label_StatusBar + '\n');
+//            vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+
+//            emit workPlaceOff(currentIndicatorNumber);
+//            emit checkWritingError(currentIndicatorNumber);
+
+//                vectorIsErrorOccured[workPlaceNumber] = true;
+            return;
+        }
+    }
+
+    sendCommandToStend("CNT1?");
+
+    global::pause(10);
+
+    buffer = portStend->readAll();
+    bufferStr = QString::fromLocal8Bit(buffer);
+
+    if(bufferStr.left(4) != "CNT1") {//ошибка
+        return;
+    }
+
+
+
+
 }
 
 void SmartStend::readPulsesChannel2()
@@ -64,6 +114,8 @@ void SmartStend::pulsesReset()
    //Сбросить счётчик импульсов, оба канала	CNTCLR	ОК
 }
 
+//------------------Проверка импульсных входов--------------------
+
 void SmartStend::writePulsesToGenChannel1()
 {
    //Запись числа импульсов в генератор импульсов, канал 1	GEN1=xxx	OK
@@ -74,7 +126,7 @@ void SmartStend::writePulsesToGenChannel2()
    //Запись числа импульсов в генератор импульсов, канал 2	GEN2=xxx	OK
 }
 
-//-----------------Внешний интерфейс обмена---------------------
+//-----------------Внешний интерфейс обмена-----------------------
 
 void SmartStend::externalInterfaceOn()
 {

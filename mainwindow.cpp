@@ -23,6 +23,18 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
+//    Александр Подгайский, [31.05.19 11:43]
+//    Сделать в меню пункт, при нажатии открывается окошко. В окошке 4 поля, по одному для каждого стенда. В поле пять параметров:
+//    поле ввода "генератор импульсов, канал 1" и кнопка "Отправить"
+//    поле ввода "генератор импульсов, канал 2" и кнопка "Отправить"
+//    поле ввода "Ток отключения интерфейса" и кнопка "Отправить"
+//    поле ввода "Ток отключения платы" и кнопка "Отправить"
+//    поле ввода "Частота имитации вращения" и кнопка "Отправить"
+//    Александр Подгайский, [31.05.19 11:58]
+//    радиокнопка "Подключить / отключить программатор"
+//    Александр Подгайский, [31.05.19 11:58]
+//    Туда же в окошко
+
     repeatParameter = 0;
     connectCondition = false;
     isRunWithoutConnect = false;
@@ -3465,7 +3477,6 @@ void MainWindow::on_toolButton_selectProgrammingFile_clicked()
 
 void MainWindow::on_comboBox_portList_currentIndexChanged(const QString &arg1)
 {
-//    return;
 
         port->close();
         port->setPortName(arg1);
@@ -3505,40 +3516,6 @@ void MainWindow::on_comboBox_portList_currentIndexChanged(const QString &arg1)
             return;
         }
 
-
-//        //в файл скрипта write_scriptFrequency вставляем номер порта
-//    //    qDebug()<<"QDir::currentPath()"<<QDir::currentPath();
-//        QFile write_scriptFrequency("write_scriptFrequency.txt");
-//        if(!write_scriptFrequency.open(QIODevice::ReadOnly | QIODevice::Text)) {
-//            box.setText("Не удалось открыть файл write_scriptFrequency.txt");
-//            box.exec();
-//            qDebug()<<"не удалось открыть файл";
-//            return;
-//        }
-
-
-//        //в файл скрипта write_scriptParamsFirstField вставляем номер порта
-//    //    qDebug()<<"QDir::currentPath()"<<QDir::currentPath();
-//        QFile write_scriptParamsFirstField("write_scriptParamsFirstField.txt");
-//        if(!write_scriptParamsFirstField.open(QIODevice::ReadOnly | QIODevice::Text)) {
-//            box.setText("Не удалось открыть файл write_scriptParamsFirstField.txt");
-//            box.exec();
-//            qDebug()<<"не удалось открыть файл";
-//            return;
-//        }
-
-
-//        //в файл скрипта write_scriptParamsSecondField вставляем номер порта
-//    //    qDebug()<<"QDir::currentPath()"<<QDir::currentPath();
-//        QFile write_scriptParamsSecondField("write_scriptParamsSecondField.txt");
-//        if(!write_scriptParamsSecondField.open(QIODevice::ReadOnly | QIODevice::Text)) {
-//            box.setText("Не удалось открыть файл write_scriptParamsSecondField.txt");
-//            box.exec();
-//            qDebug()<<"не удалось открыть файл";
-//            return;
-//        }
-
-
         //прочитываем файл scriptProgramming в строку далее в лист
         QString fileToString = scriptEso.readAll();
         qDebug()<<"fileToString"<<fileToString;
@@ -3554,53 +3531,6 @@ void MainWindow::on_comboBox_portList_currentIndexChanged(const QString &arg1)
             }
         }
         qDebug()<<"fileToStringList"<<fileToStringList;
-
-
-//        //прочитываем файл write_scriptFrequency в строку далее в лист
-//        QString fileToStringWrite_scriptFrequency = write_scriptFrequency.readAll();
-//        qDebug()<<"fileToStringWrite_scriptFrequency"<<fileToStringWrite_scriptFrequency;
-//        QStringList fileToStringWrite_scriptFrequencyList;
-//        sym = "";
-//        for(int i=0; i<fileToStringWrite_scriptFrequency.size(); i++) {
-//            sym = sym + fileToStringWrite_scriptFrequency[i];
-//            if(fileToStringWrite_scriptFrequency[i+1] == "\n") {
-//     //           sym = sym + "\n";
-//                fileToStringWrite_scriptFrequencyList<<sym;
-//                sym = "";
-//     //           i=i+1;
-//            }
-//        }
-
-//        //прочитываем файл write_scriptParamsFirstField в строку далее в лист
-//        QString fileToStringWrite_scriptParamsFirstField = write_scriptParamsFirstField.readAll();
-//        qDebug()<<"fileToStringWrite_scriptParamsFirstField"<<fileToStringWrite_scriptParamsFirstField;
-//        QStringList fileToStringWrite_scriptParamsFirstFieldList;
-//        sym = "";
-//        for(int i=0; i<fileToStringWrite_scriptParamsFirstField.size(); i++) {
-//            sym = sym + fileToStringWrite_scriptParamsFirstField[i];
-//            if(fileToStringWrite_scriptParamsFirstField[i+1] == "\n") {
-//     //           sym = sym + "\n";
-//                fileToStringWrite_scriptParamsFirstFieldList<<sym;
-//                sym = "";
-//     //           i=i+1;
-//            }
-//        }
-
-//        //прочитываем файл write_scriptParamsSecondField в строку далее в лист
-//        QString fileToStringWrite_scriptParamsSecondField = write_scriptParamsSecondField.readAll();
-//        qDebug()<<"fileToStringWrite_scriptParamsSecondField"<<fileToStringWrite_scriptParamsSecondField;
-//        QStringList fileToStringWrite_scriptParamsSecondFieldList;
-//        sym = "";
-//        for(int i=0; i<fileToStringWrite_scriptParamsSecondField.size(); i++) {
-//            sym = sym + fileToStringWrite_scriptParamsSecondField[i];
-//            if(fileToStringWrite_scriptParamsSecondField[i+1] == "\n") {
-//     //           sym = sym + "\n";
-//                fileToStringWrite_scriptParamsSecondFieldList<<sym;
-//                sym = "";
-//     //           i=i+1;
-//            }
-//        }
-
 
         //находим строку с командой RX_DATA_BLOCK
         bool command_RX_DATA_BLOCK_Exist = false;
@@ -3631,11 +3561,6 @@ void MainWindow::on_comboBox_portList_currentIndexChanged(const QString &arg1)
         str = "MODE 6xx_family " + port->portName();
         fileToStringList[numberOfPortNameString] = str;
 
-//        //записываем новую строку с номером порта в остальные файлы
-//        fileToStringWrite_scriptFrequencyList[0] = str;
-//        fileToStringWrite_scriptParamsFirstFieldList[0] = str;
-//        fileToStringWrite_scriptParamsSecondFieldList[0] = str;
-
         //делаем из листа обратно строку, чтобы записать в файл
         QString stringWriteToFile;
         sym = "";
@@ -3656,72 +3581,6 @@ void MainWindow::on_comboBox_portList_currentIndexChanged(const QString &arg1)
         scriptEso.write(sym.toLocal8Bit());
 
         scriptEso.close();
-
-
-//        //делаем из листа обратно строку, чтобы записать в файл write_scriptFrequency
-//     //   QString stringWriteToFileScriptFrequency;
-//        sym = "";
-//        for(int i=0; i<fileToStringWrite_scriptFrequencyList.size(); i++) {
-//        //    fileToStringWrite_scriptFrequencyList[i].remove("\n");
-//            sym = sym + fileToStringWrite_scriptFrequencyList[i];
-//        }
-//        sym = sym + "\n";
-//        write_scriptFrequency.write("");
-//        write_scriptFrequency.close();
-//        //открываем файл на чтение
-//        if(!write_scriptFrequency.open(QIODevice::WriteOnly | QIODevice::Text)) {
-//            box.setText("Не удалось открыть файл write_scriptFrequency");
-//            box.exec();
-//            qDebug()<<"не удалось открыть файл write_scriptFrequency";
-//            return;
-//        }
-//        write_scriptFrequency.write(sym.toLocal8Bit());
-
-//        write_scriptFrequency.close();
-
-
-//        //делаем из листа обратно строку, чтобы записать в файл write_scriptParamsFirstField
-//     //       QString stringWriteToFile;
-//            sym = "";
-//            for(int i=0; i<fileToStringWrite_scriptParamsFirstFieldList.size(); i++) {
-//            //    fileToStringWrite_scriptParamsFirstFieldList[i].remove("\n");
-//                sym = sym + fileToStringWrite_scriptParamsFirstFieldList[i];
-//            }
-//            sym = sym + "\n";
-//            write_scriptParamsFirstField.write("");
-//            write_scriptParamsFirstField.close();
-//            //открываем файл на чтение
-//            if(!write_scriptParamsFirstField.open(QIODevice::WriteOnly | QIODevice::Text)) {
-//                box.setText("Не удалось открыть файл");
-//                box.exec();
-//                qDebug()<<"не удалось открыть файл";
-//                return;
-//            }
-//            write_scriptParamsFirstField.write(sym.toLocal8Bit());
-
-//            write_scriptParamsFirstField.close();
-
-
-//        //делаем из листа обратно строку, чтобы записать в файл write_scriptParamsSecondField
-//      //      QString stringWriteToFile;
-//            sym = "";
-//            for(int i=0; i<fileToStringWrite_scriptParamsSecondFieldList.size(); i++) {
-//            //    fileToStringWrite_scriptParamsSecondFieldList[i].remove("\n");
-//                sym = sym + fileToStringWrite_scriptParamsSecondFieldList[i];
-//            }
-//            sym = sym + "\n";
-//            write_scriptParamsSecondField.write("");
-//            write_scriptParamsSecondField.close();
-//            //открываем файл на чтение
-//            if(!write_scriptParamsSecondField.open(QIODevice::WriteOnly | QIODevice::Text)) {
-//                box.setText("Не удалось открыть файл");
-//                box.exec();
-//                qDebug()<<"не удалось открыть файл";
-//                return;
-//            }
-//            write_scriptParamsSecondField.write(sym.toLocal8Bit());
-
-//            write_scriptParamsSecondField.close();
 
 }
 /*************************************************************/
