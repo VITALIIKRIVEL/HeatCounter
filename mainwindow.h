@@ -189,7 +189,8 @@ signals:
     signalLog(QString str);
 
 public slots:
-
+    
+    void slotGetAnswerFromStend(QString answer);
 
     void slotAddUser(QVector<QString> vector);
     void slotChangeUser(QVector<QString> vector);
@@ -567,6 +568,7 @@ private slots:
     void on_toolButton_calibrationModeOffRepeat_clicked();
 
 private:
+    
     Ui::MainWindow *ui;
     FormCalibration *formCalibration;
     FormParamsEdit *formParamsEdit;
@@ -631,7 +633,7 @@ private:
     QSerialPort *portOptical, *portOptical2, *portOptical3, *portOptical4;
     QSerialPort *portCurrentOptical;
     QSerialPort *portDigitalInterfaceChecking;
-    QSerialPort *portController;
+    QSerialPort *portStend;
     QString portName;
     QString portNameOptical, portNameOptical2, portNameOptical3, portNameOptical4;
     QString portNameInterfaceChecking;
