@@ -5,7 +5,7 @@
 #include <QMap>
 #include <QVariant>
 #include <QVector>
-
+#include <QProcess>
 
 class ObjectThread: public QObject
 {
@@ -53,6 +53,40 @@ public:
     QString getR_Ref1_4();
     QString getR_Ref2_4();
 
+    //команды стенду
+
+    void getPortPointer(QSerialPort * port);
+    void getPortBSL(QSerialPort * port, QSerialPort * port2, QSerialPort * port3, QSerialPort * port4);
+    void sendCommandToStend(QString cmd, int workplace);
+
+    void readPulsesChannel1();
+    void readPulsesChannel2();
+    void pulsesReset();
+    void writePulsesToGenChannel1();
+    void writePulsesToGenChannel2();
+    void externalInterfaceOn();
+    void externalInterfaceOff();
+    void setTokInterfaceOff();
+    void freqMeterOn();
+    void freqMeterOff();
+    void readFreq();
+    void plataOn();
+    void plataOff();
+    void readTok();
+    void setTokPlataOff();
+
+    void programmatorOn();
+    void programmatorOff();
+
+    void finishIndicatorOn();
+    void finishIndicatorOff();
+    void errorIndicatoOn();
+    void errorIndicatoOff();
+
+    void testCommand();
+
+    //команды стенду/
+
 
 signals:
     checkWritingError(int currentIndicatorNumber);
@@ -71,6 +105,12 @@ signals:
     textBrowser(QString message);
     errorStringSignal(QString str);
 
+    //стенд
+
+    answerFromStend(QString answer);
+
+    //стенд/
+
 public slots:
     void slotWriteParams(QSerialPort *port1, QSerialPort *port2, QSerialPort *port3, QSerialPort *port4);
     void slotReadParams(QSerialPort *port1, QSerialPort *port2, QSerialPort *port3, QSerialPort *port4);
@@ -88,6 +128,12 @@ public slots:
 
     void slotOnlyReadParams(QSerialPort *port1, QSerialPort *port2, QSerialPort *port3, QSerialPort *port4);
 
+    //стенд
+    void slotGetAnsFromStend(QString answer);
+    void bslProgramming();
+
+    void slotProcessReadyRead();
+
 private slots:
 //    void slotWriteParams(QSerialPort *port1, QSerialPort *port2, QSerialPort *port3, QSerialPort *port4,
 //                         int workPlaceNumber, QVector<QVector<bool>> vectorIndicatorStateMatrix,
@@ -102,6 +148,17 @@ private slots:
 private:
 
  //   QSerialPort *portDigitalInterface;
+
+    //Стенд
+
+    QSerialPort * portStend;
+    QSerialPort * portBSL, * portBSL2, * portBSL3, * portBSL4;
+
+    QProcess *cmd;
+    QString processData;
+    QString programmingFileToString;
+    QStringList programmingFileToStringList;
+    //Стенд/
 
     QByteArray packetToRead;
     QVector<QVector<bool>> vectorIndicatorStateMatrix;

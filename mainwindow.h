@@ -188,6 +188,12 @@ signals:
 
     signalLog(QString str);
 
+    //Стенд
+
+    startBSLProgramming();
+
+    //Стенд/
+
 public slots:
     
     void slotGetAnswerFromStend(QString answer);
@@ -567,6 +573,12 @@ private slots:
 
     void on_toolButton_calibrationModeOffRepeat_clicked();
 
+    void on_comboBox_portList_2_currentIndexChanged(const QString &arg1);
+
+    void on_comboBox_portList_3_currentIndexChanged(const QString &arg1);
+
+    void on_comboBox_portList_4_currentIndexChanged(const QString &arg1);
+
 private:
     
     Ui::MainWindow *ui;
@@ -629,12 +641,12 @@ private:
 //    } PortSettingsStruct;
     //
     QProcess *cmd;
-    QSerialPort *port;
+    QSerialPort *port, *port2, *port3, *port4;
     QSerialPort *portOptical, *portOptical2, *portOptical3, *portOptical4;
     QSerialPort *portCurrentOptical;
     QSerialPort *portDigitalInterfaceChecking;
     QSerialPort *portStend;
-    QString portName;
+    QString portName, portName2, portName3, portName4;
     QString portNameOptical, portNameOptical2, portNameOptical3, portNameOptical4;
     QString portNameInterfaceChecking;
     QString fileName;

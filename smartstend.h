@@ -30,7 +30,6 @@ public:
     void readTok();
     void setTokPlataOff();
 
-
     void programmatorOn();
     void programmatorOff();
 

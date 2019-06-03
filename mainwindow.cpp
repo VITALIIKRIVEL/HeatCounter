@@ -89,15 +89,11 @@ MainWindow::MainWindow(QWidget *parent) :
     ObjectThread3 = new ObjectThread(parent = 0);
     ObjectThread4 = new ObjectThread(parent = 0);
 
-
-//    ObjectThread1->moveToThread(Thread1);
-//    ObjectThread2->moveToThread(Thread2);
-//    ObjectThread3->moveToThread(Thread3);
-//    ObjectThread4->moveToThread(Thread4);
-
-
     cmd = new QProcess(this);
     port = new QSerialPort(this);
+    port2 = new QSerialPort(this);
+    port3 = new QSerialPort(this);
+    port4 = new QSerialPort(this);
     portOptical = new QSerialPort(this);
     portOptical2 = new QSerialPort(this);
     portOptical3 = new QSerialPort(this);
@@ -123,6 +119,9 @@ MainWindow::MainWindow(QWidget *parent) :
     QList<QSerialPortInfo> info = QSerialPortInfo::availablePorts();
     for(int i=0; i<info.size(); i++) {
        ui->comboBox_portList->addItem(info[i].portName());
+       ui->comboBox_portList_2->addItem(info[i].portName());
+       ui->comboBox_portList_3->addItem(info[i].portName());
+       ui->comboBox_portList_4->addItem(info[i].portName());
        ui->comboBox_portListOptical->addItem(info[i].portName());
        ui->comboBox_portListOptical_2->addItem(info[i].portName());
        ui->comboBox_portListOptical_3->addItem(info[i].portName());
@@ -140,6 +139,18 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->comboBox_portList->setCurrentIndex(0);
     port->setPortName(ui->comboBox_portList->itemText(0));
     portName = ui->comboBox_portList->itemText(0);
+
+    ui->comboBox_portList_2->setCurrentIndex(0);
+    port2->setPortName(ui->comboBox_portList_2->itemText(0));
+    portName2 = ui->comboBox_portList_2->itemText(0);
+
+    ui->comboBox_portList_3->setCurrentIndex(0);
+    port3->setPortName(ui->comboBox_portList_3->itemText(0));
+    portName3 = ui->comboBox_portList_3->itemText(0);
+
+    ui->comboBox_portList_4->setCurrentIndex(0);
+    port4->setPortName(ui->comboBox_portList_4->itemText(0));
+    portName4 = ui->comboBox_portList_4->itemText(0);
 
     //
     ui->comboBox_portListOptical->setCurrentIndex(0);
@@ -168,6 +179,21 @@ MainWindow::MainWindow(QWidget *parent) :
     port->setDataBits(QSerialPort::Data8);
     port->setParity(QSerialPort::NoParity);
     port->setStopBits(QSerialPort::OneStop);
+
+    port2->setBaudRate(QSerialPort::Baud115200);
+    port2->setDataBits(QSerialPort::Data8);
+    port2->setParity(QSerialPort::NoParity);
+    port2->setStopBits(QSerialPort::OneStop);
+
+    port3->setBaudRate(QSerialPort::Baud115200);
+    port3->setDataBits(QSerialPort::Data8);
+    port3->setParity(QSerialPort::NoParity);
+    port3->setStopBits(QSerialPort::OneStop);
+
+    port4->setBaudRate(QSerialPort::Baud115200);
+    port4->setDataBits(QSerialPort::Data8);
+    port4->setParity(QSerialPort::NoParity);
+    port4->setStopBits(QSerialPort::OneStop);
 
     //
     portOptical->setBaudRate(QSerialPort::Baud19200);
@@ -372,6 +398,15 @@ MainWindow::MainWindow(QWidget *parent) :
 
 //    connect(this, &MainWindow::signalWriteParamsToThread, ObjectThread1, &ObjectThread::slotWriteParams);
 //    connect(this, &MainWindow::signalWriteParamsToThread, ObjectThread2, &ObjectThread::slotWriteParams);
+
+    //bsl programming
+
+    connect(this, SIGNAL(startBSLProgramming()), ObjectThread1, SLOT(bslProgramming()));
+    connect(this, SIGNAL(startBSLProgramming()), ObjectThread2, SLOT(bslProgramming()));
+    connect(this, SIGNAL(startBSLProgramming()), ObjectThread3, SLOT(bslProgramming()));
+    connect(this, SIGNAL(startBSLProgramming()), ObjectThread4, SLOT(bslProgramming()));
+
+    //bsl programming/
 
     //writing connect
 
@@ -2215,6 +2250,8 @@ void MainWindow::paintEvent(QPaintEvent *event)
 /*************************************************************/
 void MainWindow::closeEvent(QCloseEvent *event)
 {
+ //   Q_UNUSED event;
+
  //   formEditParameters->close();
     port->close();
     portOptical->close();
@@ -2245,40 +2282,53 @@ void MainWindow::slotWriteParams()
 /*************************************************************/
 void MainWindow::on_toolButton_programmingBSL_clicked()
 {
-    processData.clear();
-    ui->textBrowser->clear();
+    if(ui->checkBox_workPlace1->isChecked()) vectorIsWorkPlaceUse[0] = true;
+    if(ui->checkBox_workPlace2->isChecked()) vectorIsWorkPlaceUse[1] = true;
+    if(ui->checkBox_workPlace3->isChecked()) vectorIsWorkPlaceUse[2] = true;
+    if(ui->checkBox_workPlace4->isChecked()) vectorIsWorkPlaceUse[3] = true;
 
-    //специальные настройки для windows
-    if(QSysInfo::productType()=="windows")
-    {
-        QTextCodec *codec = QTextCodec::codecForName("IBM 866");
-//        ui->textEdit->append( codec->toUnicode(m_process->readAllStandardOutput() ) );
-    }
-//    else
-//        ui->textEdit->append( m_process->readAllStandardOutput() );
-   //формирование команды
-    QString strCommand;
+    ObjectThread1->moveToThread(&Thread1);
+    ObjectThread2->moveToThread(&Thread2);
+    ObjectThread3->moveToThread(&Thread3);
+    ObjectThread4->moveToThread(&Thread4);
 
-    strCommand = "cmd /C BSL_Scripter scriptProgramming.txt";//"cmd.exe ";
-    cmd->start(strCommand/*, listParam*/);
+    Thread1.start();
+    Thread2.start();
+    Thread3.start();
+    Thread4.start();
 
-//    global::pause(1000);
+    ObjectThread1->setWorkPlace(0);
+    ObjectThread2->setWorkPlace(1);
+    ObjectThread3->setWorkPlace(2);
+    ObjectThread4->setWorkPlace(3);
 
-//    qDebug()<<"cmd.program"<<cmd->program();
-//    qDebug()<<"cmd.lastError"<<cmd->error();
-//    qDebug()<<"cmd.OpenMode"<<cmd->openMode();
+    ObjectThread1->setIsWorkPlaceUseVector(vectorIsWorkPlaceUse);
+    ObjectThread2->setIsWorkPlaceUseVector(vectorIsWorkPlaceUse);
+    ObjectThread3->setIsWorkPlaceUseVector(vectorIsWorkPlaceUse);
+    ObjectThread4->setIsWorkPlaceUseVector(vectorIsWorkPlaceUse);
 
+    ObjectThread1->getPortBSL(port, port2, port3, port4);
+    ObjectThread2->getPortBSL(port, port2, port3, port4);
+    ObjectThread3->getPortBSL(port, port2, port3, port4);
+    ObjectThread4->getPortBSL(port, port2, port3, port4);
+
+    emit startBSLProgramming();
+
+//    processData.clear();
+//    ui->textBrowser->clear();
+
+//    //специальные настройки для windows
 //    if(QSysInfo::productType()=="windows")
 //    {
 //        QTextCodec *codec = QTextCodec::codecForName("IBM 866");
-//  //        ui->textEdit->append( codec->toUnicode(m_process->readAllStandardOutput() ) );
-
-//    //
-//    QString processData = codec->toUnicode(cmd->readAllStandardOutput());//readAll();
-//    ui->textBrowser->setText(processData);
-//    qDebug()<<"processData"<<processData;//QString::fromLatin1(processData);
 //    }
-//    timerStageOne->start(10000);
+
+//   //формирование команды
+//    QString strCommand;
+
+//    strCommand = "cmd /C BSL_Scripter scriptProgramming.txt";//"cmd.exe ";
+//    cmd->start(strCommand/*, listParam*/);
+
 }
 /*************************************************************/
 void MainWindow::readSettings()
@@ -3164,24 +3214,13 @@ void MainWindow::on_toolButton_selectProgrammingFile_clicked()
 {
         QMessageBox box;
         programmingFileToString = "";
-        //специальные настройки для windows
-    //    if(QSysInfo::productType()=="windows")
-    //    {
-    //        QTextCodec *codec = QTextCodec::codecForName("IBM 866");
-    //    }
-    //    QTextCodec
+
         QFileDialog fileDialog;
         fileDialog.setFileMode(QFileDialog::Directory);
         fileName = fileDialog.getOpenFileName();
-        //
-    //    QByteArray fileNameArray = fileName.toLocal8Bit();
-    //    QTextCodec *codec = QTextCodec::codecForName("IBM 866");
-    //    fileName = codec->toUnicode(fileNameArray);
-        //
-    //    fileName = fileName.toUtf8();
+
         ui->lineEdit_programmingFile->setText(fileName);
         qDebug()<<"fileName"<<fileName;
-
 
         //в файл скрипта scriptProgramming вставляем название файла прошивки
         qDebug()<<"QDir::currentPath()"<<QDir::currentPath();
@@ -3197,41 +3236,7 @@ void MainWindow::on_toolButton_selectProgrammingFile_clicked()
             return;
         }
 
-
         ui->toolButton_programmingBSL->setEnabled(true);
-
-//        //в файл скрипта write_scriptFrequency вставляем номер порта
-//    //    qDebug()<<"QDir::currentPath()"<<QDir::currentPath();
-//        QFile write_scriptFrequency("write_scriptFrequency.txt");
-//        if(!write_scriptFrequency.open(QIODevice::ReadOnly | QIODevice::Text)) {
-//            box.setText("Не удалось открыть файл write_scriptFrequency.txt");
-//            box.exec();
-//            qDebug()<<"не удалось открыть файл";
-//            return;
-//        }
-
-
-//        //в файл скрипта write_scriptParamsFirstField вставляем номер порта
-//    //    qDebug()<<"QDir::currentPath()"<<QDir::currentPath();
-//        QFile write_scriptParamsFirstField("write_scriptParamsFirstField.txt");
-//        if(!write_scriptParamsFirstField.open(QIODevice::ReadOnly | QIODevice::Text)) {
-//            box.setText("Не удалось открыть файл write_scriptParamsFirstField.txt");
-//            box.exec();
-//            qDebug()<<"не удалось открыть файл";
-//            return;
-//        }
-
-
-//        //в файл скрипта write_scriptParamsSecondField вставляем номер порта
-//    //    qDebug()<<"QDir::currentPath()"<<QDir::currentPath();
-//        QFile write_scriptParamsSecondField("write_scriptParamsSecondField.txt");
-//        if(!write_scriptParamsSecondField.open(QIODevice::ReadOnly | QIODevice::Text)) {
-//            box.setText("Не удалось открыть файл write_scriptParamsSecondField.txt");
-//            box.exec();
-//            qDebug()<<"не удалось открыть файл";
-//            return;
-//        }
-
 
         //прочитываем файл scriptProgramming в строку далее в лист
         QString fileToString = scriptEso.readAll();
@@ -3248,53 +3253,6 @@ void MainWindow::on_toolButton_selectProgrammingFile_clicked()
             }
         }
         qDebug()<<"fileToStringList"<<fileToStringList;
-
-
-//        //прочитываем файл write_scriptFrequency в строку далее в лист
-//        QString fileToStringWrite_scriptFrequency = write_scriptFrequency.readAll();
-//        qDebug()<<"fileToStringWrite_scriptFrequency"<<fileToStringWrite_scriptFrequency;
-//        QStringList fileToStringWrite_scriptFrequencyList;
-//        sym = "";
-//        for(int i=0; i<fileToStringWrite_scriptFrequency.size(); i++) {
-//            sym = sym + fileToStringWrite_scriptFrequency[i];
-//            if(fileToStringWrite_scriptFrequency[i+1] == "\n") {
-//     //           sym = sym + "\n";
-//                fileToStringWrite_scriptFrequencyList<<sym;
-//                sym = "";
-//     //           i=i+1;
-//            }
-//        }
-
-//        //прочитываем файл write_scriptParamsFirstField в строку далее в лист
-//        QString fileToStringWrite_scriptParamsFirstField = write_scriptParamsFirstField.readAll();
-//        qDebug()<<"fileToStringWrite_scriptParamsFirstField"<<fileToStringWrite_scriptParamsFirstField;
-//        QStringList fileToStringWrite_scriptParamsFirstFieldList;
-//        sym = "";
-//        for(int i=0; i<fileToStringWrite_scriptParamsFirstField.size(); i++) {
-//            sym = sym + fileToStringWrite_scriptParamsFirstField[i];
-//            if(fileToStringWrite_scriptParamsFirstField[i+1] == "\n") {
-//     //           sym = sym + "\n";
-//                fileToStringWrite_scriptParamsFirstFieldList<<sym;
-//                sym = "";
-//     //           i=i+1;
-//            }
-//        }
-
-//        //прочитываем файл write_scriptParamsSecondField в строку далее в лист
-//        QString fileToStringWrite_scriptParamsSecondField = write_scriptParamsSecondField.readAll();
-//        qDebug()<<"fileToStringWrite_scriptParamsSecondField"<<fileToStringWrite_scriptParamsSecondField;
-//        QStringList fileToStringWrite_scriptParamsSecondFieldList;
-//        sym = "";
-//        for(int i=0; i<fileToStringWrite_scriptParamsSecondField.size(); i++) {
-//            sym = sym + fileToStringWrite_scriptParamsSecondField[i];
-//            if(fileToStringWrite_scriptParamsSecondField[i+1] == "\n") {
-//     //           sym = sym + "\n";
-//                fileToStringWrite_scriptParamsSecondFieldList<<sym;
-//                sym = "";
-//     //           i=i+1;
-//            }
-//        }
-
 
         //находим строку с командой RX_DATA_BLOCK
         bool command_RX_DATA_BLOCK_Exist = false;
@@ -3325,11 +3283,6 @@ void MainWindow::on_toolButton_selectProgrammingFile_clicked()
         str = "MODE 6xx_family " + port->portName();
         fileToStringList[numberOfPortNameString] = str;
 
-//        //записываем новую строку с номером порта в остальные файлы
-//        fileToStringWrite_scriptFrequencyList[0] = str;
-//        fileToStringWrite_scriptParamsFirstFieldList[0] = str;
-//        fileToStringWrite_scriptParamsSecondFieldList[0] = str;
-
         //делаем из листа обратно строку, чтобы записать в файл
         QString stringWriteToFile;
         sym = "";
@@ -3351,127 +3304,258 @@ void MainWindow::on_toolButton_selectProgrammingFile_clicked()
 
         scriptEso.close();
 
+        //
+        //
+        //в файл скрипта scriptProgramming_2 вставляем название файла прошивки
+        qDebug()<<"QDir::currentPath()"<<QDir::currentPath();
+        scriptEso.setFileName("scriptProgramming_2.txt");
+        if(fileName.isEmpty()) {
+            return;
+        }
+        if(!scriptEso.open(QIODevice::ReadOnly | QIODevice::Text)) {
+            box.setText("Не удалось открыть файл scriptProgramming_2.txt");
+            box.exec();
+            qDebug()<<"не удалось открыть файл";
+            ui->toolButton_programmingBSL->setEnabled(false);
+            return;
+        }
 
-//        //делаем из листа обратно строку, чтобы записать в файл write_scriptFrequency
-//     //   QString stringWriteToFileScriptFrequency;
-//        sym = "";
-//        for(int i=0; i<fileToStringWrite_scriptFrequencyList.size(); i++) {
-//        //    fileToStringWrite_scriptFrequencyList[i].remove("\n");
-//            sym = sym + fileToStringWrite_scriptFrequencyList[i];
-//        }
-//        sym = sym + "\n";
-//        write_scriptFrequency.write("");
-//        write_scriptFrequency.close();
-//        //открываем файл на чтение
-//        if(!write_scriptFrequency.open(QIODevice::WriteOnly | QIODevice::Text)) {
-//            box.setText("Не удалось открыть файл write_scriptFrequency");
-//            box.exec();
-//            qDebug()<<"не удалось открыть файл write_scriptFrequency";
-//            return;
-//        }
-//        write_scriptFrequency.write(sym.toLocal8Bit());
+        ui->toolButton_programmingBSL->setEnabled(true);
 
-//        write_scriptFrequency.close();
+        //прочитываем файл scriptProgramming в строку далее в лист
+        fileToString = scriptEso.readAll();
+        qDebug()<<"fileToString"<<fileToString;
+        fileToStringList.clear();
+        sym = "";
+        for(int i=0; i<fileToString.size(); i++) {
+            sym = sym + fileToString[i];
+            if(fileToString[i+1] == "\n") {
+     //           sym = sym + "\n";
+                fileToStringList<<sym;
+                sym = "";
+     //           i=i+1;
+            }
+        }
+        qDebug()<<"fileToStringList"<<fileToStringList;
 
+        //находим строку с командой RX_DATA_BLOCK
+        command_RX_DATA_BLOCK_Exist = false;
+        numberOfCommandString = 0;
+        for(int i=0; i<fileToStringList.size(); i++) {
+           if(fileToStringList[i].contains("\nRX_DATA_BLOCK")) {
+                command_RX_DATA_BLOCK_Exist = true;
+                numberOfCommandString = i;
+            }
+        }
 
-//        //делаем из листа обратно строку, чтобы записать в файл write_scriptParamsFirstField
-//     //       QString stringWriteToFile;
-//            sym = "";
-//            for(int i=0; i<fileToStringWrite_scriptParamsFirstFieldList.size(); i++) {
-//            //    fileToStringWrite_scriptParamsFirstFieldList[i].remove("\n");
-//                sym = sym + fileToStringWrite_scriptParamsFirstFieldList[i];
-//            }
-//            sym = sym + "\n";
-//            write_scriptParamsFirstField.write("");
-//            write_scriptParamsFirstField.close();
-//            //открываем файл на чтение
-//            if(!write_scriptParamsFirstField.open(QIODevice::WriteOnly | QIODevice::Text)) {
-//                box.setText("Не удалось открыть файл");
-//                box.exec();
-//                qDebug()<<"не удалось открыть файл";
-//                return;
-//            }
-//            write_scriptParamsFirstField.write(sym.toLocal8Bit());
+        //находим строку с номером порта
+        rowWithPortNameExist = false;
+        numberOfPortNameString = 0;
+        for(int i=0; i<fileToStringList.size(); i++) {
+           if(fileToStringList[i].contains("MODE 6xx_family")) {
+                rowWithPortNameExist = true;
+                numberOfPortNameString = i;
+            }
+        }
 
-//            write_scriptParamsFirstField.close();
+        //записываем в строку с командой RX_DATA_BLOCK название выбранного файла прошивки
+        str = "\nRX_DATA_BLOCK " + fileName;
+        str.remove(str.size() - 4, 4);
+        fileToStringList[numberOfCommandString] = "\nRX_DATA_BLOCK " + fileName;
 
+        //записываем в строку с номером порта текущий порт
+        str = "MODE 6xx_family " + port2->portName();
+        fileToStringList[numberOfPortNameString] = str;
 
-//        //делаем из листа обратно строку, чтобы записать в файл write_scriptParamsSecondField
-//      //      QString stringWriteToFile;
-//            sym = "";
-//            for(int i=0; i<fileToStringWrite_scriptParamsSecondFieldList.size(); i++) {
-//            //    fileToStringWrite_scriptParamsSecondFieldList[i].remove("\n");
-//                sym = sym + fileToStringWrite_scriptParamsSecondFieldList[i];
-//            }
-//            sym = sym + "\n";
-//            write_scriptParamsSecondField.write("");
-//            write_scriptParamsSecondField.close();
-//            //открываем файл на чтение
-//            if(!write_scriptParamsSecondField.open(QIODevice::WriteOnly | QIODevice::Text)) {
-//                box.setText("Не удалось открыть файл");
-//                box.exec();
-//                qDebug()<<"не удалось открыть файл";
-//                return;
-//            }
-//            write_scriptParamsSecondField.write(sym.toLocal8Bit());
+        //делаем из листа обратно строку, чтобы записать в файл
+        stringWriteToFile.clear();
+        sym = "";
+        for(int i=0; i<fileToStringList.size(); i++) {
+        //    fileToStringList[i].remove("\n");
+            sym = sym + fileToStringList[i];
+        }
+        sym = sym + "\n";
+        scriptEso.write("");
+        scriptEso.close();
+        //открываем файл на чтение
+        if(!scriptEso.open(QIODevice::WriteOnly | QIODevice::Text)) {
+            box.setText("Не удалось открыть файл");
+            box.exec();
+            qDebug()<<"не удалось открыть файл";
+            return;
+        }
+        scriptEso.write(sym.toLocal8Bit());
 
-//            write_scriptParamsSecondField.close();
+        scriptEso.close();
 
+        //
+        //
+        //в файл скрипта scriptProgramming_3 вставляем название файла прошивки
+        qDebug()<<"QDir::currentPath()"<<QDir::currentPath();
+        scriptEso.setFileName("scriptProgramming_3.txt");
+        if(fileName.isEmpty()) {
+            return;
+        }
+        if(!scriptEso.open(QIODevice::ReadOnly | QIODevice::Text)) {
+            box.setText("Не удалось открыть файл scriptProgramming_3.txt");
+            box.exec();
+            qDebug()<<"не удалось открыть файл";
+            ui->toolButton_programmingBSL->setEnabled(false);
+            return;
+        }
 
-//        //прочитываем файл прошивки и извлекаем значение калибровочной частоты
-//        QFile programmingFile(fileName);
-//        if(!programmingFile.open(QIODevice::ReadOnly | QIODevice::Text)) {
-//            box.setText("Не удалось открыть файл");
-//            box.exec();
-//            qDebug()<<"не удалось открыть файл";
-//            return;
-//        }
+        ui->toolButton_programmingBSL->setEnabled(true);
 
-//        //прочитываем файл в строку далее в лист
-//        programmingFileToString = programmingFile.readAll();
-//        qDebug()<<"programmingFileToString"<<programmingFileToString;
-//        programmingFileToStringList.clear();
-//        sym = "";
-//        for(int i=0; i<programmingFileToString.size(); i++) {
-//            sym = sym + programmingFileToString[i];
-//            if(programmingFileToString[i+1] == "\n") {
-//     //           sym = sym + "\n";
-//                programmingFileToStringList<<sym;
-//                sym = "";
-//                i=i+1;
-//            }
-//        }
-//        qDebug()<<"programmingFileToStringList"<<programmingFileToStringList;
+        //прочитываем файл scriptProgramming в строку далее в лист
+        fileToString = scriptEso.readAll();
+        qDebug()<<"fileToString"<<fileToString;
+        fileToStringList.clear();
+        sym = "";
+        for(int i=0; i<fileToString.size(); i++) {
+            sym = sym + fileToString[i];
+            if(fileToString[i+1] == "\n") {
+     //           sym = sym + "\n";
+                fileToStringList<<sym;
+                sym = "";
+     //           i=i+1;
+            }
+        }
+        qDebug()<<"fileToStringList"<<fileToStringList;
 
-//        firstField = "";
-//        firstField = programmingFileToStringList[1];
+        //находим строку с командой RX_DATA_BLOCK
+        command_RX_DATA_BLOCK_Exist = false;
+        numberOfCommandString;
+        for(int i=0; i<fileToStringList.size(); i++) {
+           if(fileToStringList[i].contains("\nRX_DATA_BLOCK")) {
+                command_RX_DATA_BLOCK_Exist = true;
+                numberOfCommandString = i;
+            }
+        }
 
-//        QString localCalibrFrequencyString = firstField.remove("\n");
-//        localCalibrFrequencyString.remove(0, 3);
-//        localCalibrFrequencyString = localCalibrFrequencyString.left(8);
+        //находим строку с номером порта
+        rowWithPortNameExist = false;
+        numberOfPortNameString;
+        for(int i=0; i<fileToStringList.size(); i++) {
+           if(fileToStringList[i].contains("MODE 6xx_family")) {
+                rowWithPortNameExist = true;
+                numberOfPortNameString = i;
+            }
+        }
 
-//        localCalibrFrequencyString.remove(" ");
-//        qDebug()<<"localCalibrFrequencyString"<<localCalibrFrequencyString;
+        //записываем в строку с командой RX_DATA_BLOCK название выбранного файла прошивки
+        str = "\nRX_DATA_BLOCK " + fileName;
+        str.remove(str.size() - 4, 4);
+        fileToStringList[numberOfCommandString] = "\nRX_DATA_BLOCK " + fileName;
 
-//        QVector<QString> localCalibrFrequencyByteVector;
-//        for(int i=0; i<localCalibrFrequencyString.size(); i=i+2) {
-//            localCalibrFrequencyByteVector.append(localCalibrFrequencyString[i] + "" + localCalibrFrequencyString[i+1]);
-//        }
-//        qDebug()<<"localCalibrFrequencyByteVector"<<localCalibrFrequencyByteVector;
+        //записываем в строку с номером порта текущий порт
+        str = "MODE 6xx_family " + port3->portName();
+        fileToStringList[numberOfPortNameString] = str;
 
-//        bool ok;
-//        quint32 localCalibrFrequencyInt = static_cast<quint8>(localCalibrFrequencyByteVector.at(2).toInt(&ok, 16));//старший байт
-//        localCalibrFrequencyInt = (localCalibrFrequencyInt<<8)|(static_cast<quint8>(localCalibrFrequencyByteVector.at(1).toInt(&ok, 16)));//средний байт
-//        localCalibrFrequencyInt = (localCalibrFrequencyInt<<8)|(static_cast<quint8>(localCalibrFrequencyByteVector.at(0).toInt(&ok, 16)));//младший байт
+        //делаем из листа обратно строку, чтобы записать в файл
+        stringWriteToFile.clear();
+        sym = "";
+        for(int i=0; i<fileToStringList.size(); i++) {
+        //    fileToStringList[i].remove("\n");
+            sym = sym + fileToStringList[i];
+        }
+        sym = sym + "\n";
+        scriptEso.write("");
+        scriptEso.close();
+        //открываем файл на чтение
+        if(!scriptEso.open(QIODevice::WriteOnly | QIODevice::Text)) {
+            box.setText("Не удалось открыть файл");
+            box.exec();
+            qDebug()<<"не удалось открыть файл";
+            return;
+        }
+        scriptEso.write(sym.toLocal8Bit());
 
-//        qDebug()<<"localCalibrFrequencyInt"<<localCalibrFrequencyInt;
-//        double localCalibrFrequencyIntModified = (0x10AF75*433.820)/localCalibrFrequencyInt;
+        scriptEso.close();
 
-//        //извлекаем дату записи из файла прошивки
+        //
+        //
+        //в файл скрипта scriptProgramming_4 вставляем название файла прошивки
+        qDebug()<<"QDir::currentPath()"<<QDir::currentPath();
+        scriptEso.setFileName("scriptProgramming_4.txt");
+        if(fileName.isEmpty()) {
+            return;
+        }
+        if(!scriptEso.open(QIODevice::ReadOnly | QIODevice::Text)) {
+            box.setText("Не удалось открыть файл scriptProgramming_4.txt");
+            box.exec();
+            qDebug()<<"не удалось открыть файл";
+            ui->toolButton_programmingBSL->setEnabled(false);
+            return;
+        }
 
-//        makeKey();
+        ui->toolButton_programmingBSL->setEnabled(true);
 
-     //   ui->lineEdit_valueOfFraquency->setText(QString::number(localCalibrFrequencyIntModified));
+        //прочитываем файл scriptProgramming в строку далее в лист
+        fileToString = scriptEso.readAll();
+        qDebug()<<"fileToString"<<fileToString;
+        fileToStringList.clear();
+        sym = "";
+        for(int i=0; i<fileToString.size(); i++) {
+            sym = sym + fileToString[i];
+            if(fileToString[i+1] == "\n") {
+     //           sym = sym + "\n";
+                fileToStringList<<sym;
+                sym = "";
+     //           i=i+1;
+            }
+        }
+        qDebug()<<"fileToStringList"<<fileToStringList;
+
+        //находим строку с командой RX_DATA_BLOCK
+        command_RX_DATA_BLOCK_Exist = false;
+        numberOfCommandString;
+        for(int i=0; i<fileToStringList.size(); i++) {
+           if(fileToStringList[i].contains("\nRX_DATA_BLOCK")) {
+                command_RX_DATA_BLOCK_Exist = true;
+                numberOfCommandString = i;
+            }
+        }
+
+        //находим строку с номером порта
+        rowWithPortNameExist = false;
+        numberOfPortNameString;
+        for(int i=0; i<fileToStringList.size(); i++) {
+           if(fileToStringList[i].contains("MODE 6xx_family")) {
+                rowWithPortNameExist = true;
+                numberOfPortNameString = i;
+            }
+        }
+
+        //записываем в строку с командой RX_DATA_BLOCK название выбранного файла прошивки
+        str = "\nRX_DATA_BLOCK " + fileName;
+        str.remove(str.size() - 4, 4);
+        fileToStringList[numberOfCommandString] = "\nRX_DATA_BLOCK " + fileName;
+
+        //записываем в строку с номером порта текущий порт
+        str = "MODE 6xx_family " + port4->portName();
+        fileToStringList[numberOfPortNameString] = str;
+
+        //делаем из листа обратно строку, чтобы записать в файл
+        stringWriteToFile.clear();
+        sym = "";
+        for(int i=0; i<fileToStringList.size(); i++) {
+        //    fileToStringList[i].remove("\n");
+            sym = sym + fileToStringList[i];
+        }
+        sym = sym + "\n";
+        scriptEso.write("");
+        scriptEso.close();
+        //открываем файл на чтение
+        if(!scriptEso.open(QIODevice::WriteOnly | QIODevice::Text)) {
+            box.setText("Не удалось открыть файл");
+            box.exec();
+            qDebug()<<"не удалось открыть файл";
+            return;
+        }
+        scriptEso.write(sym.toLocal8Bit());
+
+        scriptEso.close();
+
 
 }
 
@@ -3558,7 +3642,7 @@ void MainWindow::on_comboBox_portList_currentIndexChanged(const QString &arg1)
         fileToStringList[numberOfCommandString] = "\nRX_DATA_BLOCK " + fileName;
 
         //записываем в строку с номером порта текущий порт
-        str = "MODE 6xx_family " + port->portName();
+        str = "MODE 6xx_family " + arg1;//port->portName();
         fileToStringList[numberOfPortNameString] = str;
 
         //делаем из листа обратно строку, чтобы записать в файл
@@ -38879,30 +38963,323 @@ void MainWindow::slotGetAnswerFromStend(QString answer)
 
 
 
+void MainWindow::on_comboBox_portList_2_currentIndexChanged(const QString &arg1)
+{
+    port2->close();
+    port2->setPortName(arg1);
+    portName2 = arg1;
+
+    QMessageBox box;
+    programmingFileToString = "";
+    //специальные настройки для windows
+//    if(QSysInfo::productType()=="windows")
+//    {
+//        QTextCodec *codec = QTextCodec::codecForName("IBM 866");
+//    }
+//    QTextCodec
+//    QFileDialog fileDialog;
+//    fileDialog.setFileMode(QFileDialog::Directory);
+//    fileName = fileDialog.getOpenFileName();
+//    //
+//  //    QByteArray fileNameArray = fileName.toLocal8Bit();
+//  //    QTextCodec *codec = QTextCodec::codecForName("IBM 866");
+//  //    fileName = codec->toUnicode(fileNameArray);
+//    //
+
+//    fileName = fileName.toUtf8();
+
+//    ui->lineEdit_programmingFile->setText(fileName);
+
+//    qDebug()<<"fileName"<<fileName;
 
 
+    //в файл скрипта scriptProgramming вставляем название файла прошивки
+    qDebug()<<"QDir::currentPath()"<<QDir::currentPath();
+    QFile scriptEso("scriptProgramming_2.txt");
+    if(!scriptEso.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        box.setText("Не удалось открыть файл scriptProgramming.txt");
+        box.exec();
+        qDebug()<<"не удалось открыть файл";
+        return;
+    }
+
+    //прочитываем файл scriptProgramming в строку далее в лист
+    QString fileToString = scriptEso.readAll();
+    qDebug()<<"fileToString"<<fileToString;
+    QStringList fileToStringList;
+    QString sym = "";
+    for(int i=0; i<fileToString.size(); i++) {
+        sym = sym + fileToString[i];
+        if(fileToString[i+1] == "\n") {
+ //           sym = sym + "\n";
+            fileToStringList<<sym;
+            sym = "";
+ //           i=i+1;
+        }
+    }
+    qDebug()<<"fileToStringList"<<fileToStringList;
+
+    //находим строку с командой RX_DATA_BLOCK
+    bool command_RX_DATA_BLOCK_Exist = false;
+    int numberOfCommandString;
+    for(int i=0; i<fileToStringList.size(); i++) {
+       if(fileToStringList[i].contains("\nRX_DATA_BLOCK")) {
+            command_RX_DATA_BLOCK_Exist = true;
+            numberOfCommandString = i;
+        }
+    }
+
+    //находим строку с номером порта
+    bool rowWithPortNameExist = false;
+    int numberOfPortNameString;
+    for(int i=0; i<fileToStringList.size(); i++) {
+       if(fileToStringList[i].contains("MODE 6xx_family")) {
+            rowWithPortNameExist = true;
+            numberOfPortNameString = i;
+        }
+    }
+
+    //записываем в строку с командой RX_DATA_BLOCK название выбранного файла прошивки
+    QString str = "\nRX_DATA_BLOCK " + fileName;
+    str.remove(str.size() - 4, 4);
+    fileToStringList[numberOfCommandString] = "\nRX_DATA_BLOCK " + fileName;
+
+    //записываем в строку с номером порта текущий порт
+    str = "MODE 6xx_family " + arg1;//port2->portName();
+    fileToStringList[numberOfPortNameString] = str;
+
+    //делаем из листа обратно строку, чтобы записать в файл
+    QString stringWriteToFile;
+    sym = "";
+    for(int i=0; i<fileToStringList.size(); i++) {
+    //    fileToStringList[i].remove("\n");
+        sym = sym + fileToStringList[i];
+    }
+    sym = sym + "\n";
+    scriptEso.write("");
+    scriptEso.close();
+    //открываем файл на чтение
+    if(!scriptEso.open(QIODevice::WriteOnly | QIODevice::Text)) {
+        box.setText("Не удалось открыть файл");
+        box.exec();
+        qDebug()<<"не удалось открыть файл";
+        return;
+    }
+    scriptEso.write(sym.toLocal8Bit());
+
+    scriptEso.close();
+}
+
+void MainWindow::on_comboBox_portList_3_currentIndexChanged(const QString &arg1)
+{
+    port3->close();
+    port3->setPortName(arg1);
+    portName3 = arg1;
+
+    QMessageBox box;
+    programmingFileToString = "";
+    //специальные настройки для windows
+//    if(QSysInfo::productType()=="windows")
+//    {
+//        QTextCodec *codec = QTextCodec::codecForName("IBM 866");
+//    }
+//    QTextCodec
+//    QFileDialog fileDialog;
+//    fileDialog.setFileMode(QFileDialog::Directory);
+//    fileName = fileDialog.getOpenFileName();
+//    //
+//  //    QByteArray fileNameArray = fileName.toLocal8Bit();
+//  //    QTextCodec *codec = QTextCodec::codecForName("IBM 866");
+//  //    fileName = codec->toUnicode(fileNameArray);
+//    //
+
+//    fileName = fileName.toUtf8();
+
+//    ui->lineEdit_programmingFile->setText(fileName);
+
+//    qDebug()<<"fileName"<<fileName;
 
 
+    //в файл скрипта scriptProgramming вставляем название файла прошивки
+    qDebug()<<"QDir::currentPath()"<<QDir::currentPath();
+    QFile scriptEso("scriptProgramming_3.txt");
+    if(!scriptEso.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        box.setText("Не удалось открыть файл scriptProgramming.txt");
+        box.exec();
+        qDebug()<<"не удалось открыть файл";
+        return;
+    }
+
+    //прочитываем файл scriptProgramming в строку далее в лист
+    QString fileToString = scriptEso.readAll();
+    qDebug()<<"fileToString"<<fileToString;
+    QStringList fileToStringList;
+    QString sym = "";
+    for(int i=0; i<fileToString.size(); i++) {
+        sym = sym + fileToString[i];
+        if(fileToString[i+1] == "\n") {
+ //           sym = sym + "\n";
+            fileToStringList<<sym;
+            sym = "";
+ //           i=i+1;
+        }
+    }
+    qDebug()<<"fileToStringList"<<fileToStringList;
+
+    //находим строку с командой RX_DATA_BLOCK
+    bool command_RX_DATA_BLOCK_Exist = false;
+    int numberOfCommandString;
+    for(int i=0; i<fileToStringList.size(); i++) {
+       if(fileToStringList[i].contains("\nRX_DATA_BLOCK")) {
+            command_RX_DATA_BLOCK_Exist = true;
+            numberOfCommandString = i;
+        }
+    }
+
+    //находим строку с номером порта
+    bool rowWithPortNameExist = false;
+    int numberOfPortNameString;
+    for(int i=0; i<fileToStringList.size(); i++) {
+       if(fileToStringList[i].contains("MODE 6xx_family")) {
+            rowWithPortNameExist = true;
+            numberOfPortNameString = i;
+        }
+    }
+
+    //записываем в строку с командой RX_DATA_BLOCK название выбранного файла прошивки
+    QString str = "\nRX_DATA_BLOCK " + fileName;
+    str.remove(str.size() - 4, 4);
+    fileToStringList[numberOfCommandString] = "\nRX_DATA_BLOCK " + fileName;
+
+    //записываем в строку с номером порта текущий порт
+    str = "MODE 6xx_family " + arg1;//port3->portName();
+    fileToStringList[numberOfPortNameString] = str;
+
+    //делаем из листа обратно строку, чтобы записать в файл
+    QString stringWriteToFile;
+    sym = "";
+    for(int i=0; i<fileToStringList.size(); i++) {
+    //    fileToStringList[i].remove("\n");
+        sym = sym + fileToStringList[i];
+    }
+    sym = sym + "\n";
+    scriptEso.write("");
+    scriptEso.close();
+    //открываем файл на чтение
+    if(!scriptEso.open(QIODevice::WriteOnly | QIODevice::Text)) {
+        box.setText("Не удалось открыть файл");
+        box.exec();
+        qDebug()<<"не удалось открыть файл";
+        return;
+    }
+    scriptEso.write(sym.toLocal8Bit());
+
+    scriptEso.close();
+}
+
+void MainWindow::on_comboBox_portList_4_currentIndexChanged(const QString &arg1)
+{
+    port4->close();
+    port4->setPortName(arg1);
+    portName4 = arg1;
+
+    QMessageBox box;
+    programmingFileToString = "";
+    //специальные настройки для windows
+//    if(QSysInfo::productType()=="windows")
+//    {
+//        QTextCodec *codec = QTextCodec::codecForName("IBM 866");
+//    }
+//    QTextCodec
+//    QFileDialog fileDialog;
+//    fileDialog.setFileMode(QFileDialog::Directory);
+//    fileName = fileDialog.getOpenFileName();
+//    //
+//  //    QByteArray fileNameArray = fileName.toLocal8Bit();
+//  //    QTextCodec *codec = QTextCodec::codecForName("IBM 866");
+//  //    fileName = codec->toUnicode(fileNameArray);
+//    //
+
+//    fileName = fileName.toUtf8();
+
+//    ui->lineEdit_programmingFile->setText(fileName);
+
+//    qDebug()<<"fileName"<<fileName;
 
 
+    //в файл скрипта scriptProgramming вставляем название файла прошивки
+    qDebug()<<"QDir::currentPath()"<<QDir::currentPath();
+    QFile scriptEso("scriptProgramming_4.txt");
+    if(!scriptEso.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        box.setText("Не удалось открыть файл scriptProgramming.txt");
+        box.exec();
+        qDebug()<<"не удалось открыть файл";
+        return;
+    }
 
+    //прочитываем файл scriptProgramming в строку далее в лист
+    QString fileToString = scriptEso.readAll();
+    qDebug()<<"fileToString"<<fileToString;
+    QStringList fileToStringList;
+    QString sym = "";
+    for(int i=0; i<fileToString.size(); i++) {
+        sym = sym + fileToString[i];
+        if(fileToString[i+1] == "\n") {
+ //           sym = sym + "\n";
+            fileToStringList<<sym;
+            sym = "";
+ //           i=i+1;
+        }
+    }
+    qDebug()<<"fileToStringList"<<fileToStringList;
 
+    //находим строку с командой RX_DATA_BLOCK
+    bool command_RX_DATA_BLOCK_Exist = false;
+    int numberOfCommandString;
+    for(int i=0; i<fileToStringList.size(); i++) {
+       if(fileToStringList[i].contains("\nRX_DATA_BLOCK")) {
+            command_RX_DATA_BLOCK_Exist = true;
+            numberOfCommandString = i;
+        }
+    }
 
+    //находим строку с номером порта
+    bool rowWithPortNameExist = false;
+    int numberOfPortNameString;
+    for(int i=0; i<fileToStringList.size(); i++) {
+       if(fileToStringList[i].contains("MODE 6xx_family")) {
+            rowWithPortNameExist = true;
+            numberOfPortNameString = i;
+        }
+    }
 
+    //записываем в строку с командой RX_DATA_BLOCK название выбранного файла прошивки
+    QString str = "\nRX_DATA_BLOCK " + fileName;
+    str.remove(str.size() - 4, 4);
+    fileToStringList[numberOfCommandString] = "\nRX_DATA_BLOCK " + fileName;
 
+    //записываем в строку с номером порта текущий порт
+    str = "MODE 6xx_family " + arg1;//port4->portName();
+    fileToStringList[numberOfPortNameString] = str;
 
+    //делаем из листа обратно строку, чтобы записать в файл
+    QString stringWriteToFile;
+    sym = "";
+    for(int i=0; i<fileToStringList.size(); i++) {
+    //    fileToStringList[i].remove("\n");
+        sym = sym + fileToStringList[i];
+    }
+    sym = sym + "\n";
+    scriptEso.write("");
+    scriptEso.close();
+    //открываем файл на чтение
+    if(!scriptEso.open(QIODevice::WriteOnly | QIODevice::Text)) {
+        box.setText("Не удалось открыть файл");
+        box.exec();
+        qDebug()<<"не удалось открыть файл";
+        return;
+    }
+    scriptEso.write(sym.toLocal8Bit());
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    scriptEso.close();
+}

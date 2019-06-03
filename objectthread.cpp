@@ -4,6 +4,8 @@
 #include "objectthread.h"
 #include <QDebug>
 #include <QColor>
+#include <QTextCodec>
+#include <QTextStream>
 #include "global.h"
 
 ObjectThread::ObjectThread(QObject *parent): QObject(parent)
@@ -86,6 +88,11 @@ ObjectThread::ObjectThread(QObject *parent): QObject(parent)
      "Version_P2ByteArray"<<
      "Initial_value_P2ByteArray"<<
      "Service_P2ByteArray";
+
+    cmd = new QProcess(this);
+
+    connect(cmd, SIGNAL(readyRead()), this, SLOT(slotProcessReadyRead()));
+    connect(cmd, SIGNAL(started()), this, SLOT(slotProcessStarted()));
 
 }
 
@@ -12138,7 +12145,7 @@ void ObjectThread::slotMBusOff(QSerialPort *port1, QSerialPort *port2,
 
                buffer = portTmp->readAll();
                qDebug()<<"buffer.toHex()"<<buffer.toHex();
-               if(!buffer.isEmpty()) emit textBrowser("<< " + portTmp->portName() + " " + buffer.toHex());;
+               if(!buffer.isEmpty()) emit textBrowser("<< " + portTmp->portName() + " " + buffer.toHex());
 
                if(buffer.isEmpty()) {
                    if(i==9) {
@@ -12504,9 +12511,260 @@ QString ObjectThread::getR_Ref2_4()
     return r_ref2Result4;
 }
 
+//------------------------------------------------------------------
+//---------------------SmartStend-----------------------------------
+//------------------------------------------------------------------
+
+void ObjectThread::getPortPointer(QSerialPort * port)
+{
+    portStend = port;
+}
+
+void ObjectThread::sendCommandToStend(QString cmd, int workplace)
+{
+
+}
+
+void ObjectThread::getPortBSL(QSerialPort *port, QSerialPort *port2, QSerialPort *port3, QSerialPort *port4)
+{
+    if(workPlace == 0) portBSL = port;
+    if(workPlace == 1) portBSL = port2;
+    if(workPlace == 2) portBSL = port3;
+    if(workPlace == 3) portBSL = port4;
+}
+
+void ObjectThread::bslProgramming()//аргумент не используется
+{
+    if(!isWorkPlaceUse.at(workPlace)) return;
+
+    processData.clear();
+ //   ui->textBrowser->clear();
+
+    //специальные настройки для windows
+    if(QSysInfo::productType()=="windows")
+    {
+        QTextCodec *codec = QTextCodec::codecForName("IBM 866");
+    }
+
+   //формирование команды
+    QString strCommand;
+
+    if(workPlace == 0)
+        strCommand = "cmd /C BSL_Scripter scriptProgramming.txt";//"cmd.exe ";
+    if(workPlace == 1)
+        strCommand = "cmd /C BSL_Scripter scriptProgramming_2.txt";//"cmd.exe ";
+    if(workPlace == 2)
+        strCommand = "cmd /C BSL_Scripter scriptProgramming_3.txt";//"cmd.exe ";
+    if(workPlace == 3)
+        strCommand = "cmd /C BSL_Scripter scriptProgramming_4.txt";//"cmd.exe ";
+
+    cmd->start(strCommand/*, listParam*/);
+}
+
+void ObjectThread::slotProcessReadyRead()
+{
+    processData = "";
+    qDebug()<<"MainWindow::slotReadyRead()";
+    QTextCodec *codec = QTextCodec::codecForName("IBM 866");
+    processData = codec->toUnicode(cmd->readAll());//readAll();
+
+    emit textBrowser("<< " + portBSL->portName() + " " + processData);
+
+ //   ui->textEdit->append(processData);//setText(processData);
+
+    qDebug()<<"processData"<<processData;
+}
+
+void ObjectThread::slotGetAnsFromStend(QString answer)
+{
+
+//                                      Прерывание	Ответ РС
+//Нажата кнопка ПРОШИТЬ	                BUTPRG=1	OK
+//Нажата кнопка КАЛИБРОВКА	            BUTCAL=1	OK
+//Ток потребления платы превышен	    OVRLD	    OK
+//Ток потребления интерфейса превышен	INVALID	    OK
 
 
 
+   if(answer == "BUTPRG=1") {//начать программирование bsl
+       sendCommandToStend("OK", workPlace);
+       //start bsl
+   }
+
+   if(answer == "BUTCAL=1") {//начать процесс выполнения команд
+       sendCommandToStend("OK", workPlace);
+       //start write & calibration
+   }
+
+   if(answer == "OVRLD") {//?
+       sendCommandToStend("OK", workPlace);
+   }
+
+   if(answer == "INVALID") {//?
+       sendCommandToStend("OK", workPlace);
+   }
+
+}
+
+//------------------Проверка импульсных выходов-------------------
+
+void ObjectThread::readPulsesChannel1()
+{
+   //Чтение значения счётчика импульсов, канал 1	CNT1?	CNT1=xxx
+    QByteArray buffer;
+    QString bufferStr;
+
+    portStend->clear();
+
+    if(!portStend->isOpen()) {
+        if(!portStend->open(QIODevice::ReadWrite)) {
+//                  QMessageBox::information(this, "", "Не удалось открыть порт УСО-2. Рабочее место: " + QString::number(workPlaceNumber + 1));
+            portStend->close();
+//            label_StatusBar = ("Не удалось открыть порт УСО-2. Рабочее место: " +
+//                                         QString::number(workPlaceNumber + 1));
+//            emit errorStringSignal(label_StatusBar + '\n');
+//            vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+
+//            emit workPlaceOff(currentIndicatorNumber);
+//            emit checkWritingError(currentIndicatorNumber);
+
+//                vectorIsErrorOccured[workPlaceNumber] = true;
+            return;
+        }
+    }
+
+    sendCommandToStend("CNT1?", workPlace);
+
+    global::pause(10);
+
+    buffer = portStend->readAll();
+    bufferStr = QString::fromLocal8Bit(buffer);
+
+    if(bufferStr.left(4) != "CNT1") {//ошибка
+        return;
+    }
+
+
+}
+
+void ObjectThread::readPulsesChannel2()
+{
+   //Чтение значения счётчика импульсов, канал 2	CNT2?	CNT2=xxx
+}
+
+void ObjectThread::pulsesReset()
+{
+   //Сбросить счётчик импульсов, оба канала	CNTCLR	ОК
+}
+
+//------------------Проверка импульсных входов--------------------
+
+void ObjectThread::writePulsesToGenChannel1()
+{
+   //Запись числа импульсов в генератор импульсов, канал 1	GEN1=xxx	OK
+}
+
+void ObjectThread::writePulsesToGenChannel2()
+{
+   //Запись числа импульсов в генератор импульсов, канал 2	GEN2=xxx	OK
+}
+
+//-----------------Внешний интерфейс обмена-----------------------
+
+void ObjectThread::externalInterfaceOn()
+{
+   //Подключить внешний интерфейс	EXT=1	OK
+}
+
+void ObjectThread::externalInterfaceOff()
+{
+   //Отключить внешний интерфейс	 EXT=0	OK
+}
+
+void ObjectThread::setTokInterfaceOff()
+{
+   //Установить ток отключения (в мА)	EXTSET=xxx	OK
+}
+
+//-----------------Калибровка частоты 512------------------------
+
+void ObjectThread::freqMeterOn()
+{
+   //Включить частотомер	FREQ=1	OK
+}
+
+void ObjectThread::freqMeterOff()
+{
+   //Выключить частотомер	FREQ=0	OK
+}
+
+void ObjectThread::readFreq()
+{
+   //Прочитать значение частоты	FREQ?	FREQ=xxx..xxx(в Гц)
+}
+
+//-----------------Ток потребления платы--------------------------
+
+void ObjectThread::plataOn()
+{
+   //Подать питание на плату	POW=1	OK
+}
+
+void ObjectThread::plataOff()
+{
+   //Отключить питание от платы	POW=0	OK
+}
+
+void ObjectThread::readTok()
+{
+   //Прочитать ток потребления	POW?	POW=xxxxxx(в мкА)
+}
+
+void ObjectThread::setTokPlataOff()
+{
+   //Установить ток отключения (в мА)	POWSET=xxx	OK
+}
+
+//--------------------Программирование-----------------------------
+
+void ObjectThread::programmatorOn()
+{
+   //Подключить программатор к плате	PRG=1	OK
+}
+
+void ObjectThread::programmatorOff()
+{
+   //Отключить программатор от платы	PRG=0	OK
+}
+
+//--------------------Индикация-------------------------------------
+
+void ObjectThread::finishIndicatorOn()
+{
+   //Включить индикатор ЗАВЕРШЕНО	FIN=1	OK
+}
+
+void ObjectThread::finishIndicatorOff()
+{
+   //Отключить индикатор ЗАВЕРШЕНО	FIN=0	OK
+}
+
+void ObjectThread::errorIndicatoOn()
+{
+   //Включить индикатор АВАРИЯ	ALR=1	OK
+}
+
+void ObjectThread::errorIndicatoOff()
+{
+   //Отключить индикатор АВАРИЯ	ALR=0	OK
+}
+
+//--------------------Служебные------------------------------------
+
+void ObjectThread::testCommand()
+{
+   //Тестовая команда	STENDx	OK
+}
 
 
 
