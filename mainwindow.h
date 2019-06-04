@@ -64,6 +64,8 @@ public:
 
     void indicatorReset();
     void paintIndicator();
+
+    void checkBslError(int currentIndicator);
     void checkWritingError(int currentIndicator);
     void checkCalibrationError(int currentIndicator);
     void checkPulsesOutputHeat(int currentIndicator);
@@ -203,6 +205,7 @@ public slots:
     void slotDeleteUser(QVector<QString> vector);
 
     void slotWorkPlaceOff(int);
+    void slotCheckBslError(int currentIndicator);
     void slotCheckWritingError(int);
     void slotCheckCalibrationError(int currentIndicator);
     void slotGetRMV(int color, QString str, int currentIndicator);
@@ -827,12 +830,14 @@ private:
     QVector<bool> vectorIsErrorOccured;
 
     QVector<QVector<bool>> vectorIndicatorStateMatrix;
+    QVector<bool> vectorBSL;
 
     int currentBoxNumber;
     int currentIndicatorNumber;
 
     bool isNeedPaintEvent;
 
+    bool isBslFinished1, isBslFinished2, isBslFinished3, isBslFinished4;
     bool isWritingFinished1, isWritingFinished2, isWritingFinished3, isWritingFinished4;
     bool isCalibrationFinished1, isCalibrationFinished2, isCalibrationFinished3, isCalibrationFinished4;
     bool isPulsesOutputHeat1, isPulsesOutputHeat2, isPulsesOutputHeat3, isPulsesOutputHeat4;
@@ -855,6 +860,7 @@ private:
     bool isPulsesOutputDefCmdStarted;
 
     bool isCommandsEnded;
+    bool isBslEnded;
 
     //БД
     QString workPlace1ResultString, workPlace2ResultString, workPlace3ResultString, workPlace4ResultString;

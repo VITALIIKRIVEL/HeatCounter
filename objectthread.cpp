@@ -111,7 +111,10 @@ void ObjectThread::setVectorIndicatorStateMatrix(QVector<QVector<bool> > vector)
     vectorIndicatorStateMatrix = vector;
 }
 
-
+void ObjectThread::setVectorBSLMatrix(QVector<bool> vector)
+{
+   vectorIndicatorBSLMatrix = vector;
+}
 
 void ObjectThread::setParamsMap(QMap<QString, QVariant> map)
 {
@@ -134,6 +137,11 @@ void ObjectThread::setIsWorkPlaceUseVector(QVector<bool> vec)
 
    qDebug()<<"isWorkPlaceUse "<<isWorkPlaceUse;
 
+}
+
+QVector<bool> ObjectThread::getVectorBSL()
+{
+    return vectorIndicatorBSLMatrix;
 }
 
 QVector<QVector<bool>> ObjectThread::getVectorMatrix()
@@ -12563,6 +12571,8 @@ void ObjectThread::bslProgramming()//аргумент не использует�
 
 void ObjectThread::slotProcessReadyRead()
 {
+    bool isBslOk = false;
+
     processData = "";
     qDebug()<<"MainWindow::slotReadyRead()";
     QTextCodec *codec = QTextCodec::codecForName("IBM 866");
@@ -12573,6 +12583,61 @@ void ObjectThread::slotProcessReadyRead()
  //   ui->textEdit->append(processData);//setText(processData);
 
     qDebug()<<"processData"<<processData;
+
+    if(processData.isEmpty()) {
+        return;
+    }
+
+    qDebug()<<"MainWindow::slotTimerStageTwo()";
+ //   timerStageTwo->stop();
+    QStringList list;
+    QString sym = "";
+    for(int i=0; i<processData.size(); i++) {
+        sym = sym + processData[i];
+        if(processData[i+1]=='\n') {
+            list<<sym;
+            sym = "";
+            i=i+1;
+        }
+
+    }
+
+    qDebug()<<"list"<<list;
+    //находим строку со словом Writing
+    int rowIndex;
+    for(int i=0; i<list.size(); i++) {
+        QString row = list.at(i);
+        if(row.contains("Writing")) {
+            rowIndex = i;
+        }
+        else {}
+    }
+
+    //
+    QString rowWithWord = list.at(rowIndex);
+
+    //проверяем, содержиться ли в строке со словом Writing слово DONE
+    if(rowWithWord.contains("DONE")) {
+
+        isBslOk = true;//программирование удачно
+
+        processData.clear();
+
+    }
+    else { //программирование не удачно
+
+        QString label_StatusBar = tr("Программирование BSL неудачно . Рабочее место: ") + QString::number(workPlace+1);
+        emit errorStringSignal(label_StatusBar + '\n');
+        vectorIndicatorBSLMatrix[workPlace] = true;
+
+        emit workPlaceOff(workPlace);
+        emit checkBslError(workPlace);
+
+    }
+
+
+    emit checkBslError(workPlace);
+
 }
 
 void ObjectThread::slotGetAnsFromStend(QString answer)

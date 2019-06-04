@@ -406,6 +406,11 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(this, SIGNAL(startBSLProgramming()), ObjectThread3, SLOT(bslProgramming()));
     connect(this, SIGNAL(startBSLProgramming()), ObjectThread4, SLOT(bslProgramming()));
 
+    connect(ObjectThread1, SIGNAL(checkBslError(int)), this, SLOT(slotCheckBslError(int)));
+    connect(ObjectThread2, SIGNAL(checkBslError(int)), this, SLOT(slotCheckBslError(int)));
+    connect(ObjectThread3, SIGNAL(checkBslError(int)), this, SLOT(slotCheckBslError(int)));
+    connect(ObjectThread4, SIGNAL(checkBslError(int)), this, SLOT(slotCheckBslError(int)));
+
     //bsl programming/
 
     //writing connect
@@ -934,6 +939,9 @@ MainWindow::MainWindow(QWidget *parent) :
 //    ui->lineEdit_serial_3->setText("33333333");
 //    ui->lineEdit_serial_4->setText("44444444");
 
+    vectorBSL.resize(4);
+    vectorBSL.fill(false);
+
     vectorIndicatorStateMatrix.resize(10);
 
     for(int u=0; u<10; u++) {
@@ -1171,6 +1179,28 @@ void MainWindow::paintIndicator()
 //    //
 }
 
+void MainWindow::checkBslError(int currentIndicator)
+{
+    isNeedPaintEvent = true;
+    switch (currentIndicator) {
+    case 0:
+        isBslFinished1 = true;
+        break;
+    case 1:
+        isBslFinished2 = true;
+        break;
+    case 2:
+        isBslFinished3 = true;
+        break;
+    case 3:
+        isBslFinished4 = true;
+        break;
+    default:
+        break;
+    }
+    repaint();
+}
+
 void MainWindow::checkWritingError(int currentIndicator)
 {
     isNeedPaintEvent = true;
@@ -1401,12 +1431,108 @@ void MainWindow::paintEvent(QPaintEvent *event)
 
     qDebug()<<"MainWindow::paintEvent(QPaintEvent *event)";
 
-    if(isNeedPaintEvent) {
+
+    if(isBslEnded) {
 
         QPainter painter(this); // Создаём объект отрисовщика
         // Устанавливаем кисть абриса
         painter.setPen(QPen(Qt::lightGray, 1, Qt::SolidLine, Qt::FlatCap));
         painter.setBrush(QBrush(Qt::white, Qt::SolidPattern));
+
+        int xGpourBoxBsl = ui->groupBox_BSL->x();
+        int yGroupBoxBsl = ui->groupBox_BSL->y();
+        painter.drawEllipse(xGpourBoxBsl + 13, yGroupBoxBsl + 45, 15, 15);
+        painter.drawEllipse(xGpourBoxBsl + 13 + 33, yGroupBoxBsl + 45, 15, 15);
+        painter.drawEllipse(xGpourBoxBsl + 13 + 33 + 33, yGroupBoxBsl + 45, 15, 15);
+        painter.drawEllipse(xGpourBoxBsl + 13 + 33 + 33 + 33, yGroupBoxBsl + 45, 15, 15);
+
+        //-----------------------------BSL-----------------------------------
+
+        if( vectorBSL.at(0) && ui->checkBox_workPlace1->isChecked() && isBslFinished1) {
+            QPainter painter(this); // Создаём объект отрисовщика
+            painter.setPen(QPen(Qt::lightGray, 1, Qt::SolidLine, Qt::FlatCap));
+            painter.setBrush(QBrush(Qt::red, Qt::SolidPattern));
+
+            painter.drawEllipse(xGpourBoxBsl + 13, yGroupBoxBsl + 45, 15, 15);
+        }
+        if( !vectorBSL.at(0)  && ui->checkBox_workPlace1->isChecked() && isBslFinished1 ) {
+            QPainter painter(this); // Создаём объект отрисовщика
+            painter.setPen(QPen(Qt::lightGray, 1, Qt::SolidLine, Qt::FlatCap));
+            painter.setBrush(QBrush(Qt::green, Qt::SolidPattern));
+
+            painter.drawEllipse(xGpourBoxBsl + 13, yGroupBoxBsl + 45, 15, 15);
+        }
+        //
+
+        //
+        if( vectorBSL.at(1)  && ui->checkBox_workPlace2->isChecked() && isBslFinished2 ) {
+            QPainter painter(this); // Создаём объект отрисовщика
+            painter.setPen(QPen(Qt::lightGray, 1, Qt::SolidLine, Qt::FlatCap));
+            painter.setBrush(QBrush(Qt::red, Qt::SolidPattern));
+
+            painter.drawEllipse(xGpourBoxBsl + 13 + 33, yGroupBoxBsl + 45, 15, 15);
+        }
+        if( !vectorBSL.at(1)  && ui->checkBox_workPlace2->isChecked() && isBslFinished2 ) {
+            QPainter painter(this); // Создаём объект отрисовщика
+            painter.setPen(QPen(Qt::lightGray, 1, Qt::SolidLine, Qt::FlatCap));
+            painter.setBrush(QBrush(Qt::green, Qt::SolidPattern));
+
+            painter.drawEllipse(xGpourBoxBsl + 13 + 33, yGroupBoxBsl + 45, 15, 15);
+        }
+        //
+
+        //
+        if( vectorBSL.at(2)  && ui->checkBox_workPlace3->isChecked() && isBslFinished3 ) {
+            QPainter painter(this); // Создаём объект отрисовщика
+            painter.setPen(QPen(Qt::lightGray, 1, Qt::SolidLine, Qt::FlatCap));
+            painter.setBrush(QBrush(Qt::red, Qt::SolidPattern));
+
+            painter.drawEllipse(xGpourBoxBsl + 13 + 33 + 33, yGroupBoxBsl + 45, 15, 15);
+        }
+        if( !vectorBSL.at(2)  && ui->checkBox_workPlace3->isChecked() && isBslFinished3 ) {
+            QPainter painter(this); // Создаём объект отрисовщика
+            painter.setPen(QPen(Qt::lightGray, 1, Qt::SolidLine, Qt::FlatCap));
+            painter.setBrush(QBrush(Qt::green, Qt::SolidPattern));
+
+            painter.drawEllipse(xGpourBoxBsl + 13 + 33 + 33, yGroupBoxBsl + 45, 15, 15);
+        }
+        //
+
+        //
+        if( vectorBSL.at(3)  && ui->checkBox_workPlace4->isChecked() && isBslFinished4 ) {
+            QPainter painter(this); // Создаём объект отрисовщика
+            painter.setPen(QPen(Qt::lightGray, 1, Qt::SolidLine, Qt::FlatCap));
+            painter.setBrush(QBrush(Qt::red, Qt::SolidPattern));
+
+            painter.drawEllipse(xGpourBoxBsl + 13 + 33 + 33 + 33, yGroupBoxBsl + 45, 15, 15);
+        }
+        if( !vectorBSL.at(3)  && ui->checkBox_workPlace4->isChecked() && isBslFinished4 ) {
+            QPainter painter(this); // Создаём объект отрисовщика
+            painter.setPen(QPen(Qt::lightGray, 1, Qt::SolidLine, Qt::FlatCap));
+            painter.setBrush(QBrush(Qt::green, Qt::SolidPattern));
+
+            painter.drawEllipse(xGpourBoxBsl + 13 + 33 + 33 + 33, yGroupBoxBsl + 45, 15, 15);
+        }
+
+        //-----------------------------BSL-----------------------------------/
+
+    }
+
+
+
+    if(isNeedPaintEvent && isCommandsEnded) {
+
+        QPainter painter(this); // Создаём объект отрисовщика
+        // Устанавливаем кисть абриса
+        painter.setPen(QPen(Qt::lightGray, 1, Qt::SolidLine, Qt::FlatCap));
+        painter.setBrush(QBrush(Qt::white, Qt::SolidPattern));
+
+        int xGpourBoxBsl = ui->groupBox_BSL->x();
+        int yGroupBoxBsl = ui->groupBox_BSL->y();
+        painter.drawEllipse(xGpourBoxBsl + 13, yGroupBoxBsl + 45, 15, 15);
+        painter.drawEllipse(xGpourBoxBsl + 13 + 33, yGroupBoxBsl + 45, 15, 15);
+        painter.drawEllipse(xGpourBoxBsl + 13 + 33 + 33, yGroupBoxBsl + 45, 15, 15);
+        painter.drawEllipse(xGpourBoxBsl + 13 + 33 + 33 + 33, yGroupBoxBsl + 45, 15, 15);
 
         int xGpourBox = ui->groupBox_writeParams->x();
         int yGroupBox = ui->groupBox_writeParams->y();
@@ -1477,8 +1603,6 @@ void MainWindow::paintEvent(QPaintEvent *event)
         painter.drawEllipse(xGroupBoxResult + 13 + 33, yGroupBoxResult + 45, 15, 15);
         painter.drawEllipse(xGroupBoxResult + 13 + 33 + 33, yGroupBoxResult + 45, 15, 15);
         painter.drawEllipse(xGroupBoxResult + 13 + 33 + 33 + 33, yGroupBoxResult + 45, 15, 15);
-
- //       return;
 
         //
         //
@@ -2282,6 +2406,13 @@ void MainWindow::slotWriteParams()
 /*************************************************************/
 void MainWindow::on_toolButton_programmingBSL_clicked()
 {
+    isBslFinished1 = false;
+    isBslFinished2 = false;
+    isBslFinished3 = false;
+    isBslFinished4 = false;
+
+    isBslEnded = false;
+
     if(ui->checkBox_workPlace1->isChecked()) vectorIsWorkPlaceUse[0] = true;
     if(ui->checkBox_workPlace2->isChecked()) vectorIsWorkPlaceUse[1] = true;
     if(ui->checkBox_workPlace3->isChecked()) vectorIsWorkPlaceUse[2] = true;
@@ -2312,22 +2443,113 @@ void MainWindow::on_toolButton_programmingBSL_clicked()
     ObjectThread3->getPortBSL(port, port2, port3, port4);
     ObjectThread4->getPortBSL(port, port2, port3, port4);
 
+    vectorBSL.fill(false);
+
+    ObjectThread1->setVectorBSLMatrix(vectorBSL);
+    ObjectThread2->setVectorBSLMatrix(vectorBSL);
+    ObjectThread3->setVectorBSLMatrix(vectorBSL);
+    ObjectThread4->setVectorBSLMatrix(vectorBSL);
+
+    QPalette palettePrime = ui->toolButton_programmingBSL->palette();
+    QColor backgroundColorPrime = palettePrime.color(QPalette::Button);
+
+    QPalette palette = palettePrime;
+    palette.setColor( QPalette::Button, QColor( Qt::red )  );
+
+    QColor backgroundColor = palette.color(QPalette::Button);
+
+    qDebug()<<"palette "<<palette
+            <<"backgroundColor "<<backgroundColor.name()
+            <<"backgroundColorPrime "<<backgroundColorPrime.name();
+
+    ui->toolButton_programmingBSL->setAutoFillBackground(true);
+    ui->toolButton_programmingBSL->setPalette( palette );
+
+    emit signalLog("<font color = \"#0000ff\">" + QString("Начало программирования по BSL")  + '\n' + "</font>");
+
     emit startBSLProgramming();
 
-//    processData.clear();
-//    ui->textBrowser->clear();
+    //-------------------------Ждём завершения записи------------------
 
-//    //специальные настройки для windows
-//    if(QSysInfo::productType()=="windows")
-//    {
-//        QTextCodec *codec = QTextCodec::codecForName("IBM 866");
-//    }
+      bool isBslFinishedTmp1 = true;
+      bool isBslFinishedTmp2 = true;
+      bool isBslFinishedTmp3 = true;
+      bool isBslFinishedTmp4 = true;
 
-//   //формирование команды
-//    QString strCommand;
+      for(int e=0; e<100; e++) { //10 sec
+          global::pause(100);
 
-//    strCommand = "cmd /C BSL_Scripter scriptProgramming.txt";//"cmd.exe ";
-//    cmd->start(strCommand/*, listParam*/);
+          if(ui->checkBox_workPlace1->isChecked()) {
+              isBslFinishedTmp1 = isBslFinished1;
+
+              if(!vectorIsWorkPlaceUse.at(0)) isBslFinishedTmp1 = true;
+          }
+
+          if(ui->checkBox_workPlace2->isChecked()) {
+              isBslFinishedTmp2 = isWritingFinished2;
+
+              if(!vectorIsWorkPlaceUse.at(1)) isBslFinishedTmp2 = true;
+          }
+
+          if(ui->checkBox_workPlace3->isChecked()) {
+              isBslFinishedTmp3 = isWritingFinished3;
+
+              if(!vectorIsWorkPlaceUse.at(2)) isBslFinishedTmp3 = true;
+          }
+
+          if(ui->checkBox_workPlace4->isChecked()) {
+              isBslFinishedTmp4 = isWritingFinished4;
+
+              if(!vectorIsWorkPlaceUse.at(3)) isBslFinishedTmp4 = true;
+          }
+
+
+          if(isBslFinishedTmp1 && isBslFinishedTmp2 && isBslFinishedTmp3 && isBslFinishedTmp4)
+              break;
+      }
+
+
+    //-------------------------Ждём завершения записи------------------/
+
+      ui->toolButton_programmingBSL->setPalette(palettePrime);
+
+      //ищем последние сообщения об ошибках для каждого рабочего места
+      QStringList errorList = errorString.split('\n');
+
+      QString lastError1;
+      QString lastError2;
+      QString lastError3;
+      QString lastError4;
+
+      for(int k=(errorList.size() -1); k>-1; k--) {
+          if(errorList.at(k).contains("Рабочее место: 1"))
+            lastError1 = errorList.at(k);
+      }
+
+      for(int k=(errorList.size() -1); k>-1; k--) {
+          if(errorList.at(k).contains("Рабочее место: 2"))
+            lastError2 = errorList.at(k);
+      }
+
+      for(int k=(errorList.size() -1); k>-1; k--) {
+          if(errorList.at(k).contains("Рабочее место: 3"))
+            lastError3 = errorList.at(k);
+      }
+
+      for(int k=(errorList.size() -1); k>-1; k--) {
+          if(errorList.at(k).contains("Рабочее место: 4"))
+            lastError4 = errorList.at(k);
+      }
+
+      ui->label_StatusBar->setText(lastError1 + '\n' +
+                                      lastError2 + '\n' +
+                                      lastError3 + '\n' +
+                                      lastError4);
+
+      //ищем последние сообщения об ошибках для каждого рабочего места/
+
+      isBslEnded = true;
+      repaint();
 
 }
 /*************************************************************/
@@ -34428,10 +34650,12 @@ void MainWindow::on_toolButton_executeCommands_clicked()
     errorString.clear();
 
     if(repeatParameter == 0) {
+
         isWritingFinished1 = false;
         isWritingFinished2 = false;
         isWritingFinished3 = false;
         isWritingFinished4 = false;
+
     }
 
     if(repeatParameter == 0 || repeatParameter == 1) {
@@ -34602,7 +34826,6 @@ void MainWindow::on_toolButton_executeCommands_clicked()
       //-------------------------Ждём завершения записи------------------/
 
         ui->toolButton_writeParams->setPalette(palettePrime);
-
 
     }
     //запись/
@@ -36018,6 +36241,42 @@ void MainWindow::slotError(QString errorStr)
     errorString.append(errorStr);
 
     ui->label_StatusBar->setText(errorStr);
+}
+
+void MainWindow::slotCheckBslError(int currentIndicator)
+{
+    QVector<bool> vectorTmp;
+
+    switch (currentIndicator) {
+    case 0:
+        vectorTmp = ObjectThread1->getVectorBSL();
+        qDebug()<<"MainWindow::slotCheckBslError. ObjectThread1->getVectorBSL()";
+        break;
+    case 1:
+        vectorTmp = ObjectThread2->getVectorBSL();
+        qDebug()<<"MainWindow::slotCheckBslError. ObjectThread2->getVectorBSL()";
+        break;
+    case 2:
+        vectorTmp = ObjectThread3->getVectorBSL();
+        qDebug()<<"MainWindow::slotCheckBslError. ObjectThread3->getVectorBSL()";
+        break;
+    case 3:
+        vectorTmp = ObjectThread4->getVectorBSL();
+        qDebug()<<"MainWindow::slotCheckBslError. ObjectThread4->getVectorBSL()";
+        break;
+    default:
+        break;
+    }
+
+    for(int u=0; u<4; u++) {
+
+        if(vectorTmp.at(u)) {
+            vectorBSL[u] = true;
+        }
+
+    }
+
+    checkBslError(currentIndicator);
 }
 
 void MainWindow::slotCheckWritingError(int currentIndicator)

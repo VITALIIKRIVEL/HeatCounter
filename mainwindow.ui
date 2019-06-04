@@ -3122,8 +3122,8 @@
      <rect>
       <x>1330</x>
       <y>690</y>
-      <width>20</width>
-      <height>21</height>
+      <width>332</width>
+      <height>152</height>
      </rect>
     </property>
     <layout class="QGridLayout" name="gridLayout_11">
@@ -4236,13 +4236,13 @@
      </item>
     </layout>
    </widget>
-   <widget class="QGroupBox" name="groupBox_writeParams_2">
+   <widget class="QGroupBox" name="groupBox_BSL">
     <property name="geometry">
      <rect>
       <x>510</x>
-      <y>40</y>
+      <y>30</y>
       <width>141</width>
-      <height>31</height>
+      <height>41</height>
      </rect>
     </property>
     <property name="title">
@@ -4253,7 +4253,7 @@
     <property name="geometry">
      <rect>
       <x>628</x>
-      <y>19</y>
+      <y>9</y>
       <width>21</width>
       <height>21</height>
      </rect>
@@ -4266,7 +4266,7 @@
     <property name="geometry">
      <rect>
       <x>597</x>
-      <y>20</y>
+      <y>10</y>
       <width>16</width>
       <height>16</height>
      </rect>
@@ -4279,7 +4279,7 @@
     <property name="geometry">
      <rect>
       <x>524</x>
-      <y>20</y>
+      <y>10</y>
       <width>31</width>
       <height>16</height>
      </rect>
@@ -4292,7 +4292,7 @@
     <property name="geometry">
      <rect>
       <x>560</x>
-      <y>20</y>
+      <y>10</y>
       <width>16</width>
       <height>16</height>
      </rect>

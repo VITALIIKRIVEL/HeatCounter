@@ -22,9 +22,11 @@ public:
     quint8 reverse8(quint8 temp);
 
     QVector<QVector<bool>> getVectorMatrix();
+    QVector<bool> getVectorBSL();
 
     void setWorkPlace(int workplaceNumber);
     void setVectorIndicatorStateMatrix(QVector<QVector<bool>> vectorIndicatorStateMatrix);
+    void setVectorBSLMatrix(QVector<bool> vector);
     void setParamsMap(QMap<QString, QVariant> map);
     void setMapWrite(QMap<QString, QByteArray> map);
     void setMapRead(QMap<QString, QByteArray> mape);
@@ -89,6 +91,8 @@ public:
 
 
 signals:
+    checkBslError(int currentIndicatorNumber);
+
     checkWritingError(int currentIndicatorNumber);
     checkCalibrationError(int currentIndicatorNumber);
     signalRMV(int color, QString str, int currentIndicatorNumber);
@@ -162,6 +166,7 @@ private:
 
     QByteArray packetToRead;
     QVector<QVector<bool>> vectorIndicatorStateMatrix;
+    QVector<bool> vectorIndicatorBSLMatrix;
     QMap<QString, QVariant> paramsMapToThreads;
     QMap<QString, QByteArray> mapwrite;
     QMap<QString, QByteArray> mapRead;
