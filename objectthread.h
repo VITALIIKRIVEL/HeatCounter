@@ -12,6 +12,7 @@ class ObjectThread: public QObject
    Q_OBJECT
 
 public:
+
     int workPlace;
 
     explicit ObjectThread(QObject *parent);
@@ -57,35 +58,35 @@ public:
 
     //команды стенду
 
-    void getPortPointer(QSerialPort * port);
+    void getPortStendName(QString name);
     void getPortBSL(QSerialPort * port, QSerialPort * port2, QSerialPort * port3, QSerialPort * port4);
     void sendCommandToStend(QString cmd, int workplace);
 
-    void readPulsesChannel1();
-    void readPulsesChannel2();
-    void pulsesReset();
-    void writePulsesToGenChannel1();
-    void writePulsesToGenChannel2();
-    void externalInterfaceOn();
-    void externalInterfaceOff();
-    void setTokInterfaceOff();
-    void freqMeterOn();
-    void freqMeterOff();
-    void readFreq();
-    void plataOn();
-    void plataOff();
-    void readTok();
-    void setTokPlataOff();
+    bool readPulsesChannel1();
+    bool readPulsesChannel2();
+    bool pulsesReset();
+    bool writePulsesToGenChannel1();
+    bool writePulsesToGenChannel2();
+    bool externalInterfaceOn();
+    bool externalInterfaceOff();
+    bool setTokInterfaceOff();
+    bool freqMeterOn();
+    bool freqMeterOff();
+    bool readFreq();
+    bool plataOn();
+    bool plataOff();
+    bool readTok();
+    bool setTokPlataOff();
 
-    void programmatorOn();
-    void programmatorOff();
+    bool programmatorOn();
+    bool programmatorOff();
 
-    void finishIndicatorOn();
-    void finishIndicatorOff();
-    void errorIndicatoOn();
-    void errorIndicatoOff();
+    bool finishIndicatorOn();
+    bool finishIndicatorOff();
+    bool errorIndicatoOn();
+    bool errorIndicatoOff();
 
-    void testCommand();
+    bool testCommand();
 
     //команды стенду/
 

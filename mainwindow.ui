@@ -513,8 +513,8 @@
    <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
-      <x>860</x>
-      <y>10</y>
+      <x>590</x>
+      <y>20</y>
       <width>221</width>
       <height>24</height>
      </rect>
@@ -2828,8 +2828,8 @@
    <widget class="QCheckBox" name="checkBox_OneWorkPlace">
     <property name="geometry">
      <rect>
-      <x>710</x>
-      <y>10</y>
+      <x>1240</x>
+      <y>220</y>
       <width>91</width>
       <height>10</height>
      </rect>
@@ -3197,13 +3197,6 @@
       <widget class="QLabel" name="label_78">
        <property name="text">
         <string>Acceptable_R_Ref1</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="0">
-      <widget class="QLabel" name="label_74">
-       <property name="text">
-        <string>R_Real1</string>
        </property>
       </widget>
      </item>
@@ -4239,7 +4232,7 @@
    <widget class="QGroupBox" name="groupBox_BSL">
     <property name="geometry">
      <rect>
-      <x>510</x>
+      <x>400</x>
       <y>30</y>
       <width>141</width>
       <height>41</height>
@@ -4252,7 +4245,7 @@
    <widget class="QLabel" name="label_90">
     <property name="geometry">
      <rect>
-      <x>628</x>
+      <x>518</x>
       <y>9</y>
       <width>21</width>
       <height>21</height>
@@ -4265,7 +4258,7 @@
    <widget class="QLabel" name="label_97">
     <property name="geometry">
      <rect>
-      <x>597</x>
+      <x>487</x>
       <y>10</y>
       <width>16</width>
       <height>16</height>
@@ -4278,7 +4271,7 @@
    <widget class="QLabel" name="label_99">
     <property name="geometry">
      <rect>
-      <x>524</x>
+      <x>414</x>
       <y>10</y>
       <width>31</width>
       <height>16</height>
@@ -4291,7 +4284,7 @@
    <widget class="QLabel" name="label_101">
     <property name="geometry">
      <rect>
-      <x>560</x>
+      <x>450</x>
       <y>10</y>
       <width>16</width>
       <height>16</height>
@@ -4417,6 +4410,48 @@
     <property name="text">
      <string>&lt;--- добавлено вместе с панелью</string>
     </property>
+   </widget>
+   <widget class="QLabel" name="label_74">
+    <property name="geometry">
+     <rect>
+      <x>1310</x>
+      <y>280</y>
+      <width>20</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>R_Real1</string>
+    </property>
+   </widget>
+   <widget class="QWidget" name="">
+    <property name="geometry">
+     <rect>
+      <x>590</x>
+      <y>50</y>
+      <width>221</width>
+      <height>22</height>
+     </rect>
+    </property>
+    <layout class="QHBoxLayout" name="horizontalLayout_18">
+     <item>
+      <widget class="QComboBox" name="comboBox_portStend">
+       <property name="maximumSize">
+        <size>
+         <width>70</width>
+         <height>16777215</height>
+        </size>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="label_96">
+       <property name="text">
+        <string>Стенд</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">

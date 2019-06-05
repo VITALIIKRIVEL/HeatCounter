@@ -13,6 +13,19 @@ ObjectThread::ObjectThread(QObject *parent): QObject(parent)
 
     qDebug()<<"ObjectThread::ObjectThread() "<<"workPlace " + QString::number(workPlace);
 
+    portStend = new QSerialPort(this);
+
+//    Обмен с компьютером UART2
+//    Скорость 115200
+//    Длина слова 8 бит
+//    1 стоп-бит
+//    Контроля чётности нет
+
+    portStend->setBaudRate(QSerialPort::Baud115200);
+    portStend->setBaudRate(QSerialPort::Data8);
+    portStend->setParity(QSerialPort::NoParity);
+    portStend->setStopBits(QSerialPort::OneStop);
+
     allParamsNameList = QStringList()<<"serialNumber"<<
 "serialNumber2"<<
 "serialNumber3"<<
@@ -12523,9 +12536,9 @@ QString ObjectThread::getR_Ref2_4()
 //---------------------SmartStend-----------------------------------
 //------------------------------------------------------------------
 
-void ObjectThread::getPortPointer(QSerialPort * port)
+void ObjectThread::getPortStendName(QString name)
 {
-    portStend = port;
+    portStend->setPortName(name);
 }
 
 void ObjectThread::sendCommandToStend(QString cmd, int workplace)
@@ -12673,7 +12686,7 @@ void ObjectThread::slotGetAnsFromStend(QString answer)
 
 //------------------Проверка импульсных выходов-------------------
 
-void ObjectThread::readPulsesChannel1()
+bool ObjectThread::readPulsesChannel1()
 {
    //Чтение значения счётчика импульсов, канал 1	CNT1?	CNT1=xxx
     QByteArray buffer;
@@ -12694,7 +12707,7 @@ void ObjectThread::readPulsesChannel1()
 //            emit checkWritingError(currentIndicatorNumber);
 
 //                vectorIsErrorOccured[workPlaceNumber] = true;
-            return;
+            return false;
         }
     }
 
@@ -12706,127 +12719,474 @@ void ObjectThread::readPulsesChannel1()
     bufferStr = QString::fromLocal8Bit(buffer);
 
     if(bufferStr.left(4) != "CNT1") {//ошибка
-        return;
+        return false;
     }
 
 
 }
 
-void ObjectThread::readPulsesChannel2()
+bool ObjectThread::readPulsesChannel2()
 {
    //Чтение значения счётчика импульсов, канал 2	CNT2?	CNT2=xxx
 }
 
-void ObjectThread::pulsesReset()
+bool ObjectThread::pulsesReset()
 {
    //Сбросить счётчик импульсов, оба канала	CNTCLR	ОК
 }
 
 //------------------Проверка импульсных входов--------------------
 
-void ObjectThread::writePulsesToGenChannel1()
+bool ObjectThread::writePulsesToGenChannel1()
 {
    //Запись числа импульсов в генератор импульсов, канал 1	GEN1=xxx	OK
 }
 
-void ObjectThread::writePulsesToGenChannel2()
+bool ObjectThread::writePulsesToGenChannel2()
 {
    //Запись числа импульсов в генератор импульсов, канал 2	GEN2=xxx	OK
 }
 
 //-----------------Внешний интерфейс обмена-----------------------
 
-void ObjectThread::externalInterfaceOn()
+bool ObjectThread::externalInterfaceOn()
 {
    //Подключить внешний интерфейс	EXT=1	OK
 }
 
-void ObjectThread::externalInterfaceOff()
+bool ObjectThread::externalInterfaceOff()
 {
    //Отключить внешний интерфейс	 EXT=0	OK
 }
 
-void ObjectThread::setTokInterfaceOff()
+bool ObjectThread::setTokInterfaceOff()
 {
    //Установить ток отключения (в мА)	EXTSET=xxx	OK
 }
 
 //-----------------Калибровка частоты 512------------------------
 
-void ObjectThread::freqMeterOn()
+bool ObjectThread::freqMeterOn()
 {
    //Включить частотомер	FREQ=1	OK
 }
 
-void ObjectThread::freqMeterOff()
+bool ObjectThread::freqMeterOff()
 {
    //Выключить частотомер	FREQ=0	OK
 }
 
-void ObjectThread::readFreq()
+bool ObjectThread::readFreq()
 {
    //Прочитать значение частоты	FREQ?	FREQ=xxx..xxx(в Гц)
 }
 
 //-----------------Ток потребления платы--------------------------
 
-void ObjectThread::plataOn()
+bool ObjectThread::plataOn()
 {
    //Подать питание на плату	POW=1	OK
+
+    QByteArray buffer;
+
+//    кто и кому:
+//    ПК=0x01	стенд1=0x11	стенд2=0x22	стенд3=0x33	стенд4=0x44
+
+//    1 байт	2 байт	3 байт	4 байт	… байт	… байт	(N-1) байт	N байт
+//    кто	    кому	команда					                    Конец сообщения
+//    BIN	    BIN	    STRING					                    0x00
+
+    if(!isWorkPlaceUse.at(workPlace)) return false;
+
+   //Подать питание на плату	POW=1	OK
+
+    QString command = "POW=1";
+
+    QByteArray parcel;
+
+    quint8 sender = 0x01;
+    quint8 receiver;
+    quint8 stopByte = 0x00;
+
+    if(workPlace == 0) receiver = 0x11;
+    if(workPlace == 1) receiver = 0x22;
+    if(workPlace == 2) receiver = 0x33;
+    if(workPlace == 3) receiver = 0x44;
+
+    QByteArray stringToByteArray;
+    stringToByteArray = command.toLocal8Bit();
+
+    //формирование посылки
+    parcel.append(sender);
+    parcel.append(receiver);
+    for(int m=0; m<stringToByteArray.size(); m++) {
+        parcel.append(stringToByteArray.at(m));
+    }
+    parcel.append(stopByte);
+
+    qDebug()<<"parcel"<<parcel.toHex();
+
+    if(!portStend->isOpen()) {
+
+        if(!portStend->open(QIODevice::ReadWrite)) {
+
+            QString label_StatusBar = (tr("Не удалось открыть порт стенда") +
+                                         ". Рабочее место: " + QString::number(workPlace+1));
+            emit errorStringSignal(label_StatusBar + '\n');
+            vectorIndicatorBSLMatrix[workPlace] = true;
+
+            emit workPlaceOff(workPlace);
+            emit checkBslError(workPlace);
+            return false;
+        }
+    }
+
+    portStend->clear();
+
+    quint64 count = portStend->write(parcel);
+    emit textBrowser(">> " + portStend->portName() + " " + parcel.toHex());
+
+    //ждать ответа от стенда 10 мсек
+
+    global::pause(10);
+
+    buffer = portStend->readAll();
+    if(!buffer.isEmpty()) emit textBrowser("<< " + portStend->portName() + " " + buffer.toHex());
+
+    QString answerStr;
+    QByteArray bufTmp = buffer;
+
+    bufTmp.remove(0, 2);
+    bufTmp.remove(bufTmp.size()-1, 1);
+
+    answerStr = QString::fromLocal8Bit(bufTmp);
+
+    if(buffer.at(0)!=receiver && buffer.at(1)!=sender && answerStr!="OK") {
+        QString label_StatusBar = (tr("Неверный ответ стенда. Команда \"Подать питание на плату\" ") +
+                                     ". Рабочее место: " + QString::number(workPlace+1));
+        emit errorStringSignal(label_StatusBar + '\n');
+//        vectorIndicatorBSLMatrix[workPlace] = true;
+
+//        emit workPlaceOff(workPlace);
+//        emit checkBslError(workPlace);
+        return false;
+    }
+
+   return true;
 }
 
-void ObjectThread::plataOff()
+bool ObjectThread::plataOff()
 {
    //Отключить питание от платы	POW=0	OK
+
+    QByteArray buffer;
+
+//    кто и кому:
+//    ПК=0x01	стенд1=0x11	стенд2=0x22	стенд3=0x33	стенд4=0x44
+
+//    1 байт	2 байт	3 байт	4 байт	… байт	… байт	(N-1) байт	N байт
+//    кто	    кому	команда					                    Конец сообщения
+//    BIN	    BIN	    STRING					                    0x00
+
+    if(!isWorkPlaceUse.at(workPlace)) return false;
+
+   //Отключить питание от платы	POW=0	OK
+
+    QString command = "POW=0";
+
+    QByteArray parcel;
+
+    quint8 sender = 0x01;
+    quint8 receiver;
+    quint8 stopByte = 0x00;
+
+    if(workPlace == 0) receiver = 0x11;
+    if(workPlace == 1) receiver = 0x22;
+    if(workPlace == 2) receiver = 0x33;
+    if(workPlace == 3) receiver = 0x44;
+
+    QByteArray stringToByteArray;
+    stringToByteArray = command.toLocal8Bit();
+
+    //формирование посылки
+    parcel.append(sender);
+    parcel.append(receiver);
+    for(int m=0; m<stringToByteArray.size(); m++) {
+        parcel.append(stringToByteArray.at(m));
+    }
+    parcel.append(stopByte);
+
+    qDebug()<<"parcel"<<parcel.toHex();
+
+    if(!portStend->isOpen()) {
+
+        if(!portStend->open(QIODevice::ReadWrite)) {
+
+            QString label_StatusBar = (tr("Не удалось открыть порт стенда") +
+                                         ". Рабочее место: " + QString::number(workPlace+1));
+            emit errorStringSignal(label_StatusBar + '\n');
+            vectorIndicatorBSLMatrix[workPlace] = true;
+
+            emit workPlaceOff(workPlace);
+            emit checkBslError(workPlace);
+            return false;
+        }
+    }
+
+    portStend->clear();
+
+    quint64 count = portStend->write(parcel);
+    emit textBrowser(">> " + portStend->portName() + " " + parcel.toHex());
+
+    //ждать ответа от стенда 10 мсек
+
+    global::pause(10);
+
+    buffer = portStend->readAll();
+    if(!buffer.isEmpty()) emit textBrowser("<< " + portStend->portName() + " " + buffer.toHex());
+
+    QString answerStr;
+    QByteArray bufTmp = buffer;
+
+    bufTmp.remove(0, 2);
+    bufTmp.remove(bufTmp.size()-1, 1);
+
+    answerStr = QString::fromLocal8Bit(bufTmp);
+
+    if(buffer.at(0)!=receiver && buffer.at(1)!=sender && answerStr!="OK") {
+        QString label_StatusBar = (tr("Неверный ответ стенда. Команда \"Отключить питание от платы\" ") +
+                                     ". Рабочее место: " + QString::number(workPlace+1));
+        emit errorStringSignal(label_StatusBar + '\n');
+//        vectorIndicatorBSLMatrix[workPlace] = true;
+
+//        emit workPlaceOff(workPlace);
+//        emit checkBslError(workPlace);
+        return false;
+    }
+
+   return true;
 }
 
-void ObjectThread::readTok()
+bool ObjectThread::readTok()
 {
    //Прочитать ток потребления	POW?	POW=xxxxxx(в мкА)
 }
 
-void ObjectThread::setTokPlataOff()
+bool ObjectThread::setTokPlataOff()
 {
    //Установить ток отключения (в мА)	POWSET=xxx	OK
 }
 
 //--------------------Программирование-----------------------------
 
-void ObjectThread::programmatorOn()
+bool ObjectThread::programmatorOn()
 {
+    QByteArray buffer;
+
+//    кто и кому:
+//    ПК=0x01	стенд1=0x11	стенд2=0x22	стенд3=0x33	стенд4=0x44
+
+//    1 байт	2 байт	3 байт	4 байт	… байт	… байт	(N-1) байт	N байт
+//    кто	    кому	команда					                    Конец сообщения
+//    BIN	    BIN	    STRING					                    0x00
+
+    if(!isWorkPlaceUse.at(workPlace)) return false;
+
    //Подключить программатор к плате	PRG=1	OK
+
+    QString command = "PRG=1";
+
+    QByteArray parcel;
+
+    quint8 sender = 0x01;
+    quint8 receiver;
+    quint8 stopByte = 0x00;
+
+    if(workPlace == 0) receiver = 0x11;
+    if(workPlace == 1) receiver = 0x22;
+    if(workPlace == 2) receiver = 0x33;
+    if(workPlace == 3) receiver = 0x44;
+
+    QByteArray stringToByteArray;
+    stringToByteArray = command.toLocal8Bit();
+
+    //формирование посылки
+    parcel.append(sender);
+    parcel.append(receiver);
+    for(int m=0; m<stringToByteArray.size(); m++) {
+        parcel.append(stringToByteArray.at(m));
+    }
+    parcel.append(stopByte);
+
+    qDebug()<<"parcel"<<parcel.toHex();
+
+    if(!portStend->isOpen()) {
+
+        if(!portStend->open(QIODevice::ReadWrite)) {
+
+            QString label_StatusBar = (tr("Не удалось открыть порт стенда") +
+                                         ". Рабочее место: " + QString::number(workPlace+1));
+            emit errorStringSignal(label_StatusBar + '\n');
+            vectorIndicatorBSLMatrix[workPlace] = true;
+
+            emit workPlaceOff(workPlace);
+            emit checkBslError(workPlace);
+            return false;
+        }
+    }
+
+    portStend->clear();
+
+    quint64 count = portStend->write(parcel);
+    emit textBrowser(">> " + portStend->portName() + " " + parcel.toHex());
+
+    //ждать ответа от стенда 10 мсек
+
+    global::pause(10);
+
+    buffer = portStend->readAll();
+    if(!buffer.isEmpty()) emit textBrowser("<< " + portStend->portName() + " " + buffer.toHex());
+
+    QString answerStr;
+    QByteArray bufTmp = buffer;
+
+    bufTmp.remove(0, 2);
+    bufTmp.remove(bufTmp.size()-1, 1);
+
+    answerStr = QString::fromLocal8Bit(bufTmp);
+
+    if(buffer.at(0)!=receiver && buffer.at(1)!=sender && answerStr!="OK") {
+        QString label_StatusBar = (tr("Неверный ответ стенда. Команда \"Подключить программатор\" ") +
+                                     ". Рабочее место: " + QString::number(workPlace+1));
+        emit errorStringSignal(label_StatusBar + '\n');
+        vectorIndicatorBSLMatrix[workPlace] = true;
+
+        emit workPlaceOff(workPlace);
+        emit checkBslError(workPlace);
+        return false;
+    }
+
+   return true;
+
 }
 
-void ObjectThread::programmatorOff()
+bool ObjectThread::programmatorOff()
 {
    //Отключить программатор от платы	PRG=0	OK
+
+    QByteArray buffer;
+
+//    кто и кому:
+//    ПК=0x01	стенд1=0x11	стенд2=0x22	стенд3=0x33	стенд4=0x44
+
+//    1 байт	2 байт	3 байт	4 байт	… байт	… байт	(N-1) байт	N байт
+//    кто	    кому	команда					                    Конец сообщения
+//    BIN	    BIN	    STRING					                    0x00
+
+    if(!isWorkPlaceUse.at(workPlace)) return false;
+
+   //Отключить программатор от платы	PRG=0	OK
+
+    QString command = "PRG=1";
+
+    QByteArray parcel;
+
+    quint8 sender = 0x01;
+    quint8 receiver;
+    quint8 stopByte = 0x00;
+
+    if(workPlace == 0) receiver = 0x11;
+    if(workPlace == 1) receiver = 0x22;
+    if(workPlace == 2) receiver = 0x33;
+    if(workPlace == 3) receiver = 0x44;
+
+    QByteArray stringToByteArray;
+    stringToByteArray = command.toLocal8Bit();
+
+    //формирование посылки
+    parcel.append(sender);
+    parcel.append(receiver);
+    for(int m=0; m<stringToByteArray.size(); m++) {
+        parcel.append(stringToByteArray.at(m));
+    }
+    parcel.append(stopByte);
+
+    qDebug()<<"parcel"<<parcel.toHex();
+
+    if(!portStend->isOpen()) {
+
+        if(!portStend->open(QIODevice::ReadWrite)) {
+
+            QString label_StatusBar = (tr("Не удалось открыть порт стенда") +
+                                         ". Рабочее место: " + QString::number(workPlace+1));
+            emit errorStringSignal(label_StatusBar + '\n');
+            vectorIndicatorBSLMatrix[workPlace] = true;
+
+            emit workPlaceOff(workPlace);
+            emit checkBslError(workPlace);
+            return false;
+        }
+    }
+
+    portStend->clear();
+
+    quint64 count = portStend->write(parcel);
+    emit textBrowser(">> " + portStend->portName() + " " + parcel.toHex());
+
+    //ждать ответа от стенда 10 мсек
+
+    global::pause(10);
+
+    buffer = portStend->readAll();
+    if(!buffer.isEmpty()) emit textBrowser("<< " + portStend->portName() + " " + buffer.toHex());
+
+    QString answerStr;
+    QByteArray bufTmp = buffer;
+
+    bufTmp.remove(0, 2);
+    bufTmp.remove(bufTmp.size()-1, 1);
+
+    answerStr = QString::fromLocal8Bit(bufTmp);
+
+    if(buffer.at(0)!=receiver && buffer.at(1)!=sender && answerStr!="OK") {
+        QString label_StatusBar = (tr("Неверный ответ стенда. Команда \"Отключить программатор\" ") +
+                                     ". Рабочее место: " + QString::number(workPlace+1));
+        emit errorStringSignal(label_StatusBar + '\n');
+        vectorIndicatorBSLMatrix[workPlace] = true;
+
+        emit workPlaceOff(workPlace);
+        emit checkBslError(workPlace);
+        return false;
+    }
+
+   return true;
 }
 
 //--------------------Индикация-------------------------------------
 
-void ObjectThread::finishIndicatorOn()
+bool ObjectThread::finishIndicatorOn()
 {
    //Включить индикатор ЗАВЕРШЕНО	FIN=1	OK
 }
 
-void ObjectThread::finishIndicatorOff()
+bool ObjectThread::finishIndicatorOff()
 {
    //Отключить индикатор ЗАВЕРШЕНО	FIN=0	OK
 }
 
-void ObjectThread::errorIndicatoOn()
+bool ObjectThread::errorIndicatoOn()
 {
    //Включить индикатор АВАРИЯ	ALR=1	OK
 }
 
-void ObjectThread::errorIndicatoOff()
+bool ObjectThread::errorIndicatoOff()
 {
    //Отключить индикатор АВАРИЯ	ALR=0	OK
 }
 
 //--------------------Служебные------------------------------------
 
-void ObjectThread::testCommand()
+bool ObjectThread::testCommand()
 {
    //Тестовая команда	STENDx	OK
 }

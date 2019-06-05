@@ -90,6 +90,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ObjectThread4 = new ObjectThread(parent = 0);
 
     cmd = new QProcess(this);
+
     port = new QSerialPort(this);
     port2 = new QSerialPort(this);
     port3 = new QSerialPort(this);
@@ -118,6 +119,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     QList<QSerialPortInfo> info = QSerialPortInfo::availablePorts();
     for(int i=0; i<info.size(); i++) {
+       ui->comboBox_portStend->addItem(info[i].portName());
        ui->comboBox_portList->addItem(info[i].portName());
        ui->comboBox_portList_2->addItem(info[i].portName());
        ui->comboBox_portList_3->addItem(info[i].portName());
@@ -2464,6 +2466,11 @@ void MainWindow::on_toolButton_programmingBSL_clicked()
 
     ui->toolButton_programmingBSL->setAutoFillBackground(true);
     ui->toolButton_programmingBSL->setPalette( palette );
+
+//    ObjectThread1->programmatorOn();
+//    ObjectThread2->programmatorOn();
+//    ObjectThread3->programmatorOn();
+//    ObjectThread4->programmatorOn();
 
     emit signalLog("<font color = \"#0000ff\">" + QString("Начало программирования по BSL")  + '\n' + "</font>");
 
@@ -39541,4 +39548,12 @@ void MainWindow::on_comboBox_portList_4_currentIndexChanged(const QString &arg1)
     scriptEso.write(sym.toLocal8Bit());
 
     scriptEso.close();
+}
+
+void MainWindow::on_comboBox_portStend_currentIndexChanged(const QString &arg1)
+{
+    ObjectThread1->getPortStendName(arg1);
+    ObjectThread2->getPortStendName(arg1);
+    ObjectThread3->getPortStendName(arg1);
+    ObjectThread4->getPortStendName(arg1);
 }
