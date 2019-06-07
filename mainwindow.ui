@@ -364,7 +364,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>Включить протокол M-Bus</string>
+     <string>Калибровка часов</string>
     </property>
    </widget>
    <widget class="QToolButton" name="toolButton_MBusOff">
@@ -4333,7 +4333,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>Калибровка часов</string>
+     <string>Включить протокол M-Bus</string>
     </property>
    </widget>
    <widget class="QToolButton" name="toolButton_3">

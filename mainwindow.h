@@ -204,7 +204,7 @@ signals:
 
     startBSLProgramming();
     startTokPlatyRequest();
-    startTimeCalibration();
+    startTimeCalibration(QSerialPort *port1, QSerialPort *port2, QSerialPort *port3, QSerialPort *port4);
 
     //Стенд/
 

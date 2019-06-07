@@ -570,21 +570,40 @@ MainWindow::MainWindow(QWidget *parent) :
 
     //mbusOn connect
 
-    connect(this, SIGNAL(signalMBusOnToThread(QSerialPort*,QSerialPort*,QSerialPort*,QSerialPort*)),
-            ObjectThread1, SLOT(slotMBusOn(QSerialPort*,QSerialPort*,QSerialPort*,QSerialPort*)));
-    connect(this, SIGNAL(signalMBusOnToThread(QSerialPort*,QSerialPort*,QSerialPort*,QSerialPort*)),
-            ObjectThread2, SLOT(slotMBusOn(QSerialPort*,QSerialPort*,QSerialPort*,QSerialPort*)));
-    connect(this, SIGNAL(signalMBusOnToThread(QSerialPort*,QSerialPort*,QSerialPort*,QSerialPort*)),
-            ObjectThread3, SLOT(slotMBusOn(QSerialPort*,QSerialPort*,QSerialPort*,QSerialPort*)));
-    connect(this, SIGNAL(signalMBusOnToThread(QSerialPort*,QSerialPort*,QSerialPort*,QSerialPort*)),
-            ObjectThread4, SLOT(slotMBusOn(QSerialPort*,QSerialPort*,QSerialPort*,QSerialPort*)));
+//    connect(this, SIGNAL(signalMBusOnToThread(QSerialPort*,QSerialPort*,QSerialPort*,QSerialPort*)),
+//            ObjectThread1, SLOT(slotMBusOn(QSerialPort*,QSerialPort*,QSerialPort*,QSerialPort*)));
+//    connect(this, SIGNAL(signalMBusOnToThread(QSerialPort*,QSerialPort*,QSerialPort*,QSerialPort*)),
+//            ObjectThread2, SLOT(slotMBusOn(QSerialPort*,QSerialPort*,QSerialPort*,QSerialPort*)));
+//    connect(this, SIGNAL(signalMBusOnToThread(QSerialPort*,QSerialPort*,QSerialPort*,QSerialPort*)),
+//            ObjectThread3, SLOT(slotMBusOn(QSerialPort*,QSerialPort*,QSerialPort*,QSerialPort*)));
+//    connect(this, SIGNAL(signalMBusOnToThread(QSerialPort*,QSerialPort*,QSerialPort*,QSerialPort*)),
+//            ObjectThread4, SLOT(slotMBusOn(QSerialPort*,QSerialPort*,QSerialPort*,QSerialPort*)));
 
-    connect(ObjectThread1, SIGNAL(checkMBusOn(int)), this, SLOT(slotCheckMBusOnError(int)));
-    connect(ObjectThread2, SIGNAL(checkMBusOn(int)), this, SLOT(slotCheckMBusOnError(int)));
-    connect(ObjectThread3, SIGNAL(checkMBusOn(int)), this, SLOT(slotCheckMBusOnError(int)));
-    connect(ObjectThread4, SIGNAL(checkMBusOn(int)), this, SLOT(slotCheckMBusOnError(int)));
+//    connect(ObjectThread1, SIGNAL(checkMBusOn(int)), this, SLOT(slotCheckMBusOnError(int)));
+//    connect(ObjectThread2, SIGNAL(checkMBusOn(int)), this, SLOT(slotCheckMBusOnError(int)));
+//    connect(ObjectThread3, SIGNAL(checkMBusOn(int)), this, SLOT(slotCheckMBusOnError(int)));
+//    connect(ObjectThread4, SIGNAL(checkMBusOn(int)), this, SLOT(slotCheckMBusOnError(int)));
 
     //mbusOn connect/
+
+    //калибровка часов
+
+    connect(this, SIGNAL(startTimeCalibration(QSerialPort*,QSerialPort*,QSerialPort*,QSerialPort*)),
+            ObjectThread1, SLOT(slotRealClockCalibration(QSerialPort*,QSerialPort*,QSerialPort*,QSerialPort*)));
+    connect(this, SIGNAL(startTimeCalibration(QSerialPort*,QSerialPort*,QSerialPort*,QSerialPort*)),
+            ObjectThread2, SLOT(slotRealClockCalibration(QSerialPort*,QSerialPort*,QSerialPort*,QSerialPort*)));
+    connect(this, SIGNAL(startTimeCalibration(QSerialPort*,QSerialPort*,QSerialPort*,QSerialPort*)),
+            ObjectThread3, SLOT(slotRealClockCalibration(QSerialPort*,QSerialPort*,QSerialPort*,QSerialPort*)));
+    connect(this, SIGNAL(startTimeCalibration(QSerialPort*,QSerialPort*,QSerialPort*,QSerialPort*)),
+            ObjectThread4, SLOT(slotRealClockCalibration(QSerialPort*,QSerialPort*,QSerialPort*,QSerialPort*)));
+
+    connect(ObjectThread1, SIGNAL(checkTimeCalError(int)), this, SLOT(slotCheckTimeCalError(int)));
+    connect(ObjectThread2, SIGNAL(checkTimeCalError(int)), this, SLOT(slotCheckTimeCalError(int)));
+    connect(ObjectThread3, SIGNAL(checkTimeCalError(int)), this, SLOT(slotCheckTimeCalError(int)));
+    connect(ObjectThread4, SIGNAL(checkTimeCalError(int)), this, SLOT(slotCheckTimeCalError(int)));
+
+    //калибровка часов/
+
 
 
     //checkMbus connect
@@ -1659,12 +1678,12 @@ void MainWindow::paintEvent(QPaintEvent *event)
         painter.drawEllipse(xGpourBoxPulsesOutputOff + 13 + 33 + 33, yGroupBoxPulsesOutputOff + 45, 15, 15);
         painter.drawEllipse(xGpourBoxPulsesOutputOff + 13 + 33 + 33 + 33, yGroupBoxPulsesOutputOff + 45, 15, 15);
 
-//        int xGpourBoxMBusOn = ui->groupBox_MBusOn->x();
-//        int yGroupBoxMBusOn = ui->groupBox_MBusOn->y();
-//        painter.drawEllipse(xGpourBoxMBusOn + 13, yGroupBoxMBusOn + 45, 15, 15);
-//        painter.drawEllipse(xGpourBoxMBusOn + 13 + 33, yGroupBoxMBusOn + 45, 15, 15);
-//        painter.drawEllipse(xGpourBoxMBusOn + 13 + 33 + 33, yGroupBoxMBusOn + 45, 15, 15);
-//        painter.drawEllipse(xGpourBoxMBusOn + 13 + 33 + 33 + 33, yGroupBoxMBusOn + 45, 15, 15);
+        int xGpourBoxMBusOn = ui->groupBox_MBusOn->x();
+        int yGroupBoxMBusOn = ui->groupBox_MBusOn->y();
+        painter.drawEllipse(xGpourBoxMBusOn + 13, yGroupBoxMBusOn + 45, 15, 15);
+        painter.drawEllipse(xGpourBoxMBusOn + 13 + 33, yGroupBoxMBusOn + 45, 15, 15);
+        painter.drawEllipse(xGpourBoxMBusOn + 13 + 33 + 33, yGroupBoxMBusOn + 45, 15, 15);
+        painter.drawEllipse(xGpourBoxMBusOn + 13 + 33 + 33 + 33, yGroupBoxMBusOn + 45, 15, 15);
 
         int xGpourBoxMBusCheck = ui->groupBox_CheckMbus->x();
         int yGroupBoxMBusCheck = ui->groupBox_CheckMbus->y();
@@ -2118,6 +2137,79 @@ void MainWindow::paintEvent(QPaintEvent *event)
         }
 
         //----------------------PulsesOutputDefault------------------------------/
+
+
+
+        //----------------------Калибровка часов---------------------------------
+
+                if( vectorIndicatorStateMatrix.at(5).at(0) && ui->checkBox_workPlace1->isChecked() && isTimeCalFinished1) {
+                    QPainter painter(this); // Создаём объект отрисовщика
+                    painter.setPen(QPen(Qt::lightGray, 1, Qt::SolidLine, Qt::FlatCap));
+                    painter.setBrush(QBrush(Qt::red, Qt::SolidPattern));
+
+                    painter.drawEllipse(xGpourBoxMBusOn + 13, yGroupBoxMBusOn + 45, 15, 15);
+                }
+                if( !vectorIndicatorStateMatrix.at(5).at(0)  && ui->checkBox_workPlace1->isChecked() && isTimeCalFinished1 ) {
+                    QPainter painter(this); // Создаём объект отрисовщика
+                    painter.setPen(QPen(Qt::lightGray, 1, Qt::SolidLine, Qt::FlatCap));
+                    painter.setBrush(QBrush(Qt::green, Qt::SolidPattern));
+
+                    painter.drawEllipse(xGpourBoxMBusOn + 13, yGroupBoxMBusOn + 45, 15, 15);
+                }
+                //
+
+                //
+                if( vectorIndicatorStateMatrix.at(5).at(1)  && ui->checkBox_workPlace2->isChecked() && isTimeCalFinished2 ) {
+                    QPainter painter(this); // Создаём объект отрисовщика
+                    painter.setPen(QPen(Qt::lightGray, 1, Qt::SolidLine, Qt::FlatCap));
+                    painter.setBrush(QBrush(Qt::red, Qt::SolidPattern));
+
+                    painter.drawEllipse(xGpourBoxMBusOn + 13 + 33, yGroupBoxMBusOn + 45, 15, 15);
+                }
+                if( !vectorIndicatorStateMatrix.at(5).at(1)  && ui->checkBox_workPlace2->isChecked() && isTimeCalFinished2 ) {
+                    QPainter painter(this); // Создаём объект отрисовщика
+                    painter.setPen(QPen(Qt::lightGray, 1, Qt::SolidLine, Qt::FlatCap));
+                    painter.setBrush(QBrush(Qt::green, Qt::SolidPattern));
+
+                    painter.drawEllipse(xGpourBoxMBusOn + 13 + 33, yGroupBoxMBusOn + 45, 15, 15);
+                }
+                //
+
+                //
+                if( vectorIndicatorStateMatrix.at(5).at(2)  && ui->checkBox_workPlace3->isChecked() && isTimeCalFinished3 ) {
+                    QPainter painter(this); // Создаём объект отрисовщика
+                    painter.setPen(QPen(Qt::lightGray, 1, Qt::SolidLine, Qt::FlatCap));
+                    painter.setBrush(QBrush(Qt::red, Qt::SolidPattern));
+
+                    painter.drawEllipse(xGpourBoxMBusOn + 13 + 33 + 33, yGroupBoxMBusOn + 45, 15, 15);
+                }
+                if( !vectorIndicatorStateMatrix.at(5).at(2)  && ui->checkBox_workPlace3->isChecked() && isTimeCalFinished3 ) {
+                    QPainter painter(this); // Создаём объект отрисовщика
+                    painter.setPen(QPen(Qt::lightGray, 1, Qt::SolidLine, Qt::FlatCap));
+                    painter.setBrush(QBrush(Qt::green, Qt::SolidPattern));
+
+                    painter.drawEllipse(xGpourBoxMBusOn + 13 + 33 + 33, yGroupBoxMBusOn + 45, 15, 15);
+                }
+                //
+
+                //
+                if( vectorIndicatorStateMatrix.at(5).at(3)  && ui->checkBox_workPlace4->isChecked() && isTimeCalFinished4 ) {
+                    QPainter painter(this); // Создаём объект отрисовщика
+                    painter.setPen(QPen(Qt::lightGray, 1, Qt::SolidLine, Qt::FlatCap));
+                    painter.setBrush(QBrush(Qt::red, Qt::SolidPattern));
+
+                    painter.drawEllipse(xGpourBoxMBusOn + 13 + 33 + 33 + 33, yGroupBoxMBusOn + 45, 15, 15);
+                }
+                if( !vectorIndicatorStateMatrix.at(5).at(3)  && ui->checkBox_workPlace4->isChecked() && isTimeCalFinished4 ) {
+                    QPainter painter(this); // Создаём объект отрисовщика
+                    painter.setPen(QPen(Qt::lightGray, 1, Qt::SolidLine, Qt::FlatCap));
+                    painter.setBrush(QBrush(Qt::green, Qt::SolidPattern));
+
+                    painter.drawEllipse(xGpourBoxMBusOn + 13 + 33 + 33 + 33, yGroupBoxMBusOn + 45, 15, 15);
+                }
+
+        //----------------------Калибровка часов---------------------------------/
+
 
 
         //----------------------MBusOn-------------------------------------------
@@ -34903,8 +34995,6 @@ void MainWindow::on_toolButton_executeCommands_clicked()
 
     emit startTokPlatyRequest();
 
-    return;
-
     //проверка тока платы/
 
     //запись    
@@ -35514,9 +35604,13 @@ void MainWindow::on_toolButton_executeCommands_clicked()
     //импульсный выход - по умолчанию/
 
 
-    //включить протокол MBus
+    //калибровка часов реального времени                   //включить протокол MBus
 
     if(vectorIsCommandUse.at(5) && (repeatParameter == 0 || repeatParameter == 1) ) {
+
+        //-----------------------------------------------------
+        //Теперь здесь будет калибровка часов реального времени
+        //-----------------------------------------------------
 
         ObjectThread1->setIsWorkPlaceUseVector(vectorIsWorkPlaceUse);
         ObjectThread2->setIsWorkPlaceUseVector(vectorIsWorkPlaceUse);
@@ -35538,69 +35632,91 @@ void MainWindow::on_toolButton_executeCommands_clicked()
         ui->toolButton_MBusOn->setAutoFillBackground(true);
         ui->toolButton_MBusOn->setPalette( palette );
 
-//      for(int l=0; l<4; l++) {
 
-//        if(vectorIsWorkPlaceUse.at(l)) {
-//            emit signalMBusOn(l);
+//        emit signalLog("<font color = \"#0000ff\">" + QString("Включение протокола MBus")  + '\n' + "</font>");
 
-//        }
+//        emit signalMBusOnToThread(portOptical, portOptical2, portOptical3, portOptical4);
 
-//      }
+        emit signalLog("<font color = \"#0000ff\">" + QString("Калибровка часов")  + '\n' + "</font>");
+
+        emit startTimeCalibration(portOptical, portOptical2, portOptical3, portOptical4);
+
+        //-------------Ждём завершения калибровки часов------------//Ждём завершения Включение протокола MBus------------------
+
+         bool isTimeCalFinishedTmp1 = true;
+         bool isTimeCalFinishedTmp2 = true;
+         bool isTimeCalFinishedTmp3 = true;
+         bool isTimeCalFinishedTmp4 = true;
+
+                   for(int e=0; e<30; e++) { //3 sec
+                       global::pause(100);
+
+                       if(ui->checkBox_workPlace1->isChecked()) {
+                           isTimeCalFinishedTmp1 = isTimeCalFinished1;
+
+                           if(!vectorIsWorkPlaceUse.at(0)) isTimeCalFinishedTmp1 = true;
+                       }
+
+                       if(ui->checkBox_workPlace2->isChecked()) {
+                           isTimeCalFinishedTmp2 = isTimeCalFinished2;
+
+                           if(!vectorIsWorkPlaceUse.at(1)) isTimeCalFinishedTmp2 = true;
+                       }
+
+                       if(ui->checkBox_workPlace3->isChecked()) {
+                           isTimeCalFinishedTmp3 = isTimeCalFinished3;
+
+                           if(!vectorIsWorkPlaceUse.at(2)) isTimeCalFinishedTmp3 = true;
+                       }
+
+                       if(ui->checkBox_workPlace4->isChecked()) {
+                           isTimeCalFinishedTmp4 = isTimeCalFinished4;
+
+                           if(!vectorIsWorkPlaceUse.at(3)) isTimeCalFinishedTmp4 = true;
+                       }
+
+                       if(isTimeCalFinishedTmp1 && isTimeCalFinishedTmp2 && isTimeCalFinishedTmp3 && isTimeCalFinishedTmp4)
+                           break;
+                   }
+
+//        bool isMBusOnTmp1 = true;
+//        bool isMBusOnTmp2 = true;
+//        bool isMBusOnTmp3 = true;
+//        bool isMBusOnTmp4 = true;
+
+//          for(int e=0; e<30; e++) { //3 sec
+//              global::pause(100);
+
+//              if(ui->checkBox_workPlace1->isChecked()) {
+//                  isMBusOnTmp1 = isMBusOn1;
+
+//                  if(!vectorIsWorkPlaceUse.at(0)) isMBusOnTmp1 = true;
+//              }
+
+//              if(ui->checkBox_workPlace2->isChecked()) {
+//                  isMBusOnTmp2 = isMBusOn2;
+
+//                  if(!vectorIsWorkPlaceUse.at(1)) isMBusOnTmp2 = true;
+//              }
+
+//              if(ui->checkBox_workPlace3->isChecked()) {
+//                  isMBusOnTmp3 = isMBusOn3;
+
+//                  if(!vectorIsWorkPlaceUse.at(2)) isMBusOnTmp3 = true;
+//              }
+
+//              if(ui->checkBox_workPlace4->isChecked()) {
+//                  isMBusOnTmp4 = isMBusOn4;
+
+//                  if(!vectorIsWorkPlaceUse.at(3)) isMBusOnTmp4 = true;
+//              }
+
+//              if(isMBusOnTmp1 && isMBusOnTmp2 && isMBusOnTmp3 && isMBusOnTmp4)
+//                  break;
+//          }
 
 
-        emit signalLog("<font color = \"#0000ff\">" + QString("Включение протокола MBus")  + '\n' + "</font>");
-
-        emit signalMBusOnToThread(portOptical, portOptical2, portOptical3, portOptical4);
-
-        //-------------------------Ждём завершения Включение протокола MBus------------------
-
-        bool isMBusOnTmp1 = true;
-        bool isMBusOnTmp2 = true;
-        bool isMBusOnTmp3 = true;
-        bool isMBusOnTmp4 = true;
-
-//          if(!vectorIsWorkPlaceUse.at(0)) isPulsesInputVolumeTmp1 = true;
-//          if(!vectorIsWorkPlaceUse.at(1)) isPulsesInputVolumeTmp2 = true;
-//          if(!vectorIsWorkPlaceUse.at(2)) isPulsesInputVolumeTmp3 = true;
-//          if(!vectorIsWorkPlaceUse.at(3)) isPulsesInputVolumeTmp4 = true;
-
-          for(int e=0; e<30; e++) { //3 sec
-              global::pause(100);
-
-              if(ui->checkBox_workPlace1->isChecked()) {
-                  isMBusOnTmp1 = isMBusOn1;
-
-                  if(!vectorIsWorkPlaceUse.at(0)) isMBusOnTmp1 = true;
-              }
-
-              if(ui->checkBox_workPlace2->isChecked()) {
-                  isMBusOnTmp2 = isMBusOn2;
-
-                  if(!vectorIsWorkPlaceUse.at(1)) isMBusOnTmp2 = true;
-              }
-
-              if(ui->checkBox_workPlace3->isChecked()) {
-                  isMBusOnTmp3 = isMBusOn3;
-
-                  if(!vectorIsWorkPlaceUse.at(2)) isMBusOnTmp3 = true;
-              }
-
-              if(ui->checkBox_workPlace4->isChecked()) {
-                  isMBusOnTmp4 = isMBusOn4;
-
-                  if(!vectorIsWorkPlaceUse.at(3)) isMBusOnTmp4 = true;
-              }
-//              if(vectorIsWorkPlaceUse.at(0)) isMBusOnTmp1 = isMBusOn1;
-//              if(vectorIsWorkPlaceUse.at(1)) isMBusOnTmp2 = isMBusOn2;
-//              if(vectorIsWorkPlaceUse.at(2)) isMBusOnTmp3 = isMBusOn3;
-//              if(vectorIsWorkPlaceUse.at(3)) isMBusOnTmp4 = isMBusOn4;
-
-              if(isMBusOnTmp1 && isMBusOnTmp2 && isMBusOnTmp3 && isMBusOnTmp4)
-                  break;
-          }
-
-
-        //-------------------------Ждём завершения Включение протокола MBus------------------/
+        //-------------Ждём завершения калибровки часов------------//Ждём завершения Включение протокола MBus------------------/
 
 
       ui->toolButton_MBusOn->setPalette(palettePrime);

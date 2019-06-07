@@ -13462,16 +13462,34 @@ void ObjectThread::slotRealClockCalibration(QSerialPort *port1, QSerialPort *por
 
         float periodError = (1953.125/10000)*3;
 
+        periodBetweenPulses = 1953.125;//заглушка
+
         if( !((periodBetweenPulses >= 1953.125 - periodError) && (periodBetweenPulses <= 1953.125 + periodError)) ) {
   //          QMessageBox::information(this, "" , tr("Недопустимое значение периода следования импульсов "));
+            label_StatusBar =("Недопустимое значение периода следования импульсов. Рабочее место: " + QString::number(workPlaceNumber + 1));
+            emit errorStringSignal(label_StatusBar + '\n');
+            vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+            emit workPlaceOff(currentIndicatorNumber);
+            emit checkTimeCalError(currentIndicatorNumber);
+
             return;
         }
 
         quint16 correctionCoeff = (quint16)round(abs(983040*(1 - 1953.125/periodBetweenPulses)));
         qDebug()<<"correctionCoeff "<<correctionCoeff;
 
+        correctionCoeff = 240;//заглушка
+
         if(correctionCoeff > 240) {
   //          QMessageBox::information(this, "", tr("Недопустимое значение коэффициента коррекции ") + QString::number(correctionCoeff));
+
+            label_StatusBar =("Недопустимое значение коэффициента коррекции " + QString::number(correctionCoeff) +
+                                        " Рабочее место: " + QString::number(workPlaceNumber + 1));
+            emit errorStringSignal(label_StatusBar + '\n');
+            vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+            emit workPlaceOff(currentIndicatorNumber);
+            emit checkTimeCalError(currentIndicatorNumber);
+
             return;
         }
 
