@@ -6,6 +6,8 @@
 #include <QVariant>
 #include <QVector>
 #include <QProcess>
+#include <QMainWindow>
+#include <QWidget>
 
 class ObjectThread: public QObject
 {
@@ -15,7 +17,7 @@ public:
 
     int workPlace;
 
-    explicit ObjectThread(QObject *parent);
+    explicit ObjectThread(QObject *parent/*, QMainWindow * mwd*/);
     ~ObjectThread();
 
     quint8 makeCRC(QByteArray);
@@ -23,10 +25,12 @@ public:
     quint8 reverse8(quint8 temp);
 
     QVector<QVector<bool>> getVectorMatrix();
+    QVector<bool> getVectorTokPlaty();
     QVector<bool> getVectorBSL();
 
     void setWorkPlace(int workplaceNumber);
     void setVectorIndicatorStateMatrix(QVector<QVector<bool>> vectorIndicatorStateMatrix);
+    void setVectorTokPlaty(QVector<bool> vector);
     void setVectorBSLMatrix(QVector<bool> vector);
     void setParamsMap(QMap<QString, QVariant> map);
     void setMapWrite(QMap<QString, QByteArray> map);
@@ -58,7 +62,7 @@ public:
 
     //команды стенду
 
-    void getPortStendName(QString name);
+    void getPortStendName(QSerialPort *port);
     void getPortBSL(QSerialPort * port, QSerialPort * port2, QSerialPort * port3, QSerialPort * port4);
     void sendCommandToStend(QString cmd, int workplace);
 
@@ -90,10 +94,13 @@ public:
 
     //команды стенду/
 
+    void getMainWndPointer(QMainWindow * mainwnd);
+
 
 signals:
     checkBslError(int currentIndicatorNumber);
-
+    checkTimeCalError(int currentIndicatorNumber);
+    checkTokPlaty(int currentIndicatorNumber);
     checkWritingError(int currentIndicatorNumber);
     checkCalibrationError(int currentIndicatorNumber);
     signalRMV(int color, QString str, int currentIndicatorNumber);
@@ -113,6 +120,11 @@ signals:
     //стенд
 
     answerFromStend(QString answer);
+
+    tok1(QString str);
+    tok2(QString str);
+    tok3(QString str);
+    tok4(QString str);
 
     //стенд/
 
@@ -136,8 +148,12 @@ public slots:
     //стенд
     void slotGetAnsFromStend(QString answer);
     void bslProgramming();
+    void slotTokPlatyRequest();
 
     void slotProcessReadyRead();
+
+    void slotRealClockCalibration(QSerialPort *port1, QSerialPort *port2,
+                                  QSerialPort *port3, QSerialPort *port4);
 
 private slots:
 //    void slotWriteParams(QSerialPort *port1, QSerialPort *port2, QSerialPort *port3, QSerialPort *port4,
@@ -156,6 +172,8 @@ private:
 
     //Стенд
 
+    QMainWindow * mainWnd;
+
     QSerialPort * portStend;
     QSerialPort * portBSL, * portBSL2, * portBSL3, * portBSL4;
 
@@ -163,11 +181,16 @@ private:
     QString processData;
     QString programmingFileToString;
     QStringList programmingFileToStringList;
+
+    float periodBetweenPulses1, periodBetweenPulses2,
+          periodBetweenPulses3, periodBetweenPulses4;
+
     //Стенд/
 
     QByteArray packetToRead;
     QVector<QVector<bool>> vectorIndicatorStateMatrix;
     QVector<bool> vectorIndicatorBSLMatrix;
+    QVector<bool> vectorIndicatorTokPlaty;
     QMap<QString, QVariant> paramsMapToThreads;
     QMap<QString, QByteArray> mapwrite;
     QMap<QString, QByteArray> mapRead;

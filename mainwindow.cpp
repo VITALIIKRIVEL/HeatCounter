@@ -89,7 +89,18 @@ MainWindow::MainWindow(QWidget *parent) :
     ObjectThread3 = new ObjectThread(parent = 0);
     ObjectThread4 = new ObjectThread(parent = 0);
 
+//    ObjectThread1->getMainWndPointer(this);
+//    ObjectThread2->getMainWndPointer(this);
+//    ObjectThread3->getMainWndPointer(this);
+//    ObjectThread4->getMainWndPointer(this);
+
     cmd = new QProcess(this);
+
+    portStend = new QSerialPort(this);
+        portStend->setBaudRate(QSerialPort::Baud115200);
+        portStend->setDataBits(QSerialPort::Data8);
+        portStend->setParity(QSerialPort::NoParity);
+        portStend->setStopBits(QSerialPort::OneStop);
 
     port = new QSerialPort(this);
     port2 = new QSerialPort(this);
@@ -414,6 +425,27 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ObjectThread4, SIGNAL(checkBslError(int)), this, SLOT(slotCheckBslError(int)));
 
     //bsl programming/
+
+
+    //tok platy
+
+    connect(this, SIGNAL(startTokPlatyRequest()), ObjectThread1, SLOT(slotTokPlatyRequest()));
+    connect(this, SIGNAL(startTokPlatyRequest()), ObjectThread2, SLOT(slotTokPlatyRequest()));
+    connect(this, SIGNAL(startTokPlatyRequest()), ObjectThread3, SLOT(slotTokPlatyRequest()));
+    connect(this, SIGNAL(startTokPlatyRequest()), ObjectThread4, SLOT(slotTokPlatyRequest()));
+
+    connect(ObjectThread1, SIGNAL(checkTokPlaty(int)), this, SLOT(slotCheckTokPlatyError(int)));
+    connect(ObjectThread2, SIGNAL(checkTokPlaty(int)), this, SLOT(slotCheckTokPlatyError(int)));
+    connect(ObjectThread3, SIGNAL(checkTokPlaty(int)), this, SLOT(slotCheckTokPlatyError(int)));
+    connect(ObjectThread4, SIGNAL(checkTokPlaty(int)), this, SLOT(slotCheckTokPlatyError(int)));
+
+    connect(ObjectThread1, SIGNAL(tok1(QString)), this, SLOT(setLabelTok1));
+    connect(ObjectThread2, SIGNAL(tok2(QString)), this, SLOT(setLabelTok2));
+    connect(ObjectThread3, SIGNAL(tok3(QString)), this, SLOT(setLabelTok3));
+    connect(ObjectThread4, SIGNAL(tok4(QString)), this, SLOT(setLabelTok4));
+
+    //tok platy/
+
 
     //writing connect
 
@@ -944,6 +976,9 @@ MainWindow::MainWindow(QWidget *parent) :
     vectorBSL.resize(4);
     vectorBSL.fill(false);
 
+    vectorTokPlaty.resize(4);
+    vectorTokPlaty.fill(false);
+
     vectorIndicatorStateMatrix.resize(10);
 
     for(int u=0; u<10; u++) {
@@ -952,6 +987,7 @@ MainWindow::MainWindow(QWidget *parent) :
     }
 
     isNeedPaintEvent = false;
+    isBslEnded = false;
 
  //   ui->label_StatusBar->setStyleSheet("QLabel { background-color : white; color : blue; }");
 
@@ -1196,6 +1232,50 @@ void MainWindow::checkBslError(int currentIndicator)
         break;
     case 3:
         isBslFinished4 = true;
+        break;
+    default:
+        break;
+    }
+    repaint();
+}
+
+void MainWindow::checkTimeCalibrationError(int currentIndicator)
+{
+    isNeedPaintEvent = true;
+    switch (currentIndicator) {
+    case 0:
+        isTimeCalFinished1 = true;
+        break;
+    case 1:
+        isTimeCalFinished2 = true;
+        break;
+    case 2:
+        isTimeCalFinished3 = true;
+        break;
+    case 3:
+        isTimeCalFinished4 = true;
+        break;
+    default:
+        break;
+    }
+    repaint();
+}
+
+void MainWindow::checkTokPlatyError(int currentIndicator)
+{
+    isNeedPaintEvent = true;
+    switch (currentIndicator) {
+    case 0:
+        isTokPlatyFinished1 = true;
+        break;
+    case 1:
+        isTokPlatyFinished2 = true;
+        break;
+    case 2:
+        isTokPlatyFinished3 = true;
+        break;
+    case 3:
+        isTokPlatyFinished4 = true;
         break;
     default:
         break;
@@ -1529,12 +1609,20 @@ void MainWindow::paintEvent(QPaintEvent *event)
         painter.setPen(QPen(Qt::lightGray, 1, Qt::SolidLine, Qt::FlatCap));
         painter.setBrush(QBrush(Qt::white, Qt::SolidPattern));
 
-        int xGpourBoxBsl = ui->groupBox_BSL->x();
-        int yGroupBoxBsl = ui->groupBox_BSL->y();
-        painter.drawEllipse(xGpourBoxBsl + 13, yGroupBoxBsl + 45, 15, 15);
-        painter.drawEllipse(xGpourBoxBsl + 13 + 33, yGroupBoxBsl + 45, 15, 15);
-        painter.drawEllipse(xGpourBoxBsl + 13 + 33 + 33, yGroupBoxBsl + 45, 15, 15);
-        painter.drawEllipse(xGpourBoxBsl + 13 + 33 + 33 + 33, yGroupBoxBsl + 45, 15, 15);
+//        int xGpourBoxBsl = ui->groupBox_BSL->x();
+//        int yGroupBoxBsl = ui->groupBox_BSL->y();
+//        painter.drawEllipse(xGpourBoxBsl + 13, yGroupBoxBsl + 45, 15, 15);
+//        painter.drawEllipse(xGpourBoxBsl + 13 + 33, yGroupBoxBsl + 45, 15, 15);
+//        painter.drawEllipse(xGpourBoxBsl + 13 + 33 + 33, yGroupBoxBsl + 45, 15, 15);
+//        painter.drawEllipse(xGpourBoxBsl + 13 + 33 + 33 + 33, yGroupBoxBsl + 45, 15, 15);
+
+        int xGpourBoxTokPlaty = ui->groupBox_tokPlaty->x();
+        int yGroupBoxTokPlaty = ui->groupBox_tokPlaty->y();
+        painter.drawEllipse(xGpourBoxTokPlaty + 13, yGroupBoxTokPlaty + 45, 15, 15);
+        painter.drawEllipse(xGpourBoxTokPlaty + 13 + 33, yGroupBoxTokPlaty + 45, 15, 15);
+        painter.drawEllipse(xGpourBoxTokPlaty + 13 + 33 + 33, yGroupBoxTokPlaty + 45, 15, 15);
+        painter.drawEllipse(xGpourBoxTokPlaty + 13 + 33 + 33 + 33, yGroupBoxTokPlaty + 45, 15, 15);
+
 
         int xGpourBox = ui->groupBox_writeParams->x();
         int yGroupBox = ui->groupBox_writeParams->y();
@@ -1606,7 +1694,78 @@ void MainWindow::paintEvent(QPaintEvent *event)
         painter.drawEllipse(xGroupBoxResult + 13 + 33 + 33, yGroupBoxResult + 45, 15, 15);
         painter.drawEllipse(xGroupBoxResult + 13 + 33 + 33 + 33, yGroupBoxResult + 45, 15, 15);
 
+
+        //--------------------tok platy-------------------------
+
+        if( vectorTokPlaty.at(0) && ui->checkBox_workPlace1->isChecked() && isTokPlatyFinished1) {
+            QPainter painter(this); // Создаём объект отрисовщика
+            painter.setPen(QPen(Qt::lightGray, 1, Qt::SolidLine, Qt::FlatCap));
+            painter.setBrush(QBrush(Qt::red, Qt::SolidPattern));
+
+            painter.drawEllipse(xGpourBoxTokPlaty + 13, yGroupBoxTokPlaty + 45, 15, 15);
+        }
+        if( !vectorTokPlaty.at(0)  && ui->checkBox_workPlace1->isChecked() && isTokPlatyFinished1 ) {
+            QPainter painter(this); // Создаём объект отрисовщика
+            painter.setPen(QPen(Qt::lightGray, 1, Qt::SolidLine, Qt::FlatCap));
+            painter.setBrush(QBrush(Qt::green, Qt::SolidPattern));
+
+            painter.drawEllipse(xGpourBoxTokPlaty + 13, yGroupBoxTokPlaty + 45, 15, 15);
+        }
         //
+
+        //
+        if( vectorTokPlaty.at(1)  && ui->checkBox_workPlace2->isChecked() && isTokPlatyFinished2 ) {
+            QPainter painter(this); // Создаём объект отрисовщика
+            painter.setPen(QPen(Qt::lightGray, 1, Qt::SolidLine, Qt::FlatCap));
+            painter.setBrush(QBrush(Qt::red, Qt::SolidPattern));
+
+            painter.drawEllipse(xGpourBoxTokPlaty + 13 + 33, yGroupBoxTokPlaty + 45, 15, 15);
+        }
+        if( !vectorTokPlaty.at(1)  && ui->checkBox_workPlace2->isChecked() && isTokPlatyFinished2 ) {
+            QPainter painter(this); // Создаём объект отрисовщика
+            painter.setPen(QPen(Qt::lightGray, 1, Qt::SolidLine, Qt::FlatCap));
+            painter.setBrush(QBrush(Qt::green, Qt::SolidPattern));
+
+            painter.drawEllipse(xGpourBoxTokPlaty + 13 + 33, yGroupBoxTokPlaty + 45, 15, 15);
+        }
+        //
+
+        //
+        if( vectorTokPlaty.at(2)  && ui->checkBox_workPlace3->isChecked() && isTokPlatyFinished3 ) {
+            QPainter painter(this); // Создаём объект отрисовщика
+            painter.setPen(QPen(Qt::lightGray, 1, Qt::SolidLine, Qt::FlatCap));
+            painter.setBrush(QBrush(Qt::red, Qt::SolidPattern));
+
+            painter.drawEllipse(xGpourBoxTokPlaty + 13 + 33 + 33, yGroupBoxTokPlaty + 45, 15, 15);
+        }
+        if( !vectorTokPlaty.at(2)  && ui->checkBox_workPlace3->isChecked() && isTokPlatyFinished3 ) {
+            QPainter painter(this); // Создаём объект отрисовщика
+            painter.setPen(QPen(Qt::lightGray, 1, Qt::SolidLine, Qt::FlatCap));
+            painter.setBrush(QBrush(Qt::green, Qt::SolidPattern));
+
+            painter.drawEllipse(xGpourBoxTokPlaty + 13 + 33 + 33, yGroupBoxTokPlaty + 45, 15, 15);
+        }
+        //
+
+        //
+        if( vectorTokPlaty.at(3)  && ui->checkBox_workPlace4->isChecked() && isTokPlatyFinished4 ) {
+            QPainter painter(this); // Создаём объект отрисовщика
+            painter.setPen(QPen(Qt::lightGray, 1, Qt::SolidLine, Qt::FlatCap));
+            painter.setBrush(QBrush(Qt::red, Qt::SolidPattern));
+
+            painter.drawEllipse(xGpourBoxTokPlaty + 13 + 33 + 33 + 33, yGroupBoxTokPlaty + 45, 15, 15);
+        }
+        if( !vectorTokPlaty.at(3)  && ui->checkBox_workPlace4->isChecked() && isTokPlatyFinished4 ) {
+            QPainter painter(this); // Создаём объект отрисовщика
+            painter.setPen(QPen(Qt::lightGray, 1, Qt::SolidLine, Qt::FlatCap));
+            painter.setBrush(QBrush(Qt::green, Qt::SolidPattern));
+
+            painter.drawEllipse(xGpourBoxTokPlaty + 13 + 33 + 33 + 33, yGroupBoxTokPlaty + 45, 15, 15);
+        }
+
+        //--------------------tok platy------------------------/
+
+
         //
         //writing
         if( vectorIndicatorStateMatrix.at(0).at(0) && ui->checkBox_workPlace1->isChecked() && isWritingFinished1) {
@@ -34626,6 +34785,15 @@ void MainWindow::on_toolButton_executeCommands_clicked()
     ObjectThread3->setVectorIndicatorStateMatrix(vectorIndicatorStateMatrix);
     ObjectThread4->setVectorIndicatorStateMatrix(vectorIndicatorStateMatrix);
 
+    //индикация тока платы
+    vectorTokPlaty.fill(false);
+
+    ObjectThread1->setVectorTokPlaty(vectorTokPlaty);
+    ObjectThread2->setVectorTokPlaty(vectorTokPlaty);
+    ObjectThread3->setVectorTokPlaty(vectorTokPlaty);
+    ObjectThread4->setVectorTokPlaty(vectorTokPlaty);
+    //индикация тока платы/
+
     ObjectThread1->setParamsMap(paramsMapToThreads);
     ObjectThread2->setParamsMap(paramsMapToThreads);
     ObjectThread3->setParamsMap(paramsMapToThreads);
@@ -34723,6 +34891,22 @@ void MainWindow::on_toolButton_executeCommands_clicked()
 
     //для всех рабочих мест команды посылаются параллельно
 
+
+    //проверка тока платы
+
+    ObjectThread1->setIsWorkPlaceUseVector(vectorIsWorkPlaceUse);
+    ObjectThread2->setIsWorkPlaceUseVector(vectorIsWorkPlaceUse);
+    ObjectThread3->setIsWorkPlaceUseVector(vectorIsWorkPlaceUse);
+    ObjectThread4->setIsWorkPlaceUseVector(vectorIsWorkPlaceUse);
+
+    emit signalLog("<font color = \"#0000ff\">" + QString("Проверка тока платы")  + '\n' + "</font>");
+
+    emit startTokPlatyRequest();
+
+    return;
+
+    //проверка тока платы/
+
     //запись    
 
     if(vectorIsCommandUse.at(0) && (repeatParameter == 0)) {
@@ -34768,7 +34952,6 @@ void MainWindow::on_toolButton_executeCommands_clicked()
           emit signalLog("<font color = \"#0000ff\">" + QString("Начало записи")  + '\n' + "</font>");
 
           emit signalWriteParamsToThread(portOptical, portOptical2, portOptical3, portOptical4);
-
 
 
 //          if(vectorIsWorkPlaceUse.at(1)) emit signalWriteParamsToThread(portOptical2, 1, vectorIndicatorStateMatrix,
@@ -36279,6 +36462,49 @@ void MainWindow::slotCheckBslError(int currentIndicator)
 
         if(vectorTmp.at(u)) {
             vectorBSL[u] = true;
+        }
+
+    }
+
+    checkBslError(currentIndicator);
+}
+
+void MainWindow::slotCheckTimeCalError(int currentIndicator)
+{
+    updateVectorStateMatrix(currentIndicator);
+
+    checkTimeCalibrationError(currentIndicator);
+}
+
+void MainWindow::slotCheckTokPlatyError(int currentIndicator)
+{
+    QVector<bool> vectorTmp;
+
+    switch (currentIndicator) {
+    case 0:
+        vectorTmp = ObjectThread1->getVectorTokPlaty();
+        qDebug()<<"MainWindow::slotCheckBslError. ObjectThread1->getVectorBSL()";
+        break;
+    case 1:
+        vectorTmp = ObjectThread2->getVectorTokPlaty();
+        qDebug()<<"MainWindow::slotCheckBslError. ObjectThread2->getVectorBSL()";
+        break;
+    case 2:
+        vectorTmp = ObjectThread3->getVectorTokPlaty();
+        qDebug()<<"MainWindow::slotCheckBslError. ObjectThread3->getVectorBSL()";
+        break;
+    case 3:
+        vectorTmp = ObjectThread4->getVectorTokPlaty();
+        qDebug()<<"MainWindow::slotCheckBslError. ObjectThread4->getVectorBSL()";
+        break;
+    default:
+        break;
+    }
+
+    for(int u=0; u<4; u++) {
+
+        if(vectorTmp.at(u)) {
+            vectorTokPlaty[u] = true;
         }
 
     }
@@ -39552,8 +39778,82 @@ void MainWindow::on_comboBox_portList_4_currentIndexChanged(const QString &arg1)
 
 void MainWindow::on_comboBox_portStend_currentIndexChanged(const QString &arg1)
 {
-    ObjectThread1->getPortStendName(arg1);
-    ObjectThread2->getPortStendName(arg1);
-    ObjectThread3->getPortStendName(arg1);
-    ObjectThread4->getPortStendName(arg1);
+    portStend->setPortName(arg1);
+
+    ObjectThread1->getPortStendName(portStend);
+    ObjectThread2->getPortStendName(portStend);
+    ObjectThread3->getPortStendName(portStend);
+    ObjectThread4->getPortStendName(portStend);
 }
+
+void MainWindow::on_pushButton_plataOn_clicked()
+{
+    ObjectThread1->plataOn();
+}
+
+void MainWindow::on_pushButton_plataOff_clicked()
+{
+    ObjectThread1->plataOff();
+}
+
+void MainWindow::on_pushButton_progrOn_clicked()
+{
+    ObjectThread1->programmatorOn();
+}
+
+void MainWindow::on_pushButton_progrOff_clicked()
+{
+    ObjectThread1->programmatorOff();
+}
+
+void MainWindow::on_pushButton_tokRequest_clicked()
+{
+    ObjectThread1->readTok();
+}
+
+void MainWindow::on_pushButton_openPortStend_clicked()
+{
+    portStend->open(QIODevice::ReadWrite);
+}
+
+void MainWindow::on_pushButton_closePortStend_clicked()
+{
+    portStend->close();
+}
+
+void MainWindow::on_pushButton_portStendSettings_clicked()
+{
+    qDebug()<<portStend->portName()<<portStend->baudRate()
+            <<portStend->dataBits()<<portStend->parity()
+            <<portStend->stopBits();
+}
+
+void MainWindow::setLabelTok1(QString label)
+{
+    ui->label_tok1->setText(label);
+}
+
+void MainWindow::setLabelTok2(QString label)
+{
+    ui->label_tok2->setText(label);
+}
+
+void MainWindow::setLabelTok3(QString label)
+{
+    ui->label_tok3->setText(label);
+}
+
+void MainWindow::setLabelTok4(QString label)
+{
+    ui->label_tok4->setText(label);
+}
+
+
+
+
+
+
+
+
+
+

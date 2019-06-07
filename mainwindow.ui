@@ -4294,7 +4294,7 @@
      <string> 2</string>
     </property>
    </widget>
-   <widget class="QGroupBox" name="groupBox_writeParams_3">
+   <widget class="QGroupBox" name="groupBox_tokPlaty">
     <property name="geometry">
      <rect>
       <x>680</x>
@@ -4308,6 +4308,9 @@
     </property>
    </widget>
    <widget class="QToolButton" name="toolButton">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>860</x>
@@ -4414,8 +4417,8 @@
    <widget class="QLabel" name="label_74">
     <property name="geometry">
      <rect>
-      <x>1310</x>
-      <y>280</y>
+      <x>1330</x>
+      <y>540</y>
       <width>20</width>
       <height>20</height>
      </rect>
@@ -4424,7 +4427,7 @@
      <string>R_Real1</string>
     </property>
    </widget>
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
       <x>590</x>
@@ -4452,6 +4455,110 @@
       </widget>
      </item>
     </layout>
+   </widget>
+   <widget class="QPushButton" name="pushButton_plataOn">
+    <property name="geometry">
+     <rect>
+      <x>1180</x>
+      <y>240</y>
+      <width>141</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Подать пит. на плату</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_plataOff">
+    <property name="geometry">
+     <rect>
+      <x>1184</x>
+      <y>260</y>
+      <width>141</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Выкл. пит. платы</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_tokRequest">
+    <property name="geometry">
+     <rect>
+      <x>1180</x>
+      <y>280</y>
+      <width>141</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Запросить ток потр.</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_progrOn">
+    <property name="geometry">
+     <rect>
+      <x>1184</x>
+      <y>300</y>
+      <width>141</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Подкл. прогр.</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_progrOff">
+    <property name="geometry">
+     <rect>
+      <x>1180</x>
+      <y>320</y>
+      <width>141</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Откл. прогр.</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_openPortStend">
+    <property name="geometry">
+     <rect>
+      <x>590</x>
+      <y>80</y>
+      <width>75</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Открыть</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_closePortStend">
+    <property name="geometry">
+     <rect>
+      <x>590</x>
+      <y>100</y>
+      <width>75</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Закрыть</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_portStendSettings">
+    <property name="geometry">
+     <rect>
+      <x>670</x>
+      <y>80</y>
+      <width>75</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Параметры</string>
+    </property>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">

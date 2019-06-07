@@ -8,12 +8,15 @@
 #include <QTextStream>
 #include "global.h"
 
-ObjectThread::ObjectThread(QObject *parent): QObject(parent)
+ObjectThread::ObjectThread(QObject *parent/*, QMainWindow *mwd*/): QObject(parent)
 {
 
     qDebug()<<"ObjectThread::ObjectThread() "<<"workPlace " + QString::number(workPlace);
 
     portStend = new QSerialPort(this);
+
+ //   mainWnd = mwd;
+
 
 //    Обмен с компьютером UART2
 //    Скорость 115200
@@ -21,10 +24,10 @@ ObjectThread::ObjectThread(QObject *parent): QObject(parent)
 //    1 стоп-бит
 //    Контроля чётности нет
 
-    portStend->setBaudRate(QSerialPort::Baud115200);
-    portStend->setBaudRate(QSerialPort::Data8);
-    portStend->setParity(QSerialPort::NoParity);
-    portStend->setStopBits(QSerialPort::OneStop);
+//    portStend->setBaudRate(QSerialPort::Baud115200);
+//    portStend->setBaudRate(QSerialPort::Data8);
+//    portStend->setParity(QSerialPort::NoParity);
+//    portStend->setStopBits(QSerialPort::OneStop);
 
     allParamsNameList = QStringList()<<"serialNumber"<<
 "serialNumber2"<<
@@ -107,6 +110,12 @@ ObjectThread::ObjectThread(QObject *parent): QObject(parent)
     connect(cmd, SIGNAL(readyRead()), this, SLOT(slotProcessReadyRead()));
     connect(cmd, SIGNAL(started()), this, SLOT(slotProcessStarted()));
 
+    vectorIndicatorBSLMatrix.resize(4);
+    vectorIndicatorBSLMatrix.fill(false);
+
+    vectorIndicatorTokPlaty.resize(4);
+    vectorIndicatorTokPlaty.fill(false);
+
 }
 
 ObjectThread::~ObjectThread()
@@ -122,6 +131,11 @@ void ObjectThread::setWorkPlace(int workplaceNumber)
 void ObjectThread::setVectorIndicatorStateMatrix(QVector<QVector<bool> > vector)
 {
     vectorIndicatorStateMatrix = vector;
+}
+
+void ObjectThread::setVectorTokPlaty(QVector<bool> vector)
+{
+    vectorIndicatorTokPlaty = vector;
 }
 
 void ObjectThread::setVectorBSLMatrix(QVector<bool> vector)
@@ -150,6 +164,11 @@ void ObjectThread::setIsWorkPlaceUseVector(QVector<bool> vec)
 
    qDebug()<<"isWorkPlaceUse "<<isWorkPlaceUse;
 
+}
+
+QVector<bool> ObjectThread::getVectorTokPlaty()
+{
+    return vectorIndicatorTokPlaty;
 }
 
 QVector<bool> ObjectThread::getVectorBSL()
@@ -12536,9 +12555,9 @@ QString ObjectThread::getR_Ref2_4()
 //---------------------SmartStend-----------------------------------
 //------------------------------------------------------------------
 
-void ObjectThread::getPortStendName(QString name)
+void ObjectThread::getPortStendName(QSerialPort *port)
 {
-    portStend->setPortName(name);
+    portStend = port;
 }
 
 void ObjectThread::sendCommandToStend(QString cmd, int workplace)
@@ -12580,6 +12599,14 @@ void ObjectThread::bslProgramming()//аргумент не использует�
         strCommand = "cmd /C BSL_Scripter scriptProgramming_4.txt";//"cmd.exe ";
 
     cmd->start(strCommand/*, listParam*/);
+}
+
+void ObjectThread::slotTokPlatyRequest()
+{
+    if(!isWorkPlaceUse.at(workPlace)) return;
+
+    bool a = readTok();
+
 }
 
 void ObjectThread::slotProcessReadyRead()
@@ -12848,10 +12875,24 @@ bool ObjectThread::plataOn()
 
     //ждать ответа от стенда 10 мсек
 
-    global::pause(10);
+    global::pause(100);
 
     buffer = portStend->readAll();
+    portStend->close();
+
     if(!buffer.isEmpty()) emit textBrowser("<< " + portStend->portName() + " " + buffer.toHex());
+
+    if(buffer.isEmpty()) {
+        QString label_StatusBar = (tr("Нет ответа стенда. Команда \"Подать питание на плату\" ") +
+                                     ". Рабочее место: " + QString::number(workPlace+1));
+        emit errorStringSignal(label_StatusBar + '\n');
+        vectorIndicatorBSLMatrix[workPlace] = true;
+        emit workPlaceOff(workPlace);
+        emit checkBslError(workPlace);
+
+  //      portStend->close();
+        return false;
+    }
 
     QString answerStr;
     QByteArray bufTmp = buffer;
@@ -12865,12 +12906,14 @@ bool ObjectThread::plataOn()
         QString label_StatusBar = (tr("Неверный ответ стенда. Команда \"Подать питание на плату\" ") +
                                      ". Рабочее место: " + QString::number(workPlace+1));
         emit errorStringSignal(label_StatusBar + '\n');
-//        vectorIndicatorBSLMatrix[workPlace] = true;
-
-//        emit workPlaceOff(workPlace);
-//        emit checkBslError(workPlace);
+        vectorIndicatorBSLMatrix[workPlace] = true;
+        emit workPlaceOff(workPlace);
+        emit checkBslError(workPlace);
+ //       portStend->close();
         return false;
     }
+
+ //  portStend->close();
 
    return true;
 }
@@ -12926,7 +12969,6 @@ bool ObjectThread::plataOff()
                                          ". Рабочее место: " + QString::number(workPlace+1));
             emit errorStringSignal(label_StatusBar + '\n');
             vectorIndicatorBSLMatrix[workPlace] = true;
-
             emit workPlaceOff(workPlace);
             emit checkBslError(workPlace);
             return false;
@@ -12940,10 +12982,23 @@ bool ObjectThread::plataOff()
 
     //ждать ответа от стенда 10 мсек
 
-    global::pause(10);
+    global::pause(100);
 
     buffer = portStend->readAll();
+    portStend->close();
+
     if(!buffer.isEmpty()) emit textBrowser("<< " + portStend->portName() + " " + buffer.toHex());
+
+    if(buffer.isEmpty()) {
+        QString label_StatusBar = (tr("Нет ответа стенда. Команда \"Отключить питание платы\" ") +
+                                     ". Рабочее место: " + QString::number(workPlace+1));
+        emit errorStringSignal(label_StatusBar + '\n');
+        vectorIndicatorBSLMatrix[workPlace] = true;
+        emit workPlaceOff(workPlace);
+        emit checkBslError(workPlace);
+ //       portStend->close();
+        return false;
+    }
 
     QString answerStr;
     QByteArray bufTmp = buffer;
@@ -12954,22 +13009,142 @@ bool ObjectThread::plataOff()
     answerStr = QString::fromLocal8Bit(bufTmp);
 
     if(buffer.at(0)!=receiver && buffer.at(1)!=sender && answerStr!="OK") {
-        QString label_StatusBar = (tr("Неверный ответ стенда. Команда \"Отключить питание от платы\" ") +
+        QString label_StatusBar = (tr("Неверный ответ стенда. Команда \"Отключить питание платы\" ") +
                                      ". Рабочее место: " + QString::number(workPlace+1));
         emit errorStringSignal(label_StatusBar + '\n');
-//        vectorIndicatorBSLMatrix[workPlace] = true;
-
-//        emit workPlaceOff(workPlace);
-//        emit checkBslError(workPlace);
+        vectorIndicatorBSLMatrix[workPlace] = true;
+        emit workPlaceOff(workPlace);
+        emit checkBslError(workPlace);
+  //      portStend->close();
         return false;
     }
+
+ //   portStend->close();
 
    return true;
 }
 
 bool ObjectThread::readTok()
 {
+
+    QByteArray buffer;
+
    //Прочитать ток потребления	POW?	POW=xxxxxx(в мкА)
+
+    //    кто и кому:
+    //    ПК=0x01	стенд1=0x11	стенд2=0x22	стенд3=0x33	стенд4=0x44
+
+    //    1 байт	2 байт	3 байт	4 байт	… байт	… байт	(N-1) байт	N байт
+    //    кто	    кому	команда					                    Конец сообщения
+    //    BIN	    BIN	    STRING					                    0x00
+
+        if(!isWorkPlaceUse.at(workPlace)) return false;
+
+        QString command = "POW?";
+
+        QByteArray parcel;
+
+        quint8 sender = 0x01;
+        quint8 receiver;
+        quint8 stopByte = 0x00;
+
+        if(workPlace == 0) receiver = 0x11;
+        if(workPlace == 1) receiver = 0x22;
+        if(workPlace == 2) receiver = 0x33;
+        if(workPlace == 3) receiver = 0x44;
+
+        QByteArray stringToByteArray;
+        stringToByteArray = command.toLocal8Bit();
+
+        //формирование посылки
+        parcel.append(sender);
+        parcel.append(receiver);
+        for(int m=0; m<stringToByteArray.size(); m++) {
+            parcel.append(stringToByteArray.at(m));
+        }
+        parcel.append(stopByte);
+
+        qDebug()<<"parcel"<<parcel.toHex();
+
+        if(!portStend->isOpen()) {
+
+            if(!portStend->open(QIODevice::ReadWrite)) {
+
+                QString label_StatusBar = (tr("Не удалось открыть порт стенда") +
+                                             ". Рабочее место: " + QString::number(workPlace+1));
+                emit errorStringSignal(label_StatusBar + '\n');
+                vectorIndicatorTokPlaty[workPlace] = true;
+
+                emit workPlaceOff(workPlace);
+                emit checkTokPlaty(workPlace);
+                return false;
+            }
+        }
+
+        portStend->clear();
+
+        quint64 count = portStend->write(parcel);
+        emit textBrowser(">> " + portStend->portName() + " " + parcel.toHex());
+
+        //ждать ответа от стенда 10 мсек
+
+        global::pause(100);
+
+        buffer = portStend->readAll();
+        portStend->close();
+
+        if(!buffer.isEmpty()) emit textBrowser("<< " + portStend->portName() + " " + buffer.toHex());
+
+        if(buffer.isEmpty()) {
+            QString label_StatusBar = (tr("Нет ответа стенда. Команда \"Прочитать ток платы\" ") +
+                                         ". Рабочее место: " + QString::number(workPlace+1));
+            emit errorStringSignal(label_StatusBar + '\n');
+            vectorIndicatorTokPlaty[workPlace] = true;
+            emit workPlaceOff(workPlace);
+            emit checkTokPlaty(workPlace);
+
+            return false;
+        }
+
+        QString answerStr;
+        QByteArray bufTmp = buffer;
+
+        bufTmp.remove(0, 2);
+        bufTmp.remove(bufTmp.size()-1, 1);
+
+        answerStr = QString::fromLocal8Bit(bufTmp);
+
+        if(buffer.at(0)!=receiver && buffer.at(1)!=sender && answerStr.left(4) != "POW=") {
+            QString label_StatusBar = (tr("Неверный ответ стенда. Команда \"Прочитать ток платы\" ") +
+                                         ". Рабочее место: " + QString::number(workPlace+1));
+            emit errorStringSignal(label_StatusBar + '\n');
+            vectorIndicatorTokPlaty[workPlace] = true;
+            emit workPlaceOff(workPlace);
+            emit checkTokPlaty(workPlace);
+  //          portStend->close();
+            return false;
+        }
+
+       int tokPlaty = answerStr.remove(0,4).toInt();
+
+       if(workPlace == 0) emit tok1(answerStr.remove(0,4));
+       if(workPlace == 1) emit tok2(answerStr.remove(0,4));
+       if(workPlace == 2) emit tok3(answerStr.remove(0,4));
+       if(workPlace == 3) emit tok4(answerStr.remove(0,4));
+
+       if(1) {
+           //проверяем ток на допустимое значение
+
+//           if(workPlace == 0) mainWnd->setLabelTok1(tokPlaty);
+//           if(workPlace == 1) mainWnd->setLabelTok2(tokPlaty);
+//           if(workPlace == 2) mainWnd->setLabelTok3(tokPlaty);
+//           if(workPlace == 3) mainWnd->setLabelTok4(tokPlaty);
+
+       }
+
+  //     portStend->close();
+
+       return true;
 }
 
 bool ObjectThread::setTokPlataOff()
@@ -13028,7 +13203,6 @@ bool ObjectThread::programmatorOn()
                                          ". Рабочее место: " + QString::number(workPlace+1));
             emit errorStringSignal(label_StatusBar + '\n');
             vectorIndicatorBSLMatrix[workPlace] = true;
-
             emit workPlaceOff(workPlace);
             emit checkBslError(workPlace);
             return false;
@@ -13042,10 +13216,23 @@ bool ObjectThread::programmatorOn()
 
     //ждать ответа от стенда 10 мсек
 
-    global::pause(10);
+    global::pause(100);
 
     buffer = portStend->readAll();
+    portStend->close();
+
     if(!buffer.isEmpty()) emit textBrowser("<< " + portStend->portName() + " " + buffer.toHex());
+
+    if(buffer.isEmpty()) {
+        QString label_StatusBar = (tr("Нет ответа стенда. Команда \"Подключить программатор\" ") +
+                                     ". Рабочее место: " + QString::number(workPlace+1));
+        emit errorStringSignal(label_StatusBar + '\n');
+        vectorIndicatorBSLMatrix[workPlace] = true;
+        emit workPlaceOff(workPlace);
+        emit checkBslError(workPlace);
+  //      portStend->close();
+        return false;
+    }
 
     QString answerStr;
     QByteArray bufTmp = buffer;
@@ -13060,11 +13247,13 @@ bool ObjectThread::programmatorOn()
                                      ". Рабочее место: " + QString::number(workPlace+1));
         emit errorStringSignal(label_StatusBar + '\n');
         vectorIndicatorBSLMatrix[workPlace] = true;
-
         emit workPlaceOff(workPlace);
         emit checkBslError(workPlace);
+ //       portStend->close();
         return false;
     }
+
+ //   portStend->close();
 
    return true;
 
@@ -13087,7 +13276,7 @@ bool ObjectThread::programmatorOff()
 
    //Отключить программатор от платы	PRG=0	OK
 
-    QString command = "PRG=1";
+    QString command = "PRG=0";
 
     QByteArray parcel;
 
@@ -13121,7 +13310,6 @@ bool ObjectThread::programmatorOff()
                                          ". Рабочее место: " + QString::number(workPlace+1));
             emit errorStringSignal(label_StatusBar + '\n');
             vectorIndicatorBSLMatrix[workPlace] = true;
-
             emit workPlaceOff(workPlace);
             emit checkBslError(workPlace);
             return false;
@@ -13135,10 +13323,23 @@ bool ObjectThread::programmatorOff()
 
     //ждать ответа от стенда 10 мсек
 
-    global::pause(10);
+    global::pause(100);
 
     buffer = portStend->readAll();
+    portStend->close();
+
     if(!buffer.isEmpty()) emit textBrowser("<< " + portStend->portName() + " " + buffer.toHex());
+
+    if(buffer.isEmpty()) {
+        QString label_StatusBar = (tr("Нет ответа стенда. Команда \"Отключить программатор\" ") +
+                                     ". Рабочее место: " + QString::number(workPlace+1));
+        emit errorStringSignal(label_StatusBar + '\n');
+        vectorIndicatorBSLMatrix[workPlace] = true;
+        emit workPlaceOff(workPlace);
+        emit checkBslError(workPlace);
+ //       portStend->close();
+        return false;
+    }
 
     QString answerStr;
     QByteArray bufTmp = buffer;
@@ -13153,11 +13354,13 @@ bool ObjectThread::programmatorOff()
                                      ". Рабочее место: " + QString::number(workPlace+1));
         emit errorStringSignal(label_StatusBar + '\n');
         vectorIndicatorBSLMatrix[workPlace] = true;
-
         emit workPlaceOff(workPlace);
         emit checkBslError(workPlace);
+  //      portStend->close();
         return false;
     }
+
+ //   portStend->close();
 
    return true;
 }
@@ -13190,6 +13393,459 @@ bool ObjectThread::testCommand()
 {
    //Тестовая команда	STENDx	OK
 }
+
+void ObjectThread::getMainWndPointer(QMainWindow * mainwnd)
+{
+  // mainWnd = mainwnd;
+}
+
+void ObjectThread::slotRealClockCalibration(QSerialPort *port1, QSerialPort *port2,
+                              QSerialPort *port3, QSerialPort *port4
+                              /*float period1, float period2, float period3, float period4*/)
+{
+
+    //сначала прочитать значения перииодов из каждого стенда
+
+
+
+    //сначала прочитать значения перииодов из каждого стенда/
+
+    QSerialPort *portTmp;// = new QSerialPort(this);
+
+    int workPlaceNumber = workPlace;
+
+    int currentIndicatorNumber = workPlaceNumber;
+
+    QString label_StatusBar;
+    QString errorString;
+
+    if(!isWorkPlaceUse.at(workPlace)) return;
+
+    switch (workPlaceNumber) {
+    case 0:
+        portTmp = port1;
+        break;
+    case 1:
+        portTmp = port2;
+        break;
+    case 2:
+        portTmp = port3;
+        break;
+    case 3:
+        portTmp = port4;
+        break;
+
+    default:
+        break;
+    }
+
+    portTmp->setBaudRate(QSerialPort::Baud19200);
+    portTmp->setDataBits(QSerialPort::Data8);
+    portTmp->setParity(QSerialPort::NoParity);
+    portTmp->setStopBits(QSerialPort::OneStop);
+
+    int currentBoxNumber = 5;//вместо "Включить протокол Mbus"
+
+
+
+
+    //    Значение коэффициента коррекции должно рассчитываться по формуле:
+    //    K = |Round(983040 * (1 - 1953,125 / Tи))|,
+    //    где Tи – измеренное значение периода в мс.
+
+        float periodBetweenPulses;
+
+        if(workPlace == 0) periodBetweenPulses = periodBetweenPulses1;
+        if(workPlace == 1) periodBetweenPulses = periodBetweenPulses2;
+        if(workPlace == 2) periodBetweenPulses = periodBetweenPulses3;
+        if(workPlace == 3) periodBetweenPulses = periodBetweenPulses4;
+
+        float periodError = (1953.125/10000)*3;
+
+        if( !((periodBetweenPulses >= 1953.125 - periodError) && (periodBetweenPulses <= 1953.125 + periodError)) ) {
+  //          QMessageBox::information(this, "" , tr("Недопустимое значение периода следования импульсов "));
+            return;
+        }
+
+        quint16 correctionCoeff = (quint16)round(abs(983040*(1 - 1953.125/periodBetweenPulses)));
+        qDebug()<<"correctionCoeff "<<correctionCoeff;
+
+        if(correctionCoeff > 240) {
+  //          QMessageBox::information(this, "", tr("Недопустимое значение коэффициента коррекции ") + QString::number(correctionCoeff));
+            return;
+        }
+
+        // установка/сброс старшего бита
+        quint16 correctionCoeffResult = correctionCoeff;
+
+        if(periodBetweenPulses>1953.125) {
+            quint16 bitField = (1<<15);
+            correctionCoeffResult = correctionCoeff | bitField;
+            qDebug()<<"correctionCoeffResult case1 "<<correctionCoeffResult;
+        }
+        if(periodBetweenPulses<=1953.125) {
+            quint16 bitField = ~(1<<15);
+            correctionCoeffResult = correctionCoeff & bitField;
+            qDebug()<<"correctionCoeffResult case2 "<<correctionCoeffResult;
+
+        }
+
+
+      //расчета коэффициента коррекции и записи его в энергонезависимую память
+      //командой WCC, параметр RTC_Offset (значение параметра RTC_Tcomp всегда 0)
+
+//        ui->label_StatusBar->setText("");
+
+//        QColor color(255, 127, 50);
+//        ui->label_realClockCalibration->setStyleSheet(QString("color: red").arg(color.name()));
+//        ui->label_realClockCalibration->setText("X");
+//        ui->label_realClockCalibration->setVisible(false);
+
+        QByteArray buffer;
+
+        if(!portTmp->isOpen()) {
+            if(!portTmp->open(QIODevice::ReadWrite)) {
+  //              QMessageBox::information(this, "", "Не удалось открыть порт УСО-2");
+                label_StatusBar =("Не удалось открыть порт УСО-2. Рабочее место: "
+                                             + QString::number(workPlaceNumber + 1));
+                emit errorStringSignal(label_StatusBar + '\n');
+                vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+
+                emit workPlaceOff(currentIndicatorNumber);
+                emit checkTimeCalError(currentIndicatorNumber);
+
+                return;
+            }
+        }
+
+        //
+        //WCC  5a 00 09 26
+
+      bool isWritingCorrect = false;
+
+      for(int j=0; j<3; j++) {
+
+
+        QByteArray buffer;
+
+        for(int i=0; i<3;i++) {
+
+           portTmp->clear();
+           packetToRead.clear();
+           buffer.clear();
+           quint8 byte = 0x5a;
+           packetToRead.append(byte);
+           byte = 0x00;
+           packetToRead.append(byte);
+           byte = 0x09;
+           packetToRead.append(byte);
+           byte = 0x26;
+           packetToRead.append(byte);
+
+           byte = (quint8)(correctionCoeffResult>>8);//старший байт
+           packetToRead.append(byte);
+           byte = (quint8)correctionCoeffResult;//младший байт
+           packetToRead.append(byte);
+
+           byte = 0;
+           packetToRead.append(byte);
+           byte = 0;
+           packetToRead.append(byte);
+
+           quint8 crc = makeCRC(packetToRead);
+           packetToRead.append(crc);
+
+           quint64 cnt = portTmp->write(packetToRead);
+           emit textBrowser(">> " + portTmp->portName() + " " + packetToRead.toHex());
+
+           qDebug()<<"cnt "<<cnt
+                   <<"packetToRead.toHex() "<<packetToRead.toHex()
+                   <<"portTmp->portName() "<<portTmp->portName();
+
+           if(cnt == 0) {
+               //QMessageBox::information(this, "", tr("Данные в порт не записаны"));
+               label_StatusBar =("Данные в порт не записаны. Рабочее место: "
+                                            + QString::number(workPlaceNumber + 1));
+               emit errorStringSignal(label_StatusBar + '\n');
+               vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+
+               emit workPlaceOff(currentIndicatorNumber);
+               emit checkTimeCalError(currentIndicatorNumber);
+
+               return;
+           }
+
+           global::pause(300);
+
+           buffer = portTmp->readAll();
+           qDebug()<<"buffer.toHex()"<<buffer.toHex();
+           if(!buffer.isEmpty()) emit textBrowser("<< " + portTmp->portName() + " " + buffer.toHex());
+
+  //         ui->textBrowser->append("buffer.toHex() " + buffer.toHex());
+
+           if(buffer.isEmpty()) {
+               if(i==2) {
+//                   QMessageBox::information(this, "", tr("Ошибка калибровки генератора часов реального времени"));
+//                   ui->label_realClockCalibration->setVisible(true);
+                   label_StatusBar =("Ошибка калибровки часов. Рабочее место: "
+                                                + QString::number(workPlaceNumber + 1));
+                   emit errorStringSignal(label_StatusBar + '\n');
+                   vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+
+                   emit workPlaceOff(currentIndicatorNumber);
+                   emit checkTimeCalError(currentIndicatorNumber);
+
+                   return;
+               } else{}
+
+           }
+           else {
+               //проверяем crc и первые четыре байта ответного пакета
+               QByteArray bytesForChecking;
+               quint8 byte = 0x5a;
+               bytesForChecking.append(byte);
+               byte = 0x00;
+               bytesForChecking.append(byte);
+               byte = 0x06;
+               bytesForChecking.append(byte);
+               byte = 0xa6;
+               bytesForChecking.append(byte);
+
+               if(!packetSETProcessing(buffer)) {
+                   if(i == 2) {
+                       label_StatusBar = (tr("Ошибка данных") +
+                                                    " Рабочее место: " + QString::number(workPlaceNumber+1));
+                       emit errorStringSignal(label_StatusBar + '\n');
+                       vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                       emit workPlaceOff(currentIndicatorNumber);
+                       emit checkTimeCalError(currentIndicatorNumber);
+                       return;
+                   }
+                   else {
+                       continue;
+                   }
+               }
+
+               quint8 error = buffer.at(4);
+
+               if(checkCRC(buffer) == 0 && bytesForChecking[0] == buffer[0] && bytesForChecking[1] == buffer[1]
+                   && bytesForChecking[3] == buffer[3] && error == 0) {
+
+                  qDebug()<<"buffer.toHex() "<<buffer.toHex()
+                       <<"checkCRC(buffer) "<<checkCRC(buffer);
+
+
+
+
+
+
+                  break;
+               }
+               else {
+                   if(i==2) {
+//                   QMessageBox::information(this, "", tr("Ошибка калибровки генератора часов реального времени"));
+//                   ui->label_realClockCalibration->setVisible(true);
+                     label_StatusBar = (tr("Ошибка калибровки часов") +
+                                                " Рабочее место: " + QString::number(workPlaceNumber+1));
+                      emit errorStringSignal(label_StatusBar + '\n');
+                      vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                      emit workPlaceOff(currentIndicatorNumber);
+                      emit checkTimeCalError(currentIndicatorNumber);
+
+                      return;
+                   }
+               }
+
+
+
+           }
+
+
+        }
+
+
+
+        //
+        //RCC  5a 00 05 06
+
+        for(int i=0; i<3;i++) {
+
+           portTmp->clear();
+           packetToRead.clear();
+           buffer.clear();
+           quint8 byte = 0x5a;
+           packetToRead.append(byte);
+           byte = 0x00;
+           packetToRead.append(byte);
+           byte = 0x05;
+           packetToRead.append(byte);
+           byte = 0x06;
+           packetToRead.append(byte);
+           quint8 crc = makeCRC(packetToRead);
+           packetToRead.append(crc);
+
+           quint64 cnt = portTmp->write(packetToRead);
+           emit textBrowser(">> " + portTmp->portName() + " " + packetToRead.toHex());
+
+           qDebug()<<"cnt "<<cnt
+                   <<"packetToRead.toHex() "<<packetToRead.toHex()
+                   <<"portTmp->portName() "<<portTmp->portName();
+
+           if(cnt == 0) {
+               //QMessageBox::information(this, "", tr("Данные в порт не записаны"));
+               label_StatusBar =("Данные в порт не записаны. Рабочее место: "
+                                            + QString::number(workPlaceNumber + 1));
+               emit errorStringSignal(label_StatusBar + '\n');
+               vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+
+               emit workPlaceOff(currentIndicatorNumber);
+               emit checkTimeCalError(currentIndicatorNumber);
+
+               return;
+
+           }
+
+           global::pause(200);
+
+           buffer = portTmp->readAll();
+           qDebug()<<"buffer.toHex()"<<buffer.toHex();
+           if(!buffer.isEmpty()) emit textBrowser("<< " + portTmp->portName() + " " + buffer.toHex());
+
+           if(buffer.isEmpty()) {
+               if(i==2) {
+//                   QMessageBox::information(this, "", tr("Ошибка калибровки генератора часов реального времени"));
+//                   ui->label_realClockCalibration->setVisible(true);
+                   label_StatusBar =("Ошибка калибровки часов. Рабочее место: "
+                                                + QString::number(workPlaceNumber + 1));
+                   emit errorStringSignal(label_StatusBar + '\n');
+                   vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+
+                   emit workPlaceOff(currentIndicatorNumber);
+                   emit checkTimeCalError(currentIndicatorNumber);
+
+                   return;
+               } else{}
+
+           }
+           else {
+               //проверяем crc и первые четыре байта ответного пакета
+               QByteArray bytesForChecking;
+               quint8 byte = 0x5a;
+               bytesForChecking.append(byte);
+               byte = 0x00;
+               bytesForChecking.append(byte);
+               byte = 0x23;
+               bytesForChecking.append(byte);
+               byte = 0x86;
+               bytesForChecking.append(byte);
+
+               if(!packetSETProcessing(buffer)) {
+                   if(i == 2) {
+                       label_StatusBar = (tr("Ошибка данных") +
+                                                    " Рабочее место: " + QString::number(workPlaceNumber+1));
+                       emit errorStringSignal(label_StatusBar + '\n');
+                       vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                       emit workPlaceOff(currentIndicatorNumber);
+                       emit checkTimeCalError(currentIndicatorNumber);
+                       return;
+                   }
+                   else {
+                       continue;
+                   }
+               }
+
+               if(checkCRC(buffer) == 0 && bytesForChecking[0] == buffer[0] &&
+                       bytesForChecking[1] == buffer[1] && bytesForChecking[3] == buffer[3]) {
+
+                  qDebug()<<"buffer.toHex() "<<buffer.toHex()
+                       <<"checkCRC(buffer) "<<checkCRC(buffer);
+
+
+                 quint16  RTC_Offset = (quint8)buffer[4];
+                 RTC_Offset = RTC_Offset<<8 | (quint8)buffer[5];
+
+                 qDebug()<<"RTC_Offset "<<QString::number(RTC_Offset);
+
+                 quint16 RTC_Tcomp = (quint8)buffer[6];
+                 RTC_Tcomp = RTC_Tcomp<<8 | (quint8)buffer[7];
+
+                 qDebug()<<""<<QString::number(RTC_Tcomp);
+
+                 if(RTC_Offset == correctionCoeffResult && RTC_Tcomp == 0) {
+                     j = 3; // прекращаем самый внешний цикл 3-х кратной записи
+
+                     qDebug()<<"Коэффициенты коррекции записаны успешно";
+
+                     isWritingCorrect = true;
+
+                     rtc_OffsetResult = QString::number(RTC_Offset);
+                     rtc_TcompResult = QString::number(RTC_Tcomp);
+                 }
+
+
+
+
+
+
+                  break;
+               }
+               else {
+                   if(i==2) {
+//                   QMessageBox::information(this, "", tr("Ошибка калибровки генератора часов реального времени"));
+//                   ui->label_realClockCalibration->setVisible(true);
+                       label_StatusBar = (tr("Ошибка калибровки часов") +
+                                                  " Рабочее место: " + QString::number(workPlaceNumber+1));
+                        emit errorStringSignal(label_StatusBar + '\n');
+                        vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                        emit workPlaceOff(currentIndicatorNumber);
+                        emit checkTimeCalError(currentIndicatorNumber);
+
+                       return;
+                   }
+               }
+
+
+
+           }
+
+
+        }
+
+
+      }
+
+
+      if(isWritingCorrect == false) { // проверка корректности записи калибровочных коээффициентов
+//          QMessageBox::information(this, "", "Не удалось корректно записать калибровочные коэффициенты");
+//          ui->label_realClockCalibration->setVisible(true);
+          label_StatusBar = (tr("Не удалось корректно записать калибровочные коэффициенты.") +
+                                     " Рабочее место: " + QString::number(workPlaceNumber+1));
+           emit errorStringSignal(label_StatusBar + '\n');
+           vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+           emit workPlaceOff(currentIndicatorNumber);
+           emit checkTimeCalError(currentIndicatorNumber);
+      }
+      else {
+//          ui->label_StatusBar->setText("Калибровка генератора часов: успешно");
+//          ui->label_realClockCalibration->setStyleSheet(QString("color: green").arg(color.name()));
+//          ui->label_realClockCalibration->setText("V");
+//          ui->label_realClockCalibration->setVisible(true);
+      }
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -45,6 +45,8 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
+    Ui::MainWindow *ui;
+
     void primeStart();
     void startCommandLine();
     void makeKey();
@@ -66,6 +68,8 @@ public:
     void paintIndicator();
 
     void checkBslError(int currentIndicator);
+    void checkTimeCalibrationError(int currentIndicator);
+    void checkTokPlatyError(int currentIndicator);
     void checkWritingError(int currentIndicator);
     void checkCalibrationError(int currentIndicator);
     void checkPulsesOutputHeat(int currentIndicator);
@@ -120,6 +124,12 @@ public:
 
     //прочитать список пользователей
     QStringList readUserTable();
+
+    //стенд
+    void setLabelTok1(QString label);
+    void setLabelTok2(QString label);
+    void setLabelTok3(QString label);
+    void setLabelTok4(QString label);
 
 
 
@@ -193,6 +203,8 @@ signals:
     //Стенд
 
     startBSLProgramming();
+    startTokPlatyRequest();
+    startTimeCalibration();
 
     //Стенд/
 
@@ -206,6 +218,8 @@ public slots:
 
     void slotWorkPlaceOff(int);
     void slotCheckBslError(int currentIndicator);
+    void slotCheckTimeCalError(int currentIndicator);
+    void slotCheckTokPlatyError(int currentIndicator);
     void slotCheckWritingError(int);
     void slotCheckCalibrationError(int currentIndicator);
     void slotGetRMV(int color, QString str, int currentIndicator);
@@ -584,9 +598,25 @@ private slots:
 
     void on_comboBox_portStend_currentIndexChanged(const QString &arg1);
 
+    void on_pushButton_plataOn_clicked();
+
+    void on_pushButton_plataOff_clicked();
+
+    void on_pushButton_progrOn_clicked();
+
+    void on_pushButton_progrOff_clicked();
+
+    void on_pushButton_tokRequest_clicked();
+
+    void on_pushButton_openPortStend_clicked();
+
+    void on_pushButton_closePortStend_clicked();
+
+    void on_pushButton_portStendSettings_clicked();
+
 private:
     
-    Ui::MainWindow *ui;
+ //   Ui::MainWindow *ui;
     FormCalibration *formCalibration;
     FormParamsEdit *formParamsEdit;
     FormLog *formLog;
@@ -833,6 +863,7 @@ private:
 
     QVector<QVector<bool>> vectorIndicatorStateMatrix;
     QVector<bool> vectorBSL;
+    QVector<bool> vectorTokPlaty;
 
     int currentBoxNumber;
     int currentIndicatorNumber;
@@ -840,6 +871,8 @@ private:
     bool isNeedPaintEvent;
 
     bool isBslFinished1, isBslFinished2, isBslFinished3, isBslFinished4;
+    bool isTimeCalFinished1, isTimeCalFinished2, isTimeCalFinished3, isTimeCalFinished4;
+    bool isTokPlatyFinished1, isTokPlatyFinished2, isTokPlatyFinished3, isTokPlatyFinished4;
     bool isWritingFinished1, isWritingFinished2, isWritingFinished3, isWritingFinished4;
     bool isCalibrationFinished1, isCalibrationFinished2, isCalibrationFinished3, isCalibrationFinished4;
     bool isPulsesOutputHeat1, isPulsesOutputHeat2, isPulsesOutputHeat3, isPulsesOutputHeat4;
