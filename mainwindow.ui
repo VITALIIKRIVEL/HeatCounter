@@ -377,7 +377,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>Включить протокол СЭТ</string>
+     <string>Питание магнитного датчика</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_writeParams">
@@ -494,7 +494,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>Проверить протокол M-Bus</string>
+     <string>Проверка расходомера</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_CheckMbus">
@@ -3821,7 +3821,7 @@
        <property name="title">
         <string>Программатор</string>
        </property>
-       <widget class="QRadioButton" name="radioButton_20">
+       <widget class="QRadioButton" name="radioButton_progrOn3">
         <property name="geometry">
          <rect>
           <x>10</x>
@@ -3866,7 +3866,7 @@
        <property name="title">
         <string>Питание платы</string>
        </property>
-       <widget class="QRadioButton" name="radioButton_15">
+       <widget class="QRadioButton" name="radioButton_plataOn3">
         <property name="geometry">
          <rect>
           <x>10</x>
@@ -4040,7 +4040,7 @@
        <property name="title">
         <string>Программатор</string>
        </property>
-       <widget class="QRadioButton" name="radioButton_22">
+       <widget class="QRadioButton" name="radioButton_progrOn4">
         <property name="geometry">
          <rect>
           <x>10</x>
@@ -4085,7 +4085,7 @@
        <property name="title">
         <string>Питание платы</string>
        </property>
-       <widget class="QRadioButton" name="radioButton_27">
+       <widget class="QRadioButton" name="radioButton_plataOn4">
         <property name="geometry">
          <rect>
           <x>10</x>
@@ -4346,7 +4346,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>Проверка расходомера</string>
+     <string>Проверить протокол M-Bus</string>
     </property>
    </widget>
    <widget class="QToolButton" name="toolButton_4">
@@ -4359,7 +4359,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>Питание магн. датчика</string>
+     <string>Включить протокол СЭТ</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_103">

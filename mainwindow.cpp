@@ -447,6 +447,26 @@ MainWindow::MainWindow(QWidget *parent) :
     //tok platy/
 
 
+    //проверка расходомера
+
+    connect(this, SIGNAL(startRashodomer(QSerialPort*,QSerialPort*,QSerialPort*,QSerialPort*)),
+            ObjectThread1, SLOT(slotRashodomer(QSerialPort*,QSerialPort*,QSerialPort*,QSerialPort*)));
+    connect(this, SIGNAL(startRashodomer(QSerialPort*,QSerialPort*,QSerialPort*,QSerialPort*)),
+            ObjectThread2, SLOT(slotRashodomer(QSerialPort*,QSerialPort*,QSerialPort*,QSerialPort*)));
+    connect(this, SIGNAL(startRashodomer(QSerialPort*,QSerialPort*,QSerialPort*,QSerialPort*)),
+            ObjectThread3, SLOT(slotRashodomer(QSerialPort*,QSerialPort*,QSerialPort*,QSerialPort*)));
+    connect(this, SIGNAL(startRashodomer(QSerialPort*,QSerialPort*,QSerialPort*,QSerialPort*)),
+            ObjectThread4, SLOT(slotRashodomer(QSerialPort*,QSerialPort*,QSerialPort*,QSerialPort*)));
+
+    connect(ObjectThread1, SIGNAL(checkRashodomerError(int)), this, SLOT(slotCheckRashodomerError(int)));
+    connect(ObjectThread2, SIGNAL(checkRashodomerError(int)), this, SLOT(slotCheckRashodomerError(int)));
+    connect(ObjectThread3, SIGNAL(checkRashodomerError(int)), this, SLOT(slotCheckRashodomerError(int)));
+    connect(ObjectThread4, SIGNAL(checkRashodomerError(int)), this, SLOT(slotCheckRashodomerError(int)));
+
+    //проверка расходомера/
+
+
+
     //writing connect
 
     connect(this, SIGNAL(signalWriteParamsToThread(QSerialPort*, QSerialPort*, QSerialPort*, QSerialPort*)),
@@ -605,22 +625,36 @@ MainWindow::MainWindow(QWidget *parent) :
     //калибровка часов/
 
 
+    //проверка питания магнитного датчика
+
+    connect(this, SIGNAL(startMagnSensor()), ObjectThread1, SLOT(slotMagnSensor()));
+    connect(this, SIGNAL(startMagnSensor()), ObjectThread2, SLOT(slotMagnSensor()));
+    connect(this, SIGNAL(startMagnSensor()), ObjectThread3, SLOT(slotMagnSensor()));
+    connect(this, SIGNAL(startMagnSensor()), ObjectThread4, SLOT(slotMagnSensor()));
+
+    connect(ObjectThread1, SIGNAL(checkMagnSensorError(int)), this, SLOT(slotCheckMagnSensorError(int)));
+    connect(ObjectThread2, SIGNAL(checkMagnSensorError(int)), this, SLOT(slotCheckMagnSensorError(int)));
+    connect(ObjectThread3, SIGNAL(checkMagnSensorError(int)), this, SLOT(slotCheckMagnSensorError(int)));
+    connect(ObjectThread4, SIGNAL(checkMagnSensorError(int)), this, SLOT(slotCheckMagnSensorError(int)));
+
+    //проверка питания магнитного датчика/
+
 
     //checkMbus connect
 
-    connect(this, SIGNAL(signalCheckMBusToThread(QSerialPort*,QSerialPort*,QSerialPort*,QSerialPort*)),
-            ObjectThread1, SLOT(slotMBusCheck(QSerialPort*,QSerialPort*,QSerialPort*,QSerialPort*)));
-    connect(this, SIGNAL(signalCheckMBusToThread(QSerialPort*,QSerialPort*,QSerialPort*,QSerialPort*)),
-            ObjectThread2, SLOT(slotMBusCheck(QSerialPort*,QSerialPort*,QSerialPort*,QSerialPort*)));
-    connect(this, SIGNAL(signalCheckMBusToThread(QSerialPort*,QSerialPort*,QSerialPort*,QSerialPort*)),
-            ObjectThread3, SLOT(slotMBusCheck(QSerialPort*,QSerialPort*,QSerialPort*,QSerialPort*)));
-    connect(this, SIGNAL(signalCheckMBusToThread(QSerialPort*,QSerialPort*,QSerialPort*,QSerialPort*)),
-            ObjectThread4, SLOT(slotMBusCheck(QSerialPort*,QSerialPort*,QSerialPort*,QSerialPort*)));
+//    connect(this, SIGNAL(signalCheckMBusToThread(QSerialPort*,QSerialPort*,QSerialPort*,QSerialPort*)),
+//            ObjectThread1, SLOT(slotMBusCheck(QSerialPort*,QSerialPort*,QSerialPort*,QSerialPort*)));
+//    connect(this, SIGNAL(signalCheckMBusToThread(QSerialPort*,QSerialPort*,QSerialPort*,QSerialPort*)),
+//            ObjectThread2, SLOT(slotMBusCheck(QSerialPort*,QSerialPort*,QSerialPort*,QSerialPort*)));
+//    connect(this, SIGNAL(signalCheckMBusToThread(QSerialPort*,QSerialPort*,QSerialPort*,QSerialPort*)),
+//            ObjectThread3, SLOT(slotMBusCheck(QSerialPort*,QSerialPort*,QSerialPort*,QSerialPort*)));
+//    connect(this, SIGNAL(signalCheckMBusToThread(QSerialPort*,QSerialPort*,QSerialPort*,QSerialPort*)),
+//            ObjectThread4, SLOT(slotMBusCheck(QSerialPort*,QSerialPort*,QSerialPort*,QSerialPort*)));
 
-    connect(ObjectThread1, SIGNAL(checkMBusCheck(int)), this, SLOT(slotCheckMBusCheckError(int)));
-    connect(ObjectThread2, SIGNAL(checkMBusCheck(int)), this, SLOT(slotCheckMBusCheckError(int)));
-    connect(ObjectThread3, SIGNAL(checkMBusCheck(int)), this, SLOT(slotCheckMBusCheckError(int)));
-    connect(ObjectThread4, SIGNAL(checkMBusCheck(int)), this, SLOT(slotCheckMBusCheckError(int)));
+//    connect(ObjectThread1, SIGNAL(checkMBusCheck(int)), this, SLOT(slotCheckMBusCheckError(int)));
+//    connect(ObjectThread2, SIGNAL(checkMBusCheck(int)), this, SLOT(slotCheckMBusCheckError(int)));
+//    connect(ObjectThread3, SIGNAL(checkMBusCheck(int)), this, SLOT(slotCheckMBusCheckError(int)));
+//    connect(ObjectThread4, SIGNAL(checkMBusCheck(int)), this, SLOT(slotCheckMBusCheckError(int)));
 
     //checkMbus connect
 
@@ -666,19 +700,19 @@ MainWindow::MainWindow(QWidget *parent) :
 
     //mbusOff connect
 
-    connect(this, SIGNAL(signalMBusOffToThread(QSerialPort*,QSerialPort*,QSerialPort*,QSerialPort*)),
-            ObjectThread1, SLOT(slotMBusOff(QSerialPort*,QSerialPort*,QSerialPort*,QSerialPort*)));
-    connect(this, SIGNAL(signalMBusOffToThread(QSerialPort*,QSerialPort*,QSerialPort*,QSerialPort*)),
-            ObjectThread2, SLOT(slotMBusOff(QSerialPort*,QSerialPort*,QSerialPort*,QSerialPort*)));
-    connect(this, SIGNAL(signalMBusOffToThread(QSerialPort*,QSerialPort*,QSerialPort*,QSerialPort*)),
-            ObjectThread3, SLOT(slotMBusOff(QSerialPort*,QSerialPort*,QSerialPort*,QSerialPort*)));
-    connect(this, SIGNAL(signalMBusOffToThread(QSerialPort*,QSerialPort*,QSerialPort*,QSerialPort*)),
-            ObjectThread4, SLOT(slotMBusOff(QSerialPort*,QSerialPort*,QSerialPort*,QSerialPort*)));
+//    connect(this, SIGNAL(signalMBusOffToThread(QSerialPort*,QSerialPort*,QSerialPort*,QSerialPort*)),
+//            ObjectThread1, SLOT(slotMBusOff(QSerialPort*,QSerialPort*,QSerialPort*,QSerialPort*)));
+//    connect(this, SIGNAL(signalMBusOffToThread(QSerialPort*,QSerialPort*,QSerialPort*,QSerialPort*)),
+//            ObjectThread2, SLOT(slotMBusOff(QSerialPort*,QSerialPort*,QSerialPort*,QSerialPort*)));
+//    connect(this, SIGNAL(signalMBusOffToThread(QSerialPort*,QSerialPort*,QSerialPort*,QSerialPort*)),
+//            ObjectThread3, SLOT(slotMBusOff(QSerialPort*,QSerialPort*,QSerialPort*,QSerialPort*)));
+//    connect(this, SIGNAL(signalMBusOffToThread(QSerialPort*,QSerialPort*,QSerialPort*,QSerialPort*)),
+//            ObjectThread4, SLOT(slotMBusOff(QSerialPort*,QSerialPort*,QSerialPort*,QSerialPort*)));
 
-    connect(ObjectThread1, SIGNAL(checkMbusOff(int)), this, SLOT(slotCheckMBusOffError(int)));
-    connect(ObjectThread2, SIGNAL(checkMbusOff(int)), this, SLOT(slotCheckMBusOffError(int)));
-    connect(ObjectThread3, SIGNAL(checkMbusOff(int)), this, SLOT(slotCheckMBusOffError(int)));
-    connect(ObjectThread4, SIGNAL(checkMbusOff(int)), this, SLOT(slotCheckMBusOffError(int)));
+//    connect(ObjectThread1, SIGNAL(checkMbusOff(int)), this, SLOT(slotCheckMBusOffError(int)));
+//    connect(ObjectThread2, SIGNAL(checkMbusOff(int)), this, SLOT(slotCheckMBusOffError(int)));
+//    connect(ObjectThread3, SIGNAL(checkMbusOff(int)), this, SLOT(slotCheckMBusOffError(int)));
+//    connect(ObjectThread4, SIGNAL(checkMbusOff(int)), this, SLOT(slotCheckMBusOffError(int)));
 
     //mbusOff connect/
 
@@ -1280,6 +1314,50 @@ void MainWindow::checkTimeCalibrationError(int currentIndicator)
     repaint();
 }
 
+void MainWindow::checkRashodomerError(int currentIndicator)
+{
+    isNeedPaintEvent = true;
+    switch (currentIndicator) {
+    case 0:
+        isRashodomerFinished1 = true;
+        break;
+    case 1:
+        isRashodomerFinished2 = true;
+        break;
+    case 2:
+        isRashodomerFinished3 = true;
+        break;
+    case 3:
+        isRashodomerFinished4 = true;
+        break;
+    default:
+        break;
+    }
+    repaint();
+}
+
+void MainWindow::checkMagnSensorError(int currentIndicator)
+{
+    isNeedPaintEvent = true;
+    switch (currentIndicator) {
+    case 0:
+        isMagnSensorFinished1 = true;
+        break;
+    case 1:
+        isMagnSensorFinished2 = true;
+        break;
+    case 2:
+        isMagnSensorFinished3 = true;
+        break;
+    case 3:
+        isMagnSensorFinished4 = true;
+        break;
+    default:
+        break;
+    }
+    repaint();
+}
+
 void MainWindow::checkTokPlatyError(int currentIndicator)
 {
     isNeedPaintEvent = true;
@@ -1691,6 +1769,13 @@ void MainWindow::paintEvent(QPaintEvent *event)
         painter.drawEllipse(xGpourBoxMBusCheck + 13 + 33, yGroupBoxMBusCheck + 45, 15, 15);
         painter.drawEllipse(xGpourBoxMBusCheck + 13 + 33 + 33, yGroupBoxMBusCheck + 45, 15, 15);
         painter.drawEllipse(xGpourBoxMBusCheck + 13 + 33 + 33 + 33, yGroupBoxMBusCheck + 45, 15, 15);
+
+        int xGpourBoxMBusOff = ui->groupBox_MBusOff->x();
+        int yGroupBoxMBusOff = ui->groupBox_MBusOff->y();
+        painter.drawEllipse(xGpourBoxMBusOff + 13, yGroupBoxMBusOff + 45, 15, 15);
+        painter.drawEllipse(xGpourBoxMBusOff + 13 + 33, yGroupBoxMBusOff + 45, 15, 15);
+        painter.drawEllipse(xGpourBoxMBusOff + 13 + 33 + 33, yGroupBoxMBusOff + 45, 15, 15);
+        painter.drawEllipse(xGpourBoxMBusOff + 13 + 33 + 33 + 33, yGroupBoxMBusOff + 45, 15, 15);
 
         int xGpourBoxCalibrationModeOff = ui->groupBox_calibrationModeOff->x();
         int yGroupBoxCalibrationModeOff = ui->groupBox_calibrationModeOff->y();
@@ -2283,16 +2368,16 @@ void MainWindow::paintEvent(QPaintEvent *event)
         //----------------------MBusOn-------------------------------------------/
 
 
-        //----------------------MBusCheck----------------------------------------
+        //---------Проверка расходомера-----------------------MBusCheck----------
 
-        if( vectorIndicatorStateMatrix.at(6).at(0) && ui->checkBox_workPlace1->isChecked() && isMBusCheck1) {
+        if( vectorIndicatorStateMatrix.at(6).at(0) && ui->checkBox_workPlace1->isChecked() && isRashodomerFinished1/*isMBusCheck1*/) {
             QPainter painter(this); // Создаём объект отрисовщика
             painter.setPen(QPen(Qt::lightGray, 1, Qt::SolidLine, Qt::FlatCap));
             painter.setBrush(QBrush(Qt::red, Qt::SolidPattern));
 
             painter.drawEllipse(xGpourBoxMBusCheck + 13, yGroupBoxMBusCheck + 45, 15, 15);
         }
-        if( !vectorIndicatorStateMatrix.at(6).at(0)  && ui->checkBox_workPlace1->isChecked() && isMBusCheck1 ) {
+        if( !vectorIndicatorStateMatrix.at(6).at(0)  && ui->checkBox_workPlace1->isChecked() && isRashodomerFinished1/*isMBusCheck1*/ ) {
             QPainter painter(this); // Создаём объект отрисовщика
             painter.setPen(QPen(Qt::lightGray, 1, Qt::SolidLine, Qt::FlatCap));
             painter.setBrush(QBrush(Qt::green, Qt::SolidPattern));
@@ -2302,14 +2387,14 @@ void MainWindow::paintEvent(QPaintEvent *event)
         //
 
         //
-        if( vectorIndicatorStateMatrix.at(6).at(1)  && ui->checkBox_workPlace2->isChecked() && isMBusCheck2 ) {
+        if( vectorIndicatorStateMatrix.at(6).at(1)  && ui->checkBox_workPlace2->isChecked() && isRashodomerFinished2/*isMBusCheck2*/ ) {
             QPainter painter(this); // Создаём объект отрисовщика
             painter.setPen(QPen(Qt::lightGray, 1, Qt::SolidLine, Qt::FlatCap));
             painter.setBrush(QBrush(Qt::red, Qt::SolidPattern));
 
             painter.drawEllipse(xGpourBoxMBusCheck + 13 + 33, yGroupBoxMBusCheck + 45, 15, 15);
         }
-        if( !vectorIndicatorStateMatrix.at(6).at(1)  && ui->checkBox_workPlace2->isChecked() && isMBusCheck2 ) {
+        if( !vectorIndicatorStateMatrix.at(6).at(1)  && ui->checkBox_workPlace2->isChecked() && isRashodomerFinished2/*isMBusCheck2*/ ) {
             QPainter painter(this); // Создаём объект отрисовщика
             painter.setPen(QPen(Qt::lightGray, 1, Qt::SolidLine, Qt::FlatCap));
             painter.setBrush(QBrush(Qt::green, Qt::SolidPattern));
@@ -2319,14 +2404,14 @@ void MainWindow::paintEvent(QPaintEvent *event)
         //
 
         //
-        if( vectorIndicatorStateMatrix.at(6).at(2)  && ui->checkBox_workPlace3->isChecked() && isMBusCheck3 ) {
+        if( vectorIndicatorStateMatrix.at(6).at(2)  && ui->checkBox_workPlace3->isChecked() && isRashodomerFinished3/*isMBusCheck3*/ ) {
             QPainter painter(this); // Создаём объект отрисовщика
             painter.setPen(QPen(Qt::lightGray, 1, Qt::SolidLine, Qt::FlatCap));
             painter.setBrush(QBrush(Qt::red, Qt::SolidPattern));
 
             painter.drawEllipse(xGpourBoxMBusCheck + 13 + 33 + 33, yGroupBoxMBusCheck + 45, 15, 15);
         }
-        if( !vectorIndicatorStateMatrix.at(6).at(2)  && ui->checkBox_workPlace3->isChecked() && isMBusCheck3 ) {
+        if( !vectorIndicatorStateMatrix.at(6).at(2)  && ui->checkBox_workPlace3->isChecked() && isRashodomerFinished3/*isMBusCheck3*/ ) {
             QPainter painter(this); // Создаём объект отрисовщика
             painter.setPen(QPen(Qt::lightGray, 1, Qt::SolidLine, Qt::FlatCap));
             painter.setBrush(QBrush(Qt::green, Qt::SolidPattern));
@@ -2336,14 +2421,14 @@ void MainWindow::paintEvent(QPaintEvent *event)
         //
 
         //
-        if( vectorIndicatorStateMatrix.at(6).at(3)  && ui->checkBox_workPlace4->isChecked() && isMBusCheck4 ) {
+        if( vectorIndicatorStateMatrix.at(6).at(3)  && ui->checkBox_workPlace4->isChecked() && isRashodomerFinished4/*isMBusCheck4*/ ) {
             QPainter painter(this); // Создаём объект отрисовщика
             painter.setPen(QPen(Qt::lightGray, 1, Qt::SolidLine, Qt::FlatCap));
             painter.setBrush(QBrush(Qt::red, Qt::SolidPattern));
 
             painter.drawEllipse(xGpourBoxMBusCheck + 13 + 33 + 33 + 33, yGroupBoxMBusCheck + 45, 15, 15);
         }
-        if( !vectorIndicatorStateMatrix.at(6).at(3)  && ui->checkBox_workPlace4->isChecked() && isMBusCheck4 ) {
+        if( !vectorIndicatorStateMatrix.at(6).at(3)  && ui->checkBox_workPlace4->isChecked() && isRashodomerFinished4/*isMBusCheck4*/ ) {
             QPainter painter(this); // Создаём объект отрисовщика
             painter.setPen(QPen(Qt::lightGray, 1, Qt::SolidLine, Qt::FlatCap));
             painter.setBrush(QBrush(Qt::green, Qt::SolidPattern));
@@ -2351,7 +2436,7 @@ void MainWindow::paintEvent(QPaintEvent *event)
             painter.drawEllipse(xGpourBoxMBusCheck + 13 + 33 + 33 + 33, yGroupBoxMBusCheck + 45, 15, 15);
         }
 
-        //----------------------MBusCheck----------------------------------------/
+        //---------Проверка расходомера--------------------------MBusCheck--------------------------/
 
 
         //----------------------WireInterfaceChecking----------------------------
@@ -2423,6 +2508,77 @@ void MainWindow::paintEvent(QPaintEvent *event)
         }
 
         //----------------------WireInterfaceChecking----------------------------/
+
+
+        //----------------------Питание магнитного датчика---------------------//Включить протокол СЭТ
+
+        if( vectorIndicatorStateMatrix.at(8).at(0) && ui->checkBox_workPlace1->isChecked() && isMagnSensorFinished1) {
+            QPainter painter(this); // Создаём объект отрисовщика
+            painter.setPen(QPen(Qt::lightGray, 1, Qt::SolidLine, Qt::FlatCap));
+            painter.setBrush(QBrush(Qt::red, Qt::SolidPattern));
+
+            painter.drawEllipse(xGpourBoxMBusOff + 13, yGroupBoxMBusOff + 45, 15, 15);
+        }
+        if( !vectorIndicatorStateMatrix.at(8).at(0)  && ui->checkBox_workPlace1->isChecked() && isMagnSensorFinished1 ) {
+            QPainter painter(this); // Создаём объект отрисовщика
+            painter.setPen(QPen(Qt::lightGray, 1, Qt::SolidLine, Qt::FlatCap));
+            painter.setBrush(QBrush(Qt::green, Qt::SolidPattern));
+
+            painter.drawEllipse(xGpourBoxMBusOff + 13, yGroupBoxMBusOff + 45, 15, 15);
+        }
+        //
+
+        //
+        if( vectorIndicatorStateMatrix.at(8).at(1)  && ui->checkBox_workPlace2->isChecked() && isMagnSensorFinished2 ) {
+            QPainter painter(this); // Создаём объект отрисовщика
+            painter.setPen(QPen(Qt::lightGray, 1, Qt::SolidLine, Qt::FlatCap));
+            painter.setBrush(QBrush(Qt::red, Qt::SolidPattern));
+
+            painter.drawEllipse(xGpourBoxMBusOff + 13 + 33, yGroupBoxMBusOff + 45, 15, 15);
+        }
+        if( !vectorIndicatorStateMatrix.at(8).at(1)  && ui->checkBox_workPlace2->isChecked() && isMagnSensorFinished2 ) {
+            QPainter painter(this); // Создаём объект отрисовщика
+            painter.setPen(QPen(Qt::lightGray, 1, Qt::SolidLine, Qt::FlatCap));
+            painter.setBrush(QBrush(Qt::green, Qt::SolidPattern));
+
+            painter.drawEllipse(xGpourBoxMBusOff + 13 + 33, yGroupBoxMBusOff + 45, 15, 15);
+        }
+        //
+
+        //
+        if( vectorIndicatorStateMatrix.at(8).at(2)  && ui->checkBox_workPlace3->isChecked() && isMagnSensorFinished3 ) {
+            QPainter painter(this); // Создаём объект отрисовщика
+            painter.setPen(QPen(Qt::lightGray, 1, Qt::SolidLine, Qt::FlatCap));
+            painter.setBrush(QBrush(Qt::red, Qt::SolidPattern));
+
+            painter.drawEllipse(xGpourBoxMBusOff + 13 + 33 + 33, yGroupBoxMBusOff + 45, 15, 15);
+        }
+        if( !vectorIndicatorStateMatrix.at(8).at(2)  && ui->checkBox_workPlace3->isChecked() && isMagnSensorFinished3 ) {
+            QPainter painter(this); // Создаём объект отрисовщика
+            painter.setPen(QPen(Qt::lightGray, 1, Qt::SolidLine, Qt::FlatCap));
+            painter.setBrush(QBrush(Qt::green, Qt::SolidPattern));
+
+            painter.drawEllipse(xGpourBoxMBusOff + 13 + 33 + 33, yGroupBoxMBusOff + 45, 15, 15);
+        }
+        //
+
+        //
+        if( vectorIndicatorStateMatrix.at(8).at(3)  && ui->checkBox_workPlace4->isChecked() && isMagnSensorFinished4 ) {
+            QPainter painter(this); // Создаём объект отрисовщика
+            painter.setPen(QPen(Qt::lightGray, 1, Qt::SolidLine, Qt::FlatCap));
+            painter.setBrush(QBrush(Qt::red, Qt::SolidPattern));
+
+            painter.drawEllipse(xGpourBoxMBusOff + 13 + 33 + 33 + 33, yGroupBoxMBusOff + 45, 15, 15);
+        }
+        if( !vectorIndicatorStateMatrix.at(8).at(3)  && ui->checkBox_workPlace4->isChecked() && isMagnSensorFinished4 ) {
+            QPainter painter(this); // Создаём объект отрисовщика
+            painter.setPen(QPen(Qt::lightGray, 1, Qt::SolidLine, Qt::FlatCap));
+            painter.setBrush(QBrush(Qt::green, Qt::SolidPattern));
+
+            painter.drawEllipse(xGpourBoxMBusOff + 13 + 33 + 33 + 33, yGroupBoxMBusOff + 45, 15, 15);
+        }
+
+        //----------------------Питание магнитного датчика---------------------//Включить протокол СЭТ/
 
 
         //----------------------CalibrationModeOff-------------------------------
@@ -34916,6 +35072,26 @@ void MainWindow::on_toolButton_executeCommands_clicked()
 
     errorString.clear();
 
+    isTokPlatyFinished1 = false;
+    isTokPlatyFinished2 = false;
+    isTokPlatyFinished3 = false;
+    isTokPlatyFinished4 = false;
+
+    isTimeCalFinished1 = false;
+    isTimeCalFinished2 = false;
+    isTimeCalFinished3 = false;
+    isTimeCalFinished4 = false;
+
+    isRashodomerFinished1 = false;
+    isRashodomerFinished2 = false;
+    isRashodomerFinished3 = false;
+    isRashodomerFinished4 = false;
+
+    isMagnSensorFinished1 = false;
+    isMagnSensorFinished2 = false;
+    isMagnSensorFinished3 = false;
+    isMagnSensorFinished4 = false;
+
     if(repeatParameter == 0) {
 
         isWritingFinished1 = false;
@@ -34994,6 +35170,47 @@ void MainWindow::on_toolButton_executeCommands_clicked()
     emit signalLog("<font color = \"#0000ff\">" + QString("Проверка тока платы")  + '\n' + "</font>");
 
     emit startTokPlatyRequest();
+
+    //-------------------Ожидание завершения Проверка тока платы---------------
+
+    bool isTokPlatyFinishedTmp1 = true;
+    bool isTokPlatyFinishedTmp2 = true;
+    bool isTokPlatyFinishedTmp3 = true;
+    bool isTokPlatyFinishedTmp4 = true;
+
+    for(int e=0; e<100; e++) { //10 sec
+        global::pause(100);
+
+        if(ui->checkBox_workPlace1->isChecked()) {
+            isTokPlatyFinishedTmp1 = isTokPlatyFinished1;
+
+            if(!vectorIsWorkPlaceUse.at(0)) isTokPlatyFinishedTmp1 = true;
+        }
+
+        if(ui->checkBox_workPlace2->isChecked()) {
+            isTokPlatyFinishedTmp2 = isTokPlatyFinished2;
+
+            if(!vectorIsWorkPlaceUse.at(1)) isTokPlatyFinishedTmp2 = true;
+        }
+
+        if(ui->checkBox_workPlace3->isChecked()) {
+            isTokPlatyFinishedTmp3 = isTokPlatyFinished3;
+
+            if(!vectorIsWorkPlaceUse.at(2)) isTokPlatyFinishedTmp3 = true;
+        }
+
+        if(ui->checkBox_workPlace4->isChecked()) {
+            isTokPlatyFinishedTmp4 = isTokPlatyFinished4;
+
+            if(!vectorIsWorkPlaceUse.at(3)) isTokPlatyFinishedTmp4 = true;
+        }
+
+
+        if(isTokPlatyFinishedTmp1 && isTokPlatyFinishedTmp2 && isTokPlatyFinishedTmp3 && isTokPlatyFinishedTmp4)
+            break;
+    }
+
+    //-------------------Ожидание завершения Проверка тока платы---------------
 
     //проверка тока платы/
 
@@ -35723,11 +35940,15 @@ void MainWindow::on_toolButton_executeCommands_clicked()
 
     }
 
-    //включить протокол MBus/
+    //калибровка часов реального времени                   //включить протокол MBus/
 
 
 
-    //проверить протокол MBus
+    //Проверка расходомера                                 //проверить протокол MBus
+
+    //-----------------------------------------------------
+    //Теперь здесь будет проверка расходомера
+    //-----------------------------------------------------
 
     if(vectorIsCommandUse.at(6) && (repeatParameter == 0 || repeatParameter == 1) ) {
 
@@ -35751,75 +35972,62 @@ void MainWindow::on_toolButton_executeCommands_clicked()
         ui->toolButton_CheckMbus->setAutoFillBackground(true);
         ui->toolButton_CheckMbus->setPalette( palette );
 
-//      for(int l=0; l<4; l++) {
 
-//        if(vectorIsWorkPlaceUse.at(l)) {
-//            emit signalMBusCheck(l);
+//        emit signalLog("<font color = \"#0000ff\">" + QString("Проверка протокола MBus")  + '\n' + "</font>");
 
-//        }
+//        emit signalCheckMBusToThread(portOptical, portOptical2, portOptical3, portOptical4);
 
-//      }
 
-        emit signalLog("<font color = \"#0000ff\">" + QString("Проверка протокола MBus")  + '\n' + "</font>");
+        emit signalLog("<font color = \"#0000ff\">" + QString("Проверка расходомера")  + '\n' + "</font>");
 
-        emit signalCheckMBusToThread(portOptical, portOptical2, portOptical3, portOptical4);
+        emit startRashodomer(portOptical, portOptical2, portOptical3, portOptical4);
 
-        //-------------------------Ждём завершения Проверка протокола MBus------------------
+        //-------------------------Ждём завершения Проверка расходомера------------------
 
-        bool isMBusCheckTmp1 = true;
-        bool isMBusCheckTmp2 = true;
-        bool isMBusCheckTmp3 = true;
-        bool isMBusCheckTmp4 = true;
-
-//          if(!vectorIsWorkPlaceUse.at(0)) isPulsesInputVolumeTmp1 = true;
-//          if(!vectorIsWorkPlaceUse.at(1)) isPulsesInputVolumeTmp2 = true;
-//          if(!vectorIsWorkPlaceUse.at(2)) isPulsesInputVolumeTmp3 = true;
-//          if(!vectorIsWorkPlaceUse.at(3)) isPulsesInputVolumeTmp4 = true;
+        bool isRashodomerTmp1 = true;
+        bool isRashodomerTmp2 = true;
+        bool isRashodomerTmp3 = true;
+        bool isRashodomerTmp4 = true;
 
           for(int e=0; e<30; e++) { //3 sec
               global::pause(100);
 
               if(ui->checkBox_workPlace1->isChecked()) {
-                  isMBusCheckTmp1 = isMBusCheck1;
+                  isRashodomerTmp1 = isRashodomerFinished1;
 
-                  if(!vectorIsWorkPlaceUse.at(0)) isMBusCheckTmp1 = true;
+                  if(!vectorIsWorkPlaceUse.at(0)) isRashodomerTmp1 = true;
               }
 
               if(ui->checkBox_workPlace2->isChecked()) {
-                  isMBusCheckTmp2 = isMBusCheck2;
+                  isRashodomerTmp2 = isRashodomerFinished2;
 
-                  if(!vectorIsWorkPlaceUse.at(1)) isMBusCheckTmp2 = true;
+                  if(!vectorIsWorkPlaceUse.at(1)) isRashodomerTmp2 = true;
               }
 
               if(ui->checkBox_workPlace3->isChecked()) {
-                  isMBusCheckTmp3 = isMBusCheck3;
+                  isRashodomerTmp3 = isRashodomerFinished3;
 
-                  if(!vectorIsWorkPlaceUse.at(2)) isMBusCheckTmp3 = true;
+                  if(!vectorIsWorkPlaceUse.at(2)) isRashodomerTmp3 = true;
               }
 
               if(ui->checkBox_workPlace4->isChecked()) {
-                  isMBusCheckTmp4 = isMBusCheck4;
+                  isRashodomerTmp4 = isRashodomerFinished4;
 
-                  if(!vectorIsWorkPlaceUse.at(3)) isMBusCheckTmp4 = true;
+                  if(!vectorIsWorkPlaceUse.at(3)) isRashodomerTmp4 = true;
               }
 
-//              if(vectorIsWorkPlaceUse.at(0)) isMBusCheckTmp1 = isMBusCheck1;
-//              if(vectorIsWorkPlaceUse.at(1)) isMBusCheckTmp2 = isMBusCheck2;
-//              if(vectorIsWorkPlaceUse.at(2)) isMBusCheckTmp3 = isMBusCheck3;
-//              if(vectorIsWorkPlaceUse.at(3)) isMBusCheckTmp4 = isMBusCheck4;
-
-              if(isMBusCheckTmp1 && isMBusCheckTmp2 && isMBusCheckTmp3 && isMBusCheckTmp4)
+              if(isRashodomerTmp1 && isRashodomerTmp2 && isRashodomerTmp3 && isRashodomerTmp4)
                   break;
           }
 
 
-        //-------------------------Ждём завершения Проверка протокола MBus------------------/
+        //-------------------------Ждём завершения Проверка расходомера------------------/
 
       ui->toolButton_CheckMbus->setPalette(palettePrime);
 
     }
 
-    //проверить протокол MBus/
+    //Проверка расходомера                       //проверить протокол MBus/
 
 
     //проверка проводных интерфейсов
@@ -35972,7 +36180,7 @@ void MainWindow::on_toolButton_executeCommands_clicked()
     //проверка проводных интерфейсов/
 
 
-    //включить протокол СЭТ
+    //Питание магнитного датчика--------------------------   //включить протокол СЭТ
 
     if(vectorIsCommandUse.at(8) && (repeatParameter == 0 || repeatParameter == 1 || repeatParameter == 2) ) {
 
@@ -35996,72 +36204,65 @@ void MainWindow::on_toolButton_executeCommands_clicked()
         ui->toolButton_MBusOff->setAutoFillBackground(true);
         ui->toolButton_MBusOff->setPalette( palette );
 
-//      for(int l=0; l<4; l++) {
 
-//        if(vectorIsWorkPlaceUse.at(l)) {
-//            emit signalMBusOff(l);
+//        emit signalLog("<font color = \"#0000ff\">" + QString("Включение протокола СЭТ")  + '\n' + "</font>");
 
-//        }
+//        emit signalMBusOffToThread(portOptical, portOptical2, portOptical3, portOptical4);
 
-//      }
+        emit signalLog("<font color = \"#0000ff\">" + QString("Проверка питания магнитного датчика")  + '\n' + "</font>");
 
- //       global::pause(1000);
+        emit startMagnSensor();
 
+        //-------------------------Ждём завершения Питание магнитного датчика------------------
 
-        emit signalLog("<font color = \"#0000ff\">" + QString("Включение протокола СЭТ")  + '\n' + "</font>");
-
-        emit signalMBusOffToThread(portOptical, portOptical2, portOptical3, portOptical4);
-
-        //-------------------------Ждём завершения включения СЭТ------------------
-
-        bool isMBusOffTmp1 = true;
-        bool isMBusOffTmp2 = true;
-        bool isMBusOffTmp3 = true;
-        bool isMBusOffTmp4 = true;
+        bool isMagnSensorFinishedTmp1 = true;
+        bool isMagnSensorFinishedTmp2 = true;
+        bool isMagnSensorFinishedTmp3 = true;
+        bool isMagnSensorFinishedTmp4 = true;
 
 
-          for(int e=0; e<50; e++) { //5 sec
+          for(int e=0; e<30; e++) { //3 sec
               global::pause(100);
 
               if(ui->checkBox_workPlace1->isChecked()) {
-                 isMBusOffTmp1 = isMBusOff1;
+                 isMagnSensorFinishedTmp1 = isMagnSensorFinished1;
 
-                 if(!vectorIsWorkPlaceUse.at(0)) isMBusOffTmp1 = true;
+                 if(!vectorIsWorkPlaceUse.at(0)) isMagnSensorFinishedTmp1 = true;
               }
 
               if(ui->checkBox_workPlace2->isChecked()) {
-                 isMBusOffTmp2 = isMBusOff2;
+                 isMagnSensorFinishedTmp2 = isMagnSensorFinished2;
 
-                 if(!vectorIsWorkPlaceUse.at(1)) isMBusOffTmp2 = true;
+                 if(!vectorIsWorkPlaceUse.at(1)) isMagnSensorFinishedTmp2 = true;
               }
 
               if(ui->checkBox_workPlace3->isChecked()) {
-                 isMBusOffTmp3 = isMBusOff3;
+                 isMagnSensorFinishedTmp3 = isMagnSensorFinished3;
 
-                 if(!vectorIsWorkPlaceUse.at(2)) isMBusOffTmp3 = true;
+                 if(!vectorIsWorkPlaceUse.at(2)) isMagnSensorFinishedTmp3 = true;
               }
 
               if(ui->checkBox_workPlace4->isChecked()) {
-                 isMBusOffTmp4 = isMBusOff4;
+                 isMagnSensorFinishedTmp4 = isMagnSensorFinished4;
 
-                 if(!vectorIsWorkPlaceUse.at(3)) isMBusOffTmp4 = true;
+                 if(!vectorIsWorkPlaceUse.at(3)) isMagnSensorFinishedTmp4 = true;
               }
 
 
-            if(isMBusOffTmp1 && isMBusOffTmp2 &&
-                      isMBusOffTmp3 && isMBusOffTmp4)
+            if(isMagnSensorFinishedTmp1 && isMagnSensorFinishedTmp2 &&
+                      isMagnSensorFinishedTmp3 && isMagnSensorFinishedTmp4)
                   break;
 
           }
 
 
-        //-------------------------Ждём завершения включения СЭТ------------------/
+        //-------------------------Ждём завершения Питание магнитного датчика------------------/
 
       ui->toolButton_MBusOff->setPalette(palettePrime);
 
     }
 
-    //включить протокол СЭТ/
+    //Питание магнитного датчика--------------------------   //включить протокол СЭТ/
 
 //    global::pause(5000);
 
@@ -36592,6 +36793,20 @@ void MainWindow::slotCheckTimeCalError(int currentIndicator)
     checkTimeCalibrationError(currentIndicator);
 }
 
+ void MainWindow::slotCheckRashodomerError(int currentIndicator)
+ {
+     updateVectorStateMatrix(currentIndicator);
+
+     checkRashodomerError(currentIndicator);
+ }
+
+ void MainWindow::slotCheckMagnSensorError(int currentIndicator)
+ {
+     updateVectorStateMatrix(currentIndicator);
+
+     checkMagnSensorError(currentIndicator);
+ }
+
 void MainWindow::slotCheckTokPlatyError(int currentIndicator)
 {
     QVector<bool> vectorTmp;
@@ -36625,7 +36840,7 @@ void MainWindow::slotCheckTokPlatyError(int currentIndicator)
 
     }
 
-    checkBslError(currentIndicator);
+    checkTokPlatyError(currentIndicator);
 }
 
 void MainWindow::slotCheckWritingError(int currentIndicator)
@@ -39973,3 +40188,101 @@ void MainWindow::setLabelTok4(QString label)
 
 
 
+
+void MainWindow::on_radioButton_plataOn1_clicked()
+{
+
+}
+
+void MainWindow::on_radioButton_plataOff1_clicked()
+{
+
+}
+
+void MainWindow::on_radioButton_plataOn1_clicked(bool checked)
+{
+    if(checked) {
+        ObjectThread1->plataOn();
+    }
+    else {
+        ObjectThread1->plataOff();
+    }
+}
+
+
+void MainWindow::on_radioButton_plataOn2_clicked(bool checked)
+{
+    if(checked) {
+        ObjectThread2->plataOn();
+    }
+    else {
+        ObjectThread2->plataOff();
+    }
+}
+
+void MainWindow::on_radioButton_15_clicked(bool checked)
+{
+
+}
+
+void MainWindow::on_radioButton_plataOn3_clicked(bool checked)
+{
+    if(checked) {
+        ObjectThread3->plataOn();
+    }
+    else {
+        ObjectThread3->plataOff();
+    }
+}
+
+void MainWindow::on_radioButton_plataOn4_clicked(bool checked)
+{
+    if(checked) {
+        ObjectThread4->plataOn();
+    }
+    else {
+        ObjectThread4->plataOff();
+    }
+}
+
+
+//------------------
+void MainWindow::on_radioButton_progrOn1_clicked(bool checked)
+{
+    if(checked) {
+        ObjectThread1->programmatorOn();
+    }
+    else {
+        ObjectThread1->programmatorOff();
+    }
+}
+
+void MainWindow::on_radioButton_progrOn2_clicked(bool checked)
+{
+    if(checked) {
+        ObjectThread2->programmatorOn();
+    }
+    else {
+        ObjectThread2->programmatorOff();
+    }
+}
+
+void MainWindow::on_radioButton_progrOn3_clicked(bool checked)
+{
+    if(checked) {
+        ObjectThread3->programmatorOn();
+    }
+    else {
+        ObjectThread3->programmatorOff();
+    }
+}
+
+void MainWindow::on_radioButton_progrOn4_clicked(bool checked)
+{
+    if(checked) {
+        ObjectThread4->programmatorOn();
+    }
+    else {
+        ObjectThread4->programmatorOff();
+    }
+}

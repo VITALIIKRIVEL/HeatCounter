@@ -90,6 +90,13 @@ public:
     bool errorIndicatoOn();
     bool errorIndicatoOff();
 
+    bool setFreqRotation(QString freq);
+    bool imitRotationOn();
+    bool imitRotationOff();
+
+   // Прочитать таймаут импульса питания на датчик
+    bool readTimeoutMagnSensor();
+
     bool testCommand();
 
     //команды стенду/
@@ -100,6 +107,8 @@ public:
 signals:
     checkBslError(int currentIndicatorNumber);
     checkTimeCalError(int currentIndicatorNumber);
+    checkRashodomerError(int currentIndicatorNumber);
+    checkMagnSensorError(int currentIndicatorNumber);
     checkTokPlaty(int currentIndicatorNumber);
     checkWritingError(int currentIndicatorNumber);
     checkCalibrationError(int currentIndicatorNumber);
@@ -154,6 +163,11 @@ public slots:
 
     void slotRealClockCalibration(QSerialPort *port1, QSerialPort *port2,
                                   QSerialPort *port3, QSerialPort *port4);
+
+    void slotRashodomer(QSerialPort *port1, QSerialPort *port2,
+                        QSerialPort *port3, QSerialPort *port4);
+
+    void slotMagnSensor();
 
 private slots:
 //    void slotWriteParams(QSerialPort *port1, QSerialPort *port2, QSerialPort *port3, QSerialPort *port4,

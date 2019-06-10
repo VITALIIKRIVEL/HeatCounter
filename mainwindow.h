@@ -69,6 +69,8 @@ public:
 
     void checkBslError(int currentIndicator);
     void checkTimeCalibrationError(int currentIndicator);
+    void checkRashodomerError(int currentIndicator);
+    void checkMagnSensorError(int currentIndicator);
     void checkTokPlatyError(int currentIndicator);
     void checkWritingError(int currentIndicator);
     void checkCalibrationError(int currentIndicator);
@@ -205,6 +207,8 @@ signals:
     startBSLProgramming();
     startTokPlatyRequest();
     startTimeCalibration(QSerialPort *port1, QSerialPort *port2, QSerialPort *port3, QSerialPort *port4);
+    startRashodomer(QSerialPort *port1, QSerialPort *port2, QSerialPort *port3, QSerialPort *port4);
+    startMagnSensor();
 
     //Стенд/
 
@@ -220,6 +224,8 @@ public slots:
     void slotCheckBslError(int currentIndicator);
     void slotCheckTimeCalError(int currentIndicator);
     void slotCheckTokPlatyError(int currentIndicator);
+    void slotCheckRashodomerError(int currentIndicator);
+    void slotCheckMagnSensorError(int currentIndicator);
     void slotCheckWritingError(int);
     void slotCheckCalibrationError(int currentIndicator);
     void slotGetRMV(int color, QString str, int currentIndicator);
@@ -614,6 +620,28 @@ private slots:
 
     void on_pushButton_portStendSettings_clicked();
 
+    void on_radioButton_plataOn1_clicked();
+
+    void on_radioButton_plataOff1_clicked();
+
+    void on_radioButton_plataOn1_clicked(bool checked);
+
+    void on_radioButton_plataOn2_clicked(bool checked);
+
+    void on_radioButton_15_clicked(bool checked);
+
+    void on_radioButton_plataOn3_clicked(bool checked);
+
+    void on_radioButton_plataOn4_clicked(bool checked);
+
+    void on_radioButton_progrOn1_clicked(bool checked);
+
+    void on_radioButton_progrOn2_clicked(bool checked);
+
+    void on_radioButton_progrOn3_clicked(bool checked);
+
+    void on_radioButton_progrOn4_clicked(bool checked);
+
 private:
     
  //   Ui::MainWindow *ui;
@@ -873,6 +901,8 @@ private:
     bool isBslFinished1, isBslFinished2, isBslFinished3, isBslFinished4;
     bool isTimeCalFinished1, isTimeCalFinished2, isTimeCalFinished3, isTimeCalFinished4;
     bool isTokPlatyFinished1, isTokPlatyFinished2, isTokPlatyFinished3, isTokPlatyFinished4;
+    bool isRashodomerFinished1, isRashodomerFinished2, isRashodomerFinished3, isRashodomerFinished4;
+    bool isMagnSensorFinished1, isMagnSensorFinished2, isMagnSensorFinished3, isMagnSensorFinished4;
     bool isWritingFinished1, isWritingFinished2, isWritingFinished3, isWritingFinished4;
     bool isCalibrationFinished1, isCalibrationFinished2, isCalibrationFinished3, isCalibrationFinished4;
     bool isPulsesOutputHeat1, isPulsesOutputHeat2, isPulsesOutputHeat3, isPulsesOutputHeat4;

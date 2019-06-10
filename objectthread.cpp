@@ -12779,11 +12779,191 @@ bool ObjectThread::writePulsesToGenChannel2()
 bool ObjectThread::externalInterfaceOn()
 {
    //Подключить внешний интерфейс	EXT=1	OK
+
+    QByteArray buffer;
+
+//    кто и кому:
+//    ПК=0x01	стенд1=0x11	стенд2=0x22	стенд3=0x33	стенд4=0x44
+
+//    1 байт	2 байт	3 байт	4 байт	… байт	… байт	(N-1) байт	N байт
+//    кто	    кому	команда					                    Конец сообщения
+//    BIN	    BIN	    STRING					                    0x00
+
+    if(!isWorkPlaceUse.at(workPlace)) return false;
+
+    QString command = "EXT=1";
+
+    QByteArray parcel;
+
+    quint8 sender = 0x01;
+    quint8 receiver;
+    quint8 stopByte = 0x00;
+
+    if(workPlace == 0) receiver = 0x11;
+    if(workPlace == 1) receiver = 0x22;
+    if(workPlace == 2) receiver = 0x33;
+    if(workPlace == 3) receiver = 0x44;
+
+    QByteArray stringToByteArray;
+    stringToByteArray = command.toLocal8Bit();
+
+    //формирование посылки
+    parcel.append(sender);
+    parcel.append(receiver);
+    for(int m=0; m<stringToByteArray.size(); m++) {
+        parcel.append(stringToByteArray.at(m));
+    }
+    parcel.append(stopByte);
+
+    qDebug()<<"parcel"<<parcel.toHex();
+
+    if(!portStend->isOpen()) {
+
+        if(!portStend->open(QIODevice::ReadWrite)) {
+
+            QString label_StatusBar = (tr("Не удалось открыть порт стенда") +
+                                         ". Рабочее место: " + QString::number(workPlace+1));
+            emit errorStringSignal(label_StatusBar + '\n');
+            return false;
+        }
+    }
+
+    portStend->clear();
+
+    quint64 count = portStend->write(parcel);
+    emit textBrowser(">> " + portStend->portName() + " " + parcel.toHex());
+
+    //ждать ответа от стенда 10 мсек
+
+    global::pause(100);
+
+    buffer = portStend->readAll();
+    portStend->close();
+
+    if(!buffer.isEmpty()) emit textBrowser("<< " + portStend->portName() + " " + buffer.toHex());
+
+    if(buffer.isEmpty()) {
+        QString label_StatusBar = (tr("Нет ответа стенда. Команда \"Подключить внешний интерфейс\" ") +
+                                     ". Рабочее место: " + QString::number(workPlace+1));
+        emit errorStringSignal(label_StatusBar + '\n');
+  //      portStend->close();
+        return false;
+    }
+
+    QString answerStr;
+    QByteArray bufTmp = buffer;
+
+    bufTmp.remove(0, 2);
+    bufTmp.remove(bufTmp.size()-1, 1);
+
+    answerStr = QString::fromLocal8Bit(bufTmp);
+
+    if(buffer.at(0)!=receiver && buffer.at(1)!=sender && answerStr!="OK") {
+        QString label_StatusBar = (tr("Неверный ответ стенда. Команда \"Подключить внешний интерфейс\" ") +
+                                     ". Рабочее место: " + QString::number(workPlace+1));
+        emit errorStringSignal(label_StatusBar + '\n');
+ //       portStend->close();
+        return false;
+    }
+
+ //  portStend->close();
+
+   return true;
 }
 
 bool ObjectThread::externalInterfaceOff()
 {
    //Отключить внешний интерфейс	 EXT=0	OK
+
+    QByteArray buffer;
+
+//    кто и кому:
+//    ПК=0x01	стенд1=0x11	стенд2=0x22	стенд3=0x33	стенд4=0x44
+
+//    1 байт	2 байт	3 байт	4 байт	… байт	… байт	(N-1) байт	N байт
+//    кто	    кому	команда					                    Конец сообщения
+//    BIN	    BIN	    STRING					                    0x00
+
+    if(!isWorkPlaceUse.at(workPlace)) return false;
+
+    QString command = "EXT=0";
+
+    QByteArray parcel;
+
+    quint8 sender = 0x01;
+    quint8 receiver;
+    quint8 stopByte = 0x00;
+
+    if(workPlace == 0) receiver = 0x11;
+    if(workPlace == 1) receiver = 0x22;
+    if(workPlace == 2) receiver = 0x33;
+    if(workPlace == 3) receiver = 0x44;
+
+    QByteArray stringToByteArray;
+    stringToByteArray = command.toLocal8Bit();
+
+    //формирование посылки
+    parcel.append(sender);
+    parcel.append(receiver);
+    for(int m=0; m<stringToByteArray.size(); m++) {
+        parcel.append(stringToByteArray.at(m));
+    }
+    parcel.append(stopByte);
+
+    qDebug()<<"parcel"<<parcel.toHex();
+
+    if(!portStend->isOpen()) {
+
+        if(!portStend->open(QIODevice::ReadWrite)) {
+
+            QString label_StatusBar = (tr("Не удалось открыть порт стенда") +
+                                         ". Рабочее место: " + QString::number(workPlace+1));
+            emit errorStringSignal(label_StatusBar + '\n');
+            return false;
+        }
+    }
+
+    portStend->clear();
+
+    quint64 count = portStend->write(parcel);
+    emit textBrowser(">> " + portStend->portName() + " " + parcel.toHex());
+
+    //ждать ответа от стенда 10 мсек
+
+    global::pause(100);
+
+    buffer = portStend->readAll();
+    portStend->close();
+
+    if(!buffer.isEmpty()) emit textBrowser("<< " + portStend->portName() + " " + buffer.toHex());
+
+    if(buffer.isEmpty()) {
+        QString label_StatusBar = (tr("Нет ответа стенда. Команда \"Отключить внешний интерфейс\" ") +
+                                     ". Рабочее место: " + QString::number(workPlace+1));
+        emit errorStringSignal(label_StatusBar + '\n');
+  //      portStend->close();
+        return false;
+    }
+
+    QString answerStr;
+    QByteArray bufTmp = buffer;
+
+    bufTmp.remove(0, 2);
+    bufTmp.remove(bufTmp.size()-1, 1);
+
+    answerStr = QString::fromLocal8Bit(bufTmp);
+
+    if(buffer.at(0)!=receiver && buffer.at(1)!=sender && answerStr!="OK") {
+        QString label_StatusBar = (tr("Неверный ответ стенда. Команда \"Отключить внешний интерфейс\" ") +
+                                     ". Рабочее место: " + QString::number(workPlace+1));
+        emit errorStringSignal(label_StatusBar + '\n');
+ //       portStend->close();
+        return false;
+    }
+
+ //  portStend->close();
+
+   return true;
 }
 
 bool ObjectThread::setTokInterfaceOff()
@@ -13144,6 +13324,8 @@ bool ObjectThread::readTok()
 
   //     portStend->close();
 
+       emit checkTokPlaty(workPlace);
+
        return true;
 }
 
@@ -13365,7 +13547,7 @@ bool ObjectThread::programmatorOff()
    return true;
 }
 
-//--------------------Индикация-------------------------------------
+//--------------------Индикация-----------------------------------
 
 bool ObjectThread::finishIndicatorOn()
 {
@@ -13385,6 +13567,333 @@ bool ObjectThread::errorIndicatoOn()
 bool ObjectThread::errorIndicatoOff()
 {
    //Отключить индикатор АВАРИЯ	ALR=0	OK
+}
+
+//------------------Вход датчика вращения--------------------------
+
+bool ObjectThread::setFreqRotation(QString freq)
+{
+    //Установить частоту имитации вращения (в Гц) FIM=xxx	OK
+
+    QByteArray buffer;
+
+//    кто и кому:
+//    ПК=0x01	стенд1=0x11	стенд2=0x22	стенд3=0x33	стенд4=0x44
+
+//    1 байт	2 байт	3 байт	4 байт	… байт	… байт	(N-1) байт	N байт
+//    кто	    кому	команда					                    Конец сообщения
+//    BIN	    BIN	    STRING					                    0x00
+
+    if(!isWorkPlaceUse.at(workPlace)) return false;
+
+    QString command = "FIM=" + freq;
+
+    QByteArray parcel;
+
+    quint8 sender = 0x01;
+    quint8 receiver;
+    quint8 stopByte = 0x00;
+
+    if(workPlace == 0) receiver = 0x11;
+    if(workPlace == 1) receiver = 0x22;
+    if(workPlace == 2) receiver = 0x33;
+    if(workPlace == 3) receiver = 0x44;
+
+    QByteArray stringToByteArray;
+    stringToByteArray = command.toLocal8Bit();
+
+    //формирование посылки
+    parcel.append(sender);
+    parcel.append(receiver);
+    for(int m=0; m<stringToByteArray.size(); m++) {
+        parcel.append(stringToByteArray.at(m));
+    }
+    parcel.append(stopByte);
+
+    qDebug()<<"parcel"<<parcel.toHex();
+
+    if(!portStend->isOpen()) {
+
+        if(!portStend->open(QIODevice::ReadWrite)) {
+
+            QString label_StatusBar = (tr("Не удалось открыть порт стенда") +
+                                         ". Рабочее место: " + QString::number(workPlace+1));
+            emit errorStringSignal(label_StatusBar + '\n');
+            vectorIndicatorBSLMatrix[workPlace] = true;
+
+            emit workPlaceOff(workPlace);
+            emit checkRashodomerError(workPlace);
+            return false;
+        }
+    }
+
+    portStend->clear();
+
+    quint64 count = portStend->write(parcel);
+    emit textBrowser(">> " + portStend->portName() + " " + parcel.toHex());
+
+    //ждать ответа от стенда 10 мсек
+
+    global::pause(100);
+
+    buffer = portStend->readAll();
+    portStend->close();
+
+    if(!buffer.isEmpty()) emit textBrowser("<< " + portStend->portName() + " " + buffer.toHex());
+
+    if(buffer.isEmpty()) {
+        QString label_StatusBar = (tr("Нет ответа стенда. Команда \"Установить частоту имитации вращения\" ") +
+                                     ". Рабочее место: " + QString::number(workPlace+1));
+        emit errorStringSignal(label_StatusBar + '\n');
+        vectorIndicatorBSLMatrix[workPlace] = true;
+        emit workPlaceOff(workPlace);
+        emit checkRashodomerError(workPlace);
+
+  //      portStend->close();
+        return false;
+    }
+
+    QString answerStr;
+    QByteArray bufTmp = buffer;
+
+    bufTmp.remove(0, 2);
+    bufTmp.remove(bufTmp.size()-1, 1);
+
+    answerStr = QString::fromLocal8Bit(bufTmp);
+
+    if(buffer.at(0)!=receiver && buffer.at(1)!=sender && answerStr!="OK") {
+        QString label_StatusBar = (tr("Неверный ответ стенда. Команда \"Установить частоту имитации вращения\" ") +
+                                     ". Рабочее место: " + QString::number(workPlace+1));
+        emit errorStringSignal(label_StatusBar + '\n');
+        vectorIndicatorBSLMatrix[workPlace] = true;
+        emit workPlaceOff(workPlace);
+        emit checkRashodomerError(workPlace);
+ //       portStend->close();
+        return false;
+    }
+
+ //  portStend->close();
+
+   return true;
+}
+
+bool ObjectThread::imitRotationOn()
+{
+    //Включить  имитацию вращения IM=1	OK
+
+    QByteArray buffer;
+
+//    кто и кому:
+//    ПК=0x01	стенд1=0x11	стенд2=0x22	стенд3=0x33	стенд4=0x44
+
+//    1 байт	2 байт	3 байт	4 байт	… байт	… байт	(N-1) байт	N байт
+//    кто	    кому	команда					                    Конец сообщения
+//    BIN	    BIN	    STRING					                    0x00
+
+    if(!isWorkPlaceUse.at(workPlace)) return false;
+
+    QString command = "IM=1";
+
+    QByteArray parcel;
+
+    quint8 sender = 0x01;
+    quint8 receiver;
+    quint8 stopByte = 0x00;
+
+    if(workPlace == 0) receiver = 0x11;
+    if(workPlace == 1) receiver = 0x22;
+    if(workPlace == 2) receiver = 0x33;
+    if(workPlace == 3) receiver = 0x44;
+
+    QByteArray stringToByteArray;
+    stringToByteArray = command.toLocal8Bit();
+
+    //формирование посылки
+    parcel.append(sender);
+    parcel.append(receiver);
+    for(int m=0; m<stringToByteArray.size(); m++) {
+        parcel.append(stringToByteArray.at(m));
+    }
+    parcel.append(stopByte);
+
+    qDebug()<<"parcel"<<parcel.toHex();
+
+    if(!portStend->isOpen()) {
+
+        if(!portStend->open(QIODevice::ReadWrite)) {
+
+            QString label_StatusBar = (tr("Не удалось открыть порт стенда") +
+                                         ". Рабочее место: " + QString::number(workPlace+1));
+            emit errorStringSignal(label_StatusBar + '\n');
+            vectorIndicatorBSLMatrix[workPlace] = true;
+
+            emit workPlaceOff(workPlace);
+            emit checkRashodomerError(workPlace);
+            return false;
+        }
+    }
+
+    portStend->clear();
+
+    quint64 count = portStend->write(parcel);
+    emit textBrowser(">> " + portStend->portName() + " " + parcel.toHex());
+
+    //ждать ответа от стенда 10 мсек
+
+    global::pause(100);
+
+    buffer = portStend->readAll();
+    portStend->close();
+
+    if(!buffer.isEmpty()) emit textBrowser("<< " + portStend->portName() + " " + buffer.toHex());
+
+    if(buffer.isEmpty()) {
+        QString label_StatusBar = (tr("Нет ответа стенда. Команда \"Включить  имитацию вращения\" ") +
+                                     ". Рабочее место: " + QString::number(workPlace+1));
+        emit errorStringSignal(label_StatusBar + '\n');
+        vectorIndicatorBSLMatrix[workPlace] = true;
+        emit workPlaceOff(workPlace);
+        emit checkRashodomerError(workPlace);
+
+  //      portStend->close();
+        return false;
+    }
+
+    QString answerStr;
+    QByteArray bufTmp = buffer;
+
+    bufTmp.remove(0, 2);
+    bufTmp.remove(bufTmp.size()-1, 1);
+
+    answerStr = QString::fromLocal8Bit(bufTmp);
+
+    if(buffer.at(0)!=receiver && buffer.at(1)!=sender && answerStr!="OK") {
+        QString label_StatusBar = (tr("Неверный ответ стенда. Команда \"Включить  имитацию вращения\" ") +
+                                     ". Рабочее место: " + QString::number(workPlace+1));
+        emit errorStringSignal(label_StatusBar + '\n');
+        vectorIndicatorBSLMatrix[workPlace] = true;
+        emit workPlaceOff(workPlace);
+        emit checkRashodomerError(workPlace);
+ //       portStend->close();
+        return false;
+    }
+
+ //  portStend->close();
+
+   return true;
+}
+
+bool ObjectThread::imitRotationOff()
+{
+    //Выключить имитацию вращения IM=0	OK
+
+    QByteArray buffer;
+
+//    кто и кому:
+//    ПК=0x01	стенд1=0x11	стенд2=0x22	стенд3=0x33	стенд4=0x44
+
+//    1 байт	2 байт	3 байт	4 байт	… байт	… байт	(N-1) байт	N байт
+//    кто	    кому	команда					                    Конец сообщения
+//    BIN	    BIN	    STRING					                    0x00
+
+    if(!isWorkPlaceUse.at(workPlace)) return false;
+
+    QString command = "IM=0";
+
+    QByteArray parcel;
+
+    quint8 sender = 0x01;
+    quint8 receiver;
+    quint8 stopByte = 0x00;
+
+    if(workPlace == 0) receiver = 0x11;
+    if(workPlace == 1) receiver = 0x22;
+    if(workPlace == 2) receiver = 0x33;
+    if(workPlace == 3) receiver = 0x44;
+
+    QByteArray stringToByteArray;
+    stringToByteArray = command.toLocal8Bit();
+
+    //формирование посылки
+    parcel.append(sender);
+    parcel.append(receiver);
+    for(int m=0; m<stringToByteArray.size(); m++) {
+        parcel.append(stringToByteArray.at(m));
+    }
+    parcel.append(stopByte);
+
+    qDebug()<<"parcel"<<parcel.toHex();
+
+    if(!portStend->isOpen()) {
+
+        if(!portStend->open(QIODevice::ReadWrite)) {
+
+            QString label_StatusBar = (tr("Не удалось открыть порт стенда") +
+                                         ". Рабочее место: " + QString::number(workPlace+1));
+            emit errorStringSignal(label_StatusBar + '\n');
+            vectorIndicatorBSLMatrix[workPlace] = true;
+
+            emit workPlaceOff(workPlace);
+            emit checkRashodomerError(workPlace);
+            return false;
+        }
+    }
+
+    portStend->clear();
+
+    quint64 count = portStend->write(parcel);
+    emit textBrowser(">> " + portStend->portName() + " " + parcel.toHex());
+
+    //ждать ответа от стенда 10 мсек
+
+    global::pause(100);
+
+    buffer = portStend->readAll();
+    portStend->close();
+
+    if(!buffer.isEmpty()) emit textBrowser("<< " + portStend->portName() + " " + buffer.toHex());
+
+    if(buffer.isEmpty()) {
+        QString label_StatusBar = (tr("Нет ответа стенда. Команда \"Выключить имитацию вращения\" ") +
+                                     ". Рабочее место: " + QString::number(workPlace+1));
+        emit errorStringSignal(label_StatusBar + '\n');
+        vectorIndicatorBSLMatrix[workPlace] = true;
+        emit workPlaceOff(workPlace);
+        emit checkRashodomerError(workPlace);
+
+  //      portStend->close();
+        return false;
+    }
+
+    QString answerStr;
+    QByteArray bufTmp = buffer;
+
+    bufTmp.remove(0, 2);
+    bufTmp.remove(bufTmp.size()-1, 1);
+
+    answerStr = QString::fromLocal8Bit(bufTmp);
+
+    if(buffer.at(0)!=receiver && buffer.at(1)!=sender && answerStr!="OK") {
+        QString label_StatusBar = (tr("Неверный ответ стенда. Команда \"Выключить имитацию вращения\" ") +
+                                     ". Рабочее место: " + QString::number(workPlace+1));
+        emit errorStringSignal(label_StatusBar + '\n');
+        vectorIndicatorBSLMatrix[workPlace] = true;
+        emit workPlaceOff(workPlace);
+        emit checkRashodomerError(workPlace);
+ //       portStend->close();
+        return false;
+    }
+
+ //  portStend->close();
+
+   return true;
+}
+
+bool ObjectThread::readTimeoutMagnSensor()
+{
+  //  Прочитать таймаут импульса питания на резистивный датчик	TIM?	TIM=xxxx
+
+
 }
 
 //--------------------Служебные------------------------------------
@@ -13852,6 +14361,493 @@ void ObjectThread::slotRealClockCalibration(QSerialPort *port1, QSerialPort *por
 
 
 }
+
+
+void ObjectThread::slotRashodomer(QSerialPort *port1, QSerialPort *port2,
+                                  QSerialPort *port3, QSerialPort *port4)
+{
+
+    QByteArray buffer;
+
+    QSerialPort *portTmp;
+
+    bool isNeedPaintEvent = true;//false;
+
+    int workPlaceNumber = workPlace;
+
+    if(!isWorkPlaceUse.at(workPlace)) return;
+
+    int currentIndicatorNumber = workPlaceNumber;
+
+    QString label_StatusBar;
+    QString errorString;
+
+    switch (workPlaceNumber) {
+    case 0:
+        portTmp = port1;
+        break;
+    case 1:
+        portTmp = port2;
+        break;
+    case 2:
+        portTmp = port3;
+        break;
+    case 3:
+        portTmp = port4;
+        break;
+
+    default:
+        break;
+    }
+
+    portTmp->setBaudRate(QSerialPort::Baud19200);
+    portTmp->setDataBits(QSerialPort::Data8);
+    portTmp->setParity(QSerialPort::NoParity);
+    portTmp->setStopBits(QSerialPort::OneStop);
+
+
+    int currentBoxNumber = 6;
+
+//    1)	Установить частоту (FIM=xxx)
+//    2)	Включить имитацию вращения (IM=1)
+//    3)	Прочитать из Гефеста значение потока
+//    4)	Выключить имитацию вращения (IM=0)
+
+
+    if(!setFreqRotation(QString())) return;
+
+    if(!imitRotationOn()) return;
+
+//прочитать значение потока  Read Sensor Parameters?
+
+    //
+    //Read Sensor Parameters      5a00050b
+ for(int i=0; i<3;i++) {
+
+    portTmp->clear();
+    packetToRead.clear();
+    buffer.clear();
+    quint8 byte = 0x5a;
+    packetToRead.append(byte);
+    byte = 0x00;
+    packetToRead.append(byte);
+    byte = 0x05;
+    packetToRead.append(byte);
+    byte = 0x0b;
+    packetToRead.append(byte);
+    quint8 crc = makeCRC(packetToRead);
+    packetToRead.append(crc);
+
+    quint64 cnt = portTmp->write(packetToRead);
+    emit textBrowser(">> " + portTmp->portName() + " " + packetToRead.toHex());
+
+    qDebug()<<"cnt "<<cnt
+            <<"packetToRead.toHex() "<<packetToRead.toHex()
+            <<"portTmp->portName() "<<portTmp->portName();
+
+    if(cnt == 0) {
+//              QMessageBox::information(this, "", tr("Данные в порт не записаны") + ". Рабочее место: " + QString::number(workPlaceNumber + 1));
+        label_StatusBar = (tr("Данные в порт не записаны") +
+                                     ". Рабочее место: " + QString::number(workPlaceNumber+1));
+        emit errorStringSignal(label_StatusBar + '\n');
+//         ui->label_writeParams->setVisible(true);
+//         vectorIsErrorOccured[workPlaceNumber] = true;
+        vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+
+        emit workPlaceOff(currentIndicatorNumber);
+        emit checkRashodomerError(currentIndicatorNumber);
+
+        return;
+    }
+
+    global::pause(150);//(200);
+
+    buffer = portTmp->readAll();
+
+    qDebug()<<"buffer.toHex()"<<buffer.toHex();
+    if(!buffer.isEmpty()) emit textBrowser("<< " + portTmp->portName() + " " + buffer.toHex());
+
+    if(buffer.isEmpty()) {
+        if(i==2) {
+//                  QMessageBox::information(this, "", tr("Не удалось прочитать данные") + ". Рабочее место: " + QString::number(workPlaceNumber + 1));
+            portTmp->close();
+            label_StatusBar = (tr("Не удалось прочитать данные") +
+                                         ". Рабочее место: " + QString::number(workPlaceNumber+1));
+            emit errorStringSignal(label_StatusBar + '\n');
+//                       ui->label_writeParams->setVisible(true);
+//                       vectorIsErrorOccured[workPlaceNumber] = true;
+            vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+
+            emit workPlaceOff(currentIndicatorNumber);
+            emit checkRashodomerError(currentIndicatorNumber);
+
+            return;
+        } else{}
+
+    }
+    else {
+        //проверяем crc и первые четыре байта ответного пакета
+        QByteArray bytesForChecking;
+        quint8 byte = 0x5a;
+        bytesForChecking.append(byte);
+        byte = 0x00;
+        bytesForChecking.append(byte);
+        byte = 0x18;
+        bytesForChecking.append(byte);
+        byte = 0x8b;
+        bytesForChecking.append(byte);
+
+        if(!packetSETProcessing(buffer)) {
+            if(i == 2) {
+                label_StatusBar = (tr("Ошибка данных") +
+                                             " Рабочее место: " + QString::number(workPlaceNumber+1));
+                emit errorStringSignal(label_StatusBar + '\n');
+                vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                emit workPlaceOff(currentIndicatorNumber);
+                emit checkWritingError(currentIndicatorNumber);
+                return;
+            }
+            else {
+                continue;
+            }
+        }
+
+ //       quint8 error = buffer.at(4);
+
+        if(checkCRC(buffer) == 0 && bytesForChecking[0] == buffer[0] && bytesForChecking[1] == buffer[1] && bytesForChecking[3] == buffer[3]) {
+
+           qDebug()<<"buffer.toHex() "<<buffer.toHex()
+                <<"checkCRC(buffer) "<<checkCRC(buffer);
+//              emit textBrowser("buffer.toHex()     " + buffer.toHex());
+
+//               emit sendbufferReadSensorParameters(buffer);
+
+           //
+           //flowRate 4 bytes (4-7)
+           QByteArray flowRateArray;
+           flowRateArray.append(buffer[4]);
+           flowRateArray.append(buffer[5]);
+           flowRateArray.append(buffer[6]);
+           flowRateArray.append(buffer[7]);
+
+
+           quint32 flowRateQuint32 = buffer[4];
+           flowRateQuint32 = flowRateQuint32<<8 | (quint8)buffer[5];
+           flowRateQuint32 = flowRateQuint32<<8 | (quint8)buffer[6];
+           flowRateQuint32 = flowRateQuint32<<8 | (quint8)buffer[7];
+           float flowRateFloat = (float)flowRateQuint32/1000;
+           QString flowRateString = QString::number(flowRateFloat);
+           if((flowRateFloat - round(flowRateFloat)) == 0 ) { //проверка на отсутствие дробной части
+               flowRateString = flowRateString + ".00";
+           }
+
+//                      if(flowRateList.contains(flowRateString)) {
+//                          ui->comboBox_FlowRate->setCurrentText(QString::number(flowRateFloat));
+//                      }
+//                      else {
+//         //                 QMessageBox::information(this, "", tr("Недопустимое значение: Вес импульса вертушки"));
+//         //                 ui->comboBox_FlowRate->setCurrentText(QString::number(flowRateFloat));
+//                      }
+
+//                      qDebug()<<"flowRateArray.toHex() "<<flowRateArray.toHex();
+//                      paramsVector.append(flowRateArray);
+           mapRead["flowRateByteArray"] = flowRateArray;
+
+           //
+           //pressure 1 byte (8)
+           QByteArray pressureArray;
+           pressureArray.append(buffer[8]);
+
+           quint8 pressureQuint8 = buffer[8];
+           if(pressureQuint8 == 6) {
+//               ui->lineEdit_Pressure->setText(QString::number(pressureQuint8));
+           }
+           else {
+//                  QMessageBox::information(this, "", tr("Недопустимое значение: Условное давление"));
+//               ui->lineEdit_Pressure->setText(QString::number(pressureQuint8));
+           }
+
+ //          qDebug()<<"pressureArray.toHex() "<<pressureArray.toHex();
+ //          paramsVector.append(pressureArray);
+           mapRead["pressureByteArray"] = pressureArray;
+
+           //
+           //RTD_Type 1 byte (9)
+           QByteArray RTD_TypeArray;
+           RTD_TypeArray.append(buffer[9]);
+
+           quint8 RTD_TypeQuint8 = buffer[9];
+//                      if((RTD_TypeQuint8 >= 0) && (RTD_TypeQuint8 <= (RTD_TypeList.count() - 1))) {
+//                          ui->comboBox_RTD_Type->setCurrentIndex(RTD_TypeQuint8);
+//                      }
+//                      else {
+//         //                 QMessageBox::information(this, "", tr("Недопустимое значение: Тип термометров сопротивления"));
+//         //                 ui->comboBox_RTD_Type->setCurrentText(QString::number(RTD_TypeQuint8));
+//                      }
+
+//                      qDebug()<<"RTD_TypeArray.toHex() "<<RTD_TypeArray.toHex();
+//                      paramsVector.append(RTD_TypeArray);
+           mapRead["RTD_TypeByteArray"] = RTD_TypeArray;
+
+
+           //
+           //R_RTD 4 bytes (10-13)
+           QByteArray R_RTDArray;
+           R_RTDArray.append(buffer[10]);
+           R_RTDArray.append(buffer[11]);
+           R_RTDArray.append(buffer[12]);
+           R_RTDArray.append(buffer[13]);
+
+
+           quint32 R_RTDQuint32 = (quint8)buffer[10];
+           R_RTDQuint32 = R_RTDQuint32<<8 | (quint8)buffer[11];
+           R_RTDQuint32 = R_RTDQuint32<<8 | (quint8)buffer[12];
+           R_RTDQuint32 = R_RTDQuint32<<8 | (quint8)buffer[13];
+
+//                      if(R_RTDQuint32 == 1000) {
+//                          ui->lineEdit_R_RTD->setText(QString::number(R_RTDQuint32));
+//                      }
+//                      else {
+//          //                QMessageBox::information(this, "", tr("Недопустимое значение: Номинальное сопротивление термометров") + QString::number(R_RTDQuint32));
+//                      }
+
+//                      qDebug()<<"R_RTDArray.toHex() "<<R_RTDArray.toHex();
+//                      paramsVector.append(R_RTDArray);
+           mapRead["R_RTDByteArray"] = R_RTDArray;
+
+           //
+           //RWire1 4 bytes (14-17)
+           QByteArray RWire1Array;
+           RWire1Array.append(buffer[14]);
+           RWire1Array.append(buffer[15]);
+           RWire1Array.append(buffer[16]);
+           RWire1Array.append(buffer[17]);
+
+
+           quint32 RWire1Quint8 = buffer[14];
+           RWire1Quint8 = RWire1Quint8<<8 | (quint8)buffer[15];
+           RWire1Quint8 = RWire1Quint8<<8 | (quint8)buffer[16];
+           RWire1Quint8 = RWire1Quint8<<8 | (quint8)buffer[17];
+
+//                      if(RWire1Quint8 == 0) {
+//                          ui->lineEdit_RWire1->setText(QString::number(RWire1Quint8));
+//                      }
+//                      else {
+//         //                 QMessageBox::information(this, "", tr("Недопустимое значение: Сопротивление проводов термомнтров сопротивления"));
+//                      }
+
+//                      qDebug()<<"RWire1Array.toHex() "<<RWire1Array.toHex();
+//                      paramsVector.append(RWire1Array);
+           mapRead["RWire1ByteArray"] = RWire1Array;
+
+           //
+           //RWire2 4 bytes (18-21)
+           QByteArray RWire2Array;
+           RWire2Array.append(buffer[18]);
+           RWire2Array.append(buffer[19]);
+           RWire2Array.append(buffer[20]);
+           RWire2Array.append(buffer[21]);
+
+
+           quint32 RWire2Quint8 = buffer[18];
+           RWire2Quint8 = RWire2Quint8<<8 | (quint8)buffer[19];
+           RWire2Quint8 = RWire2Quint8<<8 | (quint8)buffer[20];
+           RWire2Quint8 = RWire2Quint8<<8 | (quint8)buffer[21];
+
+//                      if(RWire2Quint8 == 0) {
+//                          ui->lineEdit_RWire2->setText(QString::number(RWire2Quint8));
+//                      }
+//                      else {
+//          //                QMessageBox::information(this, "", tr("Недопустимое значение: Сопротивление проводов термомнтров сопротивления"));
+//                      }
+
+//                      qDebug()<<"RWire2Array.toHex() "<<RWire2Array.toHex();
+//                      paramsVector.append(RWire2Array);
+           mapRead["RWire2ByteArray"] = RWire2Array;
+
+           //
+           //flowNom 1 byte (22)
+           QByteArray flowNomArray;
+           flowNomArray.append(buffer[22]);
+
+
+           quint8 flowNomInt = buffer[22];
+           float flowNomFloat = (float)flowNomInt/10;
+//                      if(flowNomList.contains(QString::number(flowNomFloat))) {
+//                          ui->comboBox_FlowNom->setCurrentText(QString::number(flowNomFloat));
+//                      }
+//                      else {
+//         //                 QMessageBox::information(this, "", tr("Недопустимое значение: Номинальный расход"));
+//                      }
+
+//                      qDebug()<<"flowNomArray.toHex() "<<flowNomArray.toHex();
+//                      paramsVector.append(flowNomArray);
+           mapRead["flowNomByteArray"] = flowNomArray;
+
+
+
+           break;
+        }
+        else {
+            if(i==2) {
+//                     QMessageBox::information(this, "", tr("Ошибка данных") + ". Рабочее место: " + QString::number(workPlaceNumber + 1));
+               portTmp->close();
+               label_StatusBar = (tr("Ошибка данных") +
+                                            ". Рабочее место: " + QString::number(workPlaceNumber+1));
+               emit errorStringSignal(label_StatusBar + '\n');
+//                          ui->label_writeParams->setVisible(true);
+//                          vectorIsErrorOccured[workPlaceNumber] = true;
+               vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+
+               emit workPlaceOff(currentIndicatorNumber);
+               emit checkRashodomerError(currentIndicatorNumber);
+
+               return;
+            }
+        }
+
+    }
+
+
+ }
+
+//    //
+//    //
+
+
+    if(!imitRotationOff()) return;
+
+
+    emit checkRashodomerError(currentIndicatorNumber);
+
+}
+
+void ObjectThread::slotMagnSensor()
+{
+    //Прочитать таймаут импульса питания на датчик резистивный датчик TIM?	TIM=xxxx
+
+    QByteArray buffer;
+
+//    кто и кому:
+//    ПК=0x01	стенд1=0x11	стенд2=0x22	стенд3=0x33	стенд4=0x44
+
+//    1 байт	2 байт	3 байт	4 байт	… байт	… байт	(N-1) байт	N байт
+//    кто	    кому	команда					                    Конец сообщения
+//    BIN	    BIN	    STRING					                    0x00
+
+    if(!isWorkPlaceUse.at(workPlace)) return;
+
+    QString command = "TIM?";
+
+    QByteArray parcel;
+
+    quint8 sender = 0x01;
+    quint8 receiver;
+    quint8 stopByte = 0x00;
+
+    if(workPlace == 0) receiver = 0x11;
+    if(workPlace == 1) receiver = 0x22;
+    if(workPlace == 2) receiver = 0x33;
+    if(workPlace == 3) receiver = 0x44;
+
+    QByteArray stringToByteArray;
+    stringToByteArray = command.toLocal8Bit();
+
+    //формирование посылки
+    parcel.append(sender);
+    parcel.append(receiver);
+    for(int m=0; m<stringToByteArray.size(); m++) {
+        parcel.append(stringToByteArray.at(m));
+    }
+    parcel.append(stopByte);
+
+    qDebug()<<"parcel"<<parcel.toHex();
+
+    if(!portStend->isOpen()) {
+
+        if(!portStend->open(QIODevice::ReadWrite)) {
+
+            QString label_StatusBar = (tr("Не удалось открыть порт стенда") +
+                                         ". Рабочее место: " + QString::number(workPlace+1));
+            emit errorStringSignal(label_StatusBar + '\n');
+            vectorIndicatorBSLMatrix[workPlace] = true;
+
+            emit workPlaceOff(workPlace);
+            emit checkMagnSensorError(workPlace);
+            return;
+        }
+    }
+
+    portStend->clear();
+
+    quint64 count = portStend->write(parcel);
+    emit textBrowser(">> " + portStend->portName() + " " + parcel.toHex());
+
+    //ждать ответа от стенда 10 мсек
+
+    global::pause(100);
+
+    buffer = portStend->readAll();
+    portStend->close();
+
+    if(!buffer.isEmpty()) emit textBrowser("<< " + portStend->portName() + " " + buffer.toHex());
+
+    if(buffer.isEmpty()) {
+        QString label_StatusBar = (tr("Нет ответа стенда. Команда \"Прочитать таймаут импульса питания на датчик резистивный датчик\" ") +
+                                     ". Рабочее место: " + QString::number(workPlace+1));
+        emit errorStringSignal(label_StatusBar + '\n');
+        vectorIndicatorBSLMatrix[workPlace] = true;
+        emit workPlaceOff(workPlace);
+        emit checkMagnSensorError(workPlace);
+
+  //      portStend->close();
+        return;
+    }
+
+    QString answerStr;
+    QByteArray bufTmp = buffer;
+
+    bufTmp.remove(0, 2);
+    bufTmp.remove(bufTmp.size()-1, 1);
+
+    answerStr = QString::fromLocal8Bit(bufTmp);
+
+    if(buffer.at(0)!=receiver && buffer.at(1)!=sender && answerStr!="OK") {
+        QString label_StatusBar = (tr("Неверный ответ стенда. Команда \"Прочитать таймаут импульса питания на датчик резистивный датчик\" ") +
+                                     ". Рабочее место: " + QString::number(workPlace+1));
+        emit errorStringSignal(label_StatusBar + '\n');
+        vectorIndicatorBSLMatrix[workPlace] = true;
+        emit workPlaceOff(workPlace);
+        emit checkMagnSensorError(workPlace);
+ //       portStend->close();
+        return;
+    }
+
+ //  portStend->close();
+
+    emit checkMagnSensorError(workPlace);
+
+   return;
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
