@@ -87,12 +87,20 @@ public:
 
     bool finishIndicatorOn();
     bool finishIndicatorOff();
-    bool errorIndicatoOn();
-    bool errorIndicatoOff();
+    bool errorIndicatorOn();
+    bool errorIndicatorOff();
 
     bool setFreqRotation(QString freq);
     bool imitRotationOn();
     bool imitRotationOff();
+
+//    Выбрать MBUS  EXT=MBUS  OK
+//    Выбрать RS485  EXT=485  OK
+
+    bool selectMbus();
+    bool selectRS();
+//    bool interfaceOn();
+//    bool interfaceOff();
 
    // Прочитать таймаут импульса питания на датчик
     bool readTimeoutMagnSensor();
@@ -251,6 +259,10 @@ private:
             R_Ref1String2, R_Ref2String2,
             R_Ref1String3, R_Ref2String3,
             R_Ref1String4, R_Ref2String4;
+
+    //стенд
+    int pulsesValueCh1;
+    int pulsesValueCh2;
 
 
 

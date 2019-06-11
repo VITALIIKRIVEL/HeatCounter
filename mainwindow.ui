@@ -3834,7 +3834,7 @@
          <string>Вкл</string>
         </property>
        </widget>
-       <widget class="QRadioButton" name="radioButton_21">
+       <widget class="QRadioButton" name="radioButton_progrOff3">
         <property name="geometry">
          <rect>
           <x>60</x>
@@ -3879,7 +3879,7 @@
          <string>Вкл</string>
         </property>
        </widget>
-       <widget class="QRadioButton" name="radioButton_16">
+       <widget class="QRadioButton" name="radioButton_plataOff3">
         <property name="geometry">
          <rect>
           <x>60</x>
@@ -3913,21 +3913,21 @@
        </property>
        <layout class="QGridLayout" name="gridLayout_21">
         <item row="0" column="1">
-         <widget class="QRadioButton" name="radioButton_17">
+         <widget class="QRadioButton" name="radioButton_RS3">
           <property name="text">
            <string>RS485</string>
           </property>
          </widget>
         </item>
         <item row="0" column="0">
-         <widget class="QRadioButton" name="radioButton_18">
+         <widget class="QRadioButton" name="radioButton_Mbus3">
           <property name="text">
            <string>MBus</string>
           </property>
          </widget>
         </item>
         <item row="1" column="0">
-         <widget class="QRadioButton" name="radioButton_19">
+         <widget class="QRadioButton" name="radioButton_InterfaceOff3">
           <property name="text">
            <string>Откл</string>
           </property>
@@ -4053,7 +4053,7 @@
          <string>Вкл</string>
         </property>
        </widget>
-       <widget class="QRadioButton" name="radioButton_23">
+       <widget class="QRadioButton" name="radioButton_progrOff4">
         <property name="geometry">
          <rect>
           <x>60</x>
@@ -4098,7 +4098,7 @@
          <string>Вкл</string>
         </property>
        </widget>
-       <widget class="QRadioButton" name="radioButton_28">
+       <widget class="QRadioButton" name="radioButton_plataOff4">
         <property name="geometry">
          <rect>
           <x>60</x>
@@ -4132,21 +4132,21 @@
        </property>
        <layout class="QGridLayout" name="gridLayout_22">
         <item row="0" column="1">
-         <widget class="QRadioButton" name="radioButton_24">
+         <widget class="QRadioButton" name="radioButton_RS4">
           <property name="text">
            <string>RS485</string>
           </property>
          </widget>
         </item>
         <item row="0" column="0">
-         <widget class="QRadioButton" name="radioButton_25">
+         <widget class="QRadioButton" name="radioButton_Mbus4">
           <property name="text">
            <string>MBus</string>
           </property>
          </widget>
         </item>
         <item row="1" column="0">
-         <widget class="QRadioButton" name="radioButton_26">
+         <widget class="QRadioButton" name="radioButton_InterfaceOff4">
           <property name="text">
            <string>Откл</string>
           </property>
@@ -4558,6 +4558,19 @@
     </property>
     <property name="text">
      <string>Параметры</string>
+    </property>
+   </widget>
+   <widget class="QToolButton" name="toolButton_pulsesReset">
+    <property name="geometry">
+     <rect>
+      <x>1180</x>
+      <y>340</y>
+      <width>141</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Сбросить импульсы</string>
     </property>
    </widget>
   </widget>

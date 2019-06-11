@@ -128,12 +128,6 @@ public:
     QStringList readUserTable();
 
     //стенд
-    void setLabelTok1(QString label);
-    void setLabelTok2(QString label);
-    void setLabelTok3(QString label);
-    void setLabelTok4(QString label);
-
-
 
 protected:
     void closeEvent(QCloseEvent *event);
@@ -213,6 +207,11 @@ signals:
     //Стенд/
 
 public slots:
+
+    void setLabelTok1(QString label);
+    void setLabelTok2(QString label);
+    void setLabelTok3(QString label);
+    void setLabelTok4(QString label);
     
     void slotGetAnswerFromStend(QString answer);
 
@@ -641,6 +640,48 @@ private slots:
     void on_radioButton_progrOn3_clicked(bool checked);
 
     void on_radioButton_progrOn4_clicked(bool checked);
+
+    void on_radioButton_plataOff1_clicked(bool checked);
+
+    void on_radioButton_plataOff2_clicked(bool checked);
+
+    void on_radioButton_plataOff3_clicked(bool checked);
+
+    void on_radioButton_plataOff4_clicked(bool checked);
+
+    void on_radioButton_progrOff1_clicked(bool checked);
+
+    void on_radioButton_progrOff2_clicked(bool checked);
+
+    void on_radioButton_progrOff3_clicked(bool checked);
+
+    void on_radioButton_progrOff4_clicked(bool checked);
+
+    void on_radioButton_Mbus1_clicked(bool checked);
+
+    void on_radioButton_RS1_clicked(bool checked);
+
+    void on_radioButton_InterfaceOff1_clicked(bool checked);
+
+    void on_radioButton_Mbus2_clicked(bool checked);
+
+    void on_radioButton_RS2_clicked(bool checked);
+
+    void on_radioButton_InterfaceOff2_clicked(bool checked);
+
+    void on_radioButton_Mbus3_clicked(bool checked);
+
+    void on_radioButton_RS3_clicked(bool checked);
+
+    void on_radioButton_InterfaceOff3_clicked(bool checked);
+
+    void on_radioButton_Mbus4_clicked(bool checked);
+
+    void on_radioButton_RS4_clicked(bool checked);
+
+    void on_radioButton_InterfaceOff4_clicked(bool checked);
+
+    void on_toolButton_pulsesReset_clicked();
 
 private:
     

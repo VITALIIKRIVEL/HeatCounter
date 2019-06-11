@@ -439,10 +439,10 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ObjectThread3, SIGNAL(checkTokPlaty(int)), this, SLOT(slotCheckTokPlatyError(int)));
     connect(ObjectThread4, SIGNAL(checkTokPlaty(int)), this, SLOT(slotCheckTokPlatyError(int)));
 
-    connect(ObjectThread1, SIGNAL(tok1(QString)), this, SLOT(setLabelTok1));
-    connect(ObjectThread2, SIGNAL(tok2(QString)), this, SLOT(setLabelTok2));
-    connect(ObjectThread3, SIGNAL(tok3(QString)), this, SLOT(setLabelTok3));
-    connect(ObjectThread4, SIGNAL(tok4(QString)), this, SLOT(setLabelTok4));
+    connect(ObjectThread1, SIGNAL(tok1(QString)), this, SLOT(setLabelTok1(QString)));
+    connect(ObjectThread2, SIGNAL(tok2(QString)), this, SLOT(setLabelTok2(QString)));
+    connect(ObjectThread3, SIGNAL(tok3(QString)), this, SLOT(setLabelTok3(QString)));
+    connect(ObjectThread4, SIGNAL(tok4(QString)), this, SLOT(setLabelTok4(QString)));
 
     //tok platy/
 
@@ -40285,4 +40285,133 @@ void MainWindow::on_radioButton_progrOn4_clicked(bool checked)
     else {
         ObjectThread4->programmatorOff();
     }
+}
+
+void MainWindow::on_radioButton_plataOff1_clicked(bool checked)
+{
+    if(checked) ObjectThread1->plataOff();
+}
+
+void MainWindow::on_radioButton_plataOff2_clicked(bool checked)
+{
+    if(checked) ObjectThread2->plataOff();
+}
+
+void MainWindow::on_radioButton_plataOff3_clicked(bool checked)
+{
+    if(checked) ObjectThread3->plataOff();
+}
+
+void MainWindow::on_radioButton_plataOff4_clicked(bool checked)
+{
+    if(checked) ObjectThread4->plataOff();
+}
+
+void MainWindow::on_radioButton_progrOff1_clicked(bool checked)
+{
+    if(checked) ObjectThread1->programmatorOff();
+}
+
+void MainWindow::on_radioButton_progrOff2_clicked(bool checked)
+{
+    if(checked) ObjectThread2->programmatorOff();
+}
+
+void MainWindow::on_radioButton_progrOff3_clicked(bool checked)
+{
+    if(checked) ObjectThread3->programmatorOff();
+}
+
+void MainWindow::on_radioButton_progrOff4_clicked(bool checked)
+{
+    if(checked) ObjectThread4->programmatorOff();
+}
+
+void MainWindow::on_radioButton_Mbus1_clicked(bool checked)
+{
+    if(checked) {
+        ObjectThread1->selectMbus();
+        ObjectThread1->externalInterfaceOn();
+    }
+}
+
+void MainWindow::on_radioButton_RS1_clicked(bool checked)
+{
+    if(checked) {
+        ObjectThread1->selectRS();
+        ObjectThread1->externalInterfaceOn();
+    }
+}
+
+void MainWindow::on_radioButton_InterfaceOff1_clicked(bool checked)
+{
+    if(checked) ObjectThread1->externalInterfaceOff();
+}
+
+void MainWindow::on_radioButton_Mbus2_clicked(bool checked)
+{
+    if(checked) {
+        ObjectThread2->selectMbus();
+        ObjectThread2->externalInterfaceOn();
+    }
+}
+
+void MainWindow::on_radioButton_RS2_clicked(bool checked)
+{
+    if(checked) {
+        ObjectThread2->selectRS();
+        ObjectThread2->externalInterfaceOn();
+    }
+}
+
+void MainWindow::on_radioButton_InterfaceOff2_clicked(bool checked)
+{
+    if(checked) ObjectThread2->externalInterfaceOff();
+}
+
+void MainWindow::on_radioButton_Mbus3_clicked(bool checked)
+{
+    if(checked) {
+        ObjectThread3->selectMbus();
+        ObjectThread3->externalInterfaceOn();
+    }
+}
+
+void MainWindow::on_radioButton_RS3_clicked(bool checked)
+{
+    if(checked) {
+        ObjectThread3->selectRS();
+        ObjectThread3->externalInterfaceOn();
+    }
+}
+
+void MainWindow::on_radioButton_InterfaceOff3_clicked(bool checked)
+{
+    if(checked) ObjectThread3->externalInterfaceOff();
+}
+
+void MainWindow::on_radioButton_Mbus4_clicked(bool checked)
+{
+    if(checked) {
+        ObjectThread4->selectMbus();
+        ObjectThread4->externalInterfaceOn();
+    }
+}
+
+void MainWindow::on_radioButton_RS4_clicked(bool checked)
+{
+    if(checked) {
+        ObjectThread4->selectRS();
+        ObjectThread4->externalInterfaceOn();
+    }
+}
+
+void MainWindow::on_radioButton_InterfaceOff4_clicked(bool checked)
+{
+    if(checked) ObjectThread4->externalInterfaceOff();
+}
+
+void MainWindow::on_toolButton_pulsesReset_clicked()
+{
+    ObjectThread1->pulsesReset();
 }

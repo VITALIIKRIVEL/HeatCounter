@@ -7031,6 +7031,9 @@ void ObjectThread::slotPulsesOutputHeat(QSerialPort *port1, QSerialPort *port2,
                                         QSerialPort *port3, QSerialPort *port4)
 {
 
+    //сбросить счётчик импульсов стенда
+    if(!pulsesReset()) return;
+
     qDebug()<<"ObjectThread::slotWriteParams() "<<"workPlace "<<QString::number(workPlace);
 
         QSerialPort *portTmp;
@@ -7907,8 +7910,7 @@ void ObjectThread::slotPulsesOutputHeat(QSerialPort *port1, QSerialPort *port2,
                 }
                 else {
                         if((readVector[i] != writeVector[i]) && (i != (writeVector.size() - 2)) && (i != (writeVector.size() - 1)) ) {
-    //                       QMessageBox::information(this, "", "Параметр записан некорректно: запись " + writeVector[i].toHex() +
-    //                                             " " + "чтение " + readVector[i].toHex());
+
                            label_StatusBar = ("Параметр записан некорректно: запись " + writeVector[i].toHex() +
                                                         " " + "чтение " + readVector[i].toHex() +
                                                         ". Рабочее место: " + QString::number(workPlaceNumber+1));
@@ -7918,19 +7920,39 @@ void ObjectThread::slotPulsesOutputHeat(QSerialPort *port1, QSerialPort *port2,
                            emit workPlaceOff(currentIndicatorNumber);
                            emit checkPulsesOutputHeat(currentIndicatorNumber);
 
-         //                  ui->label_pulsesOutputHeat->setVisible(true);
                            return;
                         }
                 }
             }
 
 
-//            ui->label_pulsesOutputHeat->setStyleSheet(QString("color: green").arg(color.name()));
-//            ui->label_pulsesOutputHeat->setText("V");
-      //      ui->label_pulsesOutputHeat->setVisible(true);
+
+          //через 3 сек прочитываем кол-во импульсов из стенда
+            global::pause(3000);
+
+            readPulsesChannel1();
+            readPulsesChannel2();
+
+
+            if(pulsesValueCh1 == 0 || pulsesValueCh2 == 0) {
+
+                //импульсы не работают
+
+                label_StatusBar = ("Импульсные выходы не работают. Рабочее место: " + QString::number(workPlaceNumber+1));
+                emit errorStringSignal(label_StatusBar + '\n');
+                vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+
+                emit workPlaceOff(currentIndicatorNumber);
+                emit checkPulsesOutputHeat(currentIndicatorNumber);
+
+                return;
+
+            }
 
 
           emit checkPulsesOutputHeat(currentIndicatorNumber);
+
+
 
 
 }
@@ -12577,6 +12599,11 @@ void ObjectThread::bslProgramming()//аргумент не использует�
 {
     if(!isWorkPlaceUse.at(workPlace)) return;
 
+    if(!errorIndicatorOff()) return;//отключить индикатор "авария"
+
+    if(!programmatorOn()) return;
+    if(!plataOn()) return;
+
     processData.clear();
  //   ui->textBrowser->clear();
 
@@ -12625,6 +12652,17 @@ void ObjectThread::slotProcessReadyRead()
     qDebug()<<"processData"<<processData;
 
     if(processData.isEmpty()) {
+        QString label_StatusBar = tr("Программирование BSL неудачно . Рабочее место: ") + QString::number(workPlace+1);
+        emit errorStringSignal(label_StatusBar + '\n');
+        vectorIndicatorBSLMatrix[workPlace] = true;
+
+        emit workPlaceOff(workPlace);
+        emit checkBslError(workPlace);
+
+        programmatorOff();
+        plataOff();
+        errorIndicatorOn();//включить индикатор АВАРИЯ
+
         return;
     }
 
@@ -12661,6 +12699,9 @@ void ObjectThread::slotProcessReadyRead()
 
         isBslOk = true;//программирование удачно
 
+        programmatorOff();
+        plataOff();
+
         processData.clear();
 
     }
@@ -12673,6 +12714,11 @@ void ObjectThread::slotProcessReadyRead()
         emit workPlaceOff(workPlace);
         emit checkBslError(workPlace);
 
+        programmatorOff();
+        plataOff();
+        errorIndicatorOn();//включить индикатор АВАРИЯ
+
+        return;
     }
 
 
@@ -12716,50 +12762,297 @@ void ObjectThread::slotGetAnsFromStend(QString answer)
 bool ObjectThread::readPulsesChannel1()
 {
    //Чтение значения счётчика импульсов, канал 1	CNT1?	CNT1=xxx
-    QByteArray buffer;
-    QString bufferStr;
+    pulsesValueCh1 = 0;
 
-    portStend->clear();
+    QByteArray buffer;
+
+//    кто и кому:
+//    ПК=0x01	стенд1=0x11	стенд2=0x22	стенд3=0x33	стенд4=0x44
+
+//    1 байт	2 байт	3 байт	4 байт	… байт	… байт	(N-1) байт	N байт
+//    кто	    кому	команда					                    Конец сообщения
+//    BIN	    BIN	    STRING					                    0x00
+
+    if(!isWorkPlaceUse.at(workPlace)) return false;
+
+    QString command = "CNT1?";
+
+    QByteArray parcel;
+
+    quint8 sender = 0x01;
+    quint8 receiver;
+    quint8 stopByte = 0x00;
+
+    if(workPlace == 0) receiver = 0x11;
+    if(workPlace == 1) receiver = 0x22;
+    if(workPlace == 2) receiver = 0x33;
+    if(workPlace == 3) receiver = 0x44;
+
+    QByteArray stringToByteArray;
+    stringToByteArray = command.toLocal8Bit();
+
+    //формирование посылки
+    parcel.append(sender);
+    parcel.append(receiver);
+    for(int m=0; m<stringToByteArray.size(); m++) {
+        parcel.append(stringToByteArray.at(m));
+    }
+    parcel.append(stopByte);
+
+    qDebug()<<"parcel"<<parcel.toHex();
 
     if(!portStend->isOpen()) {
+
         if(!portStend->open(QIODevice::ReadWrite)) {
-//                  QMessageBox::information(this, "", "Не удалось открыть порт УСО-2. Рабочее место: " + QString::number(workPlaceNumber + 1));
-            portStend->close();
-//            label_StatusBar = ("Не удалось открыть порт УСО-2. Рабочее место: " +
-//                                         QString::number(workPlaceNumber + 1));
-//            emit errorStringSignal(label_StatusBar + '\n');
-//            vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
 
-//            emit workPlaceOff(currentIndicatorNumber);
-//            emit checkWritingError(currentIndicatorNumber);
-
-//                vectorIsErrorOccured[workPlaceNumber] = true;
+            QString label_StatusBar = (tr("Не удалось открыть порт стенда") +
+                                         ". Рабочее место: " + QString::number(workPlace+1));
+            emit errorStringSignal(label_StatusBar + '\n');
             return false;
         }
     }
 
-    sendCommandToStend("CNT1?", workPlace);
+    portStend->clear();
 
-    global::pause(10);
+    quint64 count = portStend->write(parcel);
+    emit textBrowser(">> " + portStend->portName() + " " + parcel.toHex());
+
+    //ждать ответа от стенда 10 мсек
+
+    global::pause(100);
 
     buffer = portStend->readAll();
-    bufferStr = QString::fromLocal8Bit(buffer);
+    portStend->close();
 
-    if(bufferStr.left(4) != "CNT1") {//ошибка
+    if(!buffer.isEmpty()) emit textBrowser("<< " + portStend->portName() + " " + buffer.toHex());
+
+    if(buffer.isEmpty()) {
+        QString label_StatusBar = (tr("Нет ответа стенда. Команда \"Чтение значения счётчика импульсов, канал 1\" ") +
+                                     ". Рабочее место: " + QString::number(workPlace+1));
+        emit errorStringSignal(label_StatusBar + '\n');
+  //      portStend->close();
         return false;
     }
 
+    QString answerStr;
+    QByteArray bufTmp = buffer;
+
+    bufTmp.remove(0, 2);
+    bufTmp.remove(bufTmp.size()-1, 1);
+
+    answerStr = QString::fromLocal8Bit(bufTmp);
+
+    pulsesValueCh1 = answerStr.right(3).toInt();
+
+    if(buffer.at(0)!=receiver && buffer.at(1)!=sender /*&& answerStr!="OK"*/) {
+        QString label_StatusBar = (tr("Неверный ответ стенда. Команда \"Чтение значения счётчика импульсов, канал 1\" ") +
+                                     ". Рабочее место: " + QString::number(workPlace+1));
+        emit errorStringSignal(label_StatusBar + '\n');
+ //       portStend->close();
+        return false;
+    }
+
+ //  portStend->close();
+
+   return true;
 
 }
 
 bool ObjectThread::readPulsesChannel2()
 {
    //Чтение значения счётчика импульсов, канал 2	CNT2?	CNT2=xxx
+
+    pulsesValueCh2 = 0;
+
+    QByteArray buffer;
+
+//    кто и кому:
+//    ПК=0x01	стенд1=0x11	стенд2=0x22	стенд3=0x33	стенд4=0x44
+
+//    1 байт	2 байт	3 байт	4 байт	… байт	… байт	(N-1) байт	N байт
+//    кто	    кому	команда					                    Конец сообщения
+//    BIN	    BIN	    STRING					                    0x00
+
+    if(!isWorkPlaceUse.at(workPlace)) return false;
+
+    QString command = "CNT2?";
+
+    QByteArray parcel;
+
+    quint8 sender = 0x01;
+    quint8 receiver;
+    quint8 stopByte = 0x00;
+
+    if(workPlace == 0) receiver = 0x11;
+    if(workPlace == 1) receiver = 0x22;
+    if(workPlace == 2) receiver = 0x33;
+    if(workPlace == 3) receiver = 0x44;
+
+    QByteArray stringToByteArray;
+    stringToByteArray = command.toLocal8Bit();
+
+    //формирование посылки
+    parcel.append(sender);
+    parcel.append(receiver);
+    for(int m=0; m<stringToByteArray.size(); m++) {
+        parcel.append(stringToByteArray.at(m));
+    }
+    parcel.append(stopByte);
+
+    qDebug()<<"parcel"<<parcel.toHex();
+
+    if(!portStend->isOpen()) {
+
+        if(!portStend->open(QIODevice::ReadWrite)) {
+
+            QString label_StatusBar = (tr("Не удалось открыть порт стенда") +
+                                         ". Рабочее место: " + QString::number(workPlace+1));
+            emit errorStringSignal(label_StatusBar + '\n');
+            return false;
+        }
+    }
+
+    portStend->clear();
+
+    quint64 count = portStend->write(parcel);
+    emit textBrowser(">> " + portStend->portName() + " " + parcel.toHex());
+
+    //ждать ответа от стенда 10 мсек
+
+    global::pause(100);
+
+    buffer = portStend->readAll();
+    portStend->close();
+
+    if(!buffer.isEmpty()) emit textBrowser("<< " + portStend->portName() + " " + buffer.toHex());
+
+    if(buffer.isEmpty()) {
+        QString label_StatusBar = (tr("Нет ответа стенда. Команда \"Чтение значения счётчика импульсов, канал 2\" ") +
+                                     ". Рабочее место: " + QString::number(workPlace+1));
+        emit errorStringSignal(label_StatusBar + '\n');
+  //      portStend->close();
+        return false;
+    }
+
+    QString answerStr;
+    QByteArray bufTmp = buffer;
+
+    bufTmp.remove(0, 2);
+    bufTmp.remove(bufTmp.size()-1, 1);
+
+    answerStr = QString::fromLocal8Bit(bufTmp);
+
+    pulsesValueCh2 = answerStr.right(3).toInt();
+
+    if(buffer.at(0)!=receiver && buffer.at(1)!=sender /*&& answerStr!="OK"*/) {
+        QString label_StatusBar = (tr("Неверный ответ стенда. Команда \"Чтение значения счётчика импульсов, канал 2\" ") +
+                                     ". Рабочее место: " + QString::number(workPlace+1));
+        emit errorStringSignal(label_StatusBar + '\n');
+ //       portStend->close();
+        return false;
+    }
+
+ //  portStend->close();
+
+   return true;
 }
 
 bool ObjectThread::pulsesReset()
 {
    //Сбросить счётчик импульсов, оба канала	CNTCLR	ОК
+
+    pulsesValueCh1 = 0;
+    pulsesValueCh2 = 0;
+
+    QByteArray buffer;
+
+//    кто и кому:
+//    ПК=0x01	стенд1=0x11	стенд2=0x22	стенд3=0x33	стенд4=0x44
+
+//    1 байт	2 байт	3 байт	4 байт	… байт	… байт	(N-1) байт	N байт
+//    кто	    кому	команда					                    Конец сообщения
+//    BIN	    BIN	    STRING					                    0x00
+
+    if(!isWorkPlaceUse.at(workPlace)) return false;
+
+    QString command = "CNTCLR";
+
+    QByteArray parcel;
+
+    quint8 sender = 0x01;
+    quint8 receiver;
+    quint8 stopByte = 0x00;
+
+    if(workPlace == 0) receiver = 0x11;
+    if(workPlace == 1) receiver = 0x22;
+    if(workPlace == 2) receiver = 0x33;
+    if(workPlace == 3) receiver = 0x44;
+
+    QByteArray stringToByteArray;
+    stringToByteArray = command.toLocal8Bit();
+
+    //формирование посылки
+    parcel.append(sender);
+    parcel.append(receiver);
+    for(int m=0; m<stringToByteArray.size(); m++) {
+        parcel.append(stringToByteArray.at(m));
+    }
+    parcel.append(stopByte);
+
+    qDebug()<<"parcel"<<parcel.toHex();
+
+    if(!portStend->isOpen()) {
+
+        if(!portStend->open(QIODevice::ReadWrite)) {
+
+            QString label_StatusBar = (tr("Не удалось открыть порт стенда") +
+                                         ". Рабочее место: " + QString::number(workPlace+1));
+            emit errorStringSignal(label_StatusBar + '\n');
+            return false;
+        }
+    }
+
+    portStend->clear();
+
+    quint64 count = portStend->write(parcel);
+    emit textBrowser(">> " + portStend->portName() + " " + parcel.toHex());
+
+    //ждать ответа от стенда 10 мсек
+
+    global::pause(100);
+
+    buffer = portStend->readAll();
+    portStend->close();
+
+    if(!buffer.isEmpty()) emit textBrowser("<< " + portStend->portName() + " " + buffer.toHex());
+
+    if(buffer.isEmpty()) {
+        QString label_StatusBar = (tr("Нет ответа стенда. Команда \"Сбросить счётчик импульсов\" ") +
+                                     ". Рабочее место: " + QString::number(workPlace+1));
+        emit errorStringSignal(label_StatusBar + '\n');
+  //      portStend->close();
+        return false;
+    }
+
+    QString answerStr;
+    QByteArray bufTmp = buffer;
+
+    bufTmp.remove(0, 2);
+    bufTmp.remove(bufTmp.size()-1, 1);
+
+    answerStr = QString::fromLocal8Bit(bufTmp);
+
+    if(buffer.at(0)!=receiver && buffer.at(1)!=sender && answerStr!="OK") {
+        QString label_StatusBar = (tr("Неверный ответ стенда. Команда \"Сбросить счётчик импульсов\" ") +
+                                     ". Рабочее место: " + QString::number(workPlace+1));
+        emit errorStringSignal(label_StatusBar + '\n');
+ //       portStend->close();
+        return false;
+    }
+
+ //  portStend->close();
+
+   return true;
 }
 
 //------------------Проверка импульсных входов--------------------
@@ -13206,6 +13499,12 @@ bool ObjectThread::plataOff()
 
 bool ObjectThread::readTok()
 {
+    //подключить плату
+    if(!plataOn()) {
+
+        errorIndicatorOn();
+        return false;
+    }
 
     QByteArray buffer;
 
@@ -13305,12 +13604,14 @@ bool ObjectThread::readTok()
             return false;
         }
 
-       int tokPlaty = answerStr.remove(0,4).toInt();
+       QString answerStrValue = answerStr.remove(0,4);
 
-       if(workPlace == 0) emit tok1(answerStr.remove(0,4));
-       if(workPlace == 1) emit tok2(answerStr.remove(0,4));
-       if(workPlace == 2) emit tok3(answerStr.remove(0,4));
-       if(workPlace == 3) emit tok4(answerStr.remove(0,4));
+       int tokPlaty = answerStrValue.toInt();
+
+       if(workPlace == 0) emit tok1(answerStrValue);
+       if(workPlace == 1) emit tok2(answerStrValue);
+       if(workPlace == 2) emit tok3(answerStrValue);
+       if(workPlace == 3) emit tok4(answerStrValue);
 
        if(1) {
            //проверяем ток на допустимое значение
@@ -13559,14 +13860,216 @@ bool ObjectThread::finishIndicatorOff()
    //Отключить индикатор ЗАВЕРШЕНО	FIN=0	OK
 }
 
-bool ObjectThread::errorIndicatoOn()
+bool ObjectThread::errorIndicatorOn()
 {
    //Включить индикатор АВАРИЯ	ALR=1	OK
+
+    QByteArray buffer;
+
+//    кто и кому:
+//    ПК=0x01	стенд1=0x11	стенд2=0x22	стенд3=0x33	стенд4=0x44
+
+//    1 байт	2 байт	3 байт	4 байт	… байт	… байт	(N-1) байт	N байт
+//    кто	    кому	команда					                    Конец сообщения
+//    BIN	    BIN	    STRING					                    0x00
+
+    if(!isWorkPlaceUse.at(workPlace)) return false;
+
+    QString command = "ALR=1";
+
+    QByteArray parcel;
+
+    quint8 sender = 0x01;
+    quint8 receiver;
+    quint8 stopByte = 0x00;
+
+    if(workPlace == 0) receiver = 0x11;
+    if(workPlace == 1) receiver = 0x22;
+    if(workPlace == 2) receiver = 0x33;
+    if(workPlace == 3) receiver = 0x44;
+
+    QByteArray stringToByteArray;
+    stringToByteArray = command.toLocal8Bit();
+
+    //формирование посылки
+    parcel.append(sender);
+    parcel.append(receiver);
+    for(int m=0; m<stringToByteArray.size(); m++) {
+        parcel.append(stringToByteArray.at(m));
+    }
+    parcel.append(stopByte);
+
+    qDebug()<<"parcel"<<parcel.toHex();
+
+    if(!portStend->isOpen()) {
+
+        if(!portStend->open(QIODevice::ReadWrite)) {
+
+            QString label_StatusBar = (tr("Не удалось открыть порт стенда") +
+                                         ". Рабочее место: " + QString::number(workPlace+1));
+            emit errorStringSignal(label_StatusBar + '\n');
+//            vectorIndicatorBSLMatrix[workPlace] = true;
+
+//            emit workPlaceOff(workPlace);
+//            emit checkRashodomerError(workPlace);
+            return false;
+        }
+    }
+
+    portStend->clear();
+
+    quint64 count = portStend->write(parcel);
+    emit textBrowser(">> " + portStend->portName() + " " + parcel.toHex());
+
+    //ждать ответа от стенда 10 мсек
+
+    global::pause(100);
+
+    buffer = portStend->readAll();
+    portStend->close();
+
+    if(!buffer.isEmpty()) emit textBrowser("<< " + portStend->portName() + " " + buffer.toHex());
+
+    if(buffer.isEmpty()) {
+        QString label_StatusBar = (tr("Нет ответа стенда. Команда \"Включить индикатор АВАРИЯ\" ") +
+                                     ". Рабочее место: " + QString::number(workPlace+1));
+        emit errorStringSignal(label_StatusBar + '\n');
+//        vectorIndicatorBSLMatrix[workPlace] = true;
+//        emit workPlaceOff(workPlace);
+//        emit checkRashodomerError(workPlace);
+
+  //      portStend->close();
+        return false;
+    }
+
+    QString answerStr;
+    QByteArray bufTmp = buffer;
+
+    bufTmp.remove(0, 2);
+    bufTmp.remove(bufTmp.size()-1, 1);
+
+    answerStr = QString::fromLocal8Bit(bufTmp);
+
+    if(buffer.at(0)!=receiver && buffer.at(1)!=sender && answerStr!="OK") {
+        QString label_StatusBar = (tr("Неверный ответ стенда. Команда \"Включить индикатор АВАРИЯ\" ") +
+                                     ". Рабочее место: " + QString::number(workPlace+1));
+        emit errorStringSignal(label_StatusBar + '\n');
+//        vectorIndicatorBSLMatrix[workPlace] = true;
+//        emit workPlaceOff(workPlace);
+//        emit checkRashodomerError(workPlace);
+ //       portStend->close();
+        return false;
+    }
+
+ //  portStend->close();
+
+   return true;
 }
 
-bool ObjectThread::errorIndicatoOff()
+bool ObjectThread::errorIndicatorOff()
 {
    //Отключить индикатор АВАРИЯ	ALR=0	OK
+
+    QByteArray buffer;
+
+//    кто и кому:
+//    ПК=0x01	стенд1=0x11	стенд2=0x22	стенд3=0x33	стенд4=0x44
+
+//    1 байт	2 байт	3 байт	4 байт	… байт	… байт	(N-1) байт	N байт
+//    кто	    кому	команда					                    Конец сообщения
+//    BIN	    BIN	    STRING					                    0x00
+
+    if(!isWorkPlaceUse.at(workPlace)) return false;
+
+    QString command = "ALR=0";
+
+    QByteArray parcel;
+
+    quint8 sender = 0x01;
+    quint8 receiver;
+    quint8 stopByte = 0x00;
+
+    if(workPlace == 0) receiver = 0x11;
+    if(workPlace == 1) receiver = 0x22;
+    if(workPlace == 2) receiver = 0x33;
+    if(workPlace == 3) receiver = 0x44;
+
+    QByteArray stringToByteArray;
+    stringToByteArray = command.toLocal8Bit();
+
+    //формирование посылки
+    parcel.append(sender);
+    parcel.append(receiver);
+    for(int m=0; m<stringToByteArray.size(); m++) {
+        parcel.append(stringToByteArray.at(m));
+    }
+    parcel.append(stopByte);
+
+    qDebug()<<"parcel"<<parcel.toHex();
+
+    if(!portStend->isOpen()) {
+
+        if(!portStend->open(QIODevice::ReadWrite)) {
+
+            QString label_StatusBar = (tr("Не удалось открыть порт стенда") +
+                                         ". Рабочее место: " + QString::number(workPlace+1));
+            emit errorStringSignal(label_StatusBar + '\n');
+//            vectorIndicatorBSLMatrix[workPlace] = true;
+
+//            emit workPlaceOff(workPlace);
+//            emit checkRashodomerError(workPlace);
+            return false;
+        }
+    }
+
+    portStend->clear();
+
+    quint64 count = portStend->write(parcel);
+    emit textBrowser(">> " + portStend->portName() + " " + parcel.toHex());
+
+    //ждать ответа от стенда 10 мсек
+
+    global::pause(100);
+
+    buffer = portStend->readAll();
+    portStend->close();
+
+    if(!buffer.isEmpty()) emit textBrowser("<< " + portStend->portName() + " " + buffer.toHex());
+
+    if(buffer.isEmpty()) {
+        QString label_StatusBar = (tr("Нет ответа стенда. Команда \"Отключить индикатор АВАРИЯ\" ") +
+                                     ". Рабочее место: " + QString::number(workPlace+1));
+        emit errorStringSignal(label_StatusBar + '\n');
+//        vectorIndicatorBSLMatrix[workPlace] = true;
+//        emit workPlaceOff(workPlace);
+//        emit checkRashodomerError(workPlace);
+
+  //      portStend->close();
+        return false;
+    }
+
+    QString answerStr;
+    QByteArray bufTmp = buffer;
+
+    bufTmp.remove(0, 2);
+    bufTmp.remove(bufTmp.size()-1, 1);
+
+    answerStr = QString::fromLocal8Bit(bufTmp);
+
+    if(buffer.at(0)!=receiver && buffer.at(1)!=sender && answerStr!="OK") {
+        QString label_StatusBar = (tr("Неверный ответ стенда. Команда \"Отключить индикатор АВАРИЯ\" ") +
+                                     ". Рабочее место: " + QString::number(workPlace+1));
+        emit errorStringSignal(label_StatusBar + '\n');
+//        vectorIndicatorBSLMatrix[workPlace] = true;
+//        emit workPlaceOff(workPlace);
+//        emit checkRashodomerError(workPlace);
+ //       portStend->close();
+        return false;
+    }
+
+ //  portStend->close();
+
+   return true;
 }
 
 //------------------Вход датчика вращения--------------------------
@@ -13893,7 +14396,218 @@ bool ObjectThread::readTimeoutMagnSensor()
 {
   //  Прочитать таймаут импульса питания на резистивный датчик	TIM?	TIM=xxxx
 
+}
 
+bool ObjectThread::selectMbus()
+{
+    //    Выбрать MBUS  EXT=MBUS  OK
+
+    QByteArray buffer;
+
+//    кто и кому:
+//    ПК=0x01	стенд1=0x11	стенд2=0x22	стенд3=0x33	стенд4=0x44
+
+//    1 байт	2 байт	3 байт	4 байт	… байт	… байт	(N-1) байт	N байт
+//    кто	    кому	команда					                    Конец сообщения
+//    BIN	    BIN	    STRING					                    0x00
+
+    if(!isWorkPlaceUse.at(workPlace)) return false;
+
+    QString command = "EXT=MBUS";
+
+    QByteArray parcel;
+
+    quint8 sender = 0x01;
+    quint8 receiver;
+    quint8 stopByte = 0x00;
+
+    if(workPlace == 0) receiver = 0x11;
+    if(workPlace == 1) receiver = 0x22;
+    if(workPlace == 2) receiver = 0x33;
+    if(workPlace == 3) receiver = 0x44;
+
+    QByteArray stringToByteArray;
+    stringToByteArray = command.toLocal8Bit();
+
+    //формирование посылки
+    parcel.append(sender);
+    parcel.append(receiver);
+    for(int m=0; m<stringToByteArray.size(); m++) {
+        parcel.append(stringToByteArray.at(m));
+    }
+    parcel.append(stopByte);
+
+    qDebug()<<"parcel"<<parcel.toHex();
+
+    if(!portStend->isOpen()) {
+
+        if(!portStend->open(QIODevice::ReadWrite)) {
+
+            QString label_StatusBar = (tr("Не удалось открыть порт стенда") +
+                                         ". Рабочее место: " + QString::number(workPlace+1));
+            emit errorStringSignal(label_StatusBar + '\n');
+//            vectorIndicatorBSLMatrix[workPlace] = true;
+
+//            emit workPlaceOff(workPlace);
+//            emit checkRashodomerError(workPlace);
+            return false;
+        }
+    }
+
+    portStend->clear();
+
+    quint64 count = portStend->write(parcel);
+    emit textBrowser(">> " + portStend->portName() + " " + parcel.toHex());
+
+    //ждать ответа от стенда 10 мсек
+
+    global::pause(100);
+
+    buffer = portStend->readAll();
+    portStend->close();
+
+    if(!buffer.isEmpty()) emit textBrowser("<< " + portStend->portName() + " " + buffer.toHex());
+
+    if(buffer.isEmpty()) {
+        QString label_StatusBar = (tr("Нет ответа стенда. Команда \"Выбрать MBUS\" ") +
+                                     ". Рабочее место: " + QString::number(workPlace+1));
+        emit errorStringSignal(label_StatusBar + '\n');
+//        vectorIndicatorBSLMatrix[workPlace] = true;
+//        emit workPlaceOff(workPlace);
+//        emit checkRashodomerError(workPlace);
+
+  //      portStend->close();
+        return false;
+    }
+
+    QString answerStr;
+    QByteArray bufTmp = buffer;
+
+    bufTmp.remove(0, 2);
+    bufTmp.remove(bufTmp.size()-1, 1);
+
+    answerStr = QString::fromLocal8Bit(bufTmp);
+
+    if(buffer.at(0)!=receiver && buffer.at(1)!=sender && answerStr!="OK") {
+        QString label_StatusBar = (tr("Неверный ответ стенда. Команда \"Выбрать MBUS\" ") +
+                                     ". Рабочее место: " + QString::number(workPlace+1));
+        emit errorStringSignal(label_StatusBar + '\n');
+//        vectorIndicatorBSLMatrix[workPlace] = true;
+//        emit workPlaceOff(workPlace);
+//        emit checkRashodomerError(workPlace);
+ //       portStend->close();
+        return false;
+    }
+
+ //  portStend->close();
+
+   return true;
+}
+
+bool ObjectThread::selectRS()
+{
+    //    Выбрать RS485  EXT=485  OK
+
+    QByteArray buffer;
+
+//    кто и кому:
+//    ПК=0x01	стенд1=0x11	стенд2=0x22	стенд3=0x33	стенд4=0x44
+
+//    1 байт	2 байт	3 байт	4 байт	… байт	… байт	(N-1) байт	N байт
+//    кто	    кому	команда					                    Конец сообщения
+//    BIN	    BIN	    STRING					                    0x00
+
+    if(!isWorkPlaceUse.at(workPlace)) return false;
+
+    QString command = "EXT=485";
+
+    QByteArray parcel;
+
+    quint8 sender = 0x01;
+    quint8 receiver;
+    quint8 stopByte = 0x00;
+
+    if(workPlace == 0) receiver = 0x11;
+    if(workPlace == 1) receiver = 0x22;
+    if(workPlace == 2) receiver = 0x33;
+    if(workPlace == 3) receiver = 0x44;
+
+    QByteArray stringToByteArray;
+    stringToByteArray = command.toLocal8Bit();
+
+    //формирование посылки
+    parcel.append(sender);
+    parcel.append(receiver);
+    for(int m=0; m<stringToByteArray.size(); m++) {
+        parcel.append(stringToByteArray.at(m));
+    }
+    parcel.append(stopByte);
+
+    qDebug()<<"parcel"<<parcel.toHex();
+
+    if(!portStend->isOpen()) {
+
+        if(!portStend->open(QIODevice::ReadWrite)) {
+
+            QString label_StatusBar = (tr("Не удалось открыть порт стенда") +
+                                         ". Рабочее место: " + QString::number(workPlace+1));
+            emit errorStringSignal(label_StatusBar + '\n');
+//            vectorIndicatorBSLMatrix[workPlace] = true;
+
+//            emit workPlaceOff(workPlace);
+//            emit checkRashodomerError(workPlace);
+            return false;
+        }
+    }
+
+    portStend->clear();
+
+    quint64 count = portStend->write(parcel);
+    emit textBrowser(">> " + portStend->portName() + " " + parcel.toHex());
+
+    //ждать ответа от стенда 10 мсек
+
+    global::pause(100);
+
+    buffer = portStend->readAll();
+    portStend->close();
+
+    if(!buffer.isEmpty()) emit textBrowser("<< " + portStend->portName() + " " + buffer.toHex());
+
+    if(buffer.isEmpty()) {
+        QString label_StatusBar = (tr("Нет ответа стенда. Команда \"Выбрать RS485\" ") +
+                                     ". Рабочее место: " + QString::number(workPlace+1));
+        emit errorStringSignal(label_StatusBar + '\n');
+//        vectorIndicatorBSLMatrix[workPlace] = true;
+//        emit workPlaceOff(workPlace);
+//        emit checkRashodomerError(workPlace);
+
+  //      portStend->close();
+        return false;
+    }
+
+    QString answerStr;
+    QByteArray bufTmp = buffer;
+
+    bufTmp.remove(0, 2);
+    bufTmp.remove(bufTmp.size()-1, 1);
+
+    answerStr = QString::fromLocal8Bit(bufTmp);
+
+    if(buffer.at(0)!=receiver && buffer.at(1)!=sender && answerStr!="OK") {
+        QString label_StatusBar = (tr("Неверный ответ стенда. Команда \"Выбрать RS485\" ") +
+                                     ". Рабочее место: " + QString::number(workPlace+1));
+        emit errorStringSignal(label_StatusBar + '\n');
+//        vectorIndicatorBSLMatrix[workPlace] = true;
+//        emit workPlaceOff(workPlace);
+//        emit checkRashodomerError(workPlace);
+ //       portStend->close();
+        return false;
+    }
+
+ //  portStend->close();
+
+   return true;
 }
 
 //--------------------Служебные------------------------------------
@@ -14673,15 +15387,7 @@ void ObjectThread::slotRashodomer(QSerialPort *port1, QSerialPort *port2,
 
            quint8 flowNomInt = buffer[22];
            float flowNomFloat = (float)flowNomInt/10;
-//                      if(flowNomList.contains(QString::number(flowNomFloat))) {
-//                          ui->comboBox_FlowNom->setCurrentText(QString::number(flowNomFloat));
-//                      }
-//                      else {
-//         //                 QMessageBox::information(this, "", tr("Недопустимое значение: Номинальный расход"));
-//                      }
 
-//                      qDebug()<<"flowNomArray.toHex() "<<flowNomArray.toHex();
-//                      paramsVector.append(flowNomArray);
            mapRead["flowNomByteArray"] = flowNomArray;
 
 
@@ -14690,13 +15396,10 @@ void ObjectThread::slotRashodomer(QSerialPort *port1, QSerialPort *port2,
         }
         else {
             if(i==2) {
-//                     QMessageBox::information(this, "", tr("Ошибка данных") + ". Рабочее место: " + QString::number(workPlaceNumber + 1));
                portTmp->close();
                label_StatusBar = (tr("Ошибка данных") +
                                             ". Рабочее место: " + QString::number(workPlaceNumber+1));
                emit errorStringSignal(label_StatusBar + '\n');
-//                          ui->label_writeParams->setVisible(true);
-//                          vectorIsErrorOccured[workPlaceNumber] = true;
                vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
 
                emit workPlaceOff(currentIndicatorNumber);
@@ -14710,9 +15413,6 @@ void ObjectThread::slotRashodomer(QSerialPort *port1, QSerialPort *port2,
 
 
  }
-
-//    //
-//    //
 
 
     if(!imitRotationOff()) return;
