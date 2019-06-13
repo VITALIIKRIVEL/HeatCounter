@@ -2825,6 +2825,7 @@ void MainWindow::on_toolButton_programmingBSL_clicked()
     isBslFinished4 = false;
 
     isBslEnded = false;
+    isCommandsEnded = false;
 
     if(ui->checkBox_workPlace1->isChecked()) vectorIsWorkPlaceUse[0] = true;
     if(ui->checkBox_workPlace2->isChecked()) vectorIsWorkPlaceUse[1] = true;

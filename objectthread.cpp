@@ -14709,7 +14709,7 @@ void ObjectThread::slotRealClockCalibration(QSerialPort *port1, QSerialPort *por
         quint16 correctionCoeff = (quint16)round(abs(983040*(1 - 1953.125/periodBetweenPulses)));
         qDebug()<<"correctionCoeff "<<correctionCoeff;
 
-        correctionCoeff = 240;//заглушка
+    //    correctionCoeff = 240;//заглушка
 
         if(correctionCoeff > 240) {
   //          QMessageBox::information(this, "", tr("Недопустимое значение коэффициента коррекции ") + QString::number(correctionCoeff));
@@ -15073,6 +15073,8 @@ void ObjectThread::slotRealClockCalibration(QSerialPort *port1, QSerialPort *por
            vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
            emit workPlaceOff(currentIndicatorNumber);
            emit checkTimeCalError(currentIndicatorNumber);
+
+           return;
       }
       else {
 //          ui->label_StatusBar->setText("Калибровка генератора часов: успешно");
@@ -15080,6 +15082,8 @@ void ObjectThread::slotRealClockCalibration(QSerialPort *port1, QSerialPort *por
 //          ui->label_realClockCalibration->setText("V");
 //          ui->label_realClockCalibration->setVisible(true);
       }
+
+      emit checkTimeCalError(currentIndicatorNumber);
 
 
 }
