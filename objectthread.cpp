@@ -11147,6 +11147,12 @@ void ObjectThread::slotWireInterfaceChecking(QSerialPort *port1, QSerialPort *po
 
     qDebug()<<"ObjectThread::slotWireInterfaceChecking() "<<"workPlace "<<QString::number(workPlace);
 
+    //подключить интерфейс
+    //тип интерфейса определяется исполнением теплосчётчика, указанным в файле исполнений
+
+    if(selectMbus()) return;
+    if(selectRS()) return;
+    if(externalInterfaceOn()) return;
 
         QSerialPort *portTmp;
         QSerialPort *portDigitalInterfaceChecking = portDigitalInterface;
@@ -11828,6 +11834,8 @@ void ObjectThread::slotWireInterfaceChecking(QSerialPort *port1, QSerialPort *po
             setPrimeAddressDefault(workPlaceNumber, port1, port2, port3, port4);
 
             emit checkWireInterfaceChecking(currentIndicatorNumber);
+
+            externalInterfaceOff();
 
             portDigitalInterfaceChecking->close();
 

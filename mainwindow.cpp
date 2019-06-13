@@ -1564,15 +1564,19 @@ void MainWindow::checkWireInterfaceChecking(int currentIndicator)
     switch (currentIndicator) {
     case 0:
         isWireInterfaceChecking1 = true;
+        ObjectThread1->externalInterfaceOff();
         break;
     case 1:
         isWireInterfaceChecking2 = true;
+        ObjectThread2->externalInterfaceOff();
         break;
     case 2:
         isWireInterfaceChecking3 = true;
+        ObjectThread3->externalInterfaceOff();
         break;
     case 3:
         isWireInterfaceChecking4 = true;
+        ObjectThread4->externalInterfaceOff();
         break;
     default:
         break;
@@ -36082,6 +36086,29 @@ void MainWindow::on_toolButton_executeCommands_clicked()
       for(int l=0; l<4; l++) {
 
         if(vectorIsWorkPlaceUse.at(l)) {
+            //выбрать интерфейс и подключить к плате
+            if(l==0) {
+                if(!ObjectThread1->selectMbus()) return;
+                if(!ObjectThread1->selectRS()) return;
+                if(!ObjectThread1->externalInterfaceOn()) return;
+            }
+            if(l==1) {
+                if(!ObjectThread2->selectMbus()) return;
+                if(!ObjectThread2->selectRS()) return;
+                if(!ObjectThread2->externalInterfaceOn()) return;
+            }
+            if(l==2) {
+                if(!ObjectThread3->selectMbus()) return;
+                if(!ObjectThread3->selectRS()) return;
+                if(!ObjectThread3->externalInterfaceOn()) return;
+            }
+            if(l==3) {
+                if(!ObjectThread4->selectMbus()) return;
+                if(!ObjectThread4->selectRS()) return;
+                if(!ObjectThread4->externalInterfaceOn()) return;
+            }
+            //выбрать интерфейс и подключить к плате/
+
             emit signalWireInterfaceChecking(l);
 
         }
@@ -36552,6 +36579,11 @@ void MainWindow::on_toolButton_executeCommands_clicked()
 
 
     repeatParameter = 0;
+
+    if(ui->checkBox_workPlace1->isChecked()) ObjectThread1->plataOff();
+    if(ui->checkBox_workPlace2->isChecked()) ObjectThread2->plataOff();
+    if(ui->checkBox_workPlace3->isChecked()) ObjectThread3->plataOff();
+    if(ui->checkBox_workPlace4->isChecked()) ObjectThread4->plataOff();
 
     //изменение порядка табуляции/
 
