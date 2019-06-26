@@ -143,6 +143,9 @@ signals:
     tok3(QString str);
     tok4(QString str);
 
+    startPrg();
+    startCal();
+
     //стенд/
 
 public slots:

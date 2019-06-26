@@ -4401,19 +4401,6 @@
      <string>&lt;---&gt;</string>
     </property>
    </widget>
-   <widget class="QLabel" name="label_106">
-    <property name="geometry">
-     <rect>
-      <x>1050</x>
-      <y>140</y>
-      <width>171</width>
-      <height>16</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>&lt;--- добавлено вместе с панелью</string>
-    </property>
-   </widget>
    <widget class="QLabel" name="label_74">
     <property name="geometry">
      <rect>

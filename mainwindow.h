@@ -483,6 +483,8 @@ private slots:
     void slotTimerCalibrationModeOff();
     void slotTimerDigitalWireInterfaceChecking();
 
+    void slotReadyReadStend();
+
     void on_spinBox_serial_valueChanged(const QString &arg1);
 
     void on_lineEdit_serial_textEdited(const QString &arg1);
@@ -1002,6 +1004,9 @@ private:
 
     bool connectCondition;
     bool isRunWithoutConnect;
+
+    //стенд
+    QString extInterface1, extInterface2, extInterface3, extInterface4;
 
 };
 

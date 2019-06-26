@@ -2932,8 +2932,343 @@ void ObjectThread::slotReadParams(QSerialPort *port1, QSerialPort *port2, QSeria
 
             }
 
+            //
+            //Read External Device Settings/
 
-    //     portTmp->close();
+
+            //
+            //Read RF Settings Request	5A	00	05	18	CRC
+
+                       //            Answer	5A	00	0A	98	NB_Fi_TxCh	NB_Fi_RxCh	NB_Fi_RFBand	NB_Fi_TxPwr	NB_Fi_RFPwr	CRC
+                       //                    0	1	2	3	4	        5	        6	            7	        8	        9
+                       //      Sync	Empty	Length	Cmd	    1	        1	        1	            1	        1
+
+            for(int i=0; i<3;i++) {
+
+               portTmp->clear();
+               packetToRead.clear();
+               buffer.clear();
+               quint8 byte = 0x5a;
+               packetToRead.append(byte);
+               byte = 0x00;
+               packetToRead.append(byte);
+               byte = 0x0a;
+               packetToRead.append(byte);
+               byte = 0x98;
+               packetToRead.append(byte);
+               quint8 crc = makeCRC(packetToRead);
+               packetToRead.append(crc);
+
+               quint64 cnt = portTmp->write(packetToRead);
+               emit textBrowser(">> " + portTmp->portName() + " " + packetToRead.toHex());
+
+               qDebug()<<"cnt "<<cnt
+                       <<"packetToRead.toHex() "<<packetToRead.toHex()
+                       <<"portTmp->portName() "<<portTmp->portName();
+
+               if(cnt == 0) {
+     //              QMessageBox::information(this, "", tr("Данные в порт не записаны") + ". Рабочее место: " + QString::number(workPlaceNumber + 1));
+                   label_StatusBar = (tr("Данные в порт не записаны") +
+                                                ". Рабочее место: " + QString::number(workPlaceNumber+1));
+                   emit errorStringSignal(label_StatusBar + '\n');
+//                   ui->label_writeParams->setVisible(true);
+//                   vectorIsErrorOccured[workPlaceNumber] = true;
+                   vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+
+                   emit workPlaceOff(currentIndicatorNumber);
+                   emit checkWritingError(currentIndicatorNumber);
+
+                   return;
+               }
+
+               global::pause(150);//(200);
+
+               buffer = portTmp->readAll();
+               qDebug()<<"buffer.toHex()"<<buffer.toHex();
+               if(!buffer.isEmpty()) emit textBrowser("<< " + portTmp->portName() + " " + buffer.toHex());
+
+               if(buffer.isEmpty()) {
+                   if(i==2) {
+    //                   QMessageBox::information(this, "", tr("Не удалось прочитать данные") + ". Рабочее место: " + QString::number(workPlaceNumber + 1));
+    //                   portTmp->close();
+                       label_StatusBar = (tr("Не удалось прочитать данные") +
+                                                    ". Рабочее место: " + QString::number(workPlaceNumber+1));
+                       emit errorStringSignal(label_StatusBar + '\n');
+//                       ui->label_writeParams->setVisible(true);
+//                       vectorIsErrorOccured[workPlaceNumber] = true;
+                       vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+
+                       emit workPlaceOff(currentIndicatorNumber);
+                       emit checkWritingError(currentIndicatorNumber);
+
+                       return;
+                   } else{}
+
+               }
+               else {
+                   //проверяем crc и первые четыре байта ответного пакета
+                   QByteArray bytesForChecking;
+                   quint8 byte = 0x5a;
+                   bytesForChecking.append(byte);
+                   byte = 0x00;
+                   bytesForChecking.append(byte);
+                   byte = 0x0e;
+                   bytesForChecking.append(byte);
+                   byte = 0x85;
+                   bytesForChecking.append(byte);
+
+                   if(!packetSETProcessing(buffer)) {
+                       if(i == 2) {
+                           label_StatusBar = (tr("Ошибка данных") +
+                                                        " Рабочее место: " + QString::number(workPlaceNumber+1));
+                           emit errorStringSignal(label_StatusBar + '\n');
+                           vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                           emit workPlaceOff(currentIndicatorNumber);
+                           emit checkWritingError(currentIndicatorNumber);
+                           return;
+                       }
+                       else {
+                           continue;
+                       }
+                   }
+
+             //      quint8 error = buffer.at(4);
+
+                   if(checkCRC(buffer) == 0 && bytesForChecking[0] == buffer[0] && bytesForChecking[1] == buffer[1] && bytesForChecking[3] == buffer[3]) {
+
+                      qDebug()<<"buffer.toHex() "<<buffer.toHex()
+                           <<"checkCRC(buffer) "<<checkCRC(buffer);
+        //              emit textBrowser("buffer.toHex()     " + buffer.toHex());
+
+        //              emit sendbufferReadRealClock(buffer);
+
+                      //
+                      //Hour
+                      QDateTime dateTime_RealClock;
+                      QDate date_RealClock;
+                      QTime time_RealClock;
+
+                      QByteArray HourArray;
+                      HourArray.append(buffer[4]);
+
+
+                      quint8 HourQuint8 = buffer[4];
+
+//                      if(HourQuint8>=0 && HourQuint8<=23) {
+//         //                 time_RealClock.
+//                      }
+//                      else {
+//      //                    QMessageBox::information(this, "", tr("Недопустимое значение: Часы") + ". Рабочее место: " + QString::number(workPlaceNumber + 1));
+//                          label_StatusBar = (tr("Недопустимое значение: Часы") +
+//                                                       ". Рабочее место: " + QString::number(workPlaceNumber+1));
+//                          emit errorStringSignal(label_StatusBar + '\n');
+//                          ui->label_writeParams->setVisible(true);
+//                          vectorIsErrorOccured[workPlaceNumber] = true;
+//                          vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+//                          checkWritingError(currentIndicatorNumber);
+//                          return;
+//                      }
+
+//                      qDebug()<<"HourArray.toHex() "<<HourArray.toHex();
+//                      paramsVector.append(HourArray);
+                      mapRead["hourByteArray"] = HourArray;
+
+                      //
+                      //Minute
+                      QByteArray MinuteArray;
+                      MinuteArray.append(buffer[5]);
+
+
+                      quint8 MinuteQuint8 = buffer[5];
+
+//                      if(MinuteQuint8>=0 && MinuteQuint8<=59) {
+//         //                 time_RealClock.
+//                      }
+//                      else {
+//         //                 QMessageBox::information(this, "", tr("Недопустимое значение: Минуты"));
+//         //                 ui->lineEdit_FS_DiffThrs->setText(QString::number(FS_DiffThrsQuint16));
+//                      }
+
+//                      qDebug()<<"MinuteArray.toHex() "<<MinuteArray.toHex();
+//                      paramsVector.append(MinuteArray);
+                      mapRead["minuteByteArray"] = MinuteArray;
+
+                      //
+                      //Second
+                      QByteArray SecondArray;
+                      SecondArray.append(buffer[6]);
+
+                      quint8 SecondQuint8 = buffer[6];
+
+                      if(SecondQuint8>=0 && SecondQuint8<=59) {
+         //                 time_RealClock.
+                      }
+                      else {
+         //                 QMessageBox::information(this, "", tr("Недопустимое значение: Секунды"));
+         //                 ui->lineEdit_FS_DiffThrs->setText(QString::number(FS_DiffThrsQuint16));
+                      }
+
+//                      qDebug()<<"SecondArray.toHex() "<<SecondArray.toHex();
+//                      paramsVector.append(SecondArray);
+                      mapRead["secondByteArray"] = SecondArray;
+
+                      time_RealClock.setHMS(HourQuint8, MinuteQuint8, SecondQuint8);
+
+                      //
+                      //Day
+                      QByteArray dayArray;
+                      dayArray.append(buffer[7]);
+
+                      quint8 dayQuint8 = buffer[7];
+
+                      if(dayQuint8>=1 && dayQuint8<=31) {
+
+                      }
+                      else {
+         //                 QMessageBox::information(this, "", tr("Недопустимое значение: День месяца"));
+                      }
+
+//                      qDebug()<<"dayArray.toHex()"<<dayArray.toHex();
+//                      paramsVector.append(dayArray);
+                      mapRead["dayByteArray"] = dayArray;
+
+                      //
+                      //Month
+                      QByteArray monthArray;
+                      monthArray.append(buffer[8]);
+
+                      quint8 monthQuint8 = buffer[8];
+
+                      if(monthQuint8>=1 && monthQuint8<=12) {
+
+                      }
+                      else {
+         //                 QMessageBox::information(this, "", tr("Недопустимое значение: Месяц"));
+                      }
+
+//                      qDebug()<<"monthArray.toHex()"<<monthArray.toHex();
+//                      paramsVector.append(monthArray);
+                      mapRead["monthByteArray"] = monthArray;
+
+                      //
+                      //Year
+                      QByteArray yearArray;
+                      yearArray.append(buffer[9]);
+
+
+                      quint16 yearQuint16 = buffer[9] + 2000;
+
+                      if(yearQuint16>=1990 && yearQuint16<=3000) {
+
+                      }
+                      else {
+         //                 QMessageBox::information(this, "", tr("Недопустимое значение: Год"));
+                      }
+
+//                      qDebug()<<"yearArray.toHex()"<<yearArray.toHex();
+//                      paramsVector.append(yearArray);
+                      mapRead["yearByteArray"] = yearArray;
+
+                      //
+                      //DOW
+                      QByteArray DOWArray;
+                      DOWArray.append(buffer[10]);
+
+
+                      quint8 DOWQuint8 = buffer[10];
+
+                      if(DOWQuint8>=1 && DOWQuint8<=7) {
+
+                      }
+                      else {
+          //                QMessageBox::information(this, "", tr("Недопустимое значение: День недели"));
+                      }
+
+//                      qDebug()<<"DOWArray.toHex()"<<DOWArray.toHex();
+//                      paramsVector.append(DOWArray);
+                      mapRead["DOWByteArray"] = DOWArray;
+
+                      date_RealClock.setDate(yearQuint16, monthQuint8, dayQuint8);
+
+                      dateTime_RealClock.setTime(time_RealClock);
+                      dateTime_RealClock.setDate(date_RealClock);
+//                      ui->dateTimeEdit_realClock->setDisplayFormat("dd.MM.yyyy hh:mm:ss");
+//                      ui->dateTimeEdit_realClock->setDateTime(dateTime_RealClock);
+
+                      //
+                      //ASW_flag
+                      QByteArray ASW_flagArray;
+                      ASW_flagArray.append(buffer[12]);
+
+
+                      quint8 ASW_flagQuint8 = buffer[12];
+
+//                      if(ASW_flagList.contains(QString::number(ASW_flagQuint8))) {
+//                          ui->comboBox_ASW_flag->setCurrentText(QString::number(ASW_flagQuint8));
+//                      }
+//                      else {
+//         //                 QMessageBox::information(this, "", tr("Недопустимое значение: Автоматический переход зима-лето"));
+//                      }
+
+//                      qDebug()<<"ASW_flagArray.toHex()"<<ASW_flagArray.toHex();
+//                      paramsVector.append(ASW_flagArray);
+                      mapRead["ASW_flagByteArray"] = ASW_flagArray;
+                      //
+                      //
+
+
+
+                      break;
+                   }
+                   else {
+                       if(i==2) {
+    //                      QMessageBox::information(this, "", tr("Ошибка данных"));
+    //                      portTmp->close();
+                          label_StatusBar = (tr("Ошибка данных") +
+                                                       ". Рабочее место: " + QString::number(workPlaceNumber+1));
+                          emit errorStringSignal(label_StatusBar + '\n');
+//                          ui->label_writeParams->setVisible(true);
+//                          vectorIsErrorOccured[workPlaceNumber] = true;
+                          vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+
+                          emit workPlaceOff(currentIndicatorNumber);
+                          emit checkWritingError(currentIndicatorNumber);
+
+                          return;
+                       }
+                   }
+
+
+
+               }
+
+
+            }
+
+
+
+            //Read RF Settings/
+            //
+
+
+            //
+            //Read NB-FI Settings
+
+
+
+
+            //Read NB-FI Settings/
+            //
+
+
+            //
+            //Read Identificators
+
+
+
+
+            //Read Identificators/
+            //
 
 
             emit checkWritingError(currentIndicatorNumber);
@@ -5243,6 +5578,759 @@ void ObjectThread::slotWriteParams(QSerialPort *port1, QSerialPort *port2, QSeri
             }
 
 
+            //
+            //Write RF Settings
+
+//            Write RF Settings	WRS	38h	Request	5A	00	0A	38	NB_Fi_TxCh	NB_Fi_RxCh	NB_Fi_RFBand	NB_Fi_TxPwr	NB_Fi_RFPwr	CRC
+//                                              0	1	2	3	4	        5	        6	            7	        8	        9
+//                                              Syn Emp Len Cmd	1	        1	        1	            1	        1
+//                                       Answer	5A	00	06	B8	Error	CRC
+//                                                              Type - nbfi_phy_channel_t, see file nbfi.h
+//                                                                          0…8, see file nbfi_config.h
+//                                                                                      Output power in dBm
+
+            for(int i=0; i<3;i++) {
+
+               portTmp->clear();
+               packetToRead.clear();
+               buffer.clear();
+               quint8 byte = 0x5a;
+               packetToRead.append(byte);
+               byte = 0x00;
+               packetToRead.append(byte);
+               byte = 0x0A;
+               packetToRead.append(byte);
+               byte = 0x38;
+               packetToRead.append(byte);
+
+               byte = paramsMapToThreads["NB_Fi_TxCh"].toByteArray()[0];
+               packetToRead.append(byte);
+               mapwrite["NB_Fi_TxCh"] = paramsMapToThreads["NB_Fi_TxCh"].toByteArray();
+
+               byte = paramsMapToThreads["NB_Fi_RxCh"].toByteArray()[0];
+               packetToRead.append(byte);
+               mapwrite["NB_Fi_RxCh"] = paramsMapToThreads["NB_Fi_RxCh"].toByteArray();
+
+               byte = paramsMapToThreads["NB_Fi_RFBand"].toByteArray()[0];
+               packetToRead.append(byte);
+               mapwrite["NB_Fi_RFBand"] = paramsMapToThreads["NB_Fi_RFBand"].toByteArray();
+
+               byte = paramsMapToThreads["NB_Fi_TxPwr"].toByteArray()[0];
+               packetToRead.append(byte);
+               mapwrite["NB_Fi_TxPwr"] = paramsMapToThreads["NB_Fi_TxPwr"].toByteArray();
+
+               byte = paramsMapToThreads["NB_Fi_RFPwr"].toByteArray()[0];
+               packetToRead.append(byte);
+               mapwrite["NB_Fi_RFPwr"] = paramsMapToThreads["NB_Fi_RFPwr"].toByteArray();
+
+               //
+               quint8 crc = makeCRC(packetToRead);
+               packetToRead.append(crc);
+
+               quint64 cnt = portTmp->write(packetToRead);
+               emit textBrowser(">> " + portTmp->portName() + " " + packetToRead.toHex());
+
+               qDebug()<<"cnt "<<cnt
+                       <<"packetToRead.toHex() "<<packetToRead.toHex()
+                       <<"portTmp->portName() "<<portTmp->portName();
+
+               if(cnt == 0) {
+    //               QMessageBox::information(this, "", tr("Данные в порт не записаны ") +
+    //                                                 "Рабочее место: " + QString::number(workPlaceNumber+1));
+                   label_StatusBar = (tr("Данные в порт не записаны ") +
+                                                ". Рабочее место: " + QString::number(workPlaceNumber+1));
+                   emit errorStringSignal(label_StatusBar + '\n');
+                   vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+
+                   emit workPlaceOff(currentIndicatorNumber);
+                   emit checkWritingError(currentIndicatorNumber);
+
+                   return;
+               }
+
+               QApplication::processEvents();
+               global::pause(250);//(300);
+
+               buffer = portTmp->readAll();
+               qDebug()<<"buffer.toHex()"<<buffer.toHex();
+               if(!buffer.isEmpty()) emit textBrowser("<< " + portTmp->portName() + " " + buffer.toHex());
+
+               if(buffer.isEmpty()) {
+                   if(i==2) {
+    //                   QMessageBox::information(this, "", tr("Не удалось записать данные : External Device Settings ") +
+    //                                            "Рабочее место: " + QString::number(workPlaceNumber+1));
+                       label_StatusBar = (tr("Не удалось записать данные : Write RF Settings ") +
+                                                    ". Рабочее место: " + QString::number(workPlaceNumber+1));
+                       emit errorStringSignal(label_StatusBar + '\n');
+ //                      ui->label_writeParams->setVisible(true);
+                       vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+
+                       emit workPlaceOff(currentIndicatorNumber);
+                       emit checkWritingError(currentIndicatorNumber);
+
+                       return;
+                   } else{}
+
+               }
+               else {
+                   //проверяем crc и первые четыре байта ответного пакета Answer	5A	00	06	B8
+                   QByteArray bytesForChecking;
+                   quint8 byte = 0x5a;
+                   bytesForChecking.append(byte);
+                   byte = 0x00;
+                   bytesForChecking.append(byte);
+                   byte = 0x06;
+                   bytesForChecking.append(byte);
+                   byte = 0xb8;
+                   bytesForChecking.append(byte);
+
+                   if(!packetSETProcessing(buffer)) {
+                       if(i == 2) {
+                           label_StatusBar = (tr("Ошибка данных") +
+                                                        " Рабочее место: " + QString::number(workPlaceNumber+1));
+                           emit errorStringSignal(label_StatusBar + '\n');
+                           vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                           emit workPlaceOff(currentIndicatorNumber);
+                           emit checkWritingError(currentIndicatorNumber);
+                           return;
+                       }
+                       else {
+                           continue;
+                       }
+                   }
+
+                   quint8 error = buffer[4];
+
+                   if(checkCRC(buffer) == 0 && bytesForChecking[0] == buffer[0] && bytesForChecking[1] == buffer[1] && bytesForChecking[3] == buffer[3] && error == 0) {
+
+                      qDebug()<<"buffer.toHex() "<<buffer.toHex()
+                           <<"checkCRC(buffer) "<<checkCRC(buffer);
+
+                      //
+
+
+                      //
+                      //
+
+
+
+                      break;
+                   }
+                   else {
+                       if(i==2) {
+    //                      QMessageBox::information(this, "", tr("Ошибка записи данных : External Device Settings") +
+    //                                               "Рабочее место: " + QString::number(workPlaceNumber+1));
+                          label_StatusBar = (tr("Ошибка записи данных : Write RF Settings ") +
+                                                       ". Рабочее место: " + QString::number(workPlaceNumber+1));
+                          emit errorStringSignal(label_StatusBar + '\n');
+    //                      ui->label_writeParams->setVisible(true);
+                          vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+
+                          emit workPlaceOff(currentIndicatorNumber);
+                          emit checkWritingError(currentIndicatorNumber);
+
+                          return;
+                       }
+                   }
+
+
+
+               }
+
+
+            }
+
+
+
+            //Write RF Settings/
+            //
+
+
+            //
+            //Write NB-FI Settings
+
+//            Write NB-Fi Setting	WNS	39h	Request	5A	00	15	39	NB_Fi_Mode	NB_Fi_HdSh	NB_Fi_MAC	NB_Fi_RetNum	NB_Fi_PldLen	NB_Fi_HrbtNum	NB_Fi_HrbtInt	NB_Fi_InfoInt	NB_Fi_UsrPktInt	CRC
+//                                                  0	1	2	3	4	        5	        6	        7	            8	            9	            10…13	        14…17	         18, 19	        20
+//                                                Syn	Emp	Len	Cmd	1	        1	        1	        1	            1	            1	            4	            4	             2
+//                                        Answer   5A	00	06	B9	Error	CRC
+//                                                                  0 - NRX, 1 - DRX, 2 - CRX, 3 - TRANSPARENT, 4 - OFF; type - nbfi_mode_t, see file nbfi.h
+//                                                                              0 - HANDSHAKE_NONE, 1 - HANDSHAKE_SIMPLE; type - nbfi_handshake_t, see file nbfi.h
+//                                                                                          Type - nbfi_mack_mode_t, see file nbfi.h
+//                                                                                                      Retries number
+//                                                                                                                      Payload length in bytes
+//                                                                                                                                      Heartbeats number
+//                                                                                                                                                      Time interval in minute
+//                                                                                                                                                                      Time interval in second
+//                                                                                                                                                                                       Time interval in minute
+
+            for(int i=0; i<3;i++) {
+
+               portTmp->clear();
+               packetToRead.clear();
+               buffer.clear();
+               quint8 byte = 0x5a;
+               packetToRead.append(byte);
+               byte = 0x00;
+               packetToRead.append(byte);
+               byte = 0x15;
+               packetToRead.append(byte);
+               byte = 0x39;
+               packetToRead.append(byte);
+
+               byte = paramsMapToThreads["NB_Fi_Mode"].toByteArray()[0];
+               packetToRead.append(byte);
+               mapwrite["NB_Fi_Mode"] = paramsMapToThreads["NB_Fi_Mode"].toByteArray();
+
+               byte = paramsMapToThreads["NB_Fi_HdSh"].toByteArray()[0];
+               packetToRead.append(byte);
+               mapwrite["NB_Fi_HdSh"] = paramsMapToThreads["NB_Fi_HdSh"].toByteArray();
+
+               byte = paramsMapToThreads["NB_Fi_MAC"].toByteArray()[0];
+               packetToRead.append(byte);
+               mapwrite["NB_Fi_MAC"] = paramsMapToThreads["NB_Fi_MAC"].toByteArray();
+
+               byte = paramsMapToThreads["NB_Fi_RetNum"].toByteArray()[0];
+               packetToRead.append(byte);
+               mapwrite["NB_Fi_RetNum"] = paramsMapToThreads["NB_Fi_RetNum"].toByteArray();
+
+               byte = paramsMapToThreads["NB_Fi_PldLen"].toByteArray()[0];
+               packetToRead.append(byte);
+               mapwrite["NB_Fi_PldLen"] = paramsMapToThreads["NB_Fi_PldLen"].toByteArray();
+
+               byte = paramsMapToThreads["NB_Fi_HrbtNum"].toByteArray()[0];
+               packetToRead.append(byte);
+               mapwrite["NB_Fi_HrbtNum"] = paramsMapToThreads["NB_Fi_HrbtNum"].toByteArray();
+
+               byte = paramsMapToThreads["NB_Fi_HrbtInt"].toByteArray()[0];
+               packetToRead.append(byte);
+               byte = paramsMapToThreads["NB_Fi_HrbtInt"].toByteArray()[1];
+               packetToRead.append(byte);
+               byte = paramsMapToThreads["NB_Fi_HrbtInt"].toByteArray()[2];
+               packetToRead.append(byte);
+               byte = paramsMapToThreads["NB_Fi_HrbtInt"].toByteArray()[3];
+               packetToRead.append(byte);
+               mapwrite["NB_Fi_HrbtInt"] = paramsMapToThreads["NB_Fi_HrbtInt"].toByteArray();
+
+               byte = paramsMapToThreads["NB_Fi_InfoInt"].toByteArray()[0];
+               packetToRead.append(byte);
+               byte = paramsMapToThreads["NB_Fi_InfoInt"].toByteArray()[1];
+               packetToRead.append(byte);
+               byte = paramsMapToThreads["NB_Fi_InfoInt"].toByteArray()[2];
+               packetToRead.append(byte);
+               byte = paramsMapToThreads["NB_Fi_InfoInt"].toByteArray()[3];
+               packetToRead.append(byte);
+               mapwrite["NB_Fi_InfoInt"] = paramsMapToThreads["NB_Fi_InfoInt"].toByteArray();
+
+               quint8 crc = makeCRC(packetToRead);
+               packetToRead.append(crc);
+
+               quint64 cnt = portTmp->write(packetToRead);
+               emit textBrowser(">> " + portTmp->portName() + " " + packetToRead.toHex());
+
+               qDebug()<<"cnt "<<cnt
+                       <<"packetToRead.toHex() "<<packetToRead.toHex()
+                       <<"portTmp->portName() "<<portTmp->portName();
+
+               if(cnt == 0) {
+    //               QMessageBox::information(this, "", tr("Данные в порт не записаны ") +
+    //                                                 "Рабочее место: " + QString::number(workPlaceNumber+1));
+                   label_StatusBar = (tr("Данные в порт не записаны ") +
+                                                ". Рабочее место: " + QString::number(workPlaceNumber+1));
+                   emit errorStringSignal(label_StatusBar + '\n');
+                   vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+
+                   emit workPlaceOff(currentIndicatorNumber);
+                   emit checkWritingError(currentIndicatorNumber);
+
+                   return;
+               }
+
+               QApplication::processEvents();
+               global::pause(250);//(300);
+
+               buffer = portTmp->readAll();
+               qDebug()<<"buffer.toHex()"<<buffer.toHex();
+               if(!buffer.isEmpty()) emit textBrowser("<< " + portTmp->portName() + " " + buffer.toHex());
+
+               if(buffer.isEmpty()) {
+                   if(i==2) {
+    //                   QMessageBox::information(this, "", tr("Не удалось записать данные : External Device Settings ") +
+    //                                            "Рабочее место: " + QString::number(workPlaceNumber+1));
+                       label_StatusBar = (tr("Не удалось записать данные : Write NB-FI Settings ") +
+                                                    ". Рабочее место: " + QString::number(workPlaceNumber+1));
+                       emit errorStringSignal(label_StatusBar + '\n');
+ //                      ui->label_writeParams->setVisible(true);
+                       vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+
+                       emit workPlaceOff(currentIndicatorNumber);
+                       emit checkWritingError(currentIndicatorNumber);
+
+                       return;
+                   } else{}
+
+               }
+               else {
+                   //проверяем crc и первые четыре байта ответного пакета Answer   5A	00	06	B9
+                   QByteArray bytesForChecking;
+                   quint8 byte = 0x5a;
+                   bytesForChecking.append(byte);
+                   byte = 0x00;
+                   bytesForChecking.append(byte);
+                   byte = 0x06;
+                   bytesForChecking.append(byte);
+                   byte = 0xb9;
+                   bytesForChecking.append(byte);
+
+                   if(!packetSETProcessing(buffer)) {
+                       if(i == 2) {
+                           label_StatusBar = (tr("Ошибка данных") +
+                                                        " Рабочее место: " + QString::number(workPlaceNumber+1));
+                           emit errorStringSignal(label_StatusBar + '\n');
+                           vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                           emit workPlaceOff(currentIndicatorNumber);
+                           emit checkWritingError(currentIndicatorNumber);
+                           return;
+                       }
+                       else {
+                           continue;
+                       }
+                   }
+
+                   quint8 error = buffer[4];
+
+                   if(checkCRC(buffer) == 0 && bytesForChecking[0] == buffer[0] && bytesForChecking[1] == buffer[1] && bytesForChecking[3] == buffer[3] && error == 0) {
+
+                      qDebug()<<"buffer.toHex() "<<buffer.toHex()
+                           <<"checkCRC(buffer) "<<checkCRC(buffer);
+
+                      //
+
+
+                      //
+                      //
+
+
+
+                      break;
+                   }
+                   else {
+                       if(i==2) {
+    //                      QMessageBox::information(this, "", tr("Ошибка записи данных : External Device Settings") +
+    //                                               "Рабочее место: " + QString::number(workPlaceNumber+1));
+                          label_StatusBar = (tr("Ошибка записи данных : Write NB-FI Settings ") +
+                                                       ". Рабочее место: " + QString::number(workPlaceNumber+1));
+                          emit errorStringSignal(label_StatusBar + '\n');
+    //                      ui->label_writeParams->setVisible(true);
+                          vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+
+                          emit workPlaceOff(currentIndicatorNumber);
+                          emit checkWritingError(currentIndicatorNumber);
+
+                          return;
+                       }
+                   }
+
+
+
+               }
+
+
+            }
+
+
+            //Write NB-FI Settings/
+            //
+
+
+            //
+            //Write Identificators
+
+//            Write IDentificators	WID	35h	Request	5A	00	2D	35	NB_Fi_BrdID	NB_Fi_MdmID	NB_Fi_Key	CRC
+//                                                  0	1	2	3	4…7	        8…11	    12…43	    44
+//                                                  Syn	Emp	Len	Cmd	4	        4	        32
+//                                          Answer	5A	00	05	B5	Error	CRC
+
+
+            for(int i=0; i<3;i++) {
+
+               portTmp->clear();
+               packetToRead.clear();
+               buffer.clear();
+               quint8 byte = 0x5a;
+               packetToRead.append(byte);
+               byte = 0x00;
+               packetToRead.append(byte);
+               byte = 0x2d;
+               packetToRead.append(byte);
+               byte = 0x35;
+               packetToRead.append(byte);
+
+               byte = paramsMapToThreads["NB_Fi_BrdID"].toByteArray()[0];
+               packetToRead.append(byte);
+               byte = paramsMapToThreads["NB_Fi_BrdID"].toByteArray()[1];
+               packetToRead.append(byte);
+               byte = paramsMapToThreads["NB_Fi_BrdID"].toByteArray()[2];
+               packetToRead.append(byte);
+               byte = paramsMapToThreads["NB_Fi_BrdID"].toByteArray()[3];
+               packetToRead.append(byte);
+               mapwrite["NB_Fi_BrdID"] = paramsMapToThreads["NB_Fi_BrdID"].toByteArray();
+
+               byte = paramsMapToThreads["NB_Fi_MdmID"].toByteArray()[0];
+               packetToRead.append(byte);
+               byte = paramsMapToThreads["NB_Fi_MdmID"].toByteArray()[1];
+               packetToRead.append(byte);
+               byte = paramsMapToThreads["NB_Fi_MdmID"].toByteArray()[2];
+               packetToRead.append(byte);
+               byte = paramsMapToThreads["NB_Fi_MdmID"].toByteArray()[3];
+               packetToRead.append(byte);
+               mapwrite["NB_Fi_MdmID"] = paramsMapToThreads["NB_Fi_MdmID"].toByteArray();
+
+               byte = paramsMapToThreads["NB_Fi_Key"].toByteArray()[0];
+               packetToRead.append(byte);
+               byte = paramsMapToThreads["NB_Fi_Key"].toByteArray()[1];
+               packetToRead.append(byte);
+               byte = paramsMapToThreads["NB_Fi_Key"].toByteArray()[2];
+               packetToRead.append(byte);
+               byte = paramsMapToThreads["NB_Fi_Key"].toByteArray()[3];
+               packetToRead.append(byte);
+               byte = paramsMapToThreads["NB_Fi_Key"].toByteArray()[4];
+               packetToRead.append(byte);
+               byte = paramsMapToThreads["NB_Fi_Key"].toByteArray()[5];
+               packetToRead.append(byte);
+               byte = paramsMapToThreads["NB_Fi_Key"].toByteArray()[6];
+               packetToRead.append(byte);
+               byte = paramsMapToThreads["NB_Fi_Key"].toByteArray()[7];
+               packetToRead.append(byte);
+               byte = paramsMapToThreads["NB_Fi_Key"].toByteArray()[8];
+               packetToRead.append(byte);
+               byte = paramsMapToThreads["NB_Fi_Key"].toByteArray()[9];
+               packetToRead.append(byte);
+               byte = paramsMapToThreads["NB_Fi_Key"].toByteArray()[10];
+               packetToRead.append(byte);
+               byte = paramsMapToThreads["NB_Fi_Key"].toByteArray()[11];
+               packetToRead.append(byte);
+               byte = paramsMapToThreads["NB_Fi_Key"].toByteArray()[12];
+               packetToRead.append(byte);
+               byte = paramsMapToThreads["NB_Fi_Key"].toByteArray()[13];
+               packetToRead.append(byte);
+               byte = paramsMapToThreads["NB_Fi_Key"].toByteArray()[14];
+               packetToRead.append(byte);
+               byte = paramsMapToThreads["NB_Fi_Key"].toByteArray()[15];
+               packetToRead.append(byte);
+               byte = paramsMapToThreads["NB_Fi_Key"].toByteArray()[16];
+               packetToRead.append(byte);
+               byte = paramsMapToThreads["NB_Fi_Key"].toByteArray()[17];
+               packetToRead.append(byte);
+               byte = paramsMapToThreads["NB_Fi_Key"].toByteArray()[18];
+               packetToRead.append(byte);
+               byte = paramsMapToThreads["NB_Fi_Key"].toByteArray()[19];
+               packetToRead.append(byte);
+               byte = paramsMapToThreads["NB_Fi_Key"].toByteArray()[20];
+               packetToRead.append(byte);
+               byte = paramsMapToThreads["NB_Fi_Key"].toByteArray()[21];
+               packetToRead.append(byte);
+               byte = paramsMapToThreads["NB_Fi_Key"].toByteArray()[22];
+               packetToRead.append(byte);
+               byte = paramsMapToThreads["NB_Fi_Key"].toByteArray()[23];
+               packetToRead.append(byte);
+               byte = paramsMapToThreads["NB_Fi_Key"].toByteArray()[24];
+               packetToRead.append(byte);
+               byte = paramsMapToThreads["NB_Fi_Key"].toByteArray()[25];
+               packetToRead.append(byte);
+               byte = paramsMapToThreads["NB_Fi_Key"].toByteArray()[26];
+               packetToRead.append(byte);
+               byte = paramsMapToThreads["NB_Fi_Key"].toByteArray()[27];
+               packetToRead.append(byte);
+               byte = paramsMapToThreads["NB_Fi_Key"].toByteArray()[28];
+               packetToRead.append(byte);
+               byte = paramsMapToThreads["NB_Fi_Key"].toByteArray()[29];
+               packetToRead.append(byte);
+               byte = paramsMapToThreads["NB_Fi_Key"].toByteArray()[30];
+               packetToRead.append(byte);
+               byte = paramsMapToThreads["NB_Fi_Key"].toByteArray()[31];
+               packetToRead.append(byte);
+               mapwrite["NB_Fi_Key"] = paramsMapToThreads["NB_Fi_Key"].toByteArray();
+
+               quint8 crc = makeCRC(packetToRead);
+               packetToRead.append(crc);
+
+               quint64 cnt = portTmp->write(packetToRead);
+               emit textBrowser(">> " + portTmp->portName() + " " + packetToRead.toHex());
+
+               qDebug()<<"cnt "<<cnt
+                       <<"packetToRead.toHex() "<<packetToRead.toHex()
+                       <<"portTmp->portName() "<<portTmp->portName();
+
+               if(cnt == 0) {
+    //               QMessageBox::information(this, "", tr("Данные в порт не записаны ") +
+    //                                                 "Рабочее место: " + QString::number(workPlaceNumber+1));
+                   label_StatusBar = (tr("Данные в порт не записаны ") +
+                                                ". Рабочее место: " + QString::number(workPlaceNumber+1));
+                   emit errorStringSignal(label_StatusBar + '\n');
+                   vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+
+                   emit workPlaceOff(currentIndicatorNumber);
+                   emit checkWritingError(currentIndicatorNumber);
+
+                   return;
+               }
+
+               QApplication::processEvents();
+               global::pause(250);//(300);
+
+               buffer = portTmp->readAll();
+               qDebug()<<"buffer.toHex()"<<buffer.toHex();
+               if(!buffer.isEmpty()) emit textBrowser("<< " + portTmp->portName() + " " + buffer.toHex());
+
+               if(buffer.isEmpty()) {
+                   if(i==2) {
+    //                   QMessageBox::information(this, "", tr("Не удалось записать данные : Write Identificators ") +
+    //                                            "Рабочее место: " + QString::number(workPlaceNumber+1));
+                       label_StatusBar = (tr("Не удалось записать данные : Write Identificators ") +
+                                                    ". Рабочее место: " + QString::number(workPlaceNumber+1));
+                       emit errorStringSignal(label_StatusBar + '\n');
+ //                      ui->label_writeParams->setVisible(true);
+                       vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+
+                       emit workPlaceOff(currentIndicatorNumber);
+                       emit checkWritingError(currentIndicatorNumber);
+
+                       return;
+                   } else{}
+
+               }
+               else {
+                   //проверяем crc и первые четыре байта ответного пакета Answer	5A	00	05	B5
+                   QByteArray bytesForChecking;
+                   quint8 byte = 0x5a;
+                   bytesForChecking.append(byte);
+                   byte = 0x00;
+                   bytesForChecking.append(byte);
+                   byte = 0x05;
+                   bytesForChecking.append(byte);
+                   byte = 0xb5;
+                   bytesForChecking.append(byte);
+
+                   if(!packetSETProcessing(buffer)) {
+                       if(i == 2) {
+                           label_StatusBar = (tr("Ошибка данных") +
+                                                        " Рабочее место: " + QString::number(workPlaceNumber+1));
+                           emit errorStringSignal(label_StatusBar + '\n');
+                           vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                           emit workPlaceOff(currentIndicatorNumber);
+                           emit checkWritingError(currentIndicatorNumber);
+                           return;
+                       }
+                       else {
+                           continue;
+                       }
+                   }
+
+                   quint8 error = buffer[4];
+
+                   if(checkCRC(buffer) == 0 && bytesForChecking[0] == buffer[0] && bytesForChecking[1] == buffer[1] && bytesForChecking[3] == buffer[3] && error == 0) {
+
+                      qDebug()<<"buffer.toHex() "<<buffer.toHex()
+                           <<"checkCRC(buffer) "<<checkCRC(buffer);
+
+                      //
+
+
+                      //
+                      //
+
+
+
+                      break;
+                   }
+                   else {
+                       if(i==2) {
+    //                      QMessageBox::information(this, "", tr("Ошибка записи данных : Write Identificators ") +
+    //                                               "Рабочее место: " + QString::number(workPlaceNumber+1));
+                          label_StatusBar = (tr("Ошибка записи данных : Write Identificators ") +
+                                                       ". Рабочее место: " + QString::number(workPlaceNumber+1));
+                          emit errorStringSignal(label_StatusBar + '\n');
+    //                      ui->label_writeParams->setVisible(true);
+                          vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+
+                          emit workPlaceOff(currentIndicatorNumber);
+                          emit checkWritingError(currentIndicatorNumber);
+
+                          return;
+                       }
+                   }
+
+
+
+               }
+
+
+            }
+
+
+            //Write Identificators/
+            //
+
+
+            //
+            //Write Application Layer
+
+//            Write Application Layer	WAL	34h	Request	5A	00	09	34	W5_Trans	W7_Trans	NB_Fi_UsrPktInt	CRC
+//                                                      0	1	2	3	4	        5	        6, 7	        8
+//                                                      Syn	Emp	Len	Cmd	1	        1	        2
+//                                              Answer	5A	00	05	B4	Error	CRC
+//                                                                      0 - daily; 1 - weekly; 2 - month; 7 - W5
+//                                                                                  0 - Q; 1 - V; 2 - M; 3, 4 - T; 5 - Flags; 7 - W7
+
+
+            for(int i=0; i<3;i++) {
+
+               portTmp->clear();
+               packetToRead.clear();
+               buffer.clear();
+               quint8 byte = 0x5a;
+               packetToRead.append(byte);
+               byte = 0x00;
+               packetToRead.append(byte);
+               byte = 0x09;
+               packetToRead.append(byte);
+               byte = 0x34;
+               packetToRead.append(byte);
+
+               byte = paramsMapToThreads["W5_Trans"].toByteArray()[0];
+               packetToRead.append(byte);
+               mapwrite["W5_Trans"] = paramsMapToThreads["W5_Trans"].toByteArray();
+
+               byte = paramsMapToThreads["W7_Trans"].toByteArray()[0];
+               packetToRead.append(byte);
+               mapwrite["W7_Trans"] = paramsMapToThreads["W7_Trans"].toByteArray();
+
+               byte = paramsMapToThreads["NB_Fi_UsrPktInt_WAL"].toByteArray()[0];
+               packetToRead.append(byte);
+               byte = paramsMapToThreads["NB_Fi_UsrPktInt_WAL"].toByteArray()[1];
+               packetToRead.append(byte);
+               mapwrite["NB_Fi_UsrPktInt_WAL"] = paramsMapToThreads["NB_Fi_UsrPktInt_WAL"].toByteArray();
+
+               quint8 crc = makeCRC(packetToRead);
+               packetToRead.append(crc);
+
+               quint64 cnt = portTmp->write(packetToRead);
+               emit textBrowser(">> " + portTmp->portName() + " " + packetToRead.toHex());
+
+               qDebug()<<"cnt "<<cnt
+                       <<"packetToRead.toHex() "<<packetToRead.toHex()
+                       <<"portTmp->portName() "<<portTmp->portName();
+
+               if(cnt == 0) {
+    //               QMessageBox::information(this, "", tr("Данные в порт не записаны ") +
+    //                                                 "Рабочее место: " + QString::number(workPlaceNumber+1));
+                   label_StatusBar = (tr("Данные в порт не записаны ") +
+                                                ". Рабочее место: " + QString::number(workPlaceNumber+1));
+                   emit errorStringSignal(label_StatusBar + '\n');
+                   vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+
+                   emit workPlaceOff(currentIndicatorNumber);
+                   emit checkWritingError(currentIndicatorNumber);
+
+                   return;
+               }
+
+               QApplication::processEvents();
+               global::pause(250);//(300);
+
+               buffer = portTmp->readAll();
+               qDebug()<<"buffer.toHex()"<<buffer.toHex();
+               if(!buffer.isEmpty()) emit textBrowser("<< " + portTmp->portName() + " " + buffer.toHex());
+
+               if(buffer.isEmpty()) {
+                   if(i==2) {
+    //                   QMessageBox::information(this, "", tr("Не удалось записать данные : Write Application Layer ") +
+    //                                            "Рабочее место: " + QString::number(workPlaceNumber+1));
+                       label_StatusBar = (tr("Не удалось записать данные : Write Application Layer ") +
+                                                    ". Рабочее место: " + QString::number(workPlaceNumber+1));
+                       emit errorStringSignal(label_StatusBar + '\n');
+ //                      ui->label_writeParams->setVisible(true);
+                       vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+
+                       emit workPlaceOff(currentIndicatorNumber);
+                       emit checkWritingError(currentIndicatorNumber);
+
+                       return;
+                   } else{}
+
+               }
+               else {
+                   //проверяем crc и первые четыре байта ответного пакета  Answer	5A	00	05	B4
+                   QByteArray bytesForChecking;
+                   quint8 byte = 0x5a;
+                   bytesForChecking.append(byte);
+                   byte = 0x00;
+                   bytesForChecking.append(byte);
+                   byte = 0x05;
+                   bytesForChecking.append(byte);
+                   byte = 0xb4;
+                   bytesForChecking.append(byte);
+
+                   if(!packetSETProcessing(buffer)) {
+                       if(i == 2) {
+                           label_StatusBar = (tr("Ошибка данных") +
+                                                        " Рабочее место: " + QString::number(workPlaceNumber+1));
+                           emit errorStringSignal(label_StatusBar + '\n');
+                           vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                           emit workPlaceOff(currentIndicatorNumber);
+                           emit checkWritingError(currentIndicatorNumber);
+                           return;
+                       }
+                       else {
+                           continue;
+                       }
+                   }
+
+                   quint8 error = buffer[4];
+
+                   if(checkCRC(buffer) == 0 && bytesForChecking[0] == buffer[0] && bytesForChecking[1] == buffer[1] && bytesForChecking[3] == buffer[3] && error == 0) {
+
+                      qDebug()<<"buffer.toHex() "<<buffer.toHex()
+                           <<"checkCRC(buffer) "<<checkCRC(buffer);
+
+                      //
+
+
+                      //
+                      //
+
+
+
+                      break;
+                   }
+                   else {
+                       if(i==2) {
+    //                      QMessageBox::information(this, "", tr("Ошибка записи данных : Write Application Layer ") +
+    //                                               "Рабочее место: " + QString::number(workPlaceNumber+1));
+                          label_StatusBar = (tr("Ошибка записи данных : Write Application Layer ") +
+                                                       ". Рабочее место: " + QString::number(workPlaceNumber+1));
+                          emit errorStringSignal(label_StatusBar + '\n');
+    //                      ui->label_writeParams->setVisible(true);
+                          vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+
+                          emit workPlaceOff(currentIndicatorNumber);
+                          emit checkWritingError(currentIndicatorNumber);
+
+                          return;
+                       }
+                   }
+
+
+
+               }
+
+
+            }
+
+
+            //Write Application Layer/
+            //
+
 
             //
             //
@@ -7031,8 +8119,19 @@ void ObjectThread::slotPulsesOutputHeat(QSerialPort *port1, QSerialPort *port2,
                                         QSerialPort *port3, QSerialPort *port4)
 {
 
+    if(!isWorkPlaceUse.at(workPlace)) return;
+
+    int currentIndicatorNumber = workPlace;
+    int currentBoxNumber = 2;
+
     //сбросить счётчик импульсов стенда
-    if(!pulsesReset()) return;
+    if(!pulsesReset()) {
+        vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+        emit workPlaceOff(currentIndicatorNumber);
+        emit checkPulsesOutputHeat(currentIndicatorNumber);
+
+        return;
+    }
 
     qDebug()<<"ObjectThread::slotWriteParams() "<<"workPlace "<<QString::number(workPlace);
 
@@ -7041,10 +8140,6 @@ void ObjectThread::slotPulsesOutputHeat(QSerialPort *port1, QSerialPort *port2,
         bool isNeedPaintEvent = true;//false;
 
         int workPlaceNumber = workPlace;
-
-        if(!isWorkPlaceUse.at(workPlace)) return;
-
-        int currentIndicatorNumber = workPlaceNumber;
 
         QString label_StatusBar;
         QString errorString;
@@ -7073,7 +8168,7 @@ void ObjectThread::slotPulsesOutputHeat(QSerialPort *port1, QSerialPort *port2,
         portTmp->setStopBits(QSerialPort::OneStop);
 
 
-        int currentBoxNumber = 2;
+
    //     vectorIsErrorOccured[workPlaceNumber] = false;
 
 
@@ -13509,6 +14604,10 @@ bool ObjectThread::readTok()
 {
     //подключить плату
     if(!plataOn()) {
+
+        vectorIndicatorTokPlaty[workPlace] = true;
+        emit workPlaceOff(workPlace);
+        emit checkTokPlaty(workPlace);
 
         errorIndicatorOn();
         return false;

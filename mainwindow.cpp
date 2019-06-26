@@ -819,6 +819,14 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(this, SIGNAL(sendCurrentUser(QString)), formUserControl, SLOT(slotGetCurrentUser(QString)));
     //управление пользователями/
 
+
+    //сигналы стенда о начале программирования/калибровки
+
+    connect(portStend, SIGNAL(readyRead()), this, SLOT(slotReadyReadStend()));
+
+    //сигналы стенда о начале программирования/калибровки/
+
+
     //    void slotTimerWriteParams();
     //    void slotTimerCalibration();
     //    void slotTimerPulsesOutputHeat();
@@ -1015,8 +1023,9 @@ MainWindow::MainWindow(QWidget *parent) :
     vectorIsWorkPlaceUse.resize(4);
     vectorIsWorkPlaceUse.fill(false);
 
-    vectorIsCommandUse.resize(10);
+    vectorIsCommandUse.resize(11);//добавляем 1 команду ток платы
     vectorIsCommandUse.fill(false);
+    vectorIsCommandUse[10] = true;
 
     vectorIsErrorOccured.resize(4);
     vectorIsErrorOccured.fill(false);
@@ -1032,7 +1041,7 @@ MainWindow::MainWindow(QWidget *parent) :
     vectorTokPlaty.resize(4);
     vectorTokPlaty.fill(false);
 
-    vectorIndicatorStateMatrix.resize(10);
+    vectorIndicatorStateMatrix.resize(11);//добавляем 1 вектор тока платы
 
     for(int u=0; u<10; u++) {
         vectorIndicatorStateMatrix[u].resize(4);
@@ -1629,6 +1638,13 @@ void MainWindow::paintEvent(QPaintEvent *event)
         painter.drawEllipse(xGpourBoxBsl + 13 + 33 + 33, yGroupBoxBsl + 45, 15, 15);
         painter.drawEllipse(xGpourBoxBsl + 13 + 33 + 33 + 33, yGroupBoxBsl + 45, 15, 15);
 
+        int xGpourBoxTokPlaty = ui->groupBox_tokPlaty->x();
+        int yGroupBoxTokPlaty = ui->groupBox_tokPlaty->y();
+        painter.drawEllipse(xGpourBoxTokPlaty + 13, yGroupBoxTokPlaty + 45, 15, 15);
+        painter.drawEllipse(xGpourBoxTokPlaty + 13 + 33, yGroupBoxTokPlaty + 45, 15, 15);
+        painter.drawEllipse(xGpourBoxTokPlaty + 13 + 33 + 33, yGroupBoxTokPlaty + 45, 15, 15);
+        painter.drawEllipse(xGpourBoxTokPlaty + 13 + 33 + 33 + 33, yGroupBoxTokPlaty + 45, 15, 15);
+
         //-----------------------------BSL-----------------------------------
 
         if( vectorBSL.at(0) && ui->checkBox_workPlace1->isChecked() && isBslFinished1) {
@@ -1699,11 +1715,83 @@ void MainWindow::paintEvent(QPaintEvent *event)
 
         //-----------------------------BSL-----------------------------------/
 
+
+
+        //--------------------tok platy-------------------------
+
+        if( vectorTokPlaty.at(0) && ui->checkBox_workPlace1->isChecked() && isTokPlatyFinished1) {
+            QPainter painter(this); // Создаём объект отрисовщика
+            painter.setPen(QPen(Qt::lightGray, 1, Qt::SolidLine, Qt::FlatCap));
+            painter.setBrush(QBrush(Qt::red, Qt::SolidPattern));
+
+            painter.drawEllipse(xGpourBoxTokPlaty + 13, yGroupBoxTokPlaty + 45, 15, 15);
+        }
+        if( !vectorTokPlaty.at(0)  && ui->checkBox_workPlace1->isChecked() && isTokPlatyFinished1 ) {
+            QPainter painter(this); // Создаём объект отрисовщика
+            painter.setPen(QPen(Qt::lightGray, 1, Qt::SolidLine, Qt::FlatCap));
+            painter.setBrush(QBrush(Qt::green, Qt::SolidPattern));
+
+            painter.drawEllipse(xGpourBoxTokPlaty + 13, yGroupBoxTokPlaty + 45, 15, 15);
+        }
+        //
+
+        //
+        if( vectorTokPlaty.at(1)  && ui->checkBox_workPlace2->isChecked() && isTokPlatyFinished2 ) {
+            QPainter painter(this); // Создаём объект отрисовщика
+            painter.setPen(QPen(Qt::lightGray, 1, Qt::SolidLine, Qt::FlatCap));
+            painter.setBrush(QBrush(Qt::red, Qt::SolidPattern));
+
+            painter.drawEllipse(xGpourBoxTokPlaty + 13 + 33, yGroupBoxTokPlaty + 45, 15, 15);
+        }
+        if( !vectorTokPlaty.at(1)  && ui->checkBox_workPlace2->isChecked() && isTokPlatyFinished2 ) {
+            QPainter painter(this); // Создаём объект отрисовщика
+            painter.setPen(QPen(Qt::lightGray, 1, Qt::SolidLine, Qt::FlatCap));
+            painter.setBrush(QBrush(Qt::green, Qt::SolidPattern));
+
+            painter.drawEllipse(xGpourBoxTokPlaty + 13 + 33, yGroupBoxTokPlaty + 45, 15, 15);
+        }
+        //
+
+        //
+        if( vectorTokPlaty.at(2)  && ui->checkBox_workPlace3->isChecked() && isTokPlatyFinished3 ) {
+            QPainter painter(this); // Создаём объект отрисовщика
+            painter.setPen(QPen(Qt::lightGray, 1, Qt::SolidLine, Qt::FlatCap));
+            painter.setBrush(QBrush(Qt::red, Qt::SolidPattern));
+
+            painter.drawEllipse(xGpourBoxTokPlaty + 13 + 33 + 33, yGroupBoxTokPlaty + 45, 15, 15);
+        }
+        if( !vectorTokPlaty.at(2)  && ui->checkBox_workPlace3->isChecked() && isTokPlatyFinished3 ) {
+            QPainter painter(this); // Создаём объект отрисовщика
+            painter.setPen(QPen(Qt::lightGray, 1, Qt::SolidLine, Qt::FlatCap));
+            painter.setBrush(QBrush(Qt::green, Qt::SolidPattern));
+
+            painter.drawEllipse(xGpourBoxTokPlaty + 13 + 33 + 33, yGroupBoxTokPlaty + 45, 15, 15);
+        }
+        //
+
+        //
+        if( vectorTokPlaty.at(3)  && ui->checkBox_workPlace4->isChecked() && isTokPlatyFinished4 ) {
+            QPainter painter(this); // Создаём объект отрисовщика
+            painter.setPen(QPen(Qt::lightGray, 1, Qt::SolidLine, Qt::FlatCap));
+            painter.setBrush(QBrush(Qt::red, Qt::SolidPattern));
+
+            painter.drawEllipse(xGpourBoxTokPlaty + 13 + 33 + 33 + 33, yGroupBoxTokPlaty + 45, 15, 15);
+        }
+        if( !vectorTokPlaty.at(3)  && ui->checkBox_workPlace4->isChecked() && isTokPlatyFinished4 ) {
+            QPainter painter(this); // Создаём объект отрисовщика
+            painter.setPen(QPen(Qt::lightGray, 1, Qt::SolidLine, Qt::FlatCap));
+            painter.setBrush(QBrush(Qt::green, Qt::SolidPattern));
+
+            painter.drawEllipse(xGpourBoxTokPlaty + 13 + 33 + 33 + 33, yGroupBoxTokPlaty + 45, 15, 15);
+        }
+
+        //--------------------tok platy------------------------/
+
     }
 
 
 
-    if(isNeedPaintEvent && isCommandsEnded) {
+    if(isNeedPaintEvent/* && isCommandsEnded*/) {
 
         QPainter painter(this); // Создаём объект отрисовщика
         // Устанавливаем кисть абриса
@@ -1717,12 +1805,12 @@ void MainWindow::paintEvent(QPaintEvent *event)
 //        painter.drawEllipse(xGpourBoxBsl + 13 + 33 + 33, yGroupBoxBsl + 45, 15, 15);
 //        painter.drawEllipse(xGpourBoxBsl + 13 + 33 + 33 + 33, yGroupBoxBsl + 45, 15, 15);
 
-        int xGpourBoxTokPlaty = ui->groupBox_tokPlaty->x();
-        int yGroupBoxTokPlaty = ui->groupBox_tokPlaty->y();
-        painter.drawEllipse(xGpourBoxTokPlaty + 13, yGroupBoxTokPlaty + 45, 15, 15);
-        painter.drawEllipse(xGpourBoxTokPlaty + 13 + 33, yGroupBoxTokPlaty + 45, 15, 15);
-        painter.drawEllipse(xGpourBoxTokPlaty + 13 + 33 + 33, yGroupBoxTokPlaty + 45, 15, 15);
-        painter.drawEllipse(xGpourBoxTokPlaty + 13 + 33 + 33 + 33, yGroupBoxTokPlaty + 45, 15, 15);
+//        int xGpourBoxTokPlaty = ui->groupBox_tokPlaty->x();
+//        int yGroupBoxTokPlaty = ui->groupBox_tokPlaty->y();
+//        painter.drawEllipse(xGpourBoxTokPlaty + 13, yGroupBoxTokPlaty + 45, 15, 15);
+//        painter.drawEllipse(xGpourBoxTokPlaty + 13 + 33, yGroupBoxTokPlaty + 45, 15, 15);
+//        painter.drawEllipse(xGpourBoxTokPlaty + 13 + 33 + 33, yGroupBoxTokPlaty + 45, 15, 15);
+//        painter.drawEllipse(xGpourBoxTokPlaty + 13 + 33 + 33 + 33, yGroupBoxTokPlaty + 45, 15, 15);
 
 
         int xGpourBox = ui->groupBox_writeParams->x();
@@ -1803,75 +1891,75 @@ void MainWindow::paintEvent(QPaintEvent *event)
         painter.drawEllipse(xGroupBoxResult + 13 + 33 + 33 + 33, yGroupBoxResult + 45, 15, 15);
 
 
-        //--------------------tok platy-------------------------
+//        //--------------------tok platy-------------------------
 
-        if( vectorTokPlaty.at(0) && ui->checkBox_workPlace1->isChecked() && isTokPlatyFinished1) {
-            QPainter painter(this); // Создаём объект отрисовщика
-            painter.setPen(QPen(Qt::lightGray, 1, Qt::SolidLine, Qt::FlatCap));
-            painter.setBrush(QBrush(Qt::red, Qt::SolidPattern));
+//        if( vectorTokPlaty.at(0) && ui->checkBox_workPlace1->isChecked() && isTokPlatyFinished1) {
+//            QPainter painter(this); // Создаём объект отрисовщика
+//            painter.setPen(QPen(Qt::lightGray, 1, Qt::SolidLine, Qt::FlatCap));
+//            painter.setBrush(QBrush(Qt::red, Qt::SolidPattern));
 
-            painter.drawEllipse(xGpourBoxTokPlaty + 13, yGroupBoxTokPlaty + 45, 15, 15);
-        }
-        if( !vectorTokPlaty.at(0)  && ui->checkBox_workPlace1->isChecked() && isTokPlatyFinished1 ) {
-            QPainter painter(this); // Создаём объект отрисовщика
-            painter.setPen(QPen(Qt::lightGray, 1, Qt::SolidLine, Qt::FlatCap));
-            painter.setBrush(QBrush(Qt::green, Qt::SolidPattern));
+//            painter.drawEllipse(xGpourBoxTokPlaty + 13, yGroupBoxTokPlaty + 45, 15, 15);
+//        }
+//        if( !vectorTokPlaty.at(0)  && ui->checkBox_workPlace1->isChecked() && isTokPlatyFinished1 ) {
+//            QPainter painter(this); // Создаём объект отрисовщика
+//            painter.setPen(QPen(Qt::lightGray, 1, Qt::SolidLine, Qt::FlatCap));
+//            painter.setBrush(QBrush(Qt::green, Qt::SolidPattern));
 
-            painter.drawEllipse(xGpourBoxTokPlaty + 13, yGroupBoxTokPlaty + 45, 15, 15);
-        }
-        //
+//            painter.drawEllipse(xGpourBoxTokPlaty + 13, yGroupBoxTokPlaty + 45, 15, 15);
+//        }
+//        //
 
-        //
-        if( vectorTokPlaty.at(1)  && ui->checkBox_workPlace2->isChecked() && isTokPlatyFinished2 ) {
-            QPainter painter(this); // Создаём объект отрисовщика
-            painter.setPen(QPen(Qt::lightGray, 1, Qt::SolidLine, Qt::FlatCap));
-            painter.setBrush(QBrush(Qt::red, Qt::SolidPattern));
+//        //
+//        if( vectorTokPlaty.at(1)  && ui->checkBox_workPlace2->isChecked() && isTokPlatyFinished2 ) {
+//            QPainter painter(this); // Создаём объект отрисовщика
+//            painter.setPen(QPen(Qt::lightGray, 1, Qt::SolidLine, Qt::FlatCap));
+//            painter.setBrush(QBrush(Qt::red, Qt::SolidPattern));
 
-            painter.drawEllipse(xGpourBoxTokPlaty + 13 + 33, yGroupBoxTokPlaty + 45, 15, 15);
-        }
-        if( !vectorTokPlaty.at(1)  && ui->checkBox_workPlace2->isChecked() && isTokPlatyFinished2 ) {
-            QPainter painter(this); // Создаём объект отрисовщика
-            painter.setPen(QPen(Qt::lightGray, 1, Qt::SolidLine, Qt::FlatCap));
-            painter.setBrush(QBrush(Qt::green, Qt::SolidPattern));
+//            painter.drawEllipse(xGpourBoxTokPlaty + 13 + 33, yGroupBoxTokPlaty + 45, 15, 15);
+//        }
+//        if( !vectorTokPlaty.at(1)  && ui->checkBox_workPlace2->isChecked() && isTokPlatyFinished2 ) {
+//            QPainter painter(this); // Создаём объект отрисовщика
+//            painter.setPen(QPen(Qt::lightGray, 1, Qt::SolidLine, Qt::FlatCap));
+//            painter.setBrush(QBrush(Qt::green, Qt::SolidPattern));
 
-            painter.drawEllipse(xGpourBoxTokPlaty + 13 + 33, yGroupBoxTokPlaty + 45, 15, 15);
-        }
-        //
+//            painter.drawEllipse(xGpourBoxTokPlaty + 13 + 33, yGroupBoxTokPlaty + 45, 15, 15);
+//        }
+//        //
 
-        //
-        if( vectorTokPlaty.at(2)  && ui->checkBox_workPlace3->isChecked() && isTokPlatyFinished3 ) {
-            QPainter painter(this); // Создаём объект отрисовщика
-            painter.setPen(QPen(Qt::lightGray, 1, Qt::SolidLine, Qt::FlatCap));
-            painter.setBrush(QBrush(Qt::red, Qt::SolidPattern));
+//        //
+//        if( vectorTokPlaty.at(2)  && ui->checkBox_workPlace3->isChecked() && isTokPlatyFinished3 ) {
+//            QPainter painter(this); // Создаём объект отрисовщика
+//            painter.setPen(QPen(Qt::lightGray, 1, Qt::SolidLine, Qt::FlatCap));
+//            painter.setBrush(QBrush(Qt::red, Qt::SolidPattern));
 
-            painter.drawEllipse(xGpourBoxTokPlaty + 13 + 33 + 33, yGroupBoxTokPlaty + 45, 15, 15);
-        }
-        if( !vectorTokPlaty.at(2)  && ui->checkBox_workPlace3->isChecked() && isTokPlatyFinished3 ) {
-            QPainter painter(this); // Создаём объект отрисовщика
-            painter.setPen(QPen(Qt::lightGray, 1, Qt::SolidLine, Qt::FlatCap));
-            painter.setBrush(QBrush(Qt::green, Qt::SolidPattern));
+//            painter.drawEllipse(xGpourBoxTokPlaty + 13 + 33 + 33, yGroupBoxTokPlaty + 45, 15, 15);
+//        }
+//        if( !vectorTokPlaty.at(2)  && ui->checkBox_workPlace3->isChecked() && isTokPlatyFinished3 ) {
+//            QPainter painter(this); // Создаём объект отрисовщика
+//            painter.setPen(QPen(Qt::lightGray, 1, Qt::SolidLine, Qt::FlatCap));
+//            painter.setBrush(QBrush(Qt::green, Qt::SolidPattern));
 
-            painter.drawEllipse(xGpourBoxTokPlaty + 13 + 33 + 33, yGroupBoxTokPlaty + 45, 15, 15);
-        }
-        //
+//            painter.drawEllipse(xGpourBoxTokPlaty + 13 + 33 + 33, yGroupBoxTokPlaty + 45, 15, 15);
+//        }
+//        //
 
-        //
-        if( vectorTokPlaty.at(3)  && ui->checkBox_workPlace4->isChecked() && isTokPlatyFinished4 ) {
-            QPainter painter(this); // Создаём объект отрисовщика
-            painter.setPen(QPen(Qt::lightGray, 1, Qt::SolidLine, Qt::FlatCap));
-            painter.setBrush(QBrush(Qt::red, Qt::SolidPattern));
+//        //
+//        if( vectorTokPlaty.at(3)  && ui->checkBox_workPlace4->isChecked() && isTokPlatyFinished4 ) {
+//            QPainter painter(this); // Создаём объект отрисовщика
+//            painter.setPen(QPen(Qt::lightGray, 1, Qt::SolidLine, Qt::FlatCap));
+//            painter.setBrush(QBrush(Qt::red, Qt::SolidPattern));
 
-            painter.drawEllipse(xGpourBoxTokPlaty + 13 + 33 + 33 + 33, yGroupBoxTokPlaty + 45, 15, 15);
-        }
-        if( !vectorTokPlaty.at(3)  && ui->checkBox_workPlace4->isChecked() && isTokPlatyFinished4 ) {
-            QPainter painter(this); // Создаём объект отрисовщика
-            painter.setPen(QPen(Qt::lightGray, 1, Qt::SolidLine, Qt::FlatCap));
-            painter.setBrush(QBrush(Qt::green, Qt::SolidPattern));
+//            painter.drawEllipse(xGpourBoxTokPlaty + 13 + 33 + 33 + 33, yGroupBoxTokPlaty + 45, 15, 15);
+//        }
+//        if( !vectorTokPlaty.at(3)  && ui->checkBox_workPlace4->isChecked() && isTokPlatyFinished4 ) {
+//            QPainter painter(this); // Создаём объект отрисовщика
+//            painter.setPen(QPen(Qt::lightGray, 1, Qt::SolidLine, Qt::FlatCap));
+//            painter.setBrush(QBrush(Qt::green, Qt::SolidPattern));
 
-            painter.drawEllipse(xGpourBoxTokPlaty + 13 + 33 + 33 + 33, yGroupBoxTokPlaty + 45, 15, 15);
-        }
+//            painter.drawEllipse(xGpourBoxTokPlaty + 13 + 33 + 33 + 33, yGroupBoxTokPlaty + 45, 15, 15);
+//        }
 
-        //--------------------tok platy------------------------/
+//        //--------------------tok platy------------------------/
 
 
         //
@@ -2673,6 +2761,11 @@ void MainWindow::paintEvent(QPaintEvent *event)
         workPlace3ResultString = tr("Годен");
         workPlace4ResultString = tr("Годен");
 
+        //добавляем одномерный вектор для результата тока платы
+   //     vectorIsCommandUse.replace();
+        vectorIndicatorStateMatrix.replace(10, vectorTokPlaty);
+        //добавляем одномерные векторы для результата bsl и тока платы/
+
         for(int u=0; u<vectorIsCommandUse.size(); u++) {
             if(vectorIsCommandUse.at(u)) {
 
@@ -2819,13 +2912,94 @@ void MainWindow::slotWriteParams()
 /*************************************************************/
 void MainWindow::on_toolButton_programmingBSL_clicked()
 {
+    ui->label_StatusBar->clear();
+    ui->textBrowser->clear();
+    errorString.clear();
+
+    portOptical->close();
+    portOptical2->close();
+    portOptical3->close();
+    portOptical4->close();
+    portStend->close();
+
     isBslFinished1 = false;
     isBslFinished2 = false;
     isBslFinished3 = false;
     isBslFinished4 = false;
 
+    isTokPlatyFinished1 = false;
+    isTokPlatyFinished2 = false;
+    isTokPlatyFinished3 = false;
+    isTokPlatyFinished4 = false;
+
+    isTimeCalFinished1 = false;
+    isTimeCalFinished2 = false;
+    isTimeCalFinished3 = false;
+    isTimeCalFinished4 = false;
+
+    isRashodomerFinished1 = false;
+    isRashodomerFinished2 = false;
+    isRashodomerFinished3 = false;
+    isRashodomerFinished4 = false;
+
+    isMagnSensorFinished1 = false;
+    isMagnSensorFinished2 = false;
+    isMagnSensorFinished3 = false;
+    isMagnSensorFinished4 = false;
+
+        isWritingFinished1 = false;
+        isWritingFinished2 = false;
+        isWritingFinished3 = false;
+        isWritingFinished4 = false;
+
+        isCalibrationFinished1 = false;
+        isCalibrationFinished2 = false;
+        isCalibrationFinished3 = false;
+        isCalibrationFinished4 = false;
+
+        isPulsesOutputHeat1 = false;
+        isPulsesOutputHeat2 = false;
+        isPulsesOutputHeat3 = false;
+        isPulsesOutputHeat4 = false;
+
+        isPulsesInputVolume1 = false;
+        isPulsesInputVolume2 = false;
+        isPulsesInputVolume3 = false;
+        isPulsesInputVolume4 = false;
+
+        isPulsesOutputDefault1 = false;
+        isPulsesOutputDefault2 = false;
+        isPulsesOutputDefault3 = false;
+        isPulsesOutputDefault4 = false;
+
+        isMBusOn1 = false;
+        isMBusOn2 = false;
+        isMBusOn3 = false;
+        isMBusOn4 = false;
+
+        isMBusCheck1 = false;
+        isMBusCheck2 = false;
+        isMBusCheck3 = false;
+        isMBusCheck4 = false;
+
+        isWireInterfaceChecking1 = false;
+        isWireInterfaceChecking2 = false;
+        isWireInterfaceChecking3 = false;
+        isWireInterfaceChecking4 = false;
+
+        isMBusOff1 = false;
+        isMBusOff2 = false;
+        isMBusOff3 = false;
+        isMBusOff4 = false;
+
+    isCalibrationModeOff1 = false;
+    isCalibrationModeOff2 = false;
+    isCalibrationModeOff3 = false;
+    isCalibrationModeOff4 = false;
+
     isBslEnded = false;
     isCommandsEnded = false;
+    isNeedPaintEvent = false;
 
     if(ui->checkBox_workPlace1->isChecked()) vectorIsWorkPlaceUse[0] = true;
     if(ui->checkBox_workPlace2->isChecked()) vectorIsWorkPlaceUse[1] = true;
@@ -2857,7 +3031,19 @@ void MainWindow::on_toolButton_programmingBSL_clicked()
     ObjectThread3->getPortBSL(port, port2, port3, port4);
     ObjectThread4->getPortBSL(port, port2, port3, port4);
 
+    ObjectThread1->getPortStendName(portStend);
+    ObjectThread2->getPortStendName(portStend);
+    ObjectThread3->getPortStendName(portStend);
+    ObjectThread4->getPortStendName(portStend);
+
     vectorBSL.fill(false);
+    vectorTokPlaty.fill(false);
+    for(int m=0; m<vectorIndicatorStateMatrix.size(); m++) {
+        vectorIndicatorStateMatrix[m].fill(false);
+    }
+    vectorIndicatorStateMatrix.replace(10, vectorTokPlaty);
+
+    repaint();
 
     ObjectThread1->setVectorBSLMatrix(vectorBSL);
     ObjectThread2->setVectorBSLMatrix(vectorBSL);
@@ -2895,7 +3081,7 @@ void MainWindow::on_toolButton_programmingBSL_clicked()
       bool isBslFinishedTmp3 = true;
       bool isBslFinishedTmp4 = true;
 
-      for(int e=0; e<100; e++) { //10 sec
+      for(int e=0; e<1500; e++) { //150 sec
           global::pause(100);
 
           if(ui->checkBox_workPlace1->isChecked()) {
@@ -2905,19 +3091,19 @@ void MainWindow::on_toolButton_programmingBSL_clicked()
           }
 
           if(ui->checkBox_workPlace2->isChecked()) {
-              isBslFinishedTmp2 = isWritingFinished2;
+              isBslFinishedTmp2 = isBslFinishedTmp2;
 
               if(!vectorIsWorkPlaceUse.at(1)) isBslFinishedTmp2 = true;
           }
 
           if(ui->checkBox_workPlace3->isChecked()) {
-              isBslFinishedTmp3 = isWritingFinished3;
+              isBslFinishedTmp3 = isBslFinishedTmp3;
 
               if(!vectorIsWorkPlaceUse.at(2)) isBslFinishedTmp3 = true;
           }
 
           if(ui->checkBox_workPlace4->isChecked()) {
-              isBslFinishedTmp4 = isWritingFinished4;
+              isBslFinishedTmp4 = isBslFinishedTmp4;
 
               if(!vectorIsWorkPlaceUse.at(3)) isBslFinishedTmp4 = true;
           }
@@ -2931,6 +3117,69 @@ void MainWindow::on_toolButton_programmingBSL_clicked()
     //-------------------------Ждём завершения записи------------------/
 
       ui->toolButton_programmingBSL->setPalette(palettePrime);
+
+
+      //
+      //проверка тока платы
+
+      //индикация тока платы
+      ObjectThread1->setVectorTokPlaty(vectorTokPlaty);
+      ObjectThread2->setVectorTokPlaty(vectorTokPlaty);
+      ObjectThread3->setVectorTokPlaty(vectorTokPlaty);
+      ObjectThread4->setVectorTokPlaty(vectorTokPlaty);
+      //индикация тока платы/
+
+      ObjectThread1->setIsWorkPlaceUseVector(vectorIsWorkPlaceUse);
+      ObjectThread2->setIsWorkPlaceUseVector(vectorIsWorkPlaceUse);
+      ObjectThread3->setIsWorkPlaceUseVector(vectorIsWorkPlaceUse);
+      ObjectThread4->setIsWorkPlaceUseVector(vectorIsWorkPlaceUse);
+
+      emit signalLog("<font color = \"#0000ff\">" + QString("Проверка тока платы")  + '\n' + "</font>");
+
+      emit startTokPlatyRequest();
+
+      //-------------------Ожидание завершения Проверка тока платы---------------
+
+      bool isTokPlatyFinishedTmp1 = true;
+      bool isTokPlatyFinishedTmp2 = true;
+      bool isTokPlatyFinishedTmp3 = true;
+      bool isTokPlatyFinishedTmp4 = true;
+
+      for(int e=0; e<100; e++) { //10 sec
+          global::pause(100);
+
+          if(ui->checkBox_workPlace1->isChecked()) {
+              isTokPlatyFinishedTmp1 = isTokPlatyFinished1;
+
+              if(!vectorIsWorkPlaceUse.at(0)) isTokPlatyFinishedTmp1 = true;
+          }
+
+          if(ui->checkBox_workPlace2->isChecked()) {
+              isTokPlatyFinishedTmp2 = isTokPlatyFinished2;
+
+              if(!vectorIsWorkPlaceUse.at(1)) isTokPlatyFinishedTmp2 = true;
+          }
+
+          if(ui->checkBox_workPlace3->isChecked()) {
+              isTokPlatyFinishedTmp3 = isTokPlatyFinished3;
+
+              if(!vectorIsWorkPlaceUse.at(2)) isTokPlatyFinishedTmp3 = true;
+          }
+
+          if(ui->checkBox_workPlace4->isChecked()) {
+              isTokPlatyFinishedTmp4 = isTokPlatyFinished4;
+
+              if(!vectorIsWorkPlaceUse.at(3)) isTokPlatyFinishedTmp4 = true;
+          }
+
+
+          if(isTokPlatyFinishedTmp1 && isTokPlatyFinishedTmp2 && isTokPlatyFinishedTmp3 && isTokPlatyFinishedTmp4)
+              break;
+      }
+
+      //-------------------Ожидание завершения Проверка тока платы---------------
+
+      //проверка тока платы/
 
       //ищем последние сообщения об ошибках для каждого рабочего места
       QStringList errorList = errorString.split('\n');
@@ -4672,7 +4921,7 @@ void MainWindow::on_toolButton_loadTemplate_clicked()
     }
     qDebug()<<"fileToStringList"<<fileToStringList;
 
-    if(fileToStringList.size() == 62) {
+    if(fileToStringList.size() == 81) {
 //        ui->toolButton_writeParams->setEnabled(true);
 //        ui->toolButton_pulsesInputVolume->setEnabled(true);
 //        ui->toolButton_pulsesOutputHeat->setEnabled(true);
@@ -4768,7 +5017,7 @@ void MainWindow::on_toolButton_loadTemplate_clicked()
     //
     QString DevTypeString = fileToStringList[5];
     if(!DevTypeString.contains("DevType ")) {
-        QMessageBox::information(this, "", tr("Отсутствует параментр: DevType"));
+        QMessageBox::information(this, "", tr("Отсутствует параметр: DevType"));
         return;
     }
     DevTypeString.remove("\nDevType ");
@@ -4781,7 +5030,7 @@ void MainWindow::on_toolButton_loadTemplate_clicked()
     //
     QString DNString = fileToStringList[6];
     if(!DNString.contains("DN ")) {
-        QMessageBox::information(this, "", tr("Отсутствует параментр: DN"));
+        QMessageBox::information(this, "", tr("Отсутствует параметр: DN"));
         return;
     }
     DNString.remove("\nDN ");
@@ -4793,21 +5042,40 @@ void MainWindow::on_toolButton_loadTemplate_clicked()
     }
 
     //
-//    QString PCB_SNString = fileToStringList[7];
+    QString PCB_SNString = fileToStringList[7];
+    if(!PCB_SNString.contains("PCB_SN ")) {
+        QMessageBox::information(this, "", tr("Отсутствует параметр: PCB_SN"));
+        return;
+    }
 //    PCB_SNString.remove("\nPCB_SN ");
 //    ui->lineEdit_PCB_SN->setText(PCB_SNString);
 
-//    QString PCB_SNString2 = fileToStringList[8];
+    //
+    QString PCB_SNString2 = fileToStringList[8];
+    if(!PCB_SNString2.contains("PCB_SN2 ")) {
+        QMessageBox::information(this, "", tr("Отсутствует параметр: PCB_SN2"));
+        return;
+    }
 //    PCB_SNString2.remove("\nPCB_SN2 ");
-//    ui->lineEdit_PCB_SN->setText(PCB_SNString);
+//    ui->lineEdit_PCB_SN->setText(PCB_SNString2);
 
-//    QString PCB_SNString = fileToStringList[9];
-//    PCB_SNString.remove("\nPCB_SN ");
-//    ui->lineEdit_PCB_SN->setText(PCB_SNString);
+    //
+    QString PCB_SNString3 = fileToStringList[9];
+    if(!PCB_SNString3.contains("PCB_SN3 ")) {
+        QMessageBox::information(this, "", tr("Отсутствует параметр: PCB_SN3"));
+        return;
+    }
+//    PCB_SNString3.remove("\nPCB_SN3 ");
+//    ui->lineEdit_PCB_SN->setText(PCB_SNString3);
 
-//    QString PCB_SNString = fileToStringList[10];
-//    PCB_SNString.remove("\nPCB_SN ");
-//    ui->lineEdit_PCB_SN->setText(PCB_SNString);
+    //
+    QString PCB_SNString4 = fileToStringList[10];
+    if(!PCB_SNString4.contains("PCB_SN4 ")) {
+        QMessageBox::information(this, "", tr("Отсутствует параметр: PCB_SN4"));
+        return;
+    }
+//    PCB_SNString4.remove("\nPCB_SN4 ");
+//    ui->lineEdit_PCB_SN->setText(PCB_SNString4);
 
     //
     QString Flow_minString = fileToStringList[11];
@@ -5316,6 +5584,308 @@ void MainWindow::on_toolButton_loadTemplate_clicked()
     }
     Service_P2String.remove("\nService_P2 ");
     ui->lineEdit_Service_P2->setText(Service_P2String);
+
+    //
+    //дополнительные параметры
+    //
+
+    //Write RF Settings
+    QByteArray byteArray;
+    quint8 byte;
+    qint8 byteSign;
+
+    QString NB_Fi_TxCh_Str = fileToStringList[62];
+    if(!NB_Fi_TxCh_Str.contains("NB_Fi_TxCh ")) {
+        QMessageBox::information(this, "", tr("Отсутствует параметр: NB_Fi_TxCh"));
+        return;
+    }
+    NB_Fi_TxCh_Str.remove("\nNB_Fi_TxCh ");
+    byte = NB_Fi_TxCh_Str.toInt();
+    paramsMapToThreads["NB_Fi_TxCh"] = byteArray.append(byte);
+    //
+
+    byteArray.clear();
+    QString NB_Fi_RxCh_Str = fileToStringList[63];
+    if(!NB_Fi_RxCh_Str.contains("NB_Fi_RxCh ")) {
+        QMessageBox::information(this, "", tr("Отсутствует параметр: NB_Fi_RxCh"));
+        return;
+    }
+    NB_Fi_RxCh_Str.remove("\nNB_Fi_RxCh ");
+    byte = NB_Fi_RxCh_Str.toInt();
+    paramsMapToThreads["NB_Fi_RxCh"] = byteArray.append(byte);
+    //
+
+    byteArray.clear();
+    QString NB_Fi_RFBand_Str = fileToStringList[64];
+    if(!NB_Fi_RFBand_Str.contains("NB_Fi_RFBand ")) {
+        QMessageBox::information(this, "", tr("Отсутствует параметр: NB_Fi_RFBand"));
+        return;
+    }
+    NB_Fi_RFBand_Str.remove("\nNB_Fi_RFBand ");
+    byte = NB_Fi_RFBand_Str.toInt();
+    paramsMapToThreads["NB_Fi_RFBand"] = byteArray.append(byte);
+    //
+
+    byteArray.clear();
+    QString NB_Fi_TxPwr_Str = fileToStringList[65];
+    if(!NB_Fi_TxPwr_Str.contains("NB_Fi_TxPwr ")) {
+        QMessageBox::information(this, "", tr("Отсутствует параметр: NB_Fi_TxPwr"));
+        return;
+    }
+    NB_Fi_TxPwr_Str.remove("\nNB_Fi_TxPwr ");
+    byteSign = NB_Fi_TxPwr_Str.toInt();
+    paramsMapToThreads["NB_Fi_TxPwr"] = byteArray.append(byteSign);
+    //
+
+    byteArray.clear();
+    QString NB_Fi_RFPwr_Str = fileToStringList[66];
+    if(!NB_Fi_RFPwr_Str.contains("NB_Fi_RFPwr ")) {
+        QMessageBox::information(this, "", tr("Отсутствует параметр: NB_Fi_RFPwr"));
+        return;
+    }
+    NB_Fi_RFPwr_Str.remove("\nNB_Fi_RFPwr ");
+    byteSign = NB_Fi_RFPwr_Str.toInt();
+    paramsMapToThreads["NB_Fi_RFPwr"] = byteArray.append(byteSign);//15;
+    //
+    //Write RF Settings/
+
+
+    //Write NB-FI Settings
+    byteArray.clear();
+    QString NB_Fi_Mode_Str = fileToStringList[67];
+    if(!NB_Fi_Mode_Str.contains("NB_Fi_Mode ")) {
+        QMessageBox::information(this, "", tr("Отсутствует параметр: NB_Fi_Mode"));
+        return;
+    }
+    NB_Fi_Mode_Str.remove("\nNB_Fi_Mode ");
+    byte = NB_Fi_Mode_Str.toInt();
+    paramsMapToThreads["NB_Fi_Mode"] = byteArray.append(byte);//0;
+    //
+
+    byteArray.clear();
+    QString NB_Fi_HdSh_Str = fileToStringList[68];
+    if(!NB_Fi_HdSh_Str.contains("NB_Fi_HdSh ")) {
+        QMessageBox::information(this, "", tr("Отсутствует параметр: NB_Fi_HdSh"));
+        return;
+    }
+    NB_Fi_HdSh_Str.remove("\nNB_Fi_HdSh ");
+    byte = NB_Fi_HdSh_Str.toInt();
+    paramsMapToThreads["NB_Fi_HdSh"] = byteArray.append(byte);//0;
+    //
+
+    byteArray.clear();
+    QString NB_Fi_MAC_Str = fileToStringList[69];
+    if(!NB_Fi_MAC_Str.contains("NB_Fi_MAC ")) {
+        QMessageBox::information(this, "", tr("Отсутствует параметр: NB_Fi_MAC"));
+        return;
+    }
+    NB_Fi_MAC_Str.remove("\nNB_Fi_MAC ");
+    byte = NB_Fi_MAC_Str.toInt();
+    paramsMapToThreads["NB_Fi_MAC"] = byteArray.append(byte);//1;
+    //
+
+    byteArray.clear();
+    QString NB_Fi_RetNum_Str = fileToStringList[70];
+    if(!NB_Fi_RetNum_Str.contains("NB_Fi_RetNum ")) {
+        QMessageBox::information(this, "", tr("Отсутствует параметр: NB_Fi_RetNum"));
+        return;
+    }
+    NB_Fi_RetNum_Str.remove("\nNB_Fi_RetNum ");
+    byte = NB_Fi_RetNum_Str.toInt();
+    paramsMapToThreads["NB_Fi_RetNum"] = byteArray.append(byte);//1;
+    //
+
+    byteArray.clear();
+    QString NB_Fi_PldLen_Str = fileToStringList[71];
+    if(!NB_Fi_PldLen_Str.contains("NB_Fi_PldLen ")) {
+        QMessageBox::information(this, "", tr("Отсутствует параметр: NB_Fi_PldLen"));
+        return;
+    }
+    NB_Fi_PldLen_Str.remove("\nNB_Fi_PldLen ");
+    byte = NB_Fi_PldLen_Str.toInt();
+    paramsMapToThreads["NB_Fi_PldLen"] = byteArray.append(byte);//8;
+    //
+
+    byteArray.clear();
+    QString NB_Fi_HrbtNum_Str = fileToStringList[72];
+    if(!NB_Fi_HrbtNum_Str.contains("NB_Fi_HrbtNum ")) {
+        QMessageBox::information(this, "", tr("Отсутствует параметр: NB_Fi_HrbtNum"));
+        return;
+    }
+    NB_Fi_HrbtNum_Str.remove("\nNB_Fi_HrbtNum ");
+    byte = NB_Fi_HrbtNum_Str.toInt();
+    paramsMapToThreads["NB_Fi_HrbtNum"] = byteArray.append(byte);//255;
+    //
+
+    byteArray.clear();//4 bytes
+    QString NB_Fi_HrbtInt_Str = fileToStringList[73];
+    if(!NB_Fi_HrbtInt_Str.contains("NB_Fi_HrbtInt ")) {
+        QMessageBox::information(this, "", tr("Отсутствует параметр: NB_Fi_HrbtInt"));
+        return;
+    }
+    NB_Fi_HrbtInt_Str.remove("\nNB_Fi_HrbtInt ");
+    quint32 byteInt32 = NB_Fi_HrbtInt_Str.toInt();
+    byteArray.append((quint8)(byteInt32>>24));
+    byteArray.append((quint8)(byteInt32>>16));
+    byteArray.append((quint8)(byteInt32>>8));
+    byteArray.append((quint8)(byteInt32));
+    paramsMapToThreads["NB_Fi_HrbtInt"] = byteArray;//43200;
+    //
+
+    byteArray.clear();//4 bytes
+    QString NB_Fi_InfoInt_Str = fileToStringList[74];
+    if(!NB_Fi_InfoInt_Str.contains("NB_Fi_InfoInt ")) {
+        QMessageBox::information(this, "", tr("Отсутствует параметр: NB_Fi_InfoInt"));
+        return;
+    }
+    NB_Fi_InfoInt_Str.remove("\nNB_Fi_InfoInt ");
+    byteInt32 = NB_Fi_InfoInt_Str.toInt();
+    byteArray.append((quint8)(byteInt32>>24));
+    byteArray.append((quint8)(byteInt32>>16));
+    byteArray.append((quint8)(byteInt32>>8));
+    byteArray.append((quint8)(byteInt32));
+    paramsMapToThreads["NB_Fi_InfoInt"] = byteArray;//2592000;
+    //
+
+    //NB-FI UrsPktInt_WNS значение по умолчанию?
+//    byteArray.clear();//2 bytes
+//    QString NB_Fi_UsrPktIntStr = fileToStringList[80];
+//    if(!NB_Fi_UsrPktIntStr.contains("NB_Fi_UsrPktInt_WNS ")) {
+//        QMessageBox::information(this, "", tr("Отсутствует параметр: NB_Fi_UsrPktInt_WNS"));
+//        return;
+//    }
+//    NB_Fi_UsrPktIntStr.remove("\nNB_Fi_UsrPktInt_WNS ");
+//    quint16 byteInt16 = NB_Fi_UsrPktIntStr.toInt();
+//    byteArray.append((quint8)(byteInt16>>8));
+//    byteArray.append((quint8)byteInt16);
+//    paramsMapToThreads["NB_Fi_UsrPktInt_WNS"] = byteArray;//10080;
+
+
+    //
+    //Write NB-FI Settings/
+
+
+    //Write Identificators
+    byteArray.clear();//4 bytes
+    QString NB_Fi_BrdID_Str = fileToStringList[75];
+    if(!NB_Fi_BrdID_Str.contains("NB_Fi_BrdID ")) {
+        QMessageBox::information(this, "", tr("Отсутствует параметр: NB_Fi_BrdID"));
+        return;
+    }
+    NB_Fi_BrdID_Str.remove("\nNB_Fi_BrdID 0x");
+    bool ok;
+    byteInt32 = NB_Fi_BrdID_Str.toInt(&ok, 16);
+    byteArray.append((quint8)(byteInt32>>24));
+    byteArray.append((quint8)(byteInt32>>16));
+    byteArray.append((quint8)(byteInt32>>8));
+    byteArray.append((quint8)(byteInt32));
+    paramsMapToThreads["NB_Fi_BrdID"] = byteArray;//0x00FF0000;
+    //
+
+    byteArray.clear();//4 bytes
+    QString NB_Fi_MdmID_Str = fileToStringList[76];
+    if(!NB_Fi_MdmID_Str.contains("NB_Fi_MdmID ")) {
+        QMessageBox::information(this, "", tr("Отсутствует параметр: NB_Fi_MdmID"));
+        return;
+    }
+    NB_Fi_MdmID_Str.remove("\nNB_Fi_MdmID 0x");
+    byteInt32 = NB_Fi_MdmID_Str.toInt(&ok, 16);
+    byteArray.append((quint8)(byteInt32>>24));
+    byteArray.append((quint8)(byteInt32>>16));
+    byteArray.append((quint8)(byteInt32>>8));
+    byteArray.append((quint8)(byteInt32));
+    paramsMapToThreads["NB_Fi_MdmID"] = byteArray;//0x00000000;
+    //
+
+    byteArray.clear();//32 bytes
+    QString NB_Fi_Key_Str = fileToStringList[77];
+    if(!NB_Fi_Key_Str.contains("NB_Fi_Key ")) {
+        QMessageBox::information(this, "", tr("Отсутствует параметр: NB_Fi_Key"));
+        return;
+    }
+    NB_Fi_Key_Str.remove("\nNB_Fi_Key 0x");
+    quint64 part1 = NB_Fi_Key_Str.left(16).toInt(&ok, 16);
+    NB_Fi_Key_Str.remove(0, 16);
+    quint64 part2 = NB_Fi_Key_Str.left(16).toInt(&ok, 16);
+    NB_Fi_Key_Str.remove(0, 16);
+    quint64 part3 = NB_Fi_Key_Str.left(16).toInt(&ok, 16);
+    NB_Fi_Key_Str.remove(0, 16);
+    quint64 part4 = NB_Fi_Key_Str.left(16).toInt(&ok, 16);
+
+    byteArray.append((quint8)(part1>>56));
+    byteArray.append((quint8)(part1>>48));
+    byteArray.append((quint8)(part1>>40));
+    byteArray.append((quint8)(part1>>32));
+    byteArray.append((quint8)(part1>>24));
+    byteArray.append((quint8)(part1>>16));
+    byteArray.append((quint8)(part1>>8));
+    byteArray.append((quint8)(part1));
+    byteArray.append((quint8)(part2>>56));
+    byteArray.append((quint8)(part2>>48));
+    byteArray.append((quint8)(part2>>40));
+    byteArray.append((quint8)(part2>>32));
+    byteArray.append((quint8)(part2>>24));
+    byteArray.append((quint8)(part2>>16));
+    byteArray.append((quint8)(part2>>8));
+    byteArray.append((quint8)(part2));
+    byteArray.append((quint8)(part3>>56));
+    byteArray.append((quint8)(part3>>48));
+    byteArray.append((quint8)(part3>>40));
+    byteArray.append((quint8)(part3>>32));
+    byteArray.append((quint8)(part3>>24));
+    byteArray.append((quint8)(part3>>16));
+    byteArray.append((quint8)(part3>>8));
+    byteArray.append((quint8)(part3));
+    byteArray.append((quint8)(part4>>56));
+    byteArray.append((quint8)(part4>>48));
+    byteArray.append((quint8)(part4>>40));
+    byteArray.append((quint8)(part4>>32));
+    byteArray.append((quint8)(part4>>24));
+    byteArray.append((quint8)(part4>>16));
+    byteArray.append((quint8)(part4>>8));
+    byteArray.append((quint8)(part4));
+
+    paramsMapToThreads["NB_Fi_Key"] = byteArray;//0x0000..0000;
+    //
+    //Write Identificators/
+
+
+    //Write Application Layer
+    byteArray.clear();
+    QString W5_Trans_Str = fileToStringList[78];
+    if(!W5_Trans_Str.contains("W5_Trans ")) {
+        QMessageBox::information(this, "", tr("Отсутствует параметр: W5_Trans"));
+        return;
+    }
+    W5_Trans_Str.remove("\nW5_Trans 0x");
+    byte = W5_Trans_Str.toInt(&ok, 16);
+    paramsMapToThreads["W5_Trans"] = byteArray.append(byte);//0x82;
+    //
+
+    byteArray.clear();
+    QString W7_Trans_Str = fileToStringList[79];
+    if(!W7_Trans_Str.contains("W7_Trans ")) {
+        QMessageBox::information(this, "", tr("Отсутствует параметр: W7_Trans"));
+        return;
+    }
+    W7_Trans_Str.remove("\nW7_Trans 0x");
+    byte = W7_Trans_Str.toInt(&ok, 16);
+    paramsMapToThreads["W7_Trans"] = byteArray.append(byte);//0x00;
+    //
+
+    byteArray.clear();//2 bytes
+    QString NB_Fi_UsrPktInt_Str = fileToStringList[80];
+    if(!NB_Fi_UsrPktInt_Str.contains("NB_Fi_UsrPktInt_WAL ")) {
+        QMessageBox::information(this, "", tr("Отсутствует параметр: NB_Fi_UsrPktInt_WAL"));
+        return;
+    }
+    NB_Fi_UsrPktInt_Str.remove("\nNB_Fi_UsrPktInt_WAL ");
+    quint16 byteInt16 = NB_Fi_UsrPktInt_Str.toInt();
+    byteArray.append((quint8)(byteInt16>>8));
+    byteArray.append((quint8)byteInt16);
+    paramsMapToThreads["NB_Fi_UsrPktInt_WAL"] = byteArray;//10080;
+    //
+    //Write Application Layer/
 
 
 }
@@ -21703,6 +22273,56 @@ void MainWindow::slotGetParamsMap(QMap<QString, QByteArray> paramsMap)
 
      PCB_SN_ByteArray = paramsMap["PCB_SN_ByteArray"];
      paramsMapToThreads["PCB_SN_ByteArray"] = paramsMap["PCB_SN_ByteArray"];
+//     int type1 = paramsMap["PCB_SN_ByteArray"].at(1);
+//     switch (type1) {
+//     case 0x00:
+
+//         break;
+//     case 0x02:
+
+//         break;
+//     case 0x04:
+
+//         break;
+//     case 0x08:
+
+//         break;
+//     case 0x10:
+
+//         break;
+//     case 0x12:
+
+//         break;
+//     case 0x14:
+
+//         break;
+//     case 0x16:
+
+//         break;
+//     case 0x18:
+
+//         break;
+//     case 0x20:
+
+//         break;
+//     case 0x22:
+
+//         break;
+//     case 0x24:
+
+//         break;
+//     case 0x26:
+
+//         break;
+//     case 0x28:
+
+//         break;
+//     case 0x30:
+
+//         break;
+//     default:
+//         break;
+//     }
 
      PCB_SN_ByteArray2 = paramsMap["PCB_SN_ByteArray2"];
      paramsMapToThreads["PCB_SN_ByteArray2"] = paramsMap["PCB_SN_ByteArray2"];
@@ -35032,20 +35652,22 @@ void MainWindow::on_toolButton_executeCommands_clicked()
        }
     }
 
+    vectorIndicatorStateMatrix.replace(10, vectorTokPlaty);
+
 
     ObjectThread1->setVectorIndicatorStateMatrix(vectorIndicatorStateMatrix);
     ObjectThread2->setVectorIndicatorStateMatrix(vectorIndicatorStateMatrix);
     ObjectThread3->setVectorIndicatorStateMatrix(vectorIndicatorStateMatrix);
     ObjectThread4->setVectorIndicatorStateMatrix(vectorIndicatorStateMatrix);
 
-    //индикация тока платы
-    vectorTokPlaty.fill(false);
+//    //индикация тока платы
+//    vectorTokPlaty.fill(false);
 
-    ObjectThread1->setVectorTokPlaty(vectorTokPlaty);
-    ObjectThread2->setVectorTokPlaty(vectorTokPlaty);
-    ObjectThread3->setVectorTokPlaty(vectorTokPlaty);
-    ObjectThread4->setVectorTokPlaty(vectorTokPlaty);
-    //индикация тока платы/
+//    ObjectThread1->setVectorTokPlaty(vectorTokPlaty);
+//    ObjectThread2->setVectorTokPlaty(vectorTokPlaty);
+//    ObjectThread3->setVectorTokPlaty(vectorTokPlaty);
+//    ObjectThread4->setVectorTokPlaty(vectorTokPlaty);
+//    //индикация тока платы/
 
     ObjectThread1->setParamsMap(paramsMapToThreads);
     ObjectThread2->setParamsMap(paramsMapToThreads);
@@ -35077,10 +35699,10 @@ void MainWindow::on_toolButton_executeCommands_clicked()
 
     errorString.clear();
 
-    isTokPlatyFinished1 = false;
-    isTokPlatyFinished2 = false;
-    isTokPlatyFinished3 = false;
-    isTokPlatyFinished4 = false;
+//    isTokPlatyFinished1 = false;
+//    isTokPlatyFinished2 = false;
+//    isTokPlatyFinished3 = false;
+//    isTokPlatyFinished4 = false;
 
     isTimeCalFinished1 = false;
     isTimeCalFinished2 = false;
@@ -35165,59 +35787,59 @@ void MainWindow::on_toolButton_executeCommands_clicked()
     //для всех рабочих мест команды посылаются параллельно
 
 
-    //проверка тока платы
+//    //проверка тока платы
 
-    ObjectThread1->setIsWorkPlaceUseVector(vectorIsWorkPlaceUse);
-    ObjectThread2->setIsWorkPlaceUseVector(vectorIsWorkPlaceUse);
-    ObjectThread3->setIsWorkPlaceUseVector(vectorIsWorkPlaceUse);
-    ObjectThread4->setIsWorkPlaceUseVector(vectorIsWorkPlaceUse);
+//    ObjectThread1->setIsWorkPlaceUseVector(vectorIsWorkPlaceUse);
+//    ObjectThread2->setIsWorkPlaceUseVector(vectorIsWorkPlaceUse);
+//    ObjectThread3->setIsWorkPlaceUseVector(vectorIsWorkPlaceUse);
+//    ObjectThread4->setIsWorkPlaceUseVector(vectorIsWorkPlaceUse);
 
-    emit signalLog("<font color = \"#0000ff\">" + QString("Проверка тока платы")  + '\n' + "</font>");
+//    emit signalLog("<font color = \"#0000ff\">" + QString("Проверка тока платы")  + '\n' + "</font>");
 
-    emit startTokPlatyRequest();
+//    emit startTokPlatyRequest();
 
-    //-------------------Ожидание завершения Проверка тока платы---------------
+//    //-------------------Ожидание завершения Проверка тока платы---------------
 
-    bool isTokPlatyFinishedTmp1 = true;
-    bool isTokPlatyFinishedTmp2 = true;
-    bool isTokPlatyFinishedTmp3 = true;
-    bool isTokPlatyFinishedTmp4 = true;
+//    bool isTokPlatyFinishedTmp1 = true;
+//    bool isTokPlatyFinishedTmp2 = true;
+//    bool isTokPlatyFinishedTmp3 = true;
+//    bool isTokPlatyFinishedTmp4 = true;
 
-    for(int e=0; e<100; e++) { //10 sec
-        global::pause(100);
+//    for(int e=0; e<100; e++) { //10 sec
+//        global::pause(100);
 
-        if(ui->checkBox_workPlace1->isChecked()) {
-            isTokPlatyFinishedTmp1 = isTokPlatyFinished1;
+//        if(ui->checkBox_workPlace1->isChecked()) {
+//            isTokPlatyFinishedTmp1 = isTokPlatyFinished1;
 
-            if(!vectorIsWorkPlaceUse.at(0)) isTokPlatyFinishedTmp1 = true;
-        }
+//            if(!vectorIsWorkPlaceUse.at(0)) isTokPlatyFinishedTmp1 = true;
+//        }
 
-        if(ui->checkBox_workPlace2->isChecked()) {
-            isTokPlatyFinishedTmp2 = isTokPlatyFinished2;
+//        if(ui->checkBox_workPlace2->isChecked()) {
+//            isTokPlatyFinishedTmp2 = isTokPlatyFinished2;
 
-            if(!vectorIsWorkPlaceUse.at(1)) isTokPlatyFinishedTmp2 = true;
-        }
+//            if(!vectorIsWorkPlaceUse.at(1)) isTokPlatyFinishedTmp2 = true;
+//        }
 
-        if(ui->checkBox_workPlace3->isChecked()) {
-            isTokPlatyFinishedTmp3 = isTokPlatyFinished3;
+//        if(ui->checkBox_workPlace3->isChecked()) {
+//            isTokPlatyFinishedTmp3 = isTokPlatyFinished3;
 
-            if(!vectorIsWorkPlaceUse.at(2)) isTokPlatyFinishedTmp3 = true;
-        }
+//            if(!vectorIsWorkPlaceUse.at(2)) isTokPlatyFinishedTmp3 = true;
+//        }
 
-        if(ui->checkBox_workPlace4->isChecked()) {
-            isTokPlatyFinishedTmp4 = isTokPlatyFinished4;
+//        if(ui->checkBox_workPlace4->isChecked()) {
+//            isTokPlatyFinishedTmp4 = isTokPlatyFinished4;
 
-            if(!vectorIsWorkPlaceUse.at(3)) isTokPlatyFinishedTmp4 = true;
-        }
+//            if(!vectorIsWorkPlaceUse.at(3)) isTokPlatyFinishedTmp4 = true;
+//        }
 
 
-        if(isTokPlatyFinishedTmp1 && isTokPlatyFinishedTmp2 && isTokPlatyFinishedTmp3 && isTokPlatyFinishedTmp4)
-            break;
-    }
+//        if(isTokPlatyFinishedTmp1 && isTokPlatyFinishedTmp2 && isTokPlatyFinishedTmp3 && isTokPlatyFinishedTmp4)
+//            break;
+//    }
 
-    //-------------------Ожидание завершения Проверка тока платы---------------
+//    //-------------------Ожидание завершения Проверка тока платы---------------
 
-    //проверка тока платы/
+//    //проверка тока платы/
 
     //запись    
 
@@ -40448,3 +41070,20 @@ void MainWindow::on_toolButton_pulsesReset_clicked()
 {
     ObjectThread1->pulsesReset();
 }
+
+void MainWindow::slotReadyReadStend()
+{
+    QByteArray buffer = portStend->readAll();
+
+    if(QString::fromLocal8Bit(buffer).contains("BUTPRG=1")) {
+        //начать программирование
+        QMessageBox::information(this, "", "Начать программировани");
+    }
+
+    if(QString::fromLocal8Bit(buffer).contains("BUTCAL=1")) {
+        //начать калибровку
+        QMessageBox::information(this, "", "Начать калибровку");
+    }
+}
+
+
