@@ -35598,6 +35598,7 @@ void MainWindow::on_toolButton_executeCommands_clicked()
     portOptical2->close();
     portOptical3->close();
     portOptical4->close();
+    portStend->close();
     portDigitalInterfaceChecking->close();
 
 //    portOptical->clear();
@@ -35661,12 +35662,12 @@ void MainWindow::on_toolButton_executeCommands_clicked()
     ObjectThread4->setVectorIndicatorStateMatrix(vectorIndicatorStateMatrix);
 
 //    //индикация тока платы
-//    vectorTokPlaty.fill(false);
+    vectorTokPlaty.fill(false);
 
-//    ObjectThread1->setVectorTokPlaty(vectorTokPlaty);
-//    ObjectThread2->setVectorTokPlaty(vectorTokPlaty);
-//    ObjectThread3->setVectorTokPlaty(vectorTokPlaty);
-//    ObjectThread4->setVectorTokPlaty(vectorTokPlaty);
+    ObjectThread1->setVectorTokPlaty(vectorTokPlaty);
+    ObjectThread2->setVectorTokPlaty(vectorTokPlaty);
+    ObjectThread3->setVectorTokPlaty(vectorTokPlaty);
+    ObjectThread4->setVectorTokPlaty(vectorTokPlaty);
 //    //индикация тока платы/
 
     ObjectThread1->setParamsMap(paramsMapToThreads);
@@ -35699,10 +35700,10 @@ void MainWindow::on_toolButton_executeCommands_clicked()
 
     errorString.clear();
 
-//    isTokPlatyFinished1 = false;
-//    isTokPlatyFinished2 = false;
-//    isTokPlatyFinished3 = false;
-//    isTokPlatyFinished4 = false;
+    isTokPlatyFinished1 = false;
+    isTokPlatyFinished2 = false;
+    isTokPlatyFinished3 = false;
+    isTokPlatyFinished4 = false;
 
     isTimeCalFinished1 = false;
     isTimeCalFinished2 = false;
@@ -35787,59 +35788,59 @@ void MainWindow::on_toolButton_executeCommands_clicked()
     //для всех рабочих мест команды посылаются параллельно
 
 
-//    //проверка тока платы
+    //проверка тока платы
 
-//    ObjectThread1->setIsWorkPlaceUseVector(vectorIsWorkPlaceUse);
-//    ObjectThread2->setIsWorkPlaceUseVector(vectorIsWorkPlaceUse);
-//    ObjectThread3->setIsWorkPlaceUseVector(vectorIsWorkPlaceUse);
-//    ObjectThread4->setIsWorkPlaceUseVector(vectorIsWorkPlaceUse);
+    ObjectThread1->setIsWorkPlaceUseVector(vectorIsWorkPlaceUse);
+    ObjectThread2->setIsWorkPlaceUseVector(vectorIsWorkPlaceUse);
+    ObjectThread3->setIsWorkPlaceUseVector(vectorIsWorkPlaceUse);
+    ObjectThread4->setIsWorkPlaceUseVector(vectorIsWorkPlaceUse);
 
-//    emit signalLog("<font color = \"#0000ff\">" + QString("Проверка тока платы")  + '\n' + "</font>");
+    emit signalLog("<font color = \"#0000ff\">" + QString("Проверка тока платы")  + '\n' + "</font>");
 
-//    emit startTokPlatyRequest();
+    emit startTokPlatyRequest();
 
-//    //-------------------Ожидание завершения Проверка тока платы---------------
+    //-------------------Ожидание завершения Проверка тока платы---------------
 
-//    bool isTokPlatyFinishedTmp1 = true;
-//    bool isTokPlatyFinishedTmp2 = true;
-//    bool isTokPlatyFinishedTmp3 = true;
-//    bool isTokPlatyFinishedTmp4 = true;
+    bool isTokPlatyFinishedTmp1 = true;
+    bool isTokPlatyFinishedTmp2 = true;
+    bool isTokPlatyFinishedTmp3 = true;
+    bool isTokPlatyFinishedTmp4 = true;
 
-//    for(int e=0; e<100; e++) { //10 sec
-//        global::pause(100);
+    for(int e=0; e<100; e++) { //10 sec
+        global::pause(100);
 
-//        if(ui->checkBox_workPlace1->isChecked()) {
-//            isTokPlatyFinishedTmp1 = isTokPlatyFinished1;
+        if(ui->checkBox_workPlace1->isChecked()) {
+            isTokPlatyFinishedTmp1 = isTokPlatyFinished1;
 
-//            if(!vectorIsWorkPlaceUse.at(0)) isTokPlatyFinishedTmp1 = true;
-//        }
+            if(!vectorIsWorkPlaceUse.at(0)) isTokPlatyFinishedTmp1 = true;
+        }
 
-//        if(ui->checkBox_workPlace2->isChecked()) {
-//            isTokPlatyFinishedTmp2 = isTokPlatyFinished2;
+        if(ui->checkBox_workPlace2->isChecked()) {
+            isTokPlatyFinishedTmp2 = isTokPlatyFinished2;
 
-//            if(!vectorIsWorkPlaceUse.at(1)) isTokPlatyFinishedTmp2 = true;
-//        }
+            if(!vectorIsWorkPlaceUse.at(1)) isTokPlatyFinishedTmp2 = true;
+        }
 
-//        if(ui->checkBox_workPlace3->isChecked()) {
-//            isTokPlatyFinishedTmp3 = isTokPlatyFinished3;
+        if(ui->checkBox_workPlace3->isChecked()) {
+            isTokPlatyFinishedTmp3 = isTokPlatyFinished3;
 
-//            if(!vectorIsWorkPlaceUse.at(2)) isTokPlatyFinishedTmp3 = true;
-//        }
+            if(!vectorIsWorkPlaceUse.at(2)) isTokPlatyFinishedTmp3 = true;
+        }
 
-//        if(ui->checkBox_workPlace4->isChecked()) {
-//            isTokPlatyFinishedTmp4 = isTokPlatyFinished4;
+        if(ui->checkBox_workPlace4->isChecked()) {
+            isTokPlatyFinishedTmp4 = isTokPlatyFinished4;
 
-//            if(!vectorIsWorkPlaceUse.at(3)) isTokPlatyFinishedTmp4 = true;
-//        }
+            if(!vectorIsWorkPlaceUse.at(3)) isTokPlatyFinishedTmp4 = true;
+        }
 
 
-//        if(isTokPlatyFinishedTmp1 && isTokPlatyFinishedTmp2 && isTokPlatyFinishedTmp3 && isTokPlatyFinishedTmp4)
-//            break;
-//    }
+        if(isTokPlatyFinishedTmp1 && isTokPlatyFinishedTmp2 && isTokPlatyFinishedTmp3 && isTokPlatyFinishedTmp4)
+            break;
+    }
 
-//    //-------------------Ожидание завершения Проверка тока платы---------------
+    //-------------------Ожидание завершения Проверка тока платы---------------
 
-//    //проверка тока платы/
+    //проверка тока платы/
 
     //запись    
 
@@ -36115,7 +36116,7 @@ void MainWindow::on_toolButton_executeCommands_clicked()
 //          if(!vectorIsWorkPlaceUse.at(2)) isPulsesOutputHeatTmp3 = true;
 //          if(!vectorIsWorkPlaceUse.at(3)) isPulsesOutputHeatTmp4 = true;
 
-          for(int e=0; e<30; e++) { //3 sec
+          for(int e=0; e<50; e++) { //5 sec
               global::pause(100);
 
             if(ui->checkBox_workPlace1->isChecked()) {
@@ -36213,9 +36214,6 @@ void MainWindow::on_toolButton_executeCommands_clicked()
 
         KeyEventEnterBool = false;
 
-
-//        ui->toolButton_pulsesInputVolume->setFocus();
-
         //если хотя бы одно рабочее место не слетело
         bool isWorkPlaceExists = false;
         if(vectorIsWorkPlaceUse.at(0)) isWorkPlaceExists = true;
@@ -36246,7 +36244,6 @@ void MainWindow::on_toolButton_executeCommands_clicked()
           ui->label_pulsesInputVolTimer->setText("");
 
        }
-
 
         //остановка на 10с или до нажатия клавиши/
 
@@ -36353,9 +36350,6 @@ void MainWindow::on_toolButton_executeCommands_clicked()
 
         KeyEventEnterBool = false;
 
-
-//        ui->toolButton_pulsesInputVolume->setFocus();
-
         //если хотя бы одно рабочее место не слетело
         bool isWorkPlaceExists = false;
         if(vectorIsWorkPlaceUse.at(0)) isWorkPlaceExists = true;
@@ -36383,7 +36377,6 @@ void MainWindow::on_toolButton_executeCommands_clicked()
 
        }
 
-
         //остановка на 30с или до нажатия клавиши/
 
         emit signalPulsesOutputDefToThread(portOptical, portOptical2, portOptical3, portOptical4);
@@ -36402,7 +36395,7 @@ void MainWindow::on_toolButton_executeCommands_clicked()
 //          if(!vectorIsWorkPlaceUse.at(2)) isPulsesInputVolumeTmp3 = true;
 //          if(!vectorIsWorkPlaceUse.at(3)) isPulsesInputVolumeTmp4 = true;
 
-          for(int e=0; e<30; e++) { //3 sec
+          for(int e=0; e<50; e++) { //5 sec
               global::pause(100);
 
               if(ui->checkBox_workPlace1->isChecked()) {
@@ -41073,17 +41066,17 @@ void MainWindow::on_toolButton_pulsesReset_clicked()
 
 void MainWindow::slotReadyReadStend()
 {
-    QByteArray buffer = portStend->readAll();
+  //  QByteArray buffer = portStend->readAll();
 
-    if(QString::fromLocal8Bit(buffer).contains("BUTPRG=1")) {
-        //начать программирование
-        QMessageBox::information(this, "", "Начать программировани");
-    }
+//    if(QString::fromLocal8Bit(buffer).contains("BUTPRG=1")) {
+//        //начать программирование
+//        QMessageBox::information(this, "", "Начать программировани");
+//    }
 
-    if(QString::fromLocal8Bit(buffer).contains("BUTCAL=1")) {
-        //начать калибровку
-        QMessageBox::information(this, "", "Начать калибровку");
-    }
+//    if(QString::fromLocal8Bit(buffer).contains("BUTCAL=1")) {
+//        //начать калибровку
+//        QMessageBox::information(this, "", "Начать калибровку");
+//    }
 }
 
 

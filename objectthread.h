@@ -267,7 +267,7 @@ private:
     int pulsesValueCh1;
     int pulsesValueCh2;
 
-
+    float periodClock;
 
 
 };

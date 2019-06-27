@@ -9028,12 +9028,14 @@ void ObjectThread::slotPulsesOutputHeat(QSerialPort *port1, QSerialPort *port2,
             readPulsesChannel1();
             readPulsesChannel2();
 
+            emit textBrowser("Импульсы. канал 1 - " + QString::number(pulsesValueCh1) +
+                              ",канал 2 - " + QString::number(pulsesValueCh2));
 
             if(pulsesValueCh1 == 0 || pulsesValueCh2 == 0) {
 
                 //импульсы не работают
 
-                label_StatusBar = ("Импульсные выходы не работают. Рабочее место: " + QString::number(workPlaceNumber+1));
+                label_StatusBar = ("Импульсные выходы по теплу не работают. Рабочее место: " + QString::number(workPlaceNumber+1));
                 emit errorStringSignal(label_StatusBar + '\n');
                 vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
 
@@ -9056,6 +9058,33 @@ void ObjectThread::slotPulsesInputVolume(QSerialPort *port1, QSerialPort *port2,
                                          QSerialPort *port3, QSerialPort *port4)
 {
 
+    if(!isWorkPlaceUse.at(workPlace)) return;
+
+//    8)	Программа даёт стенду команду выдать количество импульсов на счётные входы платы.
+//            Программа считывает из платы по УСО количество импульсов.
+//            Если входы работают, то идти дальше,
+//            иначе – включить аварийную индикацию на стенде. Остановка.
+
+    int currentIndicatorNumber = workPlace;
+    int currentBoxNumber = 3;
+
+//    if(!writePulsesToGenChannel1()) {
+//        vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+//        emit workPlaceOff(currentIndicatorNumber);
+//        emit checkPulsesInputVolume(currentIndicatorNumber);
+
+//        return;
+//    }
+//    if(!writePulsesToGenChannel1()) {
+//        vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+//        emit workPlaceOff(currentIndicatorNumber);
+//        emit checkPulsesInputVolume(currentIndicatorNumber);
+
+//        return;
+//    }
+
+//    global::pause(3000);
+
     qDebug()<<"ObjectThread::slotPulsesInputVolume() "<<"workPlace "<<QString::number(workPlace);
 
         QSerialPort *portTmp;
@@ -9064,9 +9093,7 @@ void ObjectThread::slotPulsesInputVolume(QSerialPort *port1, QSerialPort *port2,
 
         int workPlaceNumber = workPlace;
 
-        if(!isWorkPlaceUse.at(workPlace)) return;
 
-        int currentIndicatorNumber = workPlaceNumber;
 
         QString label_StatusBar;
         QString errorString;
@@ -9094,16 +9121,7 @@ void ObjectThread::slotPulsesInputVolume(QSerialPort *port1, QSerialPort *port2,
         portTmp->setParity(QSerialPort::NoParity);
         portTmp->setStopBits(QSerialPort::OneStop);
 
-
-        int currentBoxNumber = 3;
-   //     vectorIsErrorOccured[workPlaceNumber] = false;
-
-    //        label_StatusBar = ("");
-
             QColor color(255, 127, 50);
-//            ui->label_pulsesInputVolume->setStyleSheet(QString("color: red").arg(color.name()));
-//            ui->label_pulsesInputVolume->setText("X");
-//            ui->label_pulsesInputVolume->setVisible(false);
 
             QByteArray pulsesMode1ByteArray;
             QByteArray pulsesMode2ByteArray;
@@ -9130,8 +9148,7 @@ void ObjectThread::slotPulsesInputVolume(QSerialPort *port1, QSerialPort *port2,
 
             if(!portTmp->isOpen()) {
                 if(!portTmp->open(QIODevice::ReadWrite)) {
-    //                QMessageBox::information(this, "", "Не удалось открыть порт УСО-2. Рабочее место: " +
-    //                                         QString::number(workPlaceNumber + 1) );
+
                     label_StatusBar = ("Не удалось открыть порт УСО-2. Рабочее место: " +
                                                  QString::number(workPlaceNumber + 1));
                     emit errorStringSignal(label_StatusBar + '\n');
@@ -9177,8 +9194,6 @@ void ObjectThread::slotPulsesInputVolume(QSerialPort *port1, QSerialPort *port2,
                        <<"portTmp->portName() "<<portTmp->portName();
 
                if(cnt == 0) {
-    //               QMessageBox::information(this, "", tr("Данные в порт не записаны") +
-    //                                        " Рабочее место: " + QString::number(workPlaceNumber+1));
                    label_StatusBar = (tr("Данные в порт не записаны") +
                                                 " Рабочее место: " + QString::number(workPlaceNumber+1));
                    emit errorStringSignal(label_StatusBar + '\n');
@@ -9198,8 +9213,6 @@ void ObjectThread::slotPulsesInputVolume(QSerialPort *port1, QSerialPort *port2,
 
                if(buffer.isEmpty()) {
                    if(i==9) {
-    //                   QMessageBox::information(this, "", tr("Ошибка открытия парольной сессии") +
-    //                                            " Рабочее место: " + QString::number(workPlaceNumber+1));
                        label_StatusBar = (tr("Ошибка открытия парольной сессии") +
                                                     " Рабочее место: " + QString::number(workPlaceNumber+1));
                        emit errorStringSignal(label_StatusBar + '\n');
@@ -9208,7 +9221,6 @@ void ObjectThread::slotPulsesInputVolume(QSerialPort *port1, QSerialPort *port2,
                        emit workPlaceOff(currentIndicatorNumber);
                        emit checkPulsesInputVolume(currentIndicatorNumber);
 
-     //                  ui->label_pulsesInputVolume->setVisible(true);
                        return;
                    } else{}
 
@@ -9923,9 +9935,6 @@ void ObjectThread::slotPulsesInputVolume(QSerialPort *port1, QSerialPort *port2,
 
                     }
                     else {
-    //                    QMessageBox::information(this, "", "Параметр записан некорректно: запись " + writeVector[i].toHex() +
-    //                                             " " + "чтение " + readVector[i].toHex() +
-    //                                             " Рабочее место: " + QString::number(workPlaceNumber+1));
                         label_StatusBar = ("Параметр записан некорректно: запись " + writeVector[i].toHex() +
                                                      " " + "чтение " + readVector[i].toHex() +
                                                      " Рабочее место: " + QString::number(workPlaceNumber+1));
@@ -9935,15 +9944,12 @@ void ObjectThread::slotPulsesInputVolume(QSerialPort *port1, QSerialPort *port2,
                         emit workPlaceOff(currentIndicatorNumber);
                         emit checkPulsesInputVolume(currentIndicatorNumber);
 
-        //                ui->label_pulsesInputVolume->setVisible(true);
                         return;
                     }
                 }
                 else {
                         if((readVector[i] != writeVector[i]) && (i != (writeVector.size() - 2)) && (i != (writeVector.size() - 1)) ) {
-    //                       QMessageBox::information(this, "", "Параметр записан некорректно: запись " + writeVector[i].toHex() +
-    //                                             " " + "чтение " + readVector[i].toHex() +
-    //                                                " Рабочее место: " + QString::number(workPlaceNumber+1));
+
                            label_StatusBar = ("Параметр записан некорректно: запись " + writeVector[i].toHex() +
                                                         " " + "чтение " + readVector[i].toHex() +
                                                            " Рабочее место: " + QString::number(workPlaceNumber+1));
@@ -9953,16 +9959,12 @@ void ObjectThread::slotPulsesInputVolume(QSerialPort *port1, QSerialPort *port2,
                            emit workPlaceOff(currentIndicatorNumber);
                            emit checkPulsesInputVolume(currentIndicatorNumber);
 
-         //                  ui->label_pulsesInputVolume->setVisible(true);
                            return;
                         }
                 }
             }
 
 
-//            ui->label_pulsesInputVolume->setStyleSheet(QString("color: green").arg(color.name()));
-//            ui->label_pulsesInputVolume->setText("V");
-       //     ui->label_pulsesInputVolume->setVisible(true);
 
 
             emit checkPulsesInputVolume(currentIndicatorNumber);
@@ -9974,17 +9976,27 @@ void ObjectThread::slotPulsesOutputDefault(QSerialPort *port1, QSerialPort *port
                                            QSerialPort *port3, QSerialPort *port4)
 {
 
+    if(!isWorkPlaceUse.at(workPlace)) return;
+
+    int currentIndicatorNumber = workPlace;
+    int currentBoxNumber = 4;
+
+    //сбросить счётчик импульсов стенда
+    if(!pulsesReset()) {
+        vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+        emit workPlaceOff(currentIndicatorNumber);
+        emit checkPulsesOutputDefault(currentIndicatorNumber);
+
+        return;
+    }
+
     qDebug()<<"ObjectThread::slotPulsesOutputDefault() "<<"workPlace "<<QString::number(workPlace);
 
         QSerialPort *portTmp;
 
         bool isNeedPaintEvent = true;//false;
 
-        int workPlaceNumber = workPlace;
-
-        if(!isWorkPlaceUse.at(workPlace)) return;
-
-        int currentIndicatorNumber = workPlaceNumber;
+        int workPlaceNumber = workPlace;              
 
         QString label_StatusBar;
         QString errorString;
@@ -10012,8 +10024,6 @@ void ObjectThread::slotPulsesOutputDefault(QSerialPort *port1, QSerialPort *port
         portTmp->setParity(QSerialPort::NoParity);
         portTmp->setStopBits(QSerialPort::OneStop);
 
-
-        int currentBoxNumber = 4;
    //     vectorIsErrorOccured[workPlaceNumber] = false;
 
    //         label_StatusBar =("");
@@ -10907,9 +10917,30 @@ void ObjectThread::slotPulsesOutputDefault(QSerialPort *port1, QSerialPort *port
             }
 
 
-//            ui->label_pulsesOutputOff->setStyleSheet(QString("color: green").arg(color.name()));
-//            ui->label_pulsesOutputOff->setText("V");
-        //    ui->label_pulsesOutputOff->setVisible(true);
+            //через 3 сек прочитываем кол-во импульсов из стенда
+              global::pause(3000);
+
+              readPulsesChannel1();
+              readPulsesChannel2();
+
+              emit textBrowser("Импульсы. канал 1 - " + QString::number(pulsesValueCh1) +
+                                ",канал 2 - " + QString::number(pulsesValueCh2));
+
+
+              if(pulsesValueCh1 == 0 || pulsesValueCh2 == 0) {
+
+                  //импульсы не работают
+
+                  label_StatusBar = ("Импульсные выходы - по умолчанию не работают. Рабочее место: " + QString::number(workPlaceNumber+1));
+                  emit errorStringSignal(label_StatusBar + '\n');
+                  vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+
+                  emit workPlaceOff(currentIndicatorNumber);
+                  emit checkPulsesOutputDefault(currentIndicatorNumber);
+
+                  return;
+
+              }
 
 
             emit checkPulsesOutputDefault(currentIndicatorNumber);
@@ -13925,7 +13956,7 @@ bool ObjectThread::readPulsesChannel1()
     global::pause(100);
 
     buffer = portStend->readAll();
-    portStend->close();
+//    portStend->close();
 
     if(!buffer.isEmpty()) emit textBrowser("<< " + portStend->portName() + " " + buffer.toHex());
 
@@ -13945,7 +13976,7 @@ bool ObjectThread::readPulsesChannel1()
 
     answerStr = QString::fromLocal8Bit(bufTmp);
 
-    pulsesValueCh1 = answerStr.right(3).toInt();
+    pulsesValueCh1 = answerStr.remove("CNT1=").toInt();
 
     if(buffer.at(0)!=receiver && buffer.at(1)!=sender /*&& answerStr!="OK"*/) {
         QString label_StatusBar = (tr("Неверный ответ стенда. Команда \"Чтение значения счётчика импульсов, канал 1\" ") +
@@ -14045,7 +14076,7 @@ bool ObjectThread::readPulsesChannel2()
 
     answerStr = QString::fromLocal8Bit(bufTmp);
 
-    pulsesValueCh2 = answerStr.right(3).toInt();
+    pulsesValueCh2 = answerStr.remove("CNT2=").toInt();
 
     if(buffer.at(0)!=receiver && buffer.at(1)!=sender /*&& answerStr!="OK"*/) {
         QString label_StatusBar = (tr("Неверный ответ стенда. Команда \"Чтение значения счётчика импульсов, канал 2\" ") +
@@ -14162,12 +14193,192 @@ bool ObjectThread::pulsesReset()
 
 bool ObjectThread::writePulsesToGenChannel1()
 {
-   //Запись числа импульсов в генератор импульсов, канал 1	GEN1=xxx	OK
+   //Запись в генератор импульсов, канал 1	GEN1=xxx	OK
+
+    QByteArray buffer;
+
+//    кто и кому:
+//    ПК=0x01	стенд1=0x11	стенд2=0x22	стенд3=0x33	стенд4=0x44
+
+//    1 байт	2 байт	3 байт	4 байт	… байт	… байт	(N-1) байт	N байт
+//    кто	    кому	команда					                    Конец сообщения
+//    BIN	    BIN	    STRING					                    0x00
+
+    if(!isWorkPlaceUse.at(workPlace)) return false;
+
+    QString command = "GEN1=3";
+
+    QByteArray parcel;
+
+    quint8 sender = 0x01;
+    quint8 receiver;
+    quint8 stopByte = 0x00;
+
+    if(workPlace == 0) receiver = 0x11;
+    if(workPlace == 1) receiver = 0x22;
+    if(workPlace == 2) receiver = 0x33;
+    if(workPlace == 3) receiver = 0x44;
+
+    QByteArray stringToByteArray;
+    stringToByteArray = command.toLocal8Bit();
+
+    //формирование посылки
+    parcel.append(sender);
+    parcel.append(receiver);
+    for(int m=0; m<stringToByteArray.size(); m++) {
+        parcel.append(stringToByteArray.at(m));
+    }
+    parcel.append(stopByte);
+
+    qDebug()<<"parcel"<<parcel.toHex();
+
+    if(!portStend->isOpen()) {
+
+        if(!portStend->open(QIODevice::ReadWrite)) {
+
+            QString label_StatusBar = (tr("Не удалось открыть порт стенда") +
+                                         ". Рабочее место: " + QString::number(workPlace+1));
+            emit errorStringSignal(label_StatusBar + '\n');
+            return false;
+        }
+    }
+
+    portStend->clear();
+
+    quint64 count = portStend->write(parcel);
+    emit textBrowser(">> " + portStend->portName() + " " + parcel.toHex());
+
+    //ждать ответа от стенда 10 мсек
+
+    global::pause(100);
+
+    buffer = portStend->readAll();
+    portStend->close();
+
+    if(!buffer.isEmpty()) emit textBrowser("<< " + portStend->portName() + " " + buffer.toHex());
+
+    if(buffer.isEmpty()) {
+        QString label_StatusBar = (tr("Нет ответа стенда. Команда \"Запись в генератор импульсов, канал 1\" ") +
+                                     ". Рабочее место: " + QString::number(workPlace+1));
+        emit errorStringSignal(label_StatusBar + '\n');
+  //      portStend->close();
+        return false;
+    }
+
+    QString answerStr;
+    QByteArray bufTmp = buffer;
+
+    bufTmp.remove(0, 2);
+    bufTmp.remove(bufTmp.size()-1, 1);
+
+    answerStr = QString::fromLocal8Bit(bufTmp);
+
+    if(buffer.at(0)!=receiver && buffer.at(1)!=sender && answerStr!="OK") {
+        QString label_StatusBar = (tr("Неверный ответ стенда. Команда \"Запись в генератор импульсов, канал 1\" ") +
+                                     ". Рабочее место: " + QString::number(workPlace+1));
+        emit errorStringSignal(label_StatusBar + '\n');
+ //       portStend->close();
+        return false;
+    }
+
+ //  portStend->close();
+
+   return true;
 }
 
 bool ObjectThread::writePulsesToGenChannel2()
 {
    //Запись числа импульсов в генератор импульсов, канал 2	GEN2=xxx	OK
+
+    QByteArray buffer;
+
+//    кто и кому:
+//    ПК=0x01	стенд1=0x11	стенд2=0x22	стенд3=0x33	стенд4=0x44
+
+//    1 байт	2 байт	3 байт	4 байт	… байт	… байт	(N-1) байт	N байт
+//    кто	    кому	команда					                    Конец сообщения
+//    BIN	    BIN	    STRING					                    0x00
+
+    if(!isWorkPlaceUse.at(workPlace)) return false;
+
+    QString command = "GEN2=3";
+
+    QByteArray parcel;
+
+    quint8 sender = 0x01;
+    quint8 receiver;
+    quint8 stopByte = 0x00;
+
+    if(workPlace == 0) receiver = 0x11;
+    if(workPlace == 1) receiver = 0x22;
+    if(workPlace == 2) receiver = 0x33;
+    if(workPlace == 3) receiver = 0x44;
+
+    QByteArray stringToByteArray;
+    stringToByteArray = command.toLocal8Bit();
+
+    //формирование посылки
+    parcel.append(sender);
+    parcel.append(receiver);
+    for(int m=0; m<stringToByteArray.size(); m++) {
+        parcel.append(stringToByteArray.at(m));
+    }
+    parcel.append(stopByte);
+
+    qDebug()<<"parcel"<<parcel.toHex();
+
+    if(!portStend->isOpen()) {
+
+        if(!portStend->open(QIODevice::ReadWrite)) {
+
+            QString label_StatusBar = (tr("Не удалось открыть порт стенда") +
+                                         ". Рабочее место: " + QString::number(workPlace+1));
+            emit errorStringSignal(label_StatusBar + '\n');
+            return false;
+        }
+    }
+
+    portStend->clear();
+
+    quint64 count = portStend->write(parcel);
+    emit textBrowser(">> " + portStend->portName() + " " + parcel.toHex());
+
+    //ждать ответа от стенда 10 мсек
+
+    global::pause(100);
+
+    buffer = portStend->readAll();
+    portStend->close();
+
+    if(!buffer.isEmpty()) emit textBrowser("<< " + portStend->portName() + " " + buffer.toHex());
+
+    if(buffer.isEmpty()) {
+        QString label_StatusBar = (tr("Нет ответа стенда. Команда \"Запись в генератор импульсов, канал 2\" ") +
+                                     ". Рабочее место: " + QString::number(workPlace+1));
+        emit errorStringSignal(label_StatusBar + '\n');
+  //      portStend->close();
+        return false;
+    }
+
+    QString answerStr;
+    QByteArray bufTmp = buffer;
+
+    bufTmp.remove(0, 2);
+    bufTmp.remove(bufTmp.size()-1, 1);
+
+    answerStr = QString::fromLocal8Bit(bufTmp);
+
+    if(buffer.at(0)!=receiver && buffer.at(1)!=sender && answerStr!="OK") {
+        QString label_StatusBar = (tr("Неверный ответ стенда. Команда \"Запись в генератор импульсов, канал 2\" ") +
+                                     ". Рабочее место: " + QString::number(workPlace+1));
+        emit errorStringSignal(label_StatusBar + '\n');
+ //       portStend->close();
+        return false;
+    }
+
+ //  portStend->close();
+
+   return true;
 }
 
 //-----------------Внешний интерфейс обмена-----------------------
@@ -14382,6 +14593,99 @@ bool ObjectThread::freqMeterOff()
 bool ObjectThread::readFreq()
 {
    //Прочитать значение частоты	FREQ?	FREQ=xxx..xxx(в Гц)
+
+    QByteArray buffer;
+
+//    кто и кому:
+//    ПК=0x01	стенд1=0x11	стенд2=0x22	стенд3=0x33	стенд4=0x44
+
+//    1 байт	2 байт	3 байт	4 байт	… байт	… байт	(N-1) байт	N байт
+//    кто	    кому	команда					                    Конец сообщения
+//    BIN	    BIN	    STRING					                    0x00
+
+    if(!isWorkPlaceUse.at(workPlace)) return false;
+
+    QString command = "FREQ?";
+
+    QByteArray parcel;
+
+    quint8 sender = 0x01;
+    quint8 receiver;
+    quint8 stopByte = 0x00;
+
+    if(workPlace == 0) receiver = 0x11;
+    if(workPlace == 1) receiver = 0x22;
+    if(workPlace == 2) receiver = 0x33;
+    if(workPlace == 3) receiver = 0x44;
+
+    QByteArray stringToByteArray;
+    stringToByteArray = command.toLocal8Bit();
+
+    //формирование посылки
+    parcel.append(sender);
+    parcel.append(receiver);
+    for(int m=0; m<stringToByteArray.size(); m++) {
+        parcel.append(stringToByteArray.at(m));
+    }
+    parcel.append(stopByte);
+
+    qDebug()<<"parcel"<<parcel.toHex();
+
+    if(!portStend->isOpen()) {
+
+        if(!portStend->open(QIODevice::ReadWrite)) {
+
+            QString label_StatusBar = (tr("Не удалось открыть порт стенда") +
+                                         ". Рабочее место: " + QString::number(workPlace+1));
+            emit errorStringSignal(label_StatusBar + '\n');
+            return false;
+        }
+    }
+
+    portStend->clear();
+
+    quint64 count = portStend->write(parcel);
+    emit textBrowser(">> " + portStend->portName() + " " + parcel.toHex());
+
+    //ждать ответа от стенда 10 мсек
+
+    global::pause(100);
+
+    buffer = portStend->readAll();
+    portStend->close();
+
+    if(!buffer.isEmpty()) emit textBrowser("<< " + portStend->portName() + " " + buffer.toHex());
+
+    if(buffer.isEmpty()) {
+        QString label_StatusBar = (tr("Нет ответа стенда. Команда \"Прочитать значение периода\" ") +
+                                     ". Рабочее место: " + QString::number(workPlace+1));
+        emit errorStringSignal(label_StatusBar + '\n');
+  //      portStend->close();
+        return false;
+    }
+
+    QString answerStr;
+    QByteArray bufTmp = buffer;
+
+    bufTmp.remove(0, 2);
+    bufTmp.remove(bufTmp.size()-1, 1);
+
+    answerStr = QString::fromLocal8Bit(bufTmp);
+
+    if(buffer.at(0)!=receiver && buffer.at(1)!=sender && answerStr.left(5)!="FREQ=") {
+        QString label_StatusBar = (tr("Неверный ответ стенда. Команда \"Прочитать значение периода\" ") +
+                                     ". Рабочее место: " + QString::number(workPlace+1));
+        emit errorStringSignal(label_StatusBar + '\n');
+ //       portStend->close();
+        return false;
+    }
+
+    periodClock = answerStr.remove(0, 5).toFloat();//прочитываеттся в микросекундах, надо делить на 1000, чтобы получить мс
+    periodClock = periodClock/1000;
+
+ //  portStend->close();
+
+   return true;
 }
 
 //-----------------Ток потребления платы--------------------------
@@ -15734,17 +16038,24 @@ void ObjectThread::slotRealClockCalibration(QSerialPort *port1, QSerialPort *por
                               /*float period1, float period2, float period3, float period4*/)
 {
 
-    //сначала прочитать значения перииодов из каждого стенда
+    //сначала прочитать значения периодов из каждого стенда
 
+    int currentIndicatorNumber = workPlace;
+    int currentBoxNumber = 5;//вместо "Включить протокол Mbus"
 
+    if(!readFreq()) {
+        vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+        emit workPlaceOff(currentIndicatorNumber);
+        emit checkTimeCalError(currentIndicatorNumber);
 
-    //сначала прочитать значения перииодов из каждого стенда/
+        return;
+    }
+
+    //сначала прочитать значения периодов из каждого стенда/
 
     QSerialPort *portTmp;// = new QSerialPort(this);
 
-    int workPlaceNumber = workPlace;
-
-    int currentIndicatorNumber = workPlaceNumber;
+    int workPlaceNumber = workPlace;    
 
     QString label_StatusBar;
     QString errorString;
@@ -15774,11 +16085,6 @@ void ObjectThread::slotRealClockCalibration(QSerialPort *port1, QSerialPort *por
     portTmp->setParity(QSerialPort::NoParity);
     portTmp->setStopBits(QSerialPort::OneStop);
 
-    int currentBoxNumber = 5;//вместо "Включить протокол Mbus"
-
-
-
-
     //    Значение коэффициента коррекции должно рассчитываться по формуле:
     //    K = |Round(983040 * (1 - 1953,125 / Tи))|,
     //    где Tи – измеренное значение периода в мс.
@@ -15792,7 +16098,7 @@ void ObjectThread::slotRealClockCalibration(QSerialPort *port1, QSerialPort *por
 
         float periodError = (1953.125/10000)*3;
 
-        periodBetweenPulses = 1953.125;//заглушка
+        periodBetweenPulses = 1953.125;//заглушка. должно стоять periodClock, выраженный в мс
 
         if( !((periodBetweenPulses >= 1953.125 - periodError) && (periodBetweenPulses <= 1953.125 + periodError)) ) {
   //          QMessageBox::information(this, "" , tr("Недопустимое значение периода следования импульсов "));
@@ -15876,7 +16182,7 @@ void ObjectThread::slotRealClockCalibration(QSerialPort *port1, QSerialPort *por
 
         QByteArray buffer;
 
-        for(int i=0; i<3;i++) {
+        for(int i=0; i<10;i++) {
 
            portTmp->clear();
            packetToRead.clear();
@@ -15932,7 +16238,7 @@ void ObjectThread::slotRealClockCalibration(QSerialPort *port1, QSerialPort *por
   //         ui->textBrowser->append("buffer.toHex() " + buffer.toHex());
 
            if(buffer.isEmpty()) {
-               if(i==2) {
+               if(i==9) {
 //                   QMessageBox::information(this, "", tr("Ошибка калибровки генератора часов реального времени"));
 //                   ui->label_realClockCalibration->setVisible(true);
                    label_StatusBar =("Ошибка калибровки часов. Рабочее место: "
@@ -15960,7 +16266,7 @@ void ObjectThread::slotRealClockCalibration(QSerialPort *port1, QSerialPort *por
                bytesForChecking.append(byte);
 
                if(!packetSETProcessing(buffer)) {
-                   if(i == 2) {
+                   if(i == 9) {
                        label_StatusBar = (tr("Ошибка данных") +
                                                     " Рабочее место: " + QString::number(workPlaceNumber+1));
                        emit errorStringSignal(label_StatusBar + '\n');
@@ -15990,7 +16296,7 @@ void ObjectThread::slotRealClockCalibration(QSerialPort *port1, QSerialPort *por
                   break;
                }
                else {
-                   if(i==2) {
+                   if(i==9) {
 //                   QMessageBox::information(this, "", tr("Ошибка калибровки генератора часов реального времени"));
 //                   ui->label_realClockCalibration->setVisible(true);
                      label_StatusBar = (tr("Ошибка калибровки часов") +
