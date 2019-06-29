@@ -35838,9 +35838,12 @@ void MainWindow::on_toolButton_executeCommands_clicked()
             break;
     }
 
-    //-------------------Ожидание завершения Проверка тока платы---------------
+//    //-------------------Ожидание завершения Проверка тока платы---------------
 
     //проверка тока платы/
+
+    //пока просто подаём питание на плату
+
 
     //запись    
 
@@ -35910,7 +35913,7 @@ void MainWindow::on_toolButton_executeCommands_clicked()
 //        if(!vectorIsWorkPlaceUse.at(2)) isWritingFinishedTmp3 = true;
 //        if(!vectorIsWorkPlaceUse.at(3)) isWritingFinishedTmp4 = true;
 
-        for(int e=0; e<100; e++) { //10 sec
+        for(int e=0; e<1000; e++) { //100 sec
             global::pause(100);
 
 //            if(vectorIsWorkPlaceUse.at(0)) isWritingFinishedTmp1 = isWritingFinished1;
