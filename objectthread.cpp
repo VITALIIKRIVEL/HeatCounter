@@ -10044,7 +10044,7 @@ void ObjectThread::slotPulsesOutputHeat(QSerialPort *port1, QSerialPort *port2,
 
 
           //через 3 сек прочитываем кол-во импульсов из стенда
-            global::pause(3000);
+            global::pause(4000);
 
             readPulsesChannel1();
             readPulsesChannel2();
@@ -10052,7 +10052,7 @@ void ObjectThread::slotPulsesOutputHeat(QSerialPort *port1, QSerialPort *port2,
             emit textBrowser("Импульсы. канал 1 - " + QString::number(pulsesValueCh1) +
                               ",канал 2 - " + QString::number(pulsesValueCh2));
 
-            if(pulsesValueCh1 == 0 || pulsesValueCh2 == 0) {
+            if( (pulsesValueCh1 < 2) || (pulsesValueCh2 < 2) || (pulsesValueCh1!=pulsesValueCh2) ) {
 
                 //импульсы не работают
 
@@ -11948,7 +11948,7 @@ void ObjectThread::slotPulsesOutputDefault(QSerialPort *port1, QSerialPort *port
                                 ",канал 2 - " + QString::number(pulsesValueCh2));
 
 
-              if(pulsesValueCh1 == 0 || pulsesValueCh2 == 0) {
+               if( (pulsesValueCh1 < 2) || (pulsesValueCh2 < 2) || (pulsesValueCh1!=pulsesValueCh2) ) {
 
                   //импульсы не работают
 
@@ -15077,7 +15077,7 @@ bool ObjectThread::readPulsesChannel2()
     global::pause(100);
 
     buffer = portStend->readAll();
-    portStend->close();
+  //  portStend->close();
 
     if(!buffer.isEmpty()) emit textBrowser("<< " + portStend->portName() + " " + buffer.toHex());
 
@@ -15177,7 +15177,7 @@ bool ObjectThread::pulsesReset()
     global::pause(100);
 
     buffer = portStend->readAll();
-    portStend->close();
+  //  portStend->close();
 
     if(!buffer.isEmpty()) emit textBrowser("<< " + portStend->portName() + " " + buffer.toHex());
 
@@ -15274,7 +15274,7 @@ bool ObjectThread::writePulsesToGenChannel1()
     global::pause(100);
 
     buffer = portStend->readAll();
-    portStend->close();
+ //   portStend->close();
 
     if(!buffer.isEmpty()) emit textBrowser("<< " + portStend->portName() + " " + buffer.toHex());
 
@@ -15369,7 +15369,7 @@ bool ObjectThread::writePulsesToGenChannel2()
     global::pause(100);
 
     buffer = portStend->readAll();
-    portStend->close();
+ //   portStend->close();
 
     if(!buffer.isEmpty()) emit textBrowser("<< " + portStend->portName() + " " + buffer.toHex());
 
@@ -15466,7 +15466,7 @@ bool ObjectThread::externalInterfaceOn()
     global::pause(100);
 
     buffer = portStend->readAll();
-    portStend->close();
+ //   portStend->close();
 
     if(!buffer.isEmpty()) emit textBrowser("<< " + portStend->portName() + " " + buffer.toHex());
 
@@ -15561,7 +15561,7 @@ bool ObjectThread::externalInterfaceOff()
     global::pause(100);
 
     buffer = portStend->readAll();
-    portStend->close();
+  //  portStend->close();
 
     if(!buffer.isEmpty()) emit textBrowser("<< " + portStend->portName() + " " + buffer.toHex());
 
@@ -15673,7 +15673,7 @@ bool ObjectThread::readFreq()
     global::pause(100);
 
     buffer = portStend->readAll();
-    portStend->close();
+ //   portStend->close();
 
     if(!buffer.isEmpty()) emit textBrowser("<< " + portStend->portName() + " " + buffer.toHex());
 
@@ -15779,7 +15779,7 @@ bool ObjectThread::plataOn()
     global::pause(100);
 
     buffer = portStend->readAll();
-    portStend->close();
+ //   portStend->close();
 
     if(!buffer.isEmpty()) emit textBrowser("<< " + portStend->portName() + " " + buffer.toHex());
 
@@ -15886,7 +15886,7 @@ bool ObjectThread::plataOff()
     global::pause(100);
 
     buffer = portStend->readAll();
-    portStend->close();
+ //   portStend->close();
 
     if(!buffer.isEmpty()) emit textBrowser("<< " + portStend->portName() + " " + buffer.toHex());
 
@@ -16136,7 +16136,7 @@ bool ObjectThread::programmatorOn()
     global::pause(100);
 
     buffer = portStend->readAll();
-    portStend->close();
+  //  portStend->close();
 
     if(!buffer.isEmpty()) emit textBrowser("<< " + portStend->portName() + " " + buffer.toHex());
 
@@ -16243,7 +16243,7 @@ bool ObjectThread::programmatorOff()
     global::pause(100);
 
     buffer = portStend->readAll();
-    portStend->close();
+ //   portStend->close();
 
     if(!buffer.isEmpty()) emit textBrowser("<< " + portStend->portName() + " " + buffer.toHex());
 
@@ -16360,7 +16360,7 @@ bool ObjectThread::errorIndicatorOn()
     global::pause(100);
 
     buffer = portStend->readAll();
-    portStend->close();
+ //   portStend->close();
 
     if(!buffer.isEmpty()) emit textBrowser("<< " + portStend->portName() + " " + buffer.toHex());
 
@@ -16466,7 +16466,7 @@ bool ObjectThread::errorIndicatorOff()
     global::pause(100);
 
     buffer = portStend->readAll();
-    portStend->close();
+ //   portStend->close();
 
     if(!buffer.isEmpty()) emit textBrowser("<< " + portStend->portName() + " " + buffer.toHex());
 
@@ -16574,7 +16574,7 @@ bool ObjectThread::setFreqRotation(QString freq)
     global::pause(100);
 
     buffer = portStend->readAll();
-    portStend->close();
+  //  portStend->close();
 
     if(!buffer.isEmpty()) emit textBrowser("<< " + portStend->portName() + " " + buffer.toHex());
 
@@ -16680,7 +16680,7 @@ bool ObjectThread::imitRotationOn()
     global::pause(100);
 
     buffer = portStend->readAll();
-    portStend->close();
+ //   portStend->close();
 
     if(!buffer.isEmpty()) emit textBrowser("<< " + portStend->portName() + " " + buffer.toHex());
 
@@ -16786,7 +16786,7 @@ bool ObjectThread::imitRotationOff()
     global::pause(100);
 
     buffer = portStend->readAll();
-    portStend->close();
+ //   portStend->close();
 
     if(!buffer.isEmpty()) emit textBrowser("<< " + portStend->portName() + " " + buffer.toHex());
 
@@ -16898,7 +16898,7 @@ bool ObjectThread::selectMbus()
     global::pause(100);
 
     buffer = portStend->readAll();
-    portStend->close();
+ //   portStend->close();
 
     if(!buffer.isEmpty()) emit textBrowser("<< " + portStend->portName() + " " + buffer.toHex());
 
@@ -17004,7 +17004,7 @@ bool ObjectThread::selectRS()
     global::pause(100);
 
     buffer = portStend->readAll();
-    portStend->close();
+ //   portStend->close();
 
     if(!buffer.isEmpty()) emit textBrowser("<< " + portStend->portName() + " " + buffer.toHex());
 
@@ -17568,277 +17568,223 @@ void ObjectThread::slotRashodomer(QSerialPort *port1, QSerialPort *port2,
 //    4)	Выключить имитацию вращения (IM=0)
 
 
-    if(!setFreqRotation(QString())) return;
+    if(!setFreqRotation("5")) return;
 
     if(!imitRotationOn()) return;
 
-//прочитать значение потока  Read Sensor Parameters?
 
-    //
-    //Read Sensor Parameters      5a00050b
- for(int i=0; i<3;i++) {
-
-    portTmp->clear();
-    packetToRead.clear();
-    buffer.clear();
-    quint8 byte = 0x5a;
-    packetToRead.append(byte);
-    byte = 0x00;
-    packetToRead.append(byte);
-    byte = 0x05;
-    packetToRead.append(byte);
-    byte = 0x0b;
-    packetToRead.append(byte);
-    quint8 crc = makeCRC(packetToRead);
-    packetToRead.append(crc);
-
-    quint64 cnt = portTmp->write(packetToRead);
-    emit textBrowser(">> " + portTmp->portName() + " " + packetToRead.toHex());
-
-    qDebug()<<"cnt "<<cnt
-            <<"packetToRead.toHex() "<<packetToRead.toHex()
-            <<"portTmp->portName() "<<portTmp->portName();
-
-    if(cnt == 0) {
-//              QMessageBox::information(this, "", tr("Данные в порт не записаны") + ". Рабочее место: " + QString::number(workPlaceNumber + 1));
-        label_StatusBar = (tr("Данные в порт не записаны") +
-                                     ". Рабочее место: " + QString::number(workPlaceNumber+1));
-        emit errorStringSignal(label_StatusBar + '\n');
-//         ui->label_writeParams->setVisible(true);
-//         vectorIsErrorOccured[workPlaceNumber] = true;
-        vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
-
-        emit workPlaceOff(currentIndicatorNumber);
-        emit checkRashodomerError(currentIndicatorNumber);
-
-        return;
-    }
-
-    global::pause(150);//(200);
-
-    buffer = portTmp->readAll();
-
-    qDebug()<<"buffer.toHex()"<<buffer.toHex();
-    if(!buffer.isEmpty()) emit textBrowser("<< " + portTmp->portName() + " " + buffer.toHex());
-
-    if(buffer.isEmpty()) {
-        if(i==2) {
-//                  QMessageBox::information(this, "", tr("Не удалось прочитать данные") + ". Рабочее место: " + QString::number(workPlaceNumber + 1));
-            portTmp->close();
-            label_StatusBar = (tr("Не удалось прочитать данные") +
-                                         ". Рабочее место: " + QString::number(workPlaceNumber+1));
+    if(!portTmp->isOpen()) {
+        if(!portTmp->open(QIODevice::ReadWrite)) {
+//              QMessageBox::information(this, "", "Не удалось открыть порт УСО-2");
+            label_StatusBar =("Не удалось открыть порт УСО-2. Рабочее место: "
+                                         + QString::number(workPlaceNumber + 1));
             emit errorStringSignal(label_StatusBar + '\n');
-//                       ui->label_writeParams->setVisible(true);
-//                       vectorIsErrorOccured[workPlaceNumber] = true;
             vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
 
             emit workPlaceOff(currentIndicatorNumber);
             emit checkRashodomerError(currentIndicatorNumber);
 
             return;
-        } else{}
-
+        }
     }
-    else {
-        //проверяем crc и первые четыре байта ответного пакета
-        QByteArray bytesForChecking;
-        quint8 byte = 0x5a;
-        bytesForChecking.append(byte);
-        byte = 0x00;
-        bytesForChecking.append(byte);
-        byte = 0x18;
-        bytesForChecking.append(byte);
-        byte = 0x8b;
-        bytesForChecking.append(byte);
 
-        if(!packetSETProcessing(buffer)) {
-            if(i == 2) {
-                label_StatusBar = (tr("Ошибка данных") +
-                                             " Рабочее место: " + QString::number(workPlaceNumber+1));
-                emit errorStringSignal(label_StatusBar + '\n');
-                vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
-                emit workPlaceOff(currentIndicatorNumber);
-                emit checkWritingError(currentIndicatorNumber);
-                return;
-            }
-            else {
-                continue;
-            }
-        }
+//прочитать значение потока
 
- //       quint8 error = buffer.at(4);
+    //
+    //Открыть парольную сессию 5a 00 08 40 01 04 57
+//    for(int i=0; i<3;i++) {
 
-        if(checkCRC(buffer) == 0 && bytesForChecking[0] == buffer[0] && bytesForChecking[1] == buffer[1] && bytesForChecking[3] == buffer[3]) {
+//       portTmp->clear();
+//       packetToRead.clear();
+//       buffer.clear();
+//       quint8 byte = 0x5a;
+//       packetToRead.append(byte);
+//       byte = 0x00;
+//       packetToRead.append(byte);
+//       byte = 0x08;
+//       packetToRead.append(byte);
+//       byte = 0x40;
+//       packetToRead.append(byte);
+//       byte = 0x01;
+//       packetToRead.append(byte);
+//       byte = 0x04;
+//       packetToRead.append(byte);
+//       byte = 0x57;
+//       packetToRead.append(byte);
+//       quint8 crc = makeCRC(packetToRead);
+//       packetToRead.append(crc);
 
-           qDebug()<<"buffer.toHex() "<<buffer.toHex()
-                <<"checkCRC(buffer) "<<checkCRC(buffer);
-//              emit textBrowser("buffer.toHex()     " + buffer.toHex());
+//       quint64 cnt = portTmp->write(packetToRead);
+//       emit textBrowser(">> " + portTmp->portName() + " " + packetToRead.toHex());
 
-//               emit sendbufferReadSensorParameters(buffer);
+//       qDebug()<<"cnt "<<cnt
+//               <<"packetToRead.toHex() "<<packetToRead.toHex()
+//               <<"portTmp->portName() "<<portTmp->portName();
 
-           //
-           //flowRate 4 bytes (4-7)
-           QByteArray flowRateArray;
-           flowRateArray.append(buffer[4]);
-           flowRateArray.append(buffer[5]);
-           flowRateArray.append(buffer[6]);
-           flowRateArray.append(buffer[7]);
+//       if(cnt == 0) {
+////               QMessageBox::information(this, "", tr("Данные в порт не записаны") +
+////                                                 "Рабочее место: " + QString::number(workPlaceNumber+1));
+//           label_StatusBar = (tr("Данные в порт не записаны") +
+//                                        ". Рабочее место: " + QString::number(workPlaceNumber+1));
+//           emit errorStringSignal(label_StatusBar + '\n');
+//           vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+////                   checkWritingError(currentIndicatorNumber);
+////                   emit workPlaceOff(currentIndicatorNumber);
+//           emit workPlaceOff(currentIndicatorNumber);
+//           emit checkRashodomerError(currentIndicatorNumber);
 
+//           return;
+//       }
 
-           quint32 flowRateQuint32 = buffer[4];
-           flowRateQuint32 = flowRateQuint32<<8 | (quint8)buffer[5];
-           flowRateQuint32 = flowRateQuint32<<8 | (quint8)buffer[6];
-           flowRateQuint32 = flowRateQuint32<<8 | (quint8)buffer[7];
-           float flowRateFloat = (float)flowRateQuint32/1000;
-           QString flowRateString = QString::number(flowRateFloat);
-           if((flowRateFloat - round(flowRateFloat)) == 0 ) { //проверка на отсутствие дробной части
-               flowRateString = flowRateString + ".00";
-           }
+//       QApplication::processEvents();
+//       global::pause(150);//(300);
 
-//                      if(flowRateList.contains(flowRateString)) {
-//                          ui->comboBox_FlowRate->setCurrentText(QString::number(flowRateFloat));
-//                      }
-//                      else {
-//         //                 QMessageBox::information(this, "", tr("Недопустимое значение: Вес импульса вертушки"));
-//         //                 ui->comboBox_FlowRate->setCurrentText(QString::number(flowRateFloat));
-//                      }
+//       buffer = portTmp->readAll();
+//       qDebug()<<"buffer.toHex()"<<buffer.toHex();
+//       if(!buffer.isEmpty()) emit textBrowser("<< " + portTmp->portName() + " " + buffer.toHex());
 
-//                      qDebug()<<"flowRateArray.toHex() "<<flowRateArray.toHex();
-//                      paramsVector.append(flowRateArray);
-           mapRead["flowRateByteArray"] = flowRateArray;
+//       if(buffer.isEmpty()) {
+//           if(i==2) {
+////                   QMessageBox::information(this, "", tr("Ошибка открытия парольной сессии") +
+////                                            "Рабочее место: " + QString::number(workPlaceNumber+1));
+//               label_StatusBar = (tr("Ошибка открытия парольной сессии") +
+//                                            ". Рабочее место: " + QString::number(workPlaceNumber+1));
+//               emit errorStringSignal(label_StatusBar + '\n');
+////                      ui->label_writeParams->setVisible(true);
+//               vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+////                       checkWritingError(currentIndicatorNumber);
+////                       emit workPlaceOff(currentIndicatorNumber);
+//               emit workPlaceOff(currentIndicatorNumber);
+//               emit checkRashodomerError(currentIndicatorNumber);
 
-           //
-           //pressure 1 byte (8)
-           QByteArray pressureArray;
-           pressureArray.append(buffer[8]);
+//               return;
+//           } else{}
 
-           quint8 pressureQuint8 = buffer[8];
-           if(pressureQuint8 == 6) {
-//               ui->lineEdit_Pressure->setText(QString::number(pressureQuint8));
-           }
-           else {
-//                  QMessageBox::information(this, "", tr("Недопустимое значение: Условное давление"));
-//               ui->lineEdit_Pressure->setText(QString::number(pressureQuint8));
-           }
+//       }
+//       else {
+//           //проверяем crc и первые четыре байта ответного пакета
+//           QByteArray bytesForChecking;
+//           quint8 byte = 0x5a;
+//           bytesForChecking.append(byte);
+//           byte = 0x00;
+//           bytesForChecking.append(byte);
+//           byte = 0x06;
+//           bytesForChecking.append(byte);
+//           byte = 0xc0;
+//           bytesForChecking.append(byte);
 
- //          qDebug()<<"pressureArray.toHex() "<<pressureArray.toHex();
- //          paramsVector.append(pressureArray);
-           mapRead["pressureByteArray"] = pressureArray;
+//           if(!packetSETProcessing(buffer)) {
+//               if(i == 2) {
+//                   label_StatusBar = (tr("Ошибка данных") +
+//                                                " Рабочее место: " + QString::number(workPlaceNumber+1));
+//                   emit errorStringSignal(label_StatusBar + '\n');
+//                   vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+//                   emit workPlaceOff(currentIndicatorNumber);
+//                   emit checkRashodomerError(currentIndicatorNumber);
+//                   return;
+//               }
+//               else {
+//                   continue;
+//               }
+//           }
 
-           //
-           //RTD_Type 1 byte (9)
-           QByteArray RTD_TypeArray;
-           RTD_TypeArray.append(buffer[9]);
+//           quint8 error = buffer.at(4);
 
-           quint8 RTD_TypeQuint8 = buffer[9];
-//                      if((RTD_TypeQuint8 >= 0) && (RTD_TypeQuint8 <= (RTD_TypeList.count() - 1))) {
-//                          ui->comboBox_RTD_Type->setCurrentIndex(RTD_TypeQuint8);
-//                      }
-//                      else {
-//         //                 QMessageBox::information(this, "", tr("Недопустимое значение: Тип термометров сопротивления"));
-//         //                 ui->comboBox_RTD_Type->setCurrentText(QString::number(RTD_TypeQuint8));
-//                      }
+//           if(checkCRC(buffer) == 0 && bytesForChecking[0] == buffer[0] && bytesForChecking[1] == buffer[1] && bytesForChecking[3] == buffer[3] && error == 0) {
 
-//                      qDebug()<<"RTD_TypeArray.toHex() "<<RTD_TypeArray.toHex();
-//                      paramsVector.append(RTD_TypeArray);
-           mapRead["RTD_TypeByteArray"] = RTD_TypeArray;
-
-
-           //
-           //R_RTD 4 bytes (10-13)
-           QByteArray R_RTDArray;
-           R_RTDArray.append(buffer[10]);
-           R_RTDArray.append(buffer[11]);
-           R_RTDArray.append(buffer[12]);
-           R_RTDArray.append(buffer[13]);
+//              qDebug()<<"buffer.toHex() "<<buffer.toHex()
+//                   <<"checkCRC(buffer) "<<checkCRC(buffer);
 
 
-           quint32 R_RTDQuint32 = (quint8)buffer[10];
-           R_RTDQuint32 = R_RTDQuint32<<8 | (quint8)buffer[11];
-           R_RTDQuint32 = R_RTDQuint32<<8 | (quint8)buffer[12];
-           R_RTDQuint32 = R_RTDQuint32<<8 | (quint8)buffer[13];
-
-//                      if(R_RTDQuint32 == 1000) {
-//                          ui->lineEdit_R_RTD->setText(QString::number(R_RTDQuint32));
-//                      }
-//                      else {
-//          //                QMessageBox::information(this, "", tr("Недопустимое значение: Номинальное сопротивление термометров") + QString::number(R_RTDQuint32));
-//                      }
-
-//                      qDebug()<<"R_RTDArray.toHex() "<<R_RTDArray.toHex();
-//                      paramsVector.append(R_RTDArray);
-           mapRead["R_RTDByteArray"] = R_RTDArray;
-
-           //
-           //RWire1 4 bytes (14-17)
-           QByteArray RWire1Array;
-           RWire1Array.append(buffer[14]);
-           RWire1Array.append(buffer[15]);
-           RWire1Array.append(buffer[16]);
-           RWire1Array.append(buffer[17]);
-
-
-           quint32 RWire1Quint8 = buffer[14];
-           RWire1Quint8 = RWire1Quint8<<8 | (quint8)buffer[15];
-           RWire1Quint8 = RWire1Quint8<<8 | (quint8)buffer[16];
-           RWire1Quint8 = RWire1Quint8<<8 | (quint8)buffer[17];
-
-//                      if(RWire1Quint8 == 0) {
-//                          ui->lineEdit_RWire1->setText(QString::number(RWire1Quint8));
-//                      }
-//                      else {
-//         //                 QMessageBox::information(this, "", tr("Недопустимое значение: Сопротивление проводов термомнтров сопротивления"));
-//                      }
-
-//                      qDebug()<<"RWire1Array.toHex() "<<RWire1Array.toHex();
-//                      paramsVector.append(RWire1Array);
-           mapRead["RWire1ByteArray"] = RWire1Array;
-
-           //
-           //RWire2 4 bytes (18-21)
-           QByteArray RWire2Array;
-           RWire2Array.append(buffer[18]);
-           RWire2Array.append(buffer[19]);
-           RWire2Array.append(buffer[20]);
-           RWire2Array.append(buffer[21]);
-
-
-           quint32 RWire2Quint8 = buffer[18];
-           RWire2Quint8 = RWire2Quint8<<8 | (quint8)buffer[19];
-           RWire2Quint8 = RWire2Quint8<<8 | (quint8)buffer[20];
-           RWire2Quint8 = RWire2Quint8<<8 | (quint8)buffer[21];
-
-//                      if(RWire2Quint8 == 0) {
-//                          ui->lineEdit_RWire2->setText(QString::number(RWire2Quint8));
-//                      }
-//                      else {
-//          //                QMessageBox::information(this, "", tr("Недопустимое значение: Сопротивление проводов термомнтров сопротивления"));
-//                      }
-
-//                      qDebug()<<"RWire2Array.toHex() "<<RWire2Array.toHex();
-//                      paramsVector.append(RWire2Array);
-           mapRead["RWire2ByteArray"] = RWire2Array;
-
-           //
-           //flowNom 1 byte (22)
-           QByteArray flowNomArray;
-           flowNomArray.append(buffer[22]);
-
-
-           quint8 flowNomInt = buffer[22];
-           float flowNomFloat = (float)flowNomInt/10;
-
-           mapRead["flowNomByteArray"] = flowNomArray;
+//              //
+//              //
 
 
 
-           break;
-        }
-        else {
-            if(i==2) {
-               portTmp->close();
-               label_StatusBar = (tr("Ошибка данных") +
-                                            ". Рабочее место: " + QString::number(workPlaceNumber+1));
+//              break;
+//           }
+//           else {
+//                    if(i==2) {
+////                            QMessageBox::information(this, "", tr("Ошибка открытия парольной сессии") +
+////                                                     "Рабочее место: " + QString::number(workPlaceNumber+1));
+//                        label_StatusBar = (tr("Ошибка открытия парольной сессии") +
+//                                                     ". Рабочее место: " + QString::number(workPlaceNumber+1));
+//                        emit errorStringSignal(label_StatusBar + '\n');
+////                            ui->label_writeParams->setVisible(true);
+//                        vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+////                                checkWritingError(currentIndicatorNumber);
+//                        emit workPlaceOff(currentIndicatorNumber);
+//                        emit checkRashodomerError(currentIndicatorNumber);
+
+//                        return;
+//                    }
+
+//           }
+
+
+
+//       }
+
+
+//    }
+
+    //
+    //Открыть парольную сессию 5a 00 08 40 01 04 57/
+
+
+    //
+    //Read Measured Value      5a000504
+
+    for(int i=0; i<10;i++) {
+
+       portTmp->clear();
+       packetToRead.clear();
+       buffer.clear();
+       quint8 byte = 0x5a;
+       packetToRead.append(byte);
+       byte = 0x00;
+       packetToRead.append(byte);
+       byte = 0x05;
+       packetToRead.append(byte);
+       byte = 0x04;
+       packetToRead.append(byte);
+
+       quint8 crc = makeCRC(packetToRead);
+       packetToRead.append(crc);
+
+       quint64 cnt = portTmp->write(packetToRead);
+       emit textBrowser(">> " + portTmp->portName() + " " + packetToRead.toHex());
+
+       qDebug()<<"cnt "<<cnt
+               <<"packetToRead.toHex() "<<packetToRead.toHex()
+               <<"portTmp->portName() "<<portTmp->portName();
+
+       if(cnt == 0) {
+//               QMessageBox::information(this, "", tr("Данные в порт не записаны") +
+//                                                 " Рабочее место: " + QString::number(workPlaceNumber+1));
+           label_StatusBar = (tr("Данные в порт не записаны") +
+                                        " Рабочее место: " + QString::number(workPlaceNumber+1));
+           emit errorStringSignal(label_StatusBar + '\n');
+           vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+
+           emit workPlaceOff(currentIndicatorNumber);
+           emit checkRashodomerError(currentIndicatorNumber);
+
+           return;
+       }
+
+       global::pause(600);
+
+       buffer = portTmp->readAll();
+       qDebug()<<"buffer.toHex()"<<buffer.toHex();
+       if(!buffer.isEmpty()) emit textBrowser("<< " + portTmp->portName() + " " + buffer.toHex());
+
+       if(buffer.isEmpty()) {
+           if(i==9) {
+//                   QMessageBox::information(this, "", tr("Не удалось прочитать данные") +
+//                                            " Рабочее место: " + QString::number(workPlaceNumber+1));
+               label_StatusBar = (tr("Не удалось прочитать данные") +
+                                            " Рабочее место: " + QString::number(workPlaceNumber+1));
                emit errorStringSignal(label_StatusBar + '\n');
                vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
 
@@ -17846,13 +17792,84 @@ void ObjectThread::slotRashodomer(QSerialPort *port1, QSerialPort *port2,
                emit checkRashodomerError(currentIndicatorNumber);
 
                return;
-            }
-        }
+           } else{}
+
+       }
+       else {
+           //проверяем crc и первые четыре байта ответного пакета
+           QByteArray bytesForChecking;
+           quint8 byte = 0x5a;
+           bytesForChecking.append(byte);
+           byte = 0x00;
+           bytesForChecking.append(byte);
+           byte = 0x20;
+           bytesForChecking.append(byte);
+           byte = 0x84;
+           bytesForChecking.append(byte);
+
+           if(!packetSETProcessing(buffer)) {
+               if(i == 9) {
+                   label_StatusBar = (tr("Ошибка данных") +
+                                                " Рабочее место: " + QString::number(workPlaceNumber+1));
+                   emit errorStringSignal(label_StatusBar + '\n');
+                   vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                   emit workPlaceOff(currentIndicatorNumber);
+                   emit checkRashodomerError(currentIndicatorNumber);
+                   return;
+               }
+               else {
+                   continue;
+               }
+           }
+
+  //         quint8 error = buffer.at(4);
+
+
+
+           if(checkCRC(buffer) == 0 && bytesForChecking[0] == buffer[0]
+                   && bytesForChecking[1] == buffer[1] && bytesForChecking[3] == buffer[3]) {
+
+
+              qDebug()<<"buffer.toHex() "<<buffer.toHex()
+                   <<"checkCRC(buffer) "<<checkCRC(buffer);
+
+
+              QByteArray flowValue;
+              flowValue.append(buffer.at(12));
+              flowValue.append(buffer.at(13));
+
+              emit textBrowser("RMV VMeasHour array = " + flowValue.toHex());
+
+
+
+              break;
+
+
+            }//ifend
+
+
+           else {
+               if(i==9) {
+//                      QMessageBox::information(this, "", tr("Ошибка данных") +
+//                                               " Рабочее место: " + QString::number(workPlaceNumber+1));
+                  label_StatusBar = (tr("Ошибка данных") +
+                                               " Рабочее место: " + QString::number(workPlaceNumber+1));
+                  emit errorStringSignal(label_StatusBar + '\n');
+ //                 ui->label_Calibration->setVisible(true);
+                  vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+
+                  emit workPlaceOff(currentIndicatorNumber);
+                  emit checkRashodomerError(currentIndicatorNumber);
+
+                  return;
+               }
+           }
+
+
+
+       }
 
     }
-
-
- }
 
 
     if(!imitRotationOff()) return;
@@ -17928,7 +17945,7 @@ void ObjectThread::slotMagnSensor()
     global::pause(100);
 
     buffer = portStend->readAll();
-    portStend->close();
+ //   portStend->close();
 
     if(!buffer.isEmpty()) emit textBrowser("<< " + portStend->portName() + " " + buffer.toHex());
 

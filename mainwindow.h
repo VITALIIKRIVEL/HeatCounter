@@ -685,6 +685,8 @@ private slots:
 
     void on_toolButton_pulsesReset_clicked();
 
+    void on_comboBox_portStend_currentTextChanged(const QString &arg1);
+
 private:
     
  //   Ui::MainWindow *ui;

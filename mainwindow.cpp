@@ -35849,6 +35849,7 @@ void MainWindow::on_toolButton_executeCommands_clicked()
 
     if(vectorIsCommandUse.at(0) && (repeatParameter == 0)) {
 
+
         ObjectThread1->setIsWorkPlaceUseVector(vectorIsWorkPlaceUse);
         ObjectThread2->setIsWorkPlaceUseVector(vectorIsWorkPlaceUse);
         ObjectThread3->setIsWorkPlaceUseVector(vectorIsWorkPlaceUse);
@@ -36119,7 +36120,7 @@ void MainWindow::on_toolButton_executeCommands_clicked()
 //          if(!vectorIsWorkPlaceUse.at(2)) isPulsesOutputHeatTmp3 = true;
 //          if(!vectorIsWorkPlaceUse.at(3)) isPulsesOutputHeatTmp4 = true;
 
-          for(int e=0; e<50; e++) { //5 sec
+          for(int e=0; e<70; e++) { //7 sec
               global::pause(100);
 
             if(ui->checkBox_workPlace1->isChecked()) {
@@ -36165,6 +36166,10 @@ void MainWindow::on_toolButton_executeCommands_clicked()
       ui->toolButton_pulsesOutputHeat->setPalette(palettePrime);
 
     }
+
+//    portStend->close();
+
+//    global::pause(10);
 
     //импульсный выход по теплу/
 
@@ -36215,38 +36220,38 @@ void MainWindow::on_toolButton_executeCommands_clicked()
 
         //остановка на 10с или до нажатия клавиши
 
-        KeyEventEnterBool = false;
+//        KeyEventEnterBool = false;
 
-        //если хотя бы одно рабочее место не слетело
-        bool isWorkPlaceExists = false;
-        if(vectorIsWorkPlaceUse.at(0)) isWorkPlaceExists = true;
-        if(vectorIsWorkPlaceUse.at(1)) isWorkPlaceExists = true;
-        if(vectorIsWorkPlaceUse.at(2)) isWorkPlaceExists = true;
-        if(vectorIsWorkPlaceUse.at(3)) isWorkPlaceExists = true;
+//        //если хотя бы одно рабочее место не слетело
+//        bool isWorkPlaceExists = false;
+//        if(vectorIsWorkPlaceUse.at(0)) isWorkPlaceExists = true;
+//        if(vectorIsWorkPlaceUse.at(1)) isWorkPlaceExists = true;
+//        if(vectorIsWorkPlaceUse.at(2)) isWorkPlaceExists = true;
+//        if(vectorIsWorkPlaceUse.at(3)) isWorkPlaceExists = true;
 
-        //если хотя бы один кружок зелёный от команды pulsesOutputHeat
-        bool isGreenExist = false;
-        if(!vectorIndicatorStateMatrix.at(2).at(0)) isGreenExist = true;
-        if(!vectorIndicatorStateMatrix.at(2).at(1)) isGreenExist = true;
-        if(!vectorIndicatorStateMatrix.at(2).at(2)) isGreenExist = true;
-        if(!vectorIndicatorStateMatrix.at(2).at(3)) isGreenExist = true;
+//        //если хотя бы один кружок зелёный от команды pulsesOutputHeat
+//        bool isGreenExist = false;
+//        if(!vectorIndicatorStateMatrix.at(2).at(0)) isGreenExist = true;
+//        if(!vectorIndicatorStateMatrix.at(2).at(1)) isGreenExist = true;
+//        if(!vectorIndicatorStateMatrix.at(2).at(2)) isGreenExist = true;
+//        if(!vectorIndicatorStateMatrix.at(2).at(3)) isGreenExist = true;
 
-       if(isPulsOutputHeatCmdStarted && isWorkPlaceExists && isGreenExist) {
+//       if(isPulsOutputHeatCmdStarted && isWorkPlaceExists && isGreenExist) {
 
-          for(int s=0; s<100; s++) {
+//          for(int s=0; s<100; s++) {
 
-             ui->label_pulsesInputVolTimer->setText(QString::number((10000 - 100*s)/1000) + " сек");
+//             ui->label_pulsesInputVolTimer->setText(QString::number((10000 - 100*s)/1000) + " сек");
 
-              global::pause(100);
+//              global::pause(100);
 
-              if(KeyEventEnterBool == true)
-                  break;
+//              if(KeyEventEnterBool == true)
+//                  break;
 
-          }
+//          }
 
-          ui->label_pulsesInputVolTimer->setText("");
+//          ui->label_pulsesInputVolTimer->setText("");
 
-       }
+//       }
 
         //остановка на 10с или до нажатия клавиши/
 
@@ -36309,6 +36314,39 @@ void MainWindow::on_toolButton_executeCommands_clicked()
 
       ui->toolButton_pulsesInputVolume->setPalette(palettePrime);
 
+      //остановка на 30с или до нажатия клавиши
+
+      KeyEventEnterBool = false;
+
+      //если хотя бы одно рабочее место не слетело
+      bool isWorkPlaceExists = false;
+      if(vectorIsWorkPlaceUse.at(0)) isWorkPlaceExists = true;
+      if(vectorIsWorkPlaceUse.at(1)) isWorkPlaceExists = true;
+      if(vectorIsWorkPlaceUse.at(2)) isWorkPlaceExists = true;
+      if(vectorIsWorkPlaceUse.at(3)) isWorkPlaceExists = true;
+
+      //если хотя бы один кружок зелёный от команды pulsesOutputHeat
+      bool isGreenExist = false;
+      if(!vectorIndicatorStateMatrix.at(3).at(0)) isGreenExist = true;
+      if(!vectorIndicatorStateMatrix.at(3).at(1)) isGreenExist = true;
+      if(!vectorIndicatorStateMatrix.at(3).at(2)) isGreenExist = true;
+      if(!vectorIndicatorStateMatrix.at(3).at(3)) isGreenExist = true;
+
+     if(isPulsInputVolumeCmdStarted && isWorkPlaceExists && isGreenExist) {
+
+        for(int s=0; s<65000; s++) {
+
+            global::pause(300);
+
+            if(KeyEventEnterBool == true)
+                break;
+
+        }
+
+     }
+
+      //остановка на 30с или до нажатия клавиши/
+
     }
 
     //импульсный вход по объему/
@@ -36317,6 +36355,23 @@ void MainWindow::on_toolButton_executeCommands_clicked()
     //импульсный выход - по умолчанию
 
     if(vectorIsCommandUse.at(4) && (repeatParameter == 0 || repeatParameter == 1) ) {
+
+        portStend->close();
+
+        ObjectThread1->moveToThread(&Thread1);
+        ObjectThread2->moveToThread(&Thread2);
+        ObjectThread3->moveToThread(&Thread3);
+        ObjectThread4->moveToThread(&Thread4);
+
+        Thread1.start();
+        Thread2.start();
+        Thread3.start();
+        Thread4.start();
+
+        ObjectThread1->getPortStendName(portStend);
+        ObjectThread2->getPortStendName(portStend);
+        ObjectThread3->getPortStendName(portStend);
+        ObjectThread4->getPortStendName(portStend);
 
         ui->label_StatusBar->setFocus(Qt::MouseFocusReason);
 
@@ -36349,38 +36404,38 @@ void MainWindow::on_toolButton_executeCommands_clicked()
 
 //      }
 
-        //остановка на 30с или до нажатия клавиши
+//        //остановка на 30с или до нажатия клавиши
 
-        KeyEventEnterBool = false;
+//        KeyEventEnterBool = false;
 
-        //если хотя бы одно рабочее место не слетело
-        bool isWorkPlaceExists = false;
-        if(vectorIsWorkPlaceUse.at(0)) isWorkPlaceExists = true;
-        if(vectorIsWorkPlaceUse.at(1)) isWorkPlaceExists = true;
-        if(vectorIsWorkPlaceUse.at(2)) isWorkPlaceExists = true;
-        if(vectorIsWorkPlaceUse.at(3)) isWorkPlaceExists = true;
+//        //если хотя бы одно рабочее место не слетело
+//        bool isWorkPlaceExists = false;
+//        if(vectorIsWorkPlaceUse.at(0)) isWorkPlaceExists = true;
+//        if(vectorIsWorkPlaceUse.at(1)) isWorkPlaceExists = true;
+//        if(vectorIsWorkPlaceUse.at(2)) isWorkPlaceExists = true;
+//        if(vectorIsWorkPlaceUse.at(3)) isWorkPlaceExists = true;
 
-        //если хотя бы один кружок зелёный от команды pulsesOutputHeat
-        bool isGreenExist = false;
-        if(!vectorIndicatorStateMatrix.at(3).at(0)) isGreenExist = true;
-        if(!vectorIndicatorStateMatrix.at(3).at(1)) isGreenExist = true;
-        if(!vectorIndicatorStateMatrix.at(3).at(2)) isGreenExist = true;
-        if(!vectorIndicatorStateMatrix.at(3).at(3)) isGreenExist = true;
+//        //если хотя бы один кружок зелёный от команды pulsesOutputHeat
+//        bool isGreenExist = false;
+//        if(!vectorIndicatorStateMatrix.at(3).at(0)) isGreenExist = true;
+//        if(!vectorIndicatorStateMatrix.at(3).at(1)) isGreenExist = true;
+//        if(!vectorIndicatorStateMatrix.at(3).at(2)) isGreenExist = true;
+//        if(!vectorIndicatorStateMatrix.at(3).at(3)) isGreenExist = true;
 
-       if(isPulsInputVolumeCmdStarted && isWorkPlaceExists && isGreenExist) {
+//       if(isPulsInputVolumeCmdStarted && isWorkPlaceExists && isGreenExist) {
 
-          for(int s=0; s<65000; s++) {
+//          for(int s=0; s<65000; s++) {
 
-              global::pause(300);
+//              global::pause(300);
 
-              if(KeyEventEnterBool == true)
-                  break;
+//              if(KeyEventEnterBool == true)
+//                  break;
 
-          }
+//          }
 
-       }
+//       }
 
-        //остановка на 30с или до нажатия клавиши/
+//        //остановка на 30с или до нажатия клавиши/
 
         emit signalPulsesOutputDefToThread(portOptical, portOptical2, portOptical3, portOptical4);
 
@@ -36398,7 +36453,7 @@ void MainWindow::on_toolButton_executeCommands_clicked()
 //          if(!vectorIsWorkPlaceUse.at(2)) isPulsesInputVolumeTmp3 = true;
 //          if(!vectorIsWorkPlaceUse.at(3)) isPulsesInputVolumeTmp4 = true;
 
-          for(int e=0; e<50; e++) { //5 sec
+          for(int e=0; e<70; e++) { //7 sec
               global::pause(100);
 
               if(ui->checkBox_workPlace1->isChecked()) {
@@ -36574,6 +36629,11 @@ void MainWindow::on_toolButton_executeCommands_clicked()
     //-----------------------------------------------------
 
     if(vectorIsCommandUse.at(6) && (repeatParameter == 0 || repeatParameter == 1) ) {
+
+//        portOptical->close();
+//        portOptical2->close();
+//        portOptical3->close();
+//        portOptical4->close();
 
         ObjectThread1->setIsWorkPlaceUseVector(vectorIsWorkPlaceUse);
         ObjectThread2->setIsWorkPlaceUseVector(vectorIsWorkPlaceUse);
@@ -37199,10 +37259,12 @@ void MainWindow::on_toolButton_executeCommands_clicked()
 
     repeatParameter = 0;
 
-    if(ui->checkBox_workPlace1->isChecked()) ObjectThread1->plataOff();
-    if(ui->checkBox_workPlace2->isChecked()) ObjectThread2->plataOff();
-    if(ui->checkBox_workPlace3->isChecked()) ObjectThread3->plataOff();
-    if(ui->checkBox_workPlace4->isChecked()) ObjectThread4->plataOff();
+//    portStend->close();
+
+//    if(ui->checkBox_workPlace1->isChecked()) ObjectThread1->plataOff();
+//    if(ui->checkBox_workPlace2->isChecked()) ObjectThread2->plataOff();
+//    if(ui->checkBox_workPlace3->isChecked()) ObjectThread3->plataOff();
+//    if(ui->checkBox_workPlace4->isChecked()) ObjectThread4->plataOff();
 
     //изменение порядка табуляции/
 
@@ -41083,3 +41145,8 @@ void MainWindow::slotReadyReadStend()
 }
 
 
+
+void MainWindow::on_comboBox_portStend_currentTextChanged(const QString &arg1)
+{
+
+}
