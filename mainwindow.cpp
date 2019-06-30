@@ -5047,6 +5047,24 @@ void MainWindow::on_toolButton_loadTemplate_clicked()
         QMessageBox::information(this, "", tr("Отсутствует параметр: PCB_SN"));
         return;
     }
+    QString typeStr1 = PCB_SNString;
+    typeStr1.remove("\nPCB_SN ");
+    typeStr1.remove(0, 2);
+    bool ok1;
+    int type1 = typeStr1.left(2).toInt(&ok1, 16);//(quint8)(paramsMap["PCB_SN_ByteArray"].at(1));
+
+    if(type1 == 0x10 || type1 == 0x44 || type1 == 0x14 ||
+            type1 == 0x46 || type1 == 0x54 || type1 == 0x58) extInterface1 = "Mbus";
+
+    if(type1 == 0x20 || type1 == 0x22 || type1 == 0x62) extInterface1 = "RS485";
+
+    if(type1 != 0x10 && type1 != 0x44 && type1 != 0x14 &&
+            type1 != 0x46 && type1 != 0x54 && type1 != 0x58 &&
+            type1 != 0x20 && type1 != 0x22 && type1 != 0x62) {
+
+        QMessageBox::information(this, "", "Неверное значение: внешний интерфейс" + QString::number(type1, 16));
+        return;
+    }
 //    PCB_SNString.remove("\nPCB_SN ");
 //    ui->lineEdit_PCB_SN->setText(PCB_SNString);
 
@@ -5054,6 +5072,24 @@ void MainWindow::on_toolButton_loadTemplate_clicked()
     QString PCB_SNString2 = fileToStringList[8];
     if(!PCB_SNString2.contains("PCB_SN2 ")) {
         QMessageBox::information(this, "", tr("Отсутствует параметр: PCB_SN2"));
+        return;
+    }
+    QString typeStr2 = PCB_SNString2;
+    typeStr2.remove("\nPCB_SN2 ");
+    typeStr2.remove(0, 2);
+    bool ok2;
+    int type2 = typeStr2.left(2).toInt(&ok2, 16);
+
+    if(type2 == 0x10 || type2 == 0x44 || type2 == 0x14 ||
+            type2 == 0x46 || type2 == 0x54 || type2 == 0x58) extInterface2 = "Mbus";
+
+    if(type2 == 0x20 || type2 == 0x22 || type2 == 0x62) extInterface2 = "RS485";
+
+    if(type2 != 0x10 && type2 != 0x44 && type2 != 0x14 &&
+            type2 != 0x46 && type2 != 0x54 && type2 != 0x58 &&
+            type2 != 0x20 && type2 != 0x22 && type2 != 0x62) {
+
+        QMessageBox::information(this, "", "Неверное значение: внешний интерфейс" + QString::number(type2, 16));
         return;
     }
 //    PCB_SNString2.remove("\nPCB_SN2 ");
@@ -5065,6 +5101,24 @@ void MainWindow::on_toolButton_loadTemplate_clicked()
         QMessageBox::information(this, "", tr("Отсутствует параметр: PCB_SN3"));
         return;
     }
+    QString typeStr3 = PCB_SNString3;
+    typeStr3.remove("\nPCB_SN3 ");
+    typeStr3.remove(0, 2);
+    bool ok3;
+    int type3 = typeStr3.left(2).toInt(&ok3, 16);
+
+    if(type3 == 0x10 || type3 == 0x44 || type3 == 0x14 ||
+            type3 == 0x46 || type3 == 0x54 || type3 == 0x58) extInterface3 = "Mbus";
+
+    if(type3 == 0x20 || type3 == 0x22 || type3 == 0x62) extInterface3 = "RS485";
+
+    if(type3 != 0x10 && type3 != 0x44 && type3 != 0x14 &&
+            type3 != 0x46 && type3 != 0x54 && type3 != 0x58 &&
+            type3 != 0x20 && type3 != 0x22 && type3 != 0x62) {
+
+        QMessageBox::information(this, "", "Неверное значение: внешний интерфейс" + QString::number(type3, 16));
+        return;
+    }
 //    PCB_SNString3.remove("\nPCB_SN3 ");
 //    ui->lineEdit_PCB_SN->setText(PCB_SNString3);
 
@@ -5072,6 +5126,24 @@ void MainWindow::on_toolButton_loadTemplate_clicked()
     QString PCB_SNString4 = fileToStringList[10];
     if(!PCB_SNString4.contains("PCB_SN4 ")) {
         QMessageBox::information(this, "", tr("Отсутствует параметр: PCB_SN4"));
+        return;
+    }
+    QString typeStr4 = PCB_SNString4;
+    typeStr4.remove("\nPCB_SN4 ");
+    typeStr4.remove(0, 2);
+    bool ok4;
+    int type4 = typeStr4.left(2).toInt(&ok4, 16);
+
+    if(type4 == 0x10 || type4 == 0x44 || type4 == 0x14 ||
+            type4 == 0x46 || type4 == 0x54 || type4 == 0x58) extInterface4 = "Mbus";
+
+    if(type4 == 0x20 || type4 == 0x22 || type4 == 0x62) extInterface4 = "RS485";
+
+    if(type4 != 0x10 && type4 != 0x44 && type4 != 0x14 &&
+            type4 != 0x46 && type4 != 0x54 && type4 != 0x58 &&
+            type4 != 0x20 && type4 != 0x22 && type4 != 0x62) {
+
+        QMessageBox::information(this, "", "Неверное значение: внешний интерфейс" + QString::number(type4, 16));
         return;
     }
 //    PCB_SNString4.remove("\nPCB_SN4 ");
@@ -22273,65 +22345,67 @@ void MainWindow::slotGetParamsMap(QMap<QString, QByteArray> paramsMap)
 
      PCB_SN_ByteArray = paramsMap["PCB_SN_ByteArray"];
      paramsMapToThreads["PCB_SN_ByteArray"] = paramsMap["PCB_SN_ByteArray"];
-//     int type1 = paramsMap["PCB_SN_ByteArray"].at(1);
-//     switch (type1) {
-//     case 0x00:
+//     int type1 = (quint8)(paramsMap["PCB_SN_ByteArray"].at(1));
 
-//         break;
-//     case 0x02:
+//     if(type1 == 0x10 || type1 == 0x44 || type1 == 0x14 ||
+//             type1 == 0x46 || type1 == 0x54 || type1 == 0x58) extInterface1 = "Mbus";
 
-//         break;
-//     case 0x04:
+//     if(type1 == 0x20 || type1 == 0x22 || type1 == 0x62) extInterface1 = "RS485";
 
-//         break;
-//     case 0x08:
+//     if(type1 != 0x10 && type1 != 0x44 && type1 != 0x14 &&
+//             type1 != 0x46 && type1 != 0x54 && type1 != 0x58 &&
+//             type1 != 0x20 && type1 != 0x22 && type1 != 0x62) {
 
-//         break;
-//     case 0x10:
-
-//         break;
-//     case 0x12:
-
-//         break;
-//     case 0x14:
-
-//         break;
-//     case 0x16:
-
-//         break;
-//     case 0x18:
-
-//         break;
-//     case 0x20:
-
-//         break;
-//     case 0x22:
-
-//         break;
-//     case 0x24:
-
-//         break;
-//     case 0x26:
-
-//         break;
-//     case 0x28:
-
-//         break;
-//     case 0x30:
-
-//         break;
-//     default:
-//         break;
+//         QMessageBox::information(this, "", "Неверное значение: внешний интерфейс" + QString::number(type1, 16));
 //     }
 
      PCB_SN_ByteArray2 = paramsMap["PCB_SN_ByteArray2"];
      paramsMapToThreads["PCB_SN_ByteArray2"] = paramsMap["PCB_SN_ByteArray2"];
+//     int type2 = (quint8)(paramsMap["PCB_SN_ByteArray2"].at(1));
+
+//     if(type2 == 0x10 || type2 == 0x44 || type2 == 0x14 ||
+//             type2 == 0x46 || type2 == 0x54 || type2 == 0x58) extInterface2 = "Mbus";
+
+//     if(type2 == 0x20 || type2 == 0x22 || type2 == 0x62) extInterface2 = "RS485";
+
+//     if(type2 != 0x10 && type2 != 0x44 && type2 != 0x14 &&
+//             type2 != 0x46 && type2 != 0x54 && type2 != 0x58 &&
+//             type2 != 0x20 && type2 != 0x22 && type2 != 0x62) {
+
+//         QMessageBox::information(this, "", "Неверное значение: внешний интерфейс" + QString::number(type2, 16));
+//     }
 
      PCB_SN_ByteArray3 = paramsMap["PCB_SN_ByteArray3"];
      paramsMapToThreads["PCB_SN_ByteArray3"] = paramsMap["PCB_SN_ByteArray3"];
+//     int type3 = (quint8)(paramsMap["PCB_SN_ByteArray3"].at(1));
+
+//     if(type3 == 0x10 || type3 == 0x44 || type3 == 0x14 ||
+//             type3 == 0x46 || type3 == 0x54 || type3 == 0x58) extInterface3 = "Mbus";
+
+//     if(type3 == 0x20 || type3 == 0x22 || type3 == 0x62) extInterface3 = "RS485";
+
+//     if(type3 != 0x10 && type3 != 0x44 && type3 != 0x14 &&
+//             type3 != 0x46 && type3 != 0x54 && type3 != 0x58 &&
+//             type3 != 0x20 && type3 != 0x22 && type3 != 0x62) {
+
+//         QMessageBox::information(this, "", "Неверное значение: внешний интерфейс" + QString::number(type3, 16));
+//     }
 
      PCB_SN_ByteArray4 = paramsMap["PCB_SN_ByteArray4"];
      paramsMapToThreads["PCB_SN_ByteArray4"] = paramsMap["PCB_SN_ByteArray4"];
+//     int type4 = (quint8)(paramsMap["PCB_SN_ByteArray4"].at(1));
+
+//     if(type4 == 0x10 || type4 == 0x44 || type4 == 0x14 ||
+//             type4 == 0x46 || type4 == 0x54 || type4 == 0x58) extInterface4 = "Mbus";
+
+//     if(type4 == 0x20 || type4 == 0x22 || type4 == 0x62) extInterface4 = "RS485";
+
+//     if(type4 != 0x10 && type4 != 0x44 && type4 != 0x14 &&
+//             type4 != 0x46 && type4 != 0x54 && type4 != 0x58 &&
+//             type4 != 0x20 && type4 != 0x22 && type4 != 0x62) {
+
+//         QMessageBox::information(this, "", "Неверное значение: внешний интерфейс" + QString::number(type4, 16));
+//     }
 
 
      flowMinByteArray = paramsMap["flowMinByteArray"];
@@ -36722,6 +36796,7 @@ void MainWindow::on_toolButton_executeCommands_clicked()
         portOptical3->close();
         portOptical4->close();
         portDigitalInterfaceChecking->close();
+        portStend->close();
         portOptical->clear();
         portOptical2->clear();
         portOptical3->clear();
@@ -36767,23 +36842,44 @@ void MainWindow::on_toolButton_executeCommands_clicked()
         if(vectorIsWorkPlaceUse.at(l)) {
             //выбрать интерфейс и подключить к плате
             if(l==0) {
-                if(!ObjectThread1->selectMbus()) return;
-                if(!ObjectThread1->selectRS()) return;
-                if(!ObjectThread1->externalInterfaceOn()) return;
+               if(extInterface1 == "Mbus") {
+                   if(!ObjectThread1->selectMbus()) return;
+               }
+               if(extInterface1 == "RS485") {
+                   if(!ObjectThread1->selectRS()) return;
+               }
+
+               if(!ObjectThread1->externalInterfaceOn()) return;
+
             }
             if(l==1) {
-                if(!ObjectThread2->selectMbus()) return;
-                if(!ObjectThread2->selectRS()) return;
+                if(extInterface2 == "Mbus") {
+                    if(!ObjectThread2->selectMbus()) return;
+                }
+                if(extInterface2 == "RS485") {
+                    if(!ObjectThread2->selectRS()) return;
+                }
+
                 if(!ObjectThread2->externalInterfaceOn()) return;
             }
             if(l==2) {
-                if(!ObjectThread3->selectMbus()) return;
-                if(!ObjectThread3->selectRS()) return;
+                if(extInterface3 == "Mbus") {
+                    if(!ObjectThread3->selectMbus()) return;
+                }
+                if(extInterface3 == "RS485") {
+                    if(!ObjectThread3->selectRS()) return;
+                }
+
                 if(!ObjectThread3->externalInterfaceOn()) return;
             }
             if(l==3) {
-                if(!ObjectThread4->selectMbus()) return;
-                if(!ObjectThread4->selectRS()) return;
+                if(extInterface4 == "Mbus") {
+                    if(!ObjectThread4->selectMbus()) return;
+                }
+                if(extInterface4 == "RS485") {
+                    if(!ObjectThread4->selectRS()) return;
+                }
+
                 if(!ObjectThread4->externalInterfaceOn()) return;
             }
             //выбрать интерфейс и подключить к плате/

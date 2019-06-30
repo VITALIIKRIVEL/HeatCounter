@@ -17568,10 +17568,11 @@ void ObjectThread::slotRashodomer(QSerialPort *port1, QSerialPort *port2,
 //    4)	Выключить имитацию вращения (IM=0)
 
 
-    if(!setFreqRotation("5")) return;
+    if(!setFreqRotation("500")) return;
 
     if(!imitRotationOn()) return;
 
+    global::pause(5000);
 
     if(!portTmp->isOpen()) {
         if(!portTmp->open(QIODevice::ReadWrite)) {
@@ -17622,14 +17623,14 @@ void ObjectThread::slotRashodomer(QSerialPort *port1, QSerialPort *port2,
 //               <<"portTmp->portName() "<<portTmp->portName();
 
 //       if(cnt == 0) {
-////               QMessageBox::information(this, "", tr("Данные в порт не записаны") +
-////                                                 "Рабочее место: " + QString::number(workPlaceNumber+1));
+// //               QMessageBox::information(this, "", tr("Данные в порт не записаны") +
+// //                                                 "Рабочее место: " + QString::number(workPlaceNumber+1));
 //           label_StatusBar = (tr("Данные в порт не записаны") +
 //                                        ". Рабочее место: " + QString::number(workPlaceNumber+1));
 //           emit errorStringSignal(label_StatusBar + '\n');
 //           vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
-////                   checkWritingError(currentIndicatorNumber);
-////                   emit workPlaceOff(currentIndicatorNumber);
+// //                   checkWritingError(currentIndicatorNumber);
+// //                   emit workPlaceOff(currentIndicatorNumber);
 //           emit workPlaceOff(currentIndicatorNumber);
 //           emit checkRashodomerError(currentIndicatorNumber);
 
@@ -17645,15 +17646,15 @@ void ObjectThread::slotRashodomer(QSerialPort *port1, QSerialPort *port2,
 
 //       if(buffer.isEmpty()) {
 //           if(i==2) {
-////                   QMessageBox::information(this, "", tr("Ошибка открытия парольной сессии") +
-////                                            "Рабочее место: " + QString::number(workPlaceNumber+1));
+// //                   QMessageBox::information(this, "", tr("Ошибка открытия парольной сессии") +
+// //                                            "Рабочее место: " + QString::number(workPlaceNumber+1));
 //               label_StatusBar = (tr("Ошибка открытия парольной сессии") +
 //                                            ". Рабочее место: " + QString::number(workPlaceNumber+1));
 //               emit errorStringSignal(label_StatusBar + '\n');
-////                      ui->label_writeParams->setVisible(true);
+// //                      ui->label_writeParams->setVisible(true);
 //               vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
-////                       checkWritingError(currentIndicatorNumber);
-////                       emit workPlaceOff(currentIndicatorNumber);
+// //                       checkWritingError(currentIndicatorNumber);
+// //                       emit workPlaceOff(currentIndicatorNumber);
 //               emit workPlaceOff(currentIndicatorNumber);
 //               emit checkRashodomerError(currentIndicatorNumber);
 
@@ -17705,14 +17706,14 @@ void ObjectThread::slotRashodomer(QSerialPort *port1, QSerialPort *port2,
 //           }
 //           else {
 //                    if(i==2) {
-////                            QMessageBox::information(this, "", tr("Ошибка открытия парольной сессии") +
-////                                                     "Рабочее место: " + QString::number(workPlaceNumber+1));
+// //                            QMessageBox::information(this, "", tr("Ошибка открытия парольной сессии") +
+// //                                                     "Рабочее место: " + QString::number(workPlaceNumber+1));
 //                        label_StatusBar = (tr("Ошибка открытия парольной сессии") +
 //                                                     ". Рабочее место: " + QString::number(workPlaceNumber+1));
 //                        emit errorStringSignal(label_StatusBar + '\n');
-////                            ui->label_writeParams->setVisible(true);
+// //                            ui->label_writeParams->setVisible(true);
 //                        vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
-////                                checkWritingError(currentIndicatorNumber);
+// //                                checkWritingError(currentIndicatorNumber);
 //                        emit workPlaceOff(currentIndicatorNumber);
 //                        emit checkRashodomerError(currentIndicatorNumber);
 
