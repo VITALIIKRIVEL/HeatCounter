@@ -3834,8 +3834,6 @@ void ObjectThread::slotWriteParams(QSerialPort *port1, QSerialPort *port2, QSeri
                 emit workPlaceOff(currentIndicatorNumber);
                 emit checkWritingError(currentIndicatorNumber);
 
- //               checkWritingError(currentIndicatorNumber);
- //               emit workPlaceOff(currentIndicatorNumber);
                 return;
             }
 
