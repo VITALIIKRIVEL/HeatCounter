@@ -47,6 +47,14 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->toolButton_resultFileChecking->setVisible(false);
  //   ui->textBrowser->setVisible(false);
     ui->toolButton_clearTextBrowser->setVisible(false);
+    ui->toolButton_2->setVisible(false);
+    ui->toolButton_3->setVisible(false);
+    ui->toolButton_4->setVisible(false);
+    ui->pushButton_closePortStend->setVisible(false);
+    ui->pushButton_openPortStend->setVisible(false);
+    ui->pushButton_portStendSettings->setVisible(false);
+    ui->lineEdit_periodBetweenPulses->setVisible(false);
+    ui->toolButton_realClockCalibration->setVisible(false);
 
     ui->lineEdit_serial->setMaxLength(3);
     ui->lineEdit_serial_2->setMaxLength(3);
@@ -117,7 +125,7 @@ MainWindow::MainWindow(QWidget *parent) :
 //    ui->label_86->setFont(mainFont);
     ui->label_87->setFont(mainFont);
     ui->label_88->setFont(mainFont);
-    ui->label_89->setFont(mainFont);
+//    ui->label_89->setFont(mainFont);
 
 //    ui->textBrowser->setFont(mainFont);
 
@@ -5053,20 +5061,19 @@ void MainWindow::on_toolButton_loadTemplate_clicked()
     bool ok1;
     int type1 = typeStr1.left(2).toInt(&ok1, 16);//(quint8)(paramsMap["PCB_SN_ByteArray"].at(1));
 
-    if(type1 == 0x10 || type1 == 0x44 || type1 == 0x14 ||
-            type1 == 0x46 || type1 == 0x54 || type1 == 0x58) extInterface1 = "Mbus";
+    if(type1 == 0x02 || type1 == 0x06 || type1 == 0x10 ||type1 == 0x14)
+        extInterface1 = "Mbus";
 
-    if(type1 == 0x20 || type1 == 0x22 || type1 == 0x62) extInterface1 = "RS485";
+    if(type1 == 0x16 || type1 == 0x18 || type1 == 0x20 ||type1 == 0x22)
+        extInterface1 = "RS485";
 
-    if(type1 != 0x10 && type1 != 0x44 && type1 != 0x14 &&
-            type1 != 0x46 && type1 != 0x54 && type1 != 0x58 &&
-            type1 != 0x20 && type1 != 0x22 && type1 != 0x62) {
+//    if(type1 != 0x10 && type1 != 0x44 && type1 != 0x14 &&
+//            type1 != 0x46 && type1 != 0x54 && type1 != 0x58 &&
+//            type1 != 0x20 && type1 != 0x22 && type1 != 0x62) {
 
-        QMessageBox::information(this, "", "Неверное значение: внешний интерфейс" + QString::number(type1, 16));
-        return;
-    }
-//    PCB_SNString.remove("\nPCB_SN ");
-//    ui->lineEdit_PCB_SN->setText(PCB_SNString);
+//        QMessageBox::information(this, "", "Неверное значение: внешний интерфейс" + QString::number(type1, 16));
+//        return;
+//    }
 
     //
     QString PCB_SNString2 = fileToStringList[8];
@@ -5080,20 +5087,19 @@ void MainWindow::on_toolButton_loadTemplate_clicked()
     bool ok2;
     int type2 = typeStr2.left(2).toInt(&ok2, 16);
 
-    if(type2 == 0x10 || type2 == 0x44 || type2 == 0x14 ||
-            type2 == 0x46 || type2 == 0x54 || type2 == 0x58) extInterface2 = "Mbus";
+    if(type2 == 0x02 || type2 == 0x06 || type2 == 0x10 ||type2 == 0x14)
+        extInterface2 = "Mbus";
 
-    if(type2 == 0x20 || type2 == 0x22 || type2 == 0x62) extInterface2 = "RS485";
+    if(type2 == 0x16 || type2 == 0x18 || type2 == 0x20 ||type2 == 0x22)
+        extInterface2 = "RS485";
 
-    if(type2 != 0x10 && type2 != 0x44 && type2 != 0x14 &&
-            type2 != 0x46 && type2 != 0x54 && type2 != 0x58 &&
-            type2 != 0x20 && type2 != 0x22 && type2 != 0x62) {
+//    if(type2 != 0x10 && type2 != 0x44 && type2 != 0x14 &&
+//            type2 != 0x46 && type2 != 0x54 && type2 != 0x58 &&
+//            type2 != 0x20 && type2 != 0x22 && type2 != 0x62) {
 
-        QMessageBox::information(this, "", "Неверное значение: внешний интерфейс" + QString::number(type2, 16));
-        return;
-    }
-//    PCB_SNString2.remove("\nPCB_SN2 ");
-//    ui->lineEdit_PCB_SN->setText(PCB_SNString2);
+//        QMessageBox::information(this, "", "Неверное значение: внешний интерфейс" + QString::number(type2, 16));
+//        return;
+//    }
 
     //
     QString PCB_SNString3 = fileToStringList[9];
@@ -5107,20 +5113,19 @@ void MainWindow::on_toolButton_loadTemplate_clicked()
     bool ok3;
     int type3 = typeStr3.left(2).toInt(&ok3, 16);
 
-    if(type3 == 0x10 || type3 == 0x44 || type3 == 0x14 ||
-            type3 == 0x46 || type3 == 0x54 || type3 == 0x58) extInterface3 = "Mbus";
+    if(type3 == 0x02 || type3 == 0x06 || type3 == 0x10 ||type3 == 0x14)
+        extInterface3 = "Mbus";
 
-    if(type3 == 0x20 || type3 == 0x22 || type3 == 0x62) extInterface3 = "RS485";
+    if(type3 == 0x16 || type3 == 0x18 || type3 == 0x20 ||type3 == 0x22)
+        extInterface3 = "RS485";
 
-    if(type3 != 0x10 && type3 != 0x44 && type3 != 0x14 &&
-            type3 != 0x46 && type3 != 0x54 && type3 != 0x58 &&
-            type3 != 0x20 && type3 != 0x22 && type3 != 0x62) {
+//    if(type3 != 0x10 && type3 != 0x44 && type3 != 0x14 &&
+//            type3 != 0x46 && type3 != 0x54 && type3 != 0x58 &&
+//            type3 != 0x20 && type3 != 0x22 && type3 != 0x62) {
 
-        QMessageBox::information(this, "", "Неверное значение: внешний интерфейс" + QString::number(type3, 16));
-        return;
-    }
-//    PCB_SNString3.remove("\nPCB_SN3 ");
-//    ui->lineEdit_PCB_SN->setText(PCB_SNString3);
+//        QMessageBox::information(this, "", "Неверное значение: внешний интерфейс" + QString::number(type3, 16));
+//        return;
+//    }
 
     //
     QString PCB_SNString4 = fileToStringList[10];
@@ -5134,20 +5139,19 @@ void MainWindow::on_toolButton_loadTemplate_clicked()
     bool ok4;
     int type4 = typeStr4.left(2).toInt(&ok4, 16);
 
-    if(type4 == 0x10 || type4 == 0x44 || type4 == 0x14 ||
-            type4 == 0x46 || type4 == 0x54 || type4 == 0x58) extInterface4 = "Mbus";
+    if(type4 == 0x02 || type4 == 0x06 || type4 == 0x10 ||type4 == 0x14)
+        extInterface4 = "Mbus";
 
-    if(type4 == 0x20 || type4 == 0x22 || type4 == 0x62) extInterface4 = "RS485";
+    if(type4 == 0x16 || type4 == 0x18 || type4 == 0x20 ||type4 == 0x22)
+        extInterface4 = "RS485";
 
-    if(type4 != 0x10 && type4 != 0x44 && type4 != 0x14 &&
-            type4 != 0x46 && type4 != 0x54 && type4 != 0x58 &&
-            type4 != 0x20 && type4 != 0x22 && type4 != 0x62) {
+//    if(type4 != 0x10 && type4 != 0x44 && type4 != 0x14 &&
+//            type4 != 0x46 && type4 != 0x54 && type4 != 0x58 &&
+//            type4 != 0x20 && type4 != 0x22 && type4 != 0x62) {
 
-        QMessageBox::information(this, "", "Неверное значение: внешний интерфейс" + QString::number(type4, 16));
-        return;
-    }
-//    PCB_SNString4.remove("\nPCB_SN4 ");
-//    ui->lineEdit_PCB_SN->setText(PCB_SNString4);
+//        QMessageBox::information(this, "", "Неверное значение: внешний интерфейс" + QString::number(type4, 16));
+//        return;
+//    }
 
     //
     QString Flow_minString = fileToStringList[11];
@@ -36746,7 +36750,7 @@ void MainWindow::on_toolButton_executeCommands_clicked()
         bool isRashodomerTmp3 = true;
         bool isRashodomerTmp4 = true;
 
-          for(int e=0; e<30; e++) { //3 sec
+          for(int e=0; e<100; e++) { //10 sec
               global::pause(100);
 
               if(ui->checkBox_workPlace1->isChecked()) {

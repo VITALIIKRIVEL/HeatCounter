@@ -3834,8 +3834,6 @@ void ObjectThread::slotWriteParams(QSerialPort *port1, QSerialPort *port2, QSeri
                 emit workPlaceOff(currentIndicatorNumber);
                 emit checkWritingError(currentIndicatorNumber);
 
- //               checkWritingError(currentIndicatorNumber);
- //               emit workPlaceOff(currentIndicatorNumber);
                 return;
             }
 
@@ -11939,7 +11937,7 @@ void ObjectThread::slotPulsesOutputDefault(QSerialPort *port1, QSerialPort *port
 
 
             //через 3 сек прочитываем кол-во импульсов из стенда
-              global::pause(3000);
+              global::pause(4000);
 
               readPulsesChannel1();
               readPulsesChannel2();
@@ -14974,7 +14972,7 @@ bool ObjectThread::readPulsesChannel1()
 
     //ждать ответа от стенда 10 мсек
 
-    global::pause(100);
+    global::pause(50);
 
     buffer = portStend->readAll();
 //    portStend->close();
@@ -15074,7 +15072,7 @@ bool ObjectThread::readPulsesChannel2()
 
     //ждать ответа от стенда 10 мсек
 
-    global::pause(100);
+    global::pause(50);
 
     buffer = portStend->readAll();
   //  portStend->close();
@@ -17570,7 +17568,7 @@ void ObjectThread::slotRashodomer(QSerialPort *port1, QSerialPort *port2,
 //    4)	Выключить имитацию вращения (IM=0)
 
 
-    if(!setFreqRotation("500")) return;
+    if(!setFreqRotation("100")) return;
 
     if(!imitRotationOn()) return;
 
@@ -17841,7 +17839,28 @@ void ObjectThread::slotRashodomer(QSerialPort *port1, QSerialPort *port2,
               flowValue.append(buffer.at(12));
               flowValue.append(buffer.at(13));
 
-              emit textBrowser("RMV VMeasHour array = " + flowValue.toHex());
+              quint16 flowInt = (quint8)buffer.at(12);
+              flowInt = flowInt<<8 | (quint8)buffer.at(13);
+
+              float flowFloat = flowInt;
+
+               emit textBrowser("RMV VMeasHour array = " + flowValue.toHex());
+              emit textBrowser("RMV VMeasHour array = " + QString::number(flowFloat/10000) + " m3/h" /*flowValue.toHex()*/);
+
+              if( !( (flowFloat/10000)>=(0.612-0.612/10) && (flowFloat/10000)<=(0.612 + 0.612/10) ) ) {
+
+                  label_StatusBar = (tr("Недопустимое значение потока") +
+                                               " Рабочее место: " + QString::number(workPlaceNumber+1));
+                  emit errorStringSignal(label_StatusBar + '\n');
+ //                 ui->label_Calibration->setVisible(true);
+                  vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+
+                  emit workPlaceOff(currentIndicatorNumber);
+                  emit checkRashodomerError(currentIndicatorNumber);
+
+                  return;
+
+              }
 
 
 
@@ -17897,6 +17916,9 @@ void ObjectThread::slotMagnSensor()
 
     if(!isWorkPlaceUse.at(workPlace)) return;
 
+    int currentIndicatorNumber = workPlace;
+    int currentBoxNumber = 8;
+
     QString command = "TIM?";
 
     QByteArray parcel;
@@ -17930,13 +17952,19 @@ void ObjectThread::slotMagnSensor()
             QString label_StatusBar = (tr("Не удалось открыть порт стенда") +
                                          ". Рабочее место: " + QString::number(workPlace+1));
             emit errorStringSignal(label_StatusBar + '\n');
-            vectorIndicatorBSLMatrix[workPlace] = true;
+            vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
 
             emit workPlaceOff(workPlace);
             emit checkMagnSensorError(workPlace);
             return;
         }
     }
+
+    //прочитываем пять раз TIM?. если на каком-то шаге произошло уменьшение, то считаем, что импульс сбрасывается
+
+    QVector<int> vectorTIM;
+
+   for (int k = 0; k < 7; ++k) {
 
     portStend->clear();
 
@@ -17945,7 +17973,7 @@ void ObjectThread::slotMagnSensor()
 
     //ждать ответа от стенда 10 мсек
 
-    global::pause(100);
+    global::pause(150);
 
     buffer = portStend->readAll();
  //   portStend->close();
@@ -17956,7 +17984,7 @@ void ObjectThread::slotMagnSensor()
         QString label_StatusBar = (tr("Нет ответа стенда. Команда \"Прочитать таймаут импульса питания на датчик резистивный датчик\" ") +
                                      ". Рабочее место: " + QString::number(workPlace+1));
         emit errorStringSignal(label_StatusBar + '\n');
-        vectorIndicatorBSLMatrix[workPlace] = true;
+        vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
         emit workPlaceOff(workPlace);
         emit checkMagnSensorError(workPlace);
 
@@ -17972,18 +18000,41 @@ void ObjectThread::slotMagnSensor()
 
     answerStr = QString::fromLocal8Bit(bufTmp);
 
-    if(buffer.at(0)!=receiver && buffer.at(1)!=sender && answerStr!="OK") {
+    QString TIMStr = answerStr;
+    TIMStr.remove(0, 4);
+
+    int TIMInt = TIMStr.toInt();
+    vectorTIM.append(TIMInt);
+    emit textBrowser("TIM=" + TIMStr);
+
+    if(buffer.at(0)!=receiver && buffer.at(1)!=sender && answerStr.left(4)!="TIM=") {
         QString label_StatusBar = (tr("Неверный ответ стенда. Команда \"Прочитать таймаут импульса питания на датчик резистивный датчик\" ") +
                                      ". Рабочее место: " + QString::number(workPlace+1));
         emit errorStringSignal(label_StatusBar + '\n');
-        vectorIndicatorBSLMatrix[workPlace] = true;
+        vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
         emit workPlaceOff(workPlace);
         emit checkMagnSensorError(workPlace);
- //       portStend->close();
         return;
     }
 
- //  portStend->close();
+   }
+
+   //проходим вектор, находим шаг, на котой произошло уменьшение значения
+   bool isOk = false;
+   for(int m=0; m<(vectorTIM.size()-1); m++) {
+       if(vectorTIM.at(m) > vectorTIM.at(m+1)) isOk = true;
+   }
+
+   if(isOk == false) {
+       QString label_StatusBar = (tr("Таймаут импульса питания на резистивный датчик не сбрасывается\" ") +
+                                    ". Рабочее место: " + QString::number(workPlace+1));
+       emit errorStringSignal(label_StatusBar + '\n');
+       vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+       emit workPlaceOff(workPlace);
+       emit checkMagnSensorError(workPlace);
+       return;
+   }
+
 
     emit checkMagnSensorError(workPlace);
 
