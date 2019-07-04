@@ -111,6 +111,11 @@ public:
 
     void getMainWndPointer(QMainWindow * mainwnd);
 
+    void setTimeIntervalWAL_WRS(int time);
+    void setTimeIntervalWRF_WNS(int time);
+    void setTimeIntervalWNB_WID(int time);
+    void setTimeIntervalWID_Read(int time);
+
 
 signals:
     checkBslError(int currentIndicatorNumber);
@@ -149,6 +154,8 @@ signals:
     //стенд/
 
 public slots:
+    void slotGetFinishOff();
+
     void slotWriteParams(QSerialPort *port1, QSerialPort *port2, QSerialPort *port3, QSerialPort *port4);
     void slotReadParams(QSerialPort *port1, QSerialPort *port2, QSerialPort *port3, QSerialPort *port4);
     void slotCalibration(QSerialPort *port1, QSerialPort *port2, QSerialPort *port3, QSerialPort *port4);
@@ -268,6 +275,9 @@ private:
     int pulsesValueCh2;
 
     float periodClock;
+
+    int timeIntervalWAL_WRS, timeIntervalWRF_WNS,
+        timeIntervalWNB_WID, timeIntervalWID_Read;
 
 
 };

@@ -342,7 +342,7 @@ void ObjectThread::slotReadParams(QSerialPort *port1, QSerialPort *port2, QSeria
                        label_StatusBar = ("Не удалось открыть порт УСО-2. Рабочее место: " +
                                                     QString::number(workPlaceNumber + 1));
                        emit errorStringSignal(label_StatusBar + '\n');
-                       vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                       vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                        emit workPlaceOff(currentIndicatorNumber);
                        emit checkWritingError(currentIndicatorNumber);
@@ -382,7 +382,7 @@ void ObjectThread::slotReadParams(QSerialPort *port1, QSerialPort *port2, QSeria
                    label_StatusBar = (tr("Данные в порт не записаны") +
                                                 ". Рабочее место: " + QString::number(workPlaceNumber+1));
                    emit errorStringSignal(label_StatusBar + '\n');
-                   vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                   vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                    emit workPlaceOff(currentIndicatorNumber);
                    emit checkWritingError(currentIndicatorNumber);
@@ -408,7 +408,7 @@ void ObjectThread::slotReadParams(QSerialPort *port1, QSerialPort *port2, QSeria
                        emit errorStringSignal(label_StatusBar + '\n');
      //                  ui->label_writeParams->setVisible(true);
       //                 vectorIsErrorOccured[workPlaceNumber] = true;
-                       vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                       vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                        emit workPlaceOff(currentIndicatorNumber);
                        emit checkWritingError(currentIndicatorNumber);
@@ -434,7 +434,7 @@ void ObjectThread::slotReadParams(QSerialPort *port1, QSerialPort *port2, QSeria
                            label_StatusBar = (tr("Ошибка данных") +
                                                         " Рабочее место: " + QString::number(workPlaceNumber+1));
                            emit errorStringSignal(label_StatusBar + '\n');
-                           vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                           vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
                            emit workPlaceOff(currentIndicatorNumber);
                            emit checkWritingError(currentIndicatorNumber);
                            return;
@@ -602,7 +602,7 @@ void ObjectThread::slotReadParams(QSerialPort *port1, QSerialPort *port2, QSeria
                           emit errorStringSignal(label_StatusBar + '\n');
      //                     ui->label_writeParams->setVisible(true);
      //                     vectorIsErrorOccured[workPlaceNumber] = true;
-                          vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                          vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                           emit workPlaceOff(currentIndicatorNumber);
                           emit checkWritingError(currentIndicatorNumber);
@@ -649,7 +649,7 @@ void ObjectThread::slotReadParams(QSerialPort *port1, QSerialPort *port2, QSeria
                    emit errorStringSignal(label_StatusBar + '\n');
     //               ui->label_writeParams->setVisible(true);
     //               vectorIsErrorOccured[workPlaceNumber] = true;
-                   vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                   vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                    emit workPlaceOff(currentIndicatorNumber);
                    emit checkWritingError(currentIndicatorNumber);
@@ -672,7 +672,7 @@ void ObjectThread::slotReadParams(QSerialPort *port1, QSerialPort *port2, QSeria
                        emit errorStringSignal(label_StatusBar + '\n');
 //                       ui->label_writeParams->setVisible(true);
 //                       vectorIsErrorOccured[workPlaceNumber] = true;
-                       vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                       vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                        emit workPlaceOff(currentIndicatorNumber);
                        emit checkWritingError(currentIndicatorNumber);
@@ -698,7 +698,7 @@ void ObjectThread::slotReadParams(QSerialPort *port1, QSerialPort *port2, QSeria
                            label_StatusBar = (tr("Ошибка данных") +
                                                         " Рабочее место: " + QString::number(workPlaceNumber+1));
                            emit errorStringSignal(label_StatusBar + '\n');
-                           vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                           vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
                            emit workPlaceOff(currentIndicatorNumber);
                            emit checkWritingError(currentIndicatorNumber);
                            return;
@@ -959,7 +959,7 @@ void ObjectThread::slotReadParams(QSerialPort *port1, QSerialPort *port2, QSeria
                           emit errorStringSignal(label_StatusBar + '\n');
            //               ui->label_writeParams->setVisible(true);
             //              vectorIsErrorOccured[workPlaceNumber] = true;
-                          vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                          vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                           emit workPlaceOff(currentIndicatorNumber);
                           emit checkWritingError(currentIndicatorNumber);
@@ -985,7 +985,7 @@ void ObjectThread::slotReadParams(QSerialPort *port1, QSerialPort *port2, QSeria
                           emit errorStringSignal(label_StatusBar + '\n');
                //           ui->label_writeParams->setVisible(true);
                 //          vectorIsErrorOccured[workPlaceNumber] = true;
-                          vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                          vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                           emit workPlaceOff(currentIndicatorNumber);
                           emit checkWritingError(currentIndicatorNumber);
@@ -1032,7 +1032,7 @@ void ObjectThread::slotReadParams(QSerialPort *port1, QSerialPort *port2, QSeria
                    emit errorStringSignal(label_StatusBar + '\n');
           //         ui->label_writeParams->setVisible(true);
           //         vectorIsErrorOccured[workPlaceNumber] = true;
-                   vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                   vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                    emit workPlaceOff(currentIndicatorNumber);
                    emit checkWritingError(currentIndicatorNumber);
@@ -1056,7 +1056,7 @@ void ObjectThread::slotReadParams(QSerialPort *port1, QSerialPort *port2, QSeria
                        emit errorStringSignal(label_StatusBar + '\n');
 //                       ui->label_writeParams->setVisible(true);
 //                       vectorIsErrorOccured[workPlaceNumber] = true;
-                       vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                       vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                        emit workPlaceOff(currentIndicatorNumber);
                        emit checkWritingError(currentIndicatorNumber);
@@ -1082,7 +1082,7 @@ void ObjectThread::slotReadParams(QSerialPort *port1, QSerialPort *port2, QSeria
                            label_StatusBar = (tr("Ошибка данных") +
                                                         " Рабочее место: " + QString::number(workPlaceNumber+1));
                            emit errorStringSignal(label_StatusBar + '\n');
-                           vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                           vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
                            emit workPlaceOff(currentIndicatorNumber);
                            emit checkWritingError(currentIndicatorNumber);
                            return;
@@ -1277,7 +1277,7 @@ void ObjectThread::slotReadParams(QSerialPort *port1, QSerialPort *port2, QSeria
                           emit errorStringSignal(label_StatusBar + '\n');
 //                          ui->label_writeParams->setVisible(true);
 //                          vectorIsErrorOccured[workPlaceNumber] = true;
-                          vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                          vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                           emit workPlaceOff(currentIndicatorNumber);
                           emit checkWritingError(currentIndicatorNumber);
@@ -1325,7 +1325,7 @@ void ObjectThread::slotReadParams(QSerialPort *port1, QSerialPort *port2, QSeria
                    emit errorStringSignal(label_StatusBar + '\n');
 //                   ui->label_writeParams->setVisible(true);
 //                   vectorIsErrorOccured[workPlaceNumber] = true;
-                   vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                   vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                    emit workPlaceOff(currentIndicatorNumber);
                    emit checkWritingError(currentIndicatorNumber);
@@ -1348,7 +1348,7 @@ void ObjectThread::slotReadParams(QSerialPort *port1, QSerialPort *port2, QSeria
                        emit errorStringSignal(label_StatusBar + '\n');
 //                       ui->label_writeParams->setVisible(true);
 //                       vectorIsErrorOccured[workPlaceNumber] = true;
-                       vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                       vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                        emit workPlaceOff(currentIndicatorNumber);
                        emit checkWritingError(currentIndicatorNumber);
@@ -1374,7 +1374,7 @@ void ObjectThread::slotReadParams(QSerialPort *port1, QSerialPort *port2, QSeria
                            label_StatusBar = (tr("Ошибка данных") +
                                                         " Рабочее место: " + QString::number(workPlaceNumber+1));
                            emit errorStringSignal(label_StatusBar + '\n');
-                           vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                           vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
                            emit workPlaceOff(currentIndicatorNumber);
                            emit checkWritingError(currentIndicatorNumber);
                            return;
@@ -1569,7 +1569,7 @@ void ObjectThread::slotReadParams(QSerialPort *port1, QSerialPort *port2, QSeria
                           emit errorStringSignal(label_StatusBar + '\n');
 //                          ui->label_writeParams->setVisible(true);
 //                          vectorIsErrorOccured[workPlaceNumber] = true;
-                          vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                          vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                           emit workPlaceOff(currentIndicatorNumber);
                           emit checkWritingError(currentIndicatorNumber);
@@ -1616,7 +1616,7 @@ void ObjectThread::slotReadParams(QSerialPort *port1, QSerialPort *port2, QSeria
                    emit errorStringSignal(label_StatusBar + '\n');
 //                   ui->label_writeParams->setVisible(true);
 //                   vectorIsErrorOccured[workPlaceNumber] = true;
-                   vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                   vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                    emit workPlaceOff(currentIndicatorNumber);
                    emit checkWritingError(currentIndicatorNumber);
@@ -1639,7 +1639,7 @@ void ObjectThread::slotReadParams(QSerialPort *port1, QSerialPort *port2, QSeria
                        emit errorStringSignal(label_StatusBar + '\n');
 //                       ui->label_writeParams->setVisible(true);
 //                       vectorIsErrorOccured[workPlaceNumber] = true;
-                       vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                       vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                        emit workPlaceOff(currentIndicatorNumber);
                        emit checkWritingError(currentIndicatorNumber);
@@ -1665,7 +1665,7 @@ void ObjectThread::slotReadParams(QSerialPort *port1, QSerialPort *port2, QSeria
                            label_StatusBar = (tr("Ошибка данных") +
                                                         " Рабочее место: " + QString::number(workPlaceNumber+1));
                            emit errorStringSignal(label_StatusBar + '\n');
-                           vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                           vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
                            emit workPlaceOff(currentIndicatorNumber);
                            emit checkWritingError(currentIndicatorNumber);
                            return;
@@ -1720,7 +1720,7 @@ void ObjectThread::slotReadParams(QSerialPort *port1, QSerialPort *port2, QSeria
                           emit errorStringSignal(label_StatusBar + '\n');
 //                          ui->label_writeParams->setVisible(true);
 //                          vectorIsErrorOccured[workPlaceNumber] = true;
-                          vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                          vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                           emit workPlaceOff(currentIndicatorNumber);
                           emit checkWritingError(currentIndicatorNumber);
@@ -1766,7 +1766,7 @@ void ObjectThread::slotReadParams(QSerialPort *port1, QSerialPort *port2, QSeria
                    emit errorStringSignal(label_StatusBar + '\n');
 //                   ui->label_writeParams->setVisible(true);
 //                   vectorIsErrorOccured[workPlaceNumber] = true;
-                   vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                   vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                    emit workPlaceOff(currentIndicatorNumber);
                    emit checkWritingError(currentIndicatorNumber);
@@ -1789,7 +1789,7 @@ void ObjectThread::slotReadParams(QSerialPort *port1, QSerialPort *port2, QSeria
                        emit errorStringSignal(label_StatusBar + '\n');
 //                       ui->label_writeParams->setVisible(true);
 //                       vectorIsErrorOccured[workPlaceNumber] = true;
-                       vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                       vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                        emit workPlaceOff(currentIndicatorNumber);
                        emit checkWritingError(currentIndicatorNumber);
@@ -1815,7 +1815,7 @@ void ObjectThread::slotReadParams(QSerialPort *port1, QSerialPort *port2, QSeria
                            label_StatusBar = (tr("Ошибка данных") +
                                                         " Рабочее место: " + QString::number(workPlaceNumber+1));
                            emit errorStringSignal(label_StatusBar + '\n');
-                           vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                           vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
                            emit workPlaceOff(currentIndicatorNumber);
                            emit checkWritingError(currentIndicatorNumber);
                            return;
@@ -1857,7 +1857,7 @@ void ObjectThread::slotReadParams(QSerialPort *port1, QSerialPort *port2, QSeria
 //                          emit errorStringSignal(label_StatusBar + '\n');
 //                          ui->label_writeParams->setVisible(true);
 //                          vectorIsErrorOccured[workPlaceNumber] = true;
-//                          vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+//                          vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 //                          checkWritingError(currentIndicatorNumber);
 //                          return;
 //                      }
@@ -2022,7 +2022,7 @@ void ObjectThread::slotReadParams(QSerialPort *port1, QSerialPort *port2, QSeria
                           emit errorStringSignal(label_StatusBar + '\n');
 //                          ui->label_writeParams->setVisible(true);
 //                          vectorIsErrorOccured[workPlaceNumber] = true;
-                          vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                          vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                           emit workPlaceOff(currentIndicatorNumber);
                           emit checkWritingError(currentIndicatorNumber);
@@ -2071,7 +2071,7 @@ void ObjectThread::slotReadParams(QSerialPort *port1, QSerialPort *port2, QSeria
                    emit errorStringSignal(label_StatusBar + '\n');
 //                   ui->label_writeParams->setVisible(true);
 //                   vectorIsErrorOccured[workPlaceNumber] = true;
-                   vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                   vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                    emit workPlaceOff(currentIndicatorNumber);
                    emit checkWritingError(currentIndicatorNumber);
@@ -2094,7 +2094,7 @@ void ObjectThread::slotReadParams(QSerialPort *port1, QSerialPort *port2, QSeria
                        emit errorStringSignal(label_StatusBar + '\n');
 //                       ui->label_writeParams->setVisible(true);
 //                       vectorIsErrorOccured[workPlaceNumber] = true;
-                       vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                       vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                        emit workPlaceOff(currentIndicatorNumber);
                        emit checkWritingError(currentIndicatorNumber);
@@ -2120,7 +2120,7 @@ void ObjectThread::slotReadParams(QSerialPort *port1, QSerialPort *port2, QSeria
                            label_StatusBar = (tr("Ошибка данных") +
                                                         " Рабочее место: " + QString::number(workPlaceNumber+1));
                            emit errorStringSignal(label_StatusBar + '\n');
-                           vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                           vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
                            emit workPlaceOff(currentIndicatorNumber);
                            emit checkWritingError(currentIndicatorNumber);
                            return;
@@ -2254,7 +2254,7 @@ void ObjectThread::slotReadParams(QSerialPort *port1, QSerialPort *port2, QSeria
                           emit errorStringSignal(label_StatusBar + '\n');
 //                          ui->label_writeParams->setVisible(true);
 //                          vectorIsErrorOccured[workPlaceNumber] = true;
-                          vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                          vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                           emit workPlaceOff(currentIndicatorNumber);
                           emit checkWritingError(currentIndicatorNumber);
@@ -2303,7 +2303,7 @@ void ObjectThread::slotReadParams(QSerialPort *port1, QSerialPort *port2, QSeria
                    emit errorStringSignal(label_StatusBar + '\n');
 //                   ui->label_writeParams->setVisible(true);
 //                   vectorIsErrorOccured[workPlaceNumber] = true;
-                   vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                   vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                    emit workPlaceOff(currentIndicatorNumber);
                    emit checkWritingError(currentIndicatorNumber);
@@ -2326,7 +2326,7 @@ void ObjectThread::slotReadParams(QSerialPort *port1, QSerialPort *port2, QSeria
                        emit errorStringSignal(label_StatusBar + '\n');
 //                       ui->label_writeParams->setVisible(true);
 //                       vectorIsErrorOccured[workPlaceNumber] = true;
-                       vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                       vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                        emit workPlaceOff(currentIndicatorNumber);
                        emit checkWritingError(currentIndicatorNumber);
@@ -2352,7 +2352,7 @@ void ObjectThread::slotReadParams(QSerialPort *port1, QSerialPort *port2, QSeria
                            label_StatusBar = (tr("Ошибка данных") +
                                                         " Рабочее место: " + QString::number(workPlaceNumber+1));
                            emit errorStringSignal(label_StatusBar + '\n');
-                           vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                           vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
                            emit workPlaceOff(currentIndicatorNumber);
                            emit checkWritingError(currentIndicatorNumber);
                            return;
@@ -2527,7 +2527,7 @@ void ObjectThread::slotReadParams(QSerialPort *port1, QSerialPort *port2, QSeria
                           emit errorStringSignal(label_StatusBar + '\n');
 //                          ui->label_writeParams->setVisible(true);
 //                          vectorIsErrorOccured[workPlaceNumber] = true;
-                          vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                          vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                           emit workPlaceOff(currentIndicatorNumber);
                           emit checkWritingError(currentIndicatorNumber);
@@ -2576,7 +2576,7 @@ void ObjectThread::slotReadParams(QSerialPort *port1, QSerialPort *port2, QSeria
                    emit errorStringSignal(label_StatusBar + '\n');
 //                   ui->label_writeParams->setVisible(true);
 //                   vectorIsErrorOccured[workPlaceNumber] = true;
-                   vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                   vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                    emit workPlaceOff(currentIndicatorNumber);
                    emit checkWritingError(currentIndicatorNumber);
@@ -2599,7 +2599,7 @@ void ObjectThread::slotReadParams(QSerialPort *port1, QSerialPort *port2, QSeria
                        emit errorStringSignal(label_StatusBar + '\n');
 //                       ui->label_writeParams->setVisible(true);
 //                       vectorIsErrorOccured[workPlaceNumber] = true;
-                       vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                       vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                        emit workPlaceOff(currentIndicatorNumber);
                        emit checkWritingError(currentIndicatorNumber);
@@ -2625,7 +2625,7 @@ void ObjectThread::slotReadParams(QSerialPort *port1, QSerialPort *port2, QSeria
                            label_StatusBar = (tr("Ошибка данных") +
                                                         " Рабочее место: " + QString::number(workPlaceNumber+1));
                            emit errorStringSignal(label_StatusBar + '\n');
-                           vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                           vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
                            emit workPlaceOff(currentIndicatorNumber);
                            emit checkWritingError(currentIndicatorNumber);
                            return;
@@ -2935,7 +2935,7 @@ void ObjectThread::slotReadParams(QSerialPort *port1, QSerialPort *port2, QSeria
                           emit errorStringSignal(label_StatusBar + '\n');
 //                          ui->label_writeParams->setVisible(true);
 //                          vectorIsErrorOccured[workPlaceNumber] = true;
-                          vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                          vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                           emit workPlaceOff(currentIndicatorNumber);
                           emit checkWritingError(currentIndicatorNumber);
@@ -2994,7 +2994,7 @@ void ObjectThread::slotReadParams(QSerialPort *port1, QSerialPort *port2, QSeria
                    emit errorStringSignal(label_StatusBar + '\n');
 //                   ui->label_writeParams->setVisible(true);
 //                   vectorIsErrorOccured[workPlaceNumber] = true;
-                   vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                   vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                    emit workPlaceOff(currentIndicatorNumber);
                    emit checkWritingError(currentIndicatorNumber);
@@ -3017,7 +3017,7 @@ void ObjectThread::slotReadParams(QSerialPort *port1, QSerialPort *port2, QSeria
                        emit errorStringSignal(label_StatusBar + '\n');
 //                       ui->label_writeParams->setVisible(true);
 //                       vectorIsErrorOccured[workPlaceNumber] = true;
-                       vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                       vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                        emit workPlaceOff(currentIndicatorNumber);
                        emit checkWritingError(currentIndicatorNumber);
@@ -3043,7 +3043,7 @@ void ObjectThread::slotReadParams(QSerialPort *port1, QSerialPort *port2, QSeria
                            label_StatusBar = (tr("Ошибка данных") +
                                                         " Рабочее место: " + QString::number(workPlaceNumber+1));
                            emit errorStringSignal(label_StatusBar + '\n');
-                           vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                           vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
                            emit workPlaceOff(currentIndicatorNumber);
                            emit checkWritingError(currentIndicatorNumber);
                            return;
@@ -3115,7 +3115,7 @@ void ObjectThread::slotReadParams(QSerialPort *port1, QSerialPort *port2, QSeria
                           emit errorStringSignal(label_StatusBar + '\n');
 //                          ui->label_writeParams->setVisible(true);
 //                          vectorIsErrorOccured[workPlaceNumber] = true;
-                          vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                          vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                           emit workPlaceOff(currentIndicatorNumber);
                           emit checkWritingError(currentIndicatorNumber);
@@ -3179,7 +3179,7 @@ void ObjectThread::slotReadParams(QSerialPort *port1, QSerialPort *port2, QSeria
                    emit errorStringSignal(label_StatusBar + '\n');
 //                   ui->label_writeParams->setVisible(true);
 //                   vectorIsErrorOccured[workPlaceNumber] = true;
-                   vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                   vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                    emit workPlaceOff(currentIndicatorNumber);
                    emit checkWritingError(currentIndicatorNumber);
@@ -3202,7 +3202,7 @@ void ObjectThread::slotReadParams(QSerialPort *port1, QSerialPort *port2, QSeria
                        emit errorStringSignal(label_StatusBar + '\n');
 //                       ui->label_writeParams->setVisible(true);
 //                       vectorIsErrorOccured[workPlaceNumber] = true;
-                       vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                       vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                        emit workPlaceOff(currentIndicatorNumber);
                        emit checkWritingError(currentIndicatorNumber);
@@ -3228,7 +3228,7 @@ void ObjectThread::slotReadParams(QSerialPort *port1, QSerialPort *port2, QSeria
                            label_StatusBar = (tr("Ошибка данных") +
                                                         " Рабочее место: " + QString::number(workPlaceNumber+1));
                            emit errorStringSignal(label_StatusBar + '\n');
-                           vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                           vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
                            emit workPlaceOff(currentIndicatorNumber);
                            emit checkWritingError(currentIndicatorNumber);
                            return;
@@ -3323,7 +3323,7 @@ void ObjectThread::slotReadParams(QSerialPort *port1, QSerialPort *port2, QSeria
                           emit errorStringSignal(label_StatusBar + '\n');
 //                          ui->label_writeParams->setVisible(true);
 //                          vectorIsErrorOccured[workPlaceNumber] = true;
-                          vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                          vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                           emit workPlaceOff(currentIndicatorNumber);
                           emit checkWritingError(currentIndicatorNumber);
@@ -3386,7 +3386,7 @@ void ObjectThread::slotReadParams(QSerialPort *port1, QSerialPort *port2, QSeria
                    emit errorStringSignal(label_StatusBar + '\n');
 //                   ui->label_writeParams->setVisible(true);
 //                   vectorIsErrorOccured[workPlaceNumber] = true;
-                   vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                   vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                    emit workPlaceOff(currentIndicatorNumber);
                    emit checkWritingError(currentIndicatorNumber);
@@ -3409,7 +3409,7 @@ void ObjectThread::slotReadParams(QSerialPort *port1, QSerialPort *port2, QSeria
                        emit errorStringSignal(label_StatusBar + '\n');
 //                       ui->label_writeParams->setVisible(true);
 //                       vectorIsErrorOccured[workPlaceNumber] = true;
-                       vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                       vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                        emit workPlaceOff(currentIndicatorNumber);
                        emit checkWritingError(currentIndicatorNumber);
@@ -3435,7 +3435,7 @@ void ObjectThread::slotReadParams(QSerialPort *port1, QSerialPort *port2, QSeria
                            label_StatusBar = (tr("Ошибка данных") +
                                                         " Рабочее место: " + QString::number(workPlaceNumber+1));
                            emit errorStringSignal(label_StatusBar + '\n');
-                           vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                           vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
                            emit workPlaceOff(currentIndicatorNumber);
                            emit checkWritingError(currentIndicatorNumber);
                            return;
@@ -3528,7 +3528,7 @@ void ObjectThread::slotReadParams(QSerialPort *port1, QSerialPort *port2, QSeria
                           emit errorStringSignal(label_StatusBar + '\n');
 //                          ui->label_writeParams->setVisible(true);
 //                          vectorIsErrorOccured[workPlaceNumber] = true;
-                          vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                          vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                           emit workPlaceOff(currentIndicatorNumber);
                           emit checkWritingError(currentIndicatorNumber);
@@ -3590,7 +3590,7 @@ void ObjectThread::slotReadParams(QSerialPort *port1, QSerialPort *port2, QSeria
                    emit errorStringSignal(label_StatusBar + '\n');
 //                   ui->label_writeParams->setVisible(true);
 //                   vectorIsErrorOccured[workPlaceNumber] = true;
-                   vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                   vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                    emit workPlaceOff(currentIndicatorNumber);
                    emit checkWritingError(currentIndicatorNumber);
@@ -3613,7 +3613,7 @@ void ObjectThread::slotReadParams(QSerialPort *port1, QSerialPort *port2, QSeria
                        emit errorStringSignal(label_StatusBar + '\n');
 //                       ui->label_writeParams->setVisible(true);
 //                       vectorIsErrorOccured[workPlaceNumber] = true;
-                       vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                       vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                        emit workPlaceOff(currentIndicatorNumber);
                        emit checkWritingError(currentIndicatorNumber);
@@ -3639,7 +3639,7 @@ void ObjectThread::slotReadParams(QSerialPort *port1, QSerialPort *port2, QSeria
                            label_StatusBar = (tr("Ошибка данных") +
                                                         " Рабочее место: " + QString::number(workPlaceNumber+1));
                            emit errorStringSignal(label_StatusBar + '\n');
-                           vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                           vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
                            emit workPlaceOff(currentIndicatorNumber);
                            emit checkWritingError(currentIndicatorNumber);
                            return;
@@ -3696,7 +3696,7 @@ void ObjectThread::slotReadParams(QSerialPort *port1, QSerialPort *port2, QSeria
                           emit errorStringSignal(label_StatusBar + '\n');
 //                          ui->label_writeParams->setVisible(true);
 //                          vectorIsErrorOccured[workPlaceNumber] = true;
-                          vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                          vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                           emit workPlaceOff(currentIndicatorNumber);
                           emit checkWritingError(currentIndicatorNumber);
@@ -3817,7 +3817,7 @@ void ObjectThread::slotWriteParams(QSerialPort *port1, QSerialPort *port2, QSeri
                                              ". Рабочее место: " + QString::number(workPlaceNumber+1));
 
                 emit errorStringSignal(label_StatusBar + '\n');
-                vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                 emit workPlaceOff(currentIndicatorNumber);
                 emit checkWritingError(currentIndicatorNumber);
@@ -3829,7 +3829,7 @@ void ObjectThread::slotWriteParams(QSerialPort *port1, QSerialPort *port2, QSeri
                 label_StatusBar = tr("Недопустимое значение pulsesvalue2 ") + QString::number(paramsMapToThreads["pulsesValue2PrimeInt"].toInt()) +
                                              ". Рабочее место: " + QString::number(workPlaceNumber+1);
                 emit errorStringSignal(label_StatusBar + '\n');
-                vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                 emit workPlaceOff(currentIndicatorNumber);
                 emit checkWritingError(currentIndicatorNumber);
@@ -3862,7 +3862,7 @@ void ObjectThread::slotWriteParams(QSerialPort *port1, QSerialPort *port2, QSeri
                     label_StatusBar = ("Не удалось открыть порт УСО-2. Рабочее место: " +
                                                  QString::number(workPlaceNumber + 1));
                     emit errorStringSignal(label_StatusBar + '\n');
-                    vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                    vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                     emit workPlaceOff(currentIndicatorNumber);
                     emit checkWritingError(currentIndicatorNumber);
@@ -3908,7 +3908,7 @@ void ObjectThread::slotWriteParams(QSerialPort *port1, QSerialPort *port2, QSeri
                    label_StatusBar = (tr("Данные в порт не записаны") +
                                                 ". Рабочее место: " + QString::number(workPlaceNumber+1));
                    emit errorStringSignal(label_StatusBar + '\n');
-                   vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                   vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                    emit workPlaceOff(currentIndicatorNumber);
                    emit checkWritingError(currentIndicatorNumber);
@@ -3935,7 +3935,7 @@ void ObjectThread::slotWriteParams(QSerialPort *port1, QSerialPort *port2, QSeri
                        emit errorStringSignal(label_StatusBar + '\n');
   //                     ui->label_writeParams->setVisible(true);
   //                     vectorIsErrorOccured[workPlaceNumber] = true;
-                       vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                       vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                        emit workPlaceOff(currentIndicatorNumber);
                        emit checkWritingError(currentIndicatorNumber);
@@ -3963,7 +3963,7 @@ void ObjectThread::slotWriteParams(QSerialPort *port1, QSerialPort *port2, QSeri
                            label_StatusBar = (tr("Ошибка данных") +
                                                         " Рабочее место: " + QString::number(workPlaceNumber+1));
                            emit errorStringSignal(label_StatusBar + '\n');
-                           vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                           vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
                            emit workPlaceOff(currentIndicatorNumber);
                            emit checkWritingError(currentIndicatorNumber);
                            return;
@@ -3998,7 +3998,7 @@ void ObjectThread::slotWriteParams(QSerialPort *port1, QSerialPort *port2, QSeri
                                 emit errorStringSignal(label_StatusBar + '\n');
    //                             ui->label_writeParams->setVisible(true);
    //                             vectorIsErrorOccured[workPlaceNumber] = true;
-                                vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                                vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 //                                checkWritingError(currentIndicatorNumber);
 //                                emit workPlaceOff(currentIndicatorNumber);
 
@@ -4058,7 +4058,7 @@ void ObjectThread::slotWriteParams(QSerialPort *port1, QSerialPort *port2, QSeri
                    label_StatusBar = (tr("Данные в порт не записаны") +
                                                 ". Рабочее место: " + QString::number(workPlaceNumber+1));
                    emit errorStringSignal(label_StatusBar + '\n');
-                   vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                   vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 //                   checkWritingError(currentIndicatorNumber);
 //                   emit workPlaceOff(currentIndicatorNumber);
                    emit workPlaceOff(currentIndicatorNumber);
@@ -4082,7 +4082,7 @@ void ObjectThread::slotWriteParams(QSerialPort *port1, QSerialPort *port2, QSeri
                                                     ". Рабочее место: " + QString::number(workPlaceNumber+1));
                        emit errorStringSignal(label_StatusBar + '\n');
  //                      ui->label_writeParams->setVisible(true);
-                       vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                       vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 //                       checkWritingError(currentIndicatorNumber);
 //                       emit workPlaceOff(currentIndicatorNumber);
                        emit workPlaceOff(currentIndicatorNumber);
@@ -4109,7 +4109,7 @@ void ObjectThread::slotWriteParams(QSerialPort *port1, QSerialPort *port2, QSeri
                            label_StatusBar = (tr("Ошибка данных") +
                                                         " Рабочее место: " + QString::number(workPlaceNumber+1));
                            emit errorStringSignal(label_StatusBar + '\n');
-                           vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                           vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
                            emit workPlaceOff(currentIndicatorNumber);
                            emit checkWritingError(currentIndicatorNumber);
                            return;
@@ -4142,7 +4142,7 @@ void ObjectThread::slotWriteParams(QSerialPort *port1, QSerialPort *port2, QSeri
                                                              ". Рабочее место: " + QString::number(workPlaceNumber+1));
                                 emit errorStringSignal(label_StatusBar + '\n');
     //                            ui->label_writeParams->setVisible(true);
-                                vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                                vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 //                                checkWritingError(currentIndicatorNumber);
                                 emit workPlaceOff(currentIndicatorNumber);
                                 emit checkWritingError(currentIndicatorNumber);
@@ -4358,7 +4358,7 @@ void ObjectThread::slotWriteParams(QSerialPort *port1, QSerialPort *port2, QSeri
                    label_StatusBar = (tr("Данные в порт не записаны") +
                                                 ". Рабочее место: " + QString::number(workPlaceNumber+1));
                    emit errorStringSignal(label_StatusBar + '\n');
-                   vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                   vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 //                   checkWritingError(currentIndicatorNumber);
                    emit workPlaceOff(currentIndicatorNumber);
                    emit checkWritingError(currentIndicatorNumber);
@@ -4381,7 +4381,7 @@ void ObjectThread::slotWriteParams(QSerialPort *port1, QSerialPort *port2, QSeri
                                                     ". Рабочее место: " + QString::number(workPlaceNumber+1));
                        emit errorStringSignal(label_StatusBar + '\n');
   //                     ui->label_writeParams->setVisible(true);
-                       vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                       vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 //                       checkWritingError(currentIndicatorNumber);
                        emit workPlaceOff(currentIndicatorNumber);
                        emit checkWritingError(currentIndicatorNumber);
@@ -4407,7 +4407,7 @@ void ObjectThread::slotWriteParams(QSerialPort *port1, QSerialPort *port2, QSeri
                            label_StatusBar = (tr("Ошибка данных") +
                                                         " Рабочее место: " + QString::number(workPlaceNumber+1));
                            emit errorStringSignal(label_StatusBar + '\n');
-                           vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                           vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
                            emit workPlaceOff(currentIndicatorNumber);
                            emit checkWritingError(currentIndicatorNumber);
                            return;
@@ -4442,7 +4442,7 @@ void ObjectThread::slotWriteParams(QSerialPort *port1, QSerialPort *port2, QSeri
                                                               ". Рабочее место: " + QString::number(workPlaceNumber+1));
                                  emit errorStringSignal(label_StatusBar + '\n');
    //                              ui->label_writeParams->setVisible(true);
-                                 vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                                 vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 //                                 checkWritingError(currentIndicatorNumber);
                                  emit workPlaceOff(currentIndicatorNumber);
                                  emit checkWritingError(currentIndicatorNumber);
@@ -4588,7 +4588,7 @@ void ObjectThread::slotWriteParams(QSerialPort *port1, QSerialPort *port2, QSeri
                    label_StatusBar = (tr("Данные в порт не записаны ") +
                                                 ". Рабочее место: " + QString::number(workPlaceNumber+1));
                    emit errorStringSignal(label_StatusBar + '\n');
-                   vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                   vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                    emit workPlaceOff(currentIndicatorNumber);
                    emit checkWritingError(currentIndicatorNumber);
@@ -4611,7 +4611,7 @@ void ObjectThread::slotWriteParams(QSerialPort *port1, QSerialPort *port2, QSeri
                                                     ". Рабочее место: " + QString::number(workPlaceNumber+1));
                        emit errorStringSignal(label_StatusBar + '\n');
     //                   ui->label_writeParams->setVisible(true);
-                       vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                       vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                        emit workPlaceOff(currentIndicatorNumber);
                        emit checkWritingError(currentIndicatorNumber);
@@ -4637,7 +4637,7 @@ void ObjectThread::slotWriteParams(QSerialPort *port1, QSerialPort *port2, QSeri
                            label_StatusBar = (tr("Ошибка данных") +
                                                         " Рабочее место: " + QString::number(workPlaceNumber+1));
                            emit errorStringSignal(label_StatusBar + '\n');
-                           vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                           vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
                            emit workPlaceOff(currentIndicatorNumber);
                            emit checkWritingError(currentIndicatorNumber);
                            return;
@@ -4672,7 +4672,7 @@ void ObjectThread::slotWriteParams(QSerialPort *port1, QSerialPort *port2, QSeri
                                                        ". Рабочее место: " + QString::number(workPlaceNumber+1));
                           emit errorStringSignal(label_StatusBar + '\n');
        //                   ui->label_writeParams->setVisible(true);
-                          vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                          vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
                           emit workPlaceOff(currentIndicatorNumber);
                           emit checkWritingError(currentIndicatorNumber);
 
@@ -4799,7 +4799,7 @@ void ObjectThread::slotWriteParams(QSerialPort *port1, QSerialPort *port2, QSeri
                    label_StatusBar = (tr("Данные в порт не записаны ") +
                                                 ". Рабочее место: " + QString::number(workPlaceNumber+1));
                    emit errorStringSignal(label_StatusBar + '\n');
-                   vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                   vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                    emit workPlaceOff(currentIndicatorNumber);
                    emit checkWritingError(currentIndicatorNumber);
@@ -4822,7 +4822,7 @@ void ObjectThread::slotWriteParams(QSerialPort *port1, QSerialPort *port2, QSeri
                                                     ". Рабочее место: " + QString::number(workPlaceNumber+1));
                        emit errorStringSignal(label_StatusBar + '\n');
   //                     ui->label_writeParams->setVisible(true);
-                       vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                       vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                        emit workPlaceOff(currentIndicatorNumber);
                        emit checkWritingError(currentIndicatorNumber);
@@ -4848,7 +4848,7 @@ void ObjectThread::slotWriteParams(QSerialPort *port1, QSerialPort *port2, QSeri
                            label_StatusBar = (tr("Ошибка данных") +
                                                         " Рабочее место: " + QString::number(workPlaceNumber+1));
                            emit errorStringSignal(label_StatusBar + '\n');
-                           vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                           vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
                            emit workPlaceOff(currentIndicatorNumber);
                            emit checkWritingError(currentIndicatorNumber);
                            return;
@@ -4883,7 +4883,7 @@ void ObjectThread::slotWriteParams(QSerialPort *port1, QSerialPort *port2, QSeri
                                                        ". Рабочее место: " + QString::number(workPlaceNumber+1));
                           emit errorStringSignal(label_StatusBar + '\n');
 //                          ui->label_writeParams->setVisible(true);
-                          vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                          vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                           emit workPlaceOff(currentIndicatorNumber);
                           emit checkWritingError(currentIndicatorNumber);
@@ -5004,7 +5004,7 @@ void ObjectThread::slotWriteParams(QSerialPort *port1, QSerialPort *port2, QSeri
                    label_StatusBar = (tr("Данные в порт не записаны ") +
                                                 ". Рабочее место: " + QString::number(workPlaceNumber+1));
                    emit errorStringSignal(label_StatusBar + '\n');
-                   vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                   vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
                    checkWritingError(currentIndicatorNumber);
                    emit workPlaceOff(currentIndicatorNumber);
                    return;
@@ -5025,7 +5025,7 @@ void ObjectThread::slotWriteParams(QSerialPort *port1, QSerialPort *port2, QSeri
                                                     ". Рабочее место: " + QString::number(workPlaceNumber+1));
                        emit errorStringSignal(label_StatusBar + '\n');
  //                      ui->label_writeParams->setVisible(true);
-                       vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                       vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                        emit workPlaceOff(currentIndicatorNumber);
                        emit checkWritingError(currentIndicatorNumber);
@@ -5051,7 +5051,7 @@ void ObjectThread::slotWriteParams(QSerialPort *port1, QSerialPort *port2, QSeri
                            label_StatusBar = (tr("Ошибка данных") +
                                                         " Рабочее место: " + QString::number(workPlaceNumber+1));
                            emit errorStringSignal(label_StatusBar + '\n');
-                           vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                           vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
                            emit workPlaceOff(currentIndicatorNumber);
                            emit checkWritingError(currentIndicatorNumber);
                            return;
@@ -5086,7 +5086,7 @@ void ObjectThread::slotWriteParams(QSerialPort *port1, QSerialPort *port2, QSeri
                                                        ". Рабочее место: " + QString::number(workPlaceNumber+1));
                           emit errorStringSignal(label_StatusBar + '\n');
           //                ui->label_writeParams->setVisible(true);
-                          vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                          vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                           emit workPlaceOff(currentIndicatorNumber);
                           emit checkWritingError(currentIndicatorNumber);
@@ -5143,7 +5143,7 @@ void ObjectThread::slotWriteParams(QSerialPort *port1, QSerialPort *port2, QSeri
                    label_StatusBar = (tr("Данные в порт не записаны ") +
                                                 ". Рабочее место: " + QString::number(workPlaceNumber+1));
                    emit errorStringSignal(label_StatusBar + '\n');
-                   vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                   vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                    emit workPlaceOff(currentIndicatorNumber);
                    emit checkWritingError(currentIndicatorNumber);
@@ -5166,7 +5166,7 @@ void ObjectThread::slotWriteParams(QSerialPort *port1, QSerialPort *port2, QSeri
                                                     ". Рабочее место: " + QString::number(workPlaceNumber+1));
                        emit errorStringSignal(label_StatusBar + '\n');
  //                      ui->label_writeParams->setVisible(true);
-                       vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                       vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                        emit workPlaceOff(currentIndicatorNumber);
                        emit checkWritingError(currentIndicatorNumber);
@@ -5192,7 +5192,7 @@ void ObjectThread::slotWriteParams(QSerialPort *port1, QSerialPort *port2, QSeri
                            label_StatusBar = (tr("Ошибка данных") +
                                                         " Рабочее место: " + QString::number(workPlaceNumber+1));
                            emit errorStringSignal(label_StatusBar + '\n');
-                           vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                           vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
                            emit workPlaceOff(currentIndicatorNumber);
                            emit checkWritingError(currentIndicatorNumber);
                            return;
@@ -5227,7 +5227,7 @@ void ObjectThread::slotWriteParams(QSerialPort *port1, QSerialPort *port2, QSeri
                                                        ". Рабочее место: " + QString::number(workPlaceNumber+1));
                           emit errorStringSignal(label_StatusBar + '\n');
   //                        ui->label_writeParams->setVisible(true);
-                          vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                          vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                           emit workPlaceOff(currentIndicatorNumber);
                           emit checkWritingError(currentIndicatorNumber);
@@ -5323,7 +5323,7 @@ void ObjectThread::slotWriteParams(QSerialPort *port1, QSerialPort *port2, QSeri
                    label_StatusBar = (tr("Данные в порт не записаны ") +
                                                 ". Рабочее место: " + QString::number(workPlaceNumber+1));
                    emit errorStringSignal(label_StatusBar + '\n');
-                   vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                   vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                    emit workPlaceOff(currentIndicatorNumber);
                    emit checkWritingError(currentIndicatorNumber);
@@ -5346,7 +5346,7 @@ void ObjectThread::slotWriteParams(QSerialPort *port1, QSerialPort *port2, QSeri
                                                     ". Рабочее место: " + QString::number(workPlaceNumber+1));
                        emit errorStringSignal(label_StatusBar + '\n');
    //                    ui->label_writeParams->setVisible(true);
-                       vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                       vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                        emit workPlaceOff(currentIndicatorNumber);
                        emit checkWritingError(currentIndicatorNumber);
@@ -5374,7 +5374,7 @@ void ObjectThread::slotWriteParams(QSerialPort *port1, QSerialPort *port2, QSeri
                            label_StatusBar = (tr("Ошибка данных") +
                                                         " Рабочее место: " + QString::number(workPlaceNumber+1));
                            emit errorStringSignal(label_StatusBar + '\n');
-                           vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                           vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
                            emit workPlaceOff(currentIndicatorNumber);
                            emit checkWritingError(currentIndicatorNumber);
                            return;
@@ -5407,7 +5407,7 @@ void ObjectThread::slotWriteParams(QSerialPort *port1, QSerialPort *port2, QSeri
                                                        ". Рабочее место: " + QString::number(workPlaceNumber+1));
                           emit errorStringSignal(label_StatusBar + '\n');
    //                       ui->label_writeParams->setVisible(true);
-                          vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                          vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                           emit workPlaceOff(currentIndicatorNumber);
                           emit checkWritingError(currentIndicatorNumber);
@@ -5496,7 +5496,7 @@ void ObjectThread::slotWriteParams(QSerialPort *port1, QSerialPort *port2, QSeri
                    label_StatusBar = (tr("Данные в порт не записаны ") +
                                                 ". Рабочее место: " + QString::number(workPlaceNumber+1));
                    emit errorStringSignal(label_StatusBar + '\n');
-                   vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                   vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                    emit workPlaceOff(currentIndicatorNumber);
                    emit checkWritingError(currentIndicatorNumber);
@@ -5519,7 +5519,7 @@ void ObjectThread::slotWriteParams(QSerialPort *port1, QSerialPort *port2, QSeri
                                                     ". Рабочее место: " + QString::number(workPlaceNumber+1));
                        emit errorStringSignal(label_StatusBar + '\n');
   //                     ui->label_writeParams->setVisible(true);
-                       vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                       vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                        emit workPlaceOff(currentIndicatorNumber);
                        emit checkWritingError(currentIndicatorNumber);
@@ -5545,7 +5545,7 @@ void ObjectThread::slotWriteParams(QSerialPort *port1, QSerialPort *port2, QSeri
                            label_StatusBar = (tr("Ошибка данных") +
                                                         " Рабочее место: " + QString::number(workPlaceNumber+1));
                            emit errorStringSignal(label_StatusBar + '\n');
-                           vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                           vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
                            emit workPlaceOff(currentIndicatorNumber);
                            emit checkWritingError(currentIndicatorNumber);
                            return;
@@ -5580,7 +5580,7 @@ void ObjectThread::slotWriteParams(QSerialPort *port1, QSerialPort *port2, QSeri
                                                        ". Рабочее место: " + QString::number(workPlaceNumber+1));
                           emit errorStringSignal(label_StatusBar + '\n');
     //                      ui->label_writeParams->setVisible(true);
-                          vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                          vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                           emit workPlaceOff(currentIndicatorNumber);
                           emit checkWritingError(currentIndicatorNumber);
@@ -5675,7 +5675,7 @@ void ObjectThread::slotWriteParams(QSerialPort *port1, QSerialPort *port2, QSeri
                    label_StatusBar = (tr("Данные в порт не записаны ") +
                                                 ". Рабочее место: " + QString::number(workPlaceNumber+1));
                    emit errorStringSignal(label_StatusBar + '\n');
-                   vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                   vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                    emit workPlaceOff(currentIndicatorNumber);
                    emit checkWritingError(currentIndicatorNumber);
@@ -5698,7 +5698,7 @@ void ObjectThread::slotWriteParams(QSerialPort *port1, QSerialPort *port2, QSeri
                                                     ". Рабочее место: " + QString::number(workPlaceNumber+1));
                        emit errorStringSignal(label_StatusBar + '\n');
        //                ui->label_writeParams->setVisible(true);
-                       vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                       vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                        emit workPlaceOff(currentIndicatorNumber);
                        emit checkWritingError(currentIndicatorNumber);
@@ -5724,7 +5724,7 @@ void ObjectThread::slotWriteParams(QSerialPort *port1, QSerialPort *port2, QSeri
                            label_StatusBar = (tr("Ошибка данных") +
                                                         " Рабочее место: " + QString::number(workPlaceNumber+1));
                            emit errorStringSignal(label_StatusBar + '\n');
-                           vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                           vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
                            emit workPlaceOff(currentIndicatorNumber);
                            emit checkWritingError(currentIndicatorNumber);
                            return;
@@ -5759,7 +5759,7 @@ void ObjectThread::slotWriteParams(QSerialPort *port1, QSerialPort *port2, QSeri
                                                        ". Рабочее место: " + QString::number(workPlaceNumber+1));
                           emit errorStringSignal(label_StatusBar + '\n');
   //                        ui->label_writeParams->setVisible(true);
-                          vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                          vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                           emit workPlaceOff(currentIndicatorNumber);
                           emit checkWritingError(currentIndicatorNumber);
@@ -5920,7 +5920,7 @@ void ObjectThread::slotWriteParams(QSerialPort *port1, QSerialPort *port2, QSeri
                    label_StatusBar = (tr("Данные в порт не записаны ") +
                                                 ". Рабочее место: " + QString::number(workPlaceNumber+1));
                    emit errorStringSignal(label_StatusBar + '\n');
-                   vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                   vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                    emit workPlaceOff(currentIndicatorNumber);
                    emit checkWritingError(currentIndicatorNumber);
@@ -5943,7 +5943,7 @@ void ObjectThread::slotWriteParams(QSerialPort *port1, QSerialPort *port2, QSeri
                                                     ". Рабочее место: " + QString::number(workPlaceNumber+1));
                        emit errorStringSignal(label_StatusBar + '\n');
  //                      ui->label_writeParams->setVisible(true);
-                       vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                       vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                        emit workPlaceOff(currentIndicatorNumber);
                        emit checkWritingError(currentIndicatorNumber);
@@ -5969,7 +5969,7 @@ void ObjectThread::slotWriteParams(QSerialPort *port1, QSerialPort *port2, QSeri
                            label_StatusBar = (tr("Ошибка данных") +
                                                         " Рабочее место: " + QString::number(workPlaceNumber+1));
                            emit errorStringSignal(label_StatusBar + '\n');
-                           vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                           vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
                            emit workPlaceOff(currentIndicatorNumber);
                            emit checkWritingError(currentIndicatorNumber);
                            return;
@@ -6004,7 +6004,7 @@ void ObjectThread::slotWriteParams(QSerialPort *port1, QSerialPort *port2, QSeri
                                                        ". Рабочее место: " + QString::number(workPlaceNumber+1));
                           emit errorStringSignal(label_StatusBar + '\n');
     //                      ui->label_writeParams->setVisible(true);
-                          vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                          vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                           emit workPlaceOff(currentIndicatorNumber);
                           emit checkWritingError(currentIndicatorNumber);
@@ -6057,7 +6057,7 @@ void ObjectThread::slotWriteParams(QSerialPort *port1, QSerialPort *port2, QSeri
 //                   label_StatusBar = (tr("Данные в порт не записаны") +
 //                                                ". Рабочее место: " + QString::number(workPlaceNumber+1));
 //                   emit errorStringSignal(label_StatusBar + '\n');
-//                   vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+//                   vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 // //                   checkWritingError(currentIndicatorNumber);
 // //                   emit workPlaceOff(currentIndicatorNumber);
 //                   emit workPlaceOff(currentIndicatorNumber);
@@ -6081,7 +6081,7 @@ void ObjectThread::slotWriteParams(QSerialPort *port1, QSerialPort *port2, QSeri
 //                                                    ". Рабочее место: " + QString::number(workPlaceNumber+1));
 //                       emit errorStringSignal(label_StatusBar + '\n');
 // //                      ui->label_writeParams->setVisible(true);
-//                       vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+//                       vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 // //                       checkWritingError(currentIndicatorNumber);
 // //                       emit workPlaceOff(currentIndicatorNumber);
 //                       emit workPlaceOff(currentIndicatorNumber);
@@ -6108,7 +6108,7 @@ void ObjectThread::slotWriteParams(QSerialPort *port1, QSerialPort *port2, QSeri
 //                           label_StatusBar = (tr("Ошибка данных") +
 //                                                        " Рабочее место: " + QString::number(workPlaceNumber+1));
 //                           emit errorStringSignal(label_StatusBar + '\n');
-//                           vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+//                           vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 //                           emit workPlaceOff(currentIndicatorNumber);
 //                           emit checkWritingError(currentIndicatorNumber);
 //                           return;
@@ -6141,7 +6141,7 @@ void ObjectThread::slotWriteParams(QSerialPort *port1, QSerialPort *port2, QSeri
 //                                                             ". Рабочее место: " + QString::number(workPlaceNumber+1));
 //                                emit errorStringSignal(label_StatusBar + '\n');
 //    //                            ui->label_writeParams->setVisible(true);
-//                                vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+//                                vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 // //                                checkWritingError(currentIndicatorNumber);
 //                                emit workPlaceOff(currentIndicatorNumber);
 //                                emit checkWritingError(currentIndicatorNumber);
@@ -6217,7 +6217,7 @@ void ObjectThread::slotWriteParams(QSerialPort *port1, QSerialPort *port2, QSeri
                    label_StatusBar = (tr("Данные в порт не записаны ") +
                                                 ". Рабочее место: " + QString::number(workPlaceNumber+1));
                    emit errorStringSignal(label_StatusBar + '\n');
-                   vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                   vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                    emit workPlaceOff(currentIndicatorNumber);
                    emit checkWritingError(currentIndicatorNumber);
@@ -6240,7 +6240,7 @@ void ObjectThread::slotWriteParams(QSerialPort *port1, QSerialPort *port2, QSeri
                                                     ". Рабочее место: " + QString::number(workPlaceNumber+1));
                        emit errorStringSignal(label_StatusBar + '\n');
  //                      ui->label_writeParams->setVisible(true);
-                       vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                       vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                        emit workPlaceOff(currentIndicatorNumber);
                        emit checkWritingError(currentIndicatorNumber);
@@ -6266,7 +6266,7 @@ void ObjectThread::slotWriteParams(QSerialPort *port1, QSerialPort *port2, QSeri
                            label_StatusBar = (tr("Ошибка данных") +
                                                         " Рабочее место: " + QString::number(workPlaceNumber+1));
                            emit errorStringSignal(label_StatusBar + '\n');
-                           vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                           vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
                            emit workPlaceOff(currentIndicatorNumber);
                            emit checkWritingError(currentIndicatorNumber);
                            return;
@@ -6301,7 +6301,7 @@ void ObjectThread::slotWriteParams(QSerialPort *port1, QSerialPort *port2, QSeri
                                                        ". Рабочее место: " + QString::number(workPlaceNumber+1));
                           emit errorStringSignal(label_StatusBar + '\n');
     //                      ui->label_writeParams->setVisible(true);
-                          vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                          vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                           emit workPlaceOff(currentIndicatorNumber);
                           emit checkWritingError(currentIndicatorNumber);
@@ -6321,7 +6321,7 @@ void ObjectThread::slotWriteParams(QSerialPort *port1, QSerialPort *port2, QSeri
             //Write Application Layer/
             //
 
- //           global::pause(15000);
+            global::pause(timeIntervalWAL_WRS/*15000*/);
 
             //
             //Write RF Settings
@@ -6364,7 +6364,7 @@ void ObjectThread::slotWriteParams(QSerialPort *port1, QSerialPort *port2, QSeri
                    label_StatusBar = (tr("Данные в порт не записаны") +
                                                 ". Рабочее место: " + QString::number(workPlaceNumber+1));
                    emit errorStringSignal(label_StatusBar + '\n');
-                   vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                   vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
  //                   checkWritingError(currentIndicatorNumber);
  //                   emit workPlaceOff(currentIndicatorNumber);
                    emit workPlaceOff(currentIndicatorNumber);
@@ -6388,7 +6388,7 @@ void ObjectThread::slotWriteParams(QSerialPort *port1, QSerialPort *port2, QSeri
                                                     ". Рабочее место: " + QString::number(workPlaceNumber+1));
                        emit errorStringSignal(label_StatusBar + '\n');
  //                      ui->label_writeParams->setVisible(true);
-                       vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                       vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
  //                       checkWritingError(currentIndicatorNumber);
  //                       emit workPlaceOff(currentIndicatorNumber);
                        emit workPlaceOff(currentIndicatorNumber);
@@ -6415,7 +6415,7 @@ void ObjectThread::slotWriteParams(QSerialPort *port1, QSerialPort *port2, QSeri
                            label_StatusBar = (tr("Ошибка данных") +
                                                         " Рабочее место: " + QString::number(workPlaceNumber+1));
                            emit errorStringSignal(label_StatusBar + '\n');
-                           vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                           vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
                            emit workPlaceOff(currentIndicatorNumber);
                            emit checkWritingError(currentIndicatorNumber);
                            return;
@@ -6448,7 +6448,7 @@ void ObjectThread::slotWriteParams(QSerialPort *port1, QSerialPort *port2, QSeri
                                                              ". Рабочее место: " + QString::number(workPlaceNumber+1));
                                 emit errorStringSignal(label_StatusBar + '\n');
     //                            ui->label_writeParams->setVisible(true);
-                                vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                                vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
  //                                checkWritingError(currentIndicatorNumber);
                                 emit workPlaceOff(currentIndicatorNumber);
                                 emit checkWritingError(currentIndicatorNumber);
@@ -6528,7 +6528,7 @@ void ObjectThread::slotWriteParams(QSerialPort *port1, QSerialPort *port2, QSeri
                    label_StatusBar = (tr("Данные в порт не записаны ") +
                                                 ". Рабочее место: " + QString::number(workPlaceNumber+1));
                    emit errorStringSignal(label_StatusBar + '\n');
-                   vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                   vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                    emit workPlaceOff(currentIndicatorNumber);
                    emit checkWritingError(currentIndicatorNumber);
@@ -6551,7 +6551,7 @@ void ObjectThread::slotWriteParams(QSerialPort *port1, QSerialPort *port2, QSeri
                                                     ". Рабочее место: " + QString::number(workPlaceNumber+1));
                        emit errorStringSignal(label_StatusBar + '\n');
  //                      ui->label_writeParams->setVisible(true);
-                       vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                       vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                        emit workPlaceOff(currentIndicatorNumber);
                        emit checkWritingError(currentIndicatorNumber);
@@ -6577,7 +6577,7 @@ void ObjectThread::slotWriteParams(QSerialPort *port1, QSerialPort *port2, QSeri
                            label_StatusBar = (tr("Ошибка данных") +
                                                         " Рабочее место: " + QString::number(workPlaceNumber+1));
                            emit errorStringSignal(label_StatusBar + '\n');
-                           vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                           vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
                            emit workPlaceOff(currentIndicatorNumber);
                            emit checkWritingError(currentIndicatorNumber);
                            return;
@@ -6612,7 +6612,7 @@ void ObjectThread::slotWriteParams(QSerialPort *port1, QSerialPort *port2, QSeri
                                                        ". Рабочее место: " + QString::number(workPlaceNumber+1));
                           emit errorStringSignal(label_StatusBar + '\n');
     //                      ui->label_writeParams->setVisible(true);
-                          vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                          vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                           emit workPlaceOff(currentIndicatorNumber);
                           emit checkWritingError(currentIndicatorNumber);
@@ -6634,7 +6634,7 @@ void ObjectThread::slotWriteParams(QSerialPort *port1, QSerialPort *port2, QSeri
             //
 
 
-            global::pause(19000);
+            global::pause(timeIntervalWRF_WNS/*30000*/);
 
             emit textBrowser(">> Write NB-FI Settings");
 
@@ -6674,7 +6674,7 @@ void ObjectThread::slotWriteParams(QSerialPort *port1, QSerialPort *port2, QSeri
                    label_StatusBar = (tr("Данные в порт не записаны") +
                                                 ". Рабочее место: " + QString::number(workPlaceNumber+1));
                    emit errorStringSignal(label_StatusBar + '\n');
-                   vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                   vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
  //                   checkWritingError(currentIndicatorNumber);
  //                   emit workPlaceOff(currentIndicatorNumber);
                    emit workPlaceOff(currentIndicatorNumber);
@@ -6698,7 +6698,7 @@ void ObjectThread::slotWriteParams(QSerialPort *port1, QSerialPort *port2, QSeri
                                                     ". Рабочее место: " + QString::number(workPlaceNumber+1));
                        emit errorStringSignal(label_StatusBar + '\n');
  //                      ui->label_writeParams->setVisible(true);
-                       vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                       vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
  //                       checkWritingError(currentIndicatorNumber);
  //                       emit workPlaceOff(currentIndicatorNumber);
                        emit workPlaceOff(currentIndicatorNumber);
@@ -6725,7 +6725,7 @@ void ObjectThread::slotWriteParams(QSerialPort *port1, QSerialPort *port2, QSeri
                            label_StatusBar = (tr("Ошибка данных") +
                                                         " Рабочее место: " + QString::number(workPlaceNumber+1));
                            emit errorStringSignal(label_StatusBar + '\n');
-                           vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                           vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
                            emit workPlaceOff(currentIndicatorNumber);
                            emit checkWritingError(currentIndicatorNumber);
                            return;
@@ -6758,7 +6758,7 @@ void ObjectThread::slotWriteParams(QSerialPort *port1, QSerialPort *port2, QSeri
                                                              ". Рабочее место: " + QString::number(workPlaceNumber+1));
                                 emit errorStringSignal(label_StatusBar + '\n');
     //                            ui->label_writeParams->setVisible(true);
-                                vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                                vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
  //                                checkWritingError(currentIndicatorNumber);
                                 emit workPlaceOff(currentIndicatorNumber);
                                 emit checkWritingError(currentIndicatorNumber);
@@ -6870,7 +6870,7 @@ void ObjectThread::slotWriteParams(QSerialPort *port1, QSerialPort *port2, QSeri
                    label_StatusBar = (tr("Данные в порт не записаны ") +
                                                 ". Рабочее место: " + QString::number(workPlaceNumber+1));
                    emit errorStringSignal(label_StatusBar + '\n');
-                   vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                   vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                    emit workPlaceOff(currentIndicatorNumber);
                    emit checkWritingError(currentIndicatorNumber);
@@ -6893,7 +6893,7 @@ void ObjectThread::slotWriteParams(QSerialPort *port1, QSerialPort *port2, QSeri
                                                     ". Рабочее место: " + QString::number(workPlaceNumber+1));
                        emit errorStringSignal(label_StatusBar + '\n');
  //                      ui->label_writeParams->setVisible(true);
-                       vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                       vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                        emit workPlaceOff(currentIndicatorNumber);
                        emit checkWritingError(currentIndicatorNumber);
@@ -6919,7 +6919,7 @@ void ObjectThread::slotWriteParams(QSerialPort *port1, QSerialPort *port2, QSeri
                            label_StatusBar = (tr("Ошибка данных") +
                                                         " Рабочее место: " + QString::number(workPlaceNumber+1));
                            emit errorStringSignal(label_StatusBar + '\n');
-                           vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                           vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
                            emit workPlaceOff(currentIndicatorNumber);
                            emit checkWritingError(currentIndicatorNumber);
                            return;
@@ -6954,7 +6954,7 @@ void ObjectThread::slotWriteParams(QSerialPort *port1, QSerialPort *port2, QSeri
                                                        ". Рабочее место: " + QString::number(workPlaceNumber+1));
                           emit errorStringSignal(label_StatusBar + '\n');
     //                      ui->label_writeParams->setVisible(true);
-                          vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                          vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                           emit workPlaceOff(currentIndicatorNumber);
                           emit checkWritingError(currentIndicatorNumber);
@@ -6973,7 +6973,7 @@ void ObjectThread::slotWriteParams(QSerialPort *port1, QSerialPort *port2, QSeri
             //Write NB-FI Settings/
             //
 
-            global::pause(19000);
+            global::pause(timeIntervalWNB_WID/*19000*/);
 
             emit textBrowser(">> Write Identificators");
 
@@ -7013,7 +7013,7 @@ void ObjectThread::slotWriteParams(QSerialPort *port1, QSerialPort *port2, QSeri
                    label_StatusBar = (tr("Данные в порт не записаны") +
                                                 ". Рабочее место: " + QString::number(workPlaceNumber+1));
                    emit errorStringSignal(label_StatusBar + '\n');
-                   vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                   vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
  //                   checkWritingError(currentIndicatorNumber);
  //                   emit workPlaceOff(currentIndicatorNumber);
                    emit workPlaceOff(currentIndicatorNumber);
@@ -7037,7 +7037,7 @@ void ObjectThread::slotWriteParams(QSerialPort *port1, QSerialPort *port2, QSeri
                                                     ". Рабочее место: " + QString::number(workPlaceNumber+1));
                        emit errorStringSignal(label_StatusBar + '\n');
  //                      ui->label_writeParams->setVisible(true);
-                       vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                       vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
  //                       checkWritingError(currentIndicatorNumber);
  //                       emit workPlaceOff(currentIndicatorNumber);
                        emit workPlaceOff(currentIndicatorNumber);
@@ -7064,7 +7064,7 @@ void ObjectThread::slotWriteParams(QSerialPort *port1, QSerialPort *port2, QSeri
                            label_StatusBar = (tr("Ошибка данных") +
                                                         " Рабочее место: " + QString::number(workPlaceNumber+1));
                            emit errorStringSignal(label_StatusBar + '\n');
-                           vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                           vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
                            emit workPlaceOff(currentIndicatorNumber);
                            emit checkWritingError(currentIndicatorNumber);
                            return;
@@ -7097,7 +7097,7 @@ void ObjectThread::slotWriteParams(QSerialPort *port1, QSerialPort *port2, QSeri
                                                              ". Рабочее место: " + QString::number(workPlaceNumber+1));
                                 emit errorStringSignal(label_StatusBar + '\n');
     //                            ui->label_writeParams->setVisible(true);
-                                vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                                vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
  //                                checkWritingError(currentIndicatorNumber);
                                 emit workPlaceOff(currentIndicatorNumber);
                                 emit checkWritingError(currentIndicatorNumber);
@@ -7243,7 +7243,7 @@ void ObjectThread::slotWriteParams(QSerialPort *port1, QSerialPort *port2, QSeri
                    label_StatusBar = (tr("Данные в порт не записаны ") +
                                                 ". Рабочее место: " + QString::number(workPlaceNumber+1));
                    emit errorStringSignal(label_StatusBar + '\n');
-                   vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                   vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                    emit workPlaceOff(currentIndicatorNumber);
                    emit checkWritingError(currentIndicatorNumber);
@@ -7266,7 +7266,7 @@ void ObjectThread::slotWriteParams(QSerialPort *port1, QSerialPort *port2, QSeri
                                                     ". Рабочее место: " + QString::number(workPlaceNumber+1));
                        emit errorStringSignal(label_StatusBar + '\n');
  //                      ui->label_writeParams->setVisible(true);
-                       vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                       vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                        emit workPlaceOff(currentIndicatorNumber);
                        emit checkWritingError(currentIndicatorNumber);
@@ -7292,7 +7292,7 @@ void ObjectThread::slotWriteParams(QSerialPort *port1, QSerialPort *port2, QSeri
                            label_StatusBar = (tr("Ошибка данных") +
                                                         " Рабочее место: " + QString::number(workPlaceNumber+1));
                            emit errorStringSignal(label_StatusBar + '\n');
-                           vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                           vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
                            emit workPlaceOff(currentIndicatorNumber);
                            emit checkWritingError(currentIndicatorNumber);
                            return;
@@ -7327,7 +7327,7 @@ void ObjectThread::slotWriteParams(QSerialPort *port1, QSerialPort *port2, QSeri
                                                        ". Рабочее место: " + QString::number(workPlaceNumber+1));
                           emit errorStringSignal(label_StatusBar + '\n');
     //                      ui->label_writeParams->setVisible(true);
-                          vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                          vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                           emit workPlaceOff(currentIndicatorNumber);
                           emit checkWritingError(currentIndicatorNumber);
@@ -7348,7 +7348,7 @@ void ObjectThread::slotWriteParams(QSerialPort *port1, QSerialPort *port2, QSeri
             //
 
 
-            global::pause(12000);
+            global::pause(timeIntervalWID_Read/*12000*/);
 
 
             //
@@ -7447,7 +7447,7 @@ void ObjectThread::slotWriteParams(QSerialPort *port1, QSerialPort *port2, QSeri
                                                     mapRead[allParamsNameList[i]].toHex() +
                                                     ". Рабочее место: " + QString::number(workPlaceNumber+1));
                        emit errorStringSignal(label_StatusBar + '\n');
-                       vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                       vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                        emit workPlaceOff(currentIndicatorNumber);
                        emit checkWritingError(currentIndicatorNumber);
@@ -7476,7 +7476,7 @@ void ObjectThread::slotWriteParams(QSerialPort *port1, QSerialPort *port2, QSeri
                                                      QString::number(pulsesValue1IntRead) +
                                                      ". Рабочее место: " + QString::number(workPlaceNumber+1));
                         emit errorStringSignal(label_StatusBar + '\n');
-                        vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                        vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                         emit workPlaceOff(currentIndicatorNumber);
                         emit checkWritingError(currentIndicatorNumber);
@@ -7505,7 +7505,7 @@ void ObjectThread::slotWriteParams(QSerialPort *port1, QSerialPort *port2, QSeri
                                                      QString::number(pulsesValue2IntRead) +
                                                      ". Рабочее место: " + QString::number(workPlaceNumber+1));
                         emit errorStringSignal(label_StatusBar + '\n');
-                        vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                        vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                         emit workPlaceOff(currentIndicatorNumber);
                         emit checkWritingError(currentIndicatorNumber);
@@ -7625,7 +7625,7 @@ void ObjectThread::slotCalibration(QSerialPort *port1, QSerialPort *port2, QSeri
                     label_StatusBar = ("Не удалось открыть порт УСО-2. Рабочее место: " +
                                                  QString::number(workPlaceNumber + 1));
                     emit errorStringSignal(label_StatusBar + '\n');
-                    vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                    vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                     emit workPlaceOff(currentIndicatorNumber);
                     emit checkCalibrationError(currentIndicatorNumber);
@@ -7680,7 +7680,7 @@ void ObjectThread::slotCalibration(QSerialPort *port1, QSerialPort *port2, QSeri
                    label_StatusBar = (tr("Данные в порт не записаны") +
                                                 ". Рабочее место: " + QString::number(workPlaceNumber+1));
                    emit errorStringSignal(label_StatusBar + '\n');
-                   vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                   vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 //                   checkWritingError(currentIndicatorNumber);
 //                   emit workPlaceOff(currentIndicatorNumber);
                    emit workPlaceOff(currentIndicatorNumber);
@@ -7704,7 +7704,7 @@ void ObjectThread::slotCalibration(QSerialPort *port1, QSerialPort *port2, QSeri
                                                     ". Рабочее место: " + QString::number(workPlaceNumber+1));
                        emit errorStringSignal(label_StatusBar + '\n');
  //                      ui->label_writeParams->setVisible(true);
-                       vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                       vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 //                       checkWritingError(currentIndicatorNumber);
 //                       emit workPlaceOff(currentIndicatorNumber);
                        emit workPlaceOff(currentIndicatorNumber);
@@ -7731,7 +7731,7 @@ void ObjectThread::slotCalibration(QSerialPort *port1, QSerialPort *port2, QSeri
                            label_StatusBar = (tr("Ошибка данных") +
                                                         " Рабочее место: " + QString::number(workPlaceNumber+1));
                            emit errorStringSignal(label_StatusBar + '\n');
-                           vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                           vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
                            emit workPlaceOff(currentIndicatorNumber);
                            emit checkCalibrationError(currentIndicatorNumber);
                            return;
@@ -7764,7 +7764,7 @@ void ObjectThread::slotCalibration(QSerialPort *port1, QSerialPort *port2, QSeri
                                                              ". Рабочее место: " + QString::number(workPlaceNumber+1));
                                 emit errorStringSignal(label_StatusBar + '\n');
     //                            ui->label_writeParams->setVisible(true);
-                                vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                                vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 //                                checkWritingError(currentIndicatorNumber);
                                 emit workPlaceOff(currentIndicatorNumber);
                                 emit checkCalibrationError(currentIndicatorNumber);
@@ -7898,7 +7898,7 @@ void ObjectThread::slotCalibration(QSerialPort *port1, QSerialPort *port2, QSeri
                    label_StatusBar = (tr("Данные в порт не записаны") +
                                                 " Рабочее место: " + QString::number(workPlaceNumber+1));
                    emit errorStringSignal(label_StatusBar + '\n');
-                   vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                   vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                    emit workPlaceOff(currentIndicatorNumber);
                    emit checkCalibrationError(currentIndicatorNumber);
@@ -7920,7 +7920,7 @@ void ObjectThread::slotCalibration(QSerialPort *port1, QSerialPort *port2, QSeri
                                                     " Рабочее место: " + QString::number(workPlaceNumber+1));
                        emit errorStringSignal(label_StatusBar + '\n');
    //                    ui->label_Calibration->setVisible(true);
-                       vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                       vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                        emit workPlaceOff(currentIndicatorNumber);
                        emit checkCalibrationError(currentIndicatorNumber);
@@ -7946,7 +7946,7 @@ void ObjectThread::slotCalibration(QSerialPort *port1, QSerialPort *port2, QSeri
                            label_StatusBar = (tr("Ошибка данных") +
                                                         " Рабочее место: " + QString::number(workPlaceNumber+1));
                            emit errorStringSignal(label_StatusBar + '\n');
-                           vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                           vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
                            emit workPlaceOff(currentIndicatorNumber);
                            emit checkCalibrationError(currentIndicatorNumber);
                            return;
@@ -7984,7 +7984,7 @@ void ObjectThread::slotCalibration(QSerialPort *port1, QSerialPort *port2, QSeri
                                                        " Рабочее место: " + QString::number(workPlaceNumber+1));
                           emit errorStringSignal(label_StatusBar + '\n');
        //                   ui->label_Calibration->setVisible(true);
-                          vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                          vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                           emit workPlaceOff(currentIndicatorNumber);
                           emit checkCalibrationError(currentIndicatorNumber);
@@ -8034,7 +8034,7 @@ void ObjectThread::slotCalibration(QSerialPort *port1, QSerialPort *port2, QSeri
                    label_StatusBar = (tr("Данные в порт не записаны") +
                                                 " Рабочее место: " + QString::number(workPlaceNumber+1));
                    emit errorStringSignal(label_StatusBar + '\n');
-                   vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                   vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                    emit workPlaceOff(currentIndicatorNumber);
                    emit checkCalibrationError(currentIndicatorNumber);
@@ -8056,7 +8056,7 @@ void ObjectThread::slotCalibration(QSerialPort *port1, QSerialPort *port2, QSeri
                                                     " Рабочее место: " + QString::number(workPlaceNumber+1));
                        emit errorStringSignal(label_StatusBar + '\n');
          //              ui->label_Calibration->setVisible(true);
-                       vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                       vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                        emit workPlaceOff(currentIndicatorNumber);
                        emit checkCalibrationError(currentIndicatorNumber);
@@ -8082,7 +8082,7 @@ void ObjectThread::slotCalibration(QSerialPort *port1, QSerialPort *port2, QSeri
                            label_StatusBar = (tr("Не удалось прочитать данные") +
                                                         " Рабочее место: " + QString::number(workPlaceNumber+1));
                            emit errorStringSignal(label_StatusBar + '\n');
-                           vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                           vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
                            emit workPlaceOff(currentIndicatorNumber);
                            emit checkCalibrationError(currentIndicatorNumber);
                            return;
@@ -8146,7 +8146,7 @@ void ObjectThread::slotCalibration(QSerialPort *port1, QSerialPort *port2, QSeri
                                                           + QString::number(workPlaceNumber+1) + ".R_Ref1 " + QString::number(R_Ref1Float));
                              emit errorStringSignal(label_StatusBar + '\n');
         //                     ui->label_Calibration->setVisible(true);
-                             vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                             vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                              emit workPlaceOff(currentIndicatorNumber);
                              emit checkCalibrationError(currentIndicatorNumber);
@@ -8182,7 +8182,7 @@ void ObjectThread::slotCalibration(QSerialPort *port1, QSerialPort *port2, QSeri
                                                        + QString::number(workPlaceNumber+1) + ".R_Ref2 " + QString::number(R_Ref2Float));
                           emit errorStringSignal(label_StatusBar + '\n');
      //                     ui->label_Calibration->setVisible(true);
-                          vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                          vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                           emit workPlaceOff(currentIndicatorNumber);
                           emit checkCalibrationError(currentIndicatorNumber);
@@ -8241,7 +8241,7 @@ void ObjectThread::slotCalibration(QSerialPort *port1, QSerialPort *port2, QSeri
                                                           + QString::number(workPlaceNumber+1) + ".R_Ref1 " + QString::number(R_Ref1Float));
                              emit errorStringSignal(label_StatusBar + '\n');
         //                     ui->label_Calibration->setVisible(true);
-                             vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                             vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                              emit workPlaceOff(currentIndicatorNumber);
                              emit checkCalibrationError(currentIndicatorNumber);
@@ -8280,7 +8280,7 @@ void ObjectThread::slotCalibration(QSerialPort *port1, QSerialPort *port2, QSeri
                                                        + QString::number(workPlaceNumber+1) + ".R_Ref2 " + QString::number(R_Ref2Float));
                           emit errorStringSignal(label_StatusBar + '\n');
       //                    ui->label_Calibration->setVisible(true);
-                          vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                          vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                           emit workPlaceOff(currentIndicatorNumber);
                           emit checkCalibrationError(currentIndicatorNumber);
@@ -8341,7 +8341,7 @@ void ObjectThread::slotCalibration(QSerialPort *port1, QSerialPort *port2, QSeri
                                                           + QString::number(workPlaceNumber+1) + ".R_Ref1 " + QString::number(R_Ref1Float));
                              emit errorStringSignal(label_StatusBar + '\n');
        //                      ui->label_Calibration->setVisible(true);
-                             vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                             vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                              emit workPlaceOff(currentIndicatorNumber);
                              emit checkCalibrationError(currentIndicatorNumber);
@@ -8378,7 +8378,7 @@ void ObjectThread::slotCalibration(QSerialPort *port1, QSerialPort *port2, QSeri
                                                        + QString::number(workPlaceNumber+1) + ".R_Ref2 " + QString::number(R_Ref2Float));
                           emit errorStringSignal(label_StatusBar + '\n');
       //                    ui->label_Calibration->setVisible(true);
-                          vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                          vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                           emit workPlaceOff(currentIndicatorNumber);
                           emit checkCalibrationError(currentIndicatorNumber);
@@ -8438,7 +8438,7 @@ void ObjectThread::slotCalibration(QSerialPort *port1, QSerialPort *port2, QSeri
                                                           + QString::number(workPlaceNumber+1) + ".R_Ref1 " + QString::number(R_Ref1Float));
                              emit errorStringSignal(label_StatusBar + '\n');
        //                      ui->label_Calibration->setVisible(true);
-                             vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                             vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                              emit workPlaceOff(currentIndicatorNumber);
                              emit checkCalibrationError(currentIndicatorNumber);
@@ -8475,7 +8475,7 @@ void ObjectThread::slotCalibration(QSerialPort *port1, QSerialPort *port2, QSeri
                                                        + QString::number(workPlaceNumber+1) + ".R_Ref2 " + QString::number(R_Ref2Float));
                           emit errorStringSignal(label_StatusBar + '\n');
        //                   ui->label_Calibration->setVisible(true);
-                          vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                          vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                           emit workPlaceOff(currentIndicatorNumber);
                           emit checkCalibrationError(currentIndicatorNumber);
@@ -8502,7 +8502,7 @@ void ObjectThread::slotCalibration(QSerialPort *port1, QSerialPort *port2, QSeri
                                                        " Рабочее место: " + QString::number(workPlaceNumber+1));
                           emit errorStringSignal(label_StatusBar + '\n');
       //                    ui->label_Calibration->setVisible(true);
-                          vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                          vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                           emit workPlaceOff(currentIndicatorNumber);
                           emit checkCalibrationError(currentIndicatorNumber);
@@ -8552,7 +8552,7 @@ void ObjectThread::slotCalibration(QSerialPort *port1, QSerialPort *port2, QSeri
                    label_StatusBar = (tr("Данные в порт не записаны") +
                                                 " Рабочее место: " + QString::number(workPlaceNumber+1));
                    emit errorStringSignal(label_StatusBar + '\n');
-                   vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                   vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                    emit workPlaceOff(currentIndicatorNumber);
                    emit checkCalibrationError(currentIndicatorNumber);
@@ -8573,7 +8573,7 @@ void ObjectThread::slotCalibration(QSerialPort *port1, QSerialPort *port2, QSeri
                        label_StatusBar = (tr("Не удалось прочитать данные") +
                                                     " Рабочее место: " + QString::number(workPlaceNumber+1));
                        emit errorStringSignal(label_StatusBar + '\n');
-                       vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                       vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                        emit workPlaceOff(currentIndicatorNumber);
                        emit checkCalibrationError(currentIndicatorNumber);
@@ -8599,7 +8599,7 @@ void ObjectThread::slotCalibration(QSerialPort *port1, QSerialPort *port2, QSeri
                            label_StatusBar = (tr("Не удалось прочитать данные") +
                                                         " Рабочее место: " + QString::number(workPlaceNumber+1));
                            emit errorStringSignal(label_StatusBar + '\n');
-                           vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                           vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
                            emit workPlaceOff(currentIndicatorNumber);
                            emit checkCalibrationError(currentIndicatorNumber);
                            return;
@@ -8676,7 +8676,7 @@ void ObjectThread::slotCalibration(QSerialPort *port1, QSerialPort *port2, QSeri
                                                        + QString::number(workPlaceNumber+1) + ". TMeasDirFloat " + QString::number(TMeasDirFloat));
                           emit errorStringSignal(label_StatusBar + '\n');
           //                ui->label_Calibration->setVisible(true);
-                          vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                          vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                           emit workPlaceOff(currentIndicatorNumber);
                           emit checkCalibrationError(currentIndicatorNumber);
@@ -8708,7 +8708,7 @@ void ObjectThread::slotCalibration(QSerialPort *port1, QSerialPort *port2, QSeri
                                                           + QString::number(workPlaceNumber+1) + ". TMeasRevFloat " + QString::number(TMeasRevFloat));
                              emit errorStringSignal(label_StatusBar + '\n');
           //                   ui->label_Calibration->setVisible(true);
-                             vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                             vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                              emit workPlaceOff(currentIndicatorNumber);
                              emit checkCalibrationError(currentIndicatorNumber);
@@ -8759,7 +8759,7 @@ void ObjectThread::slotCalibration(QSerialPort *port1, QSerialPort *port2, QSeri
                                                        + QString::number(workPlaceNumber+1) + ". TMeasDirFloat " + QString::number(TMeasDirFloat));
                           emit errorStringSignal(label_StatusBar + '\n');
         //                  ui->label_Calibration->setVisible(true);
-                          vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                          vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                           emit workPlaceOff(currentIndicatorNumber);
                           emit checkCalibrationError(currentIndicatorNumber);
@@ -8791,7 +8791,7 @@ void ObjectThread::slotCalibration(QSerialPort *port1, QSerialPort *port2, QSeri
                                                           + QString::number(workPlaceNumber+1) + ". TMeasRevFloat " + QString::number(TMeasRevFloat));
                              emit errorStringSignal(label_StatusBar + '\n');
        //                      ui->label_Calibration->setVisible(true);
-                             vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                             vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                              emit workPlaceOff(currentIndicatorNumber);
                              emit checkCalibrationError(currentIndicatorNumber);
@@ -8844,7 +8844,7 @@ void ObjectThread::slotCalibration(QSerialPort *port1, QSerialPort *port2, QSeri
                                                        + QString::number(workPlaceNumber+1) + ". TMeasDirFloat " + QString::number(TMeasDirFloat));
                           emit errorStringSignal(label_StatusBar + '\n');
          //                 ui->label_Calibration->setVisible(true);
-                          vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                          vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                           emit workPlaceOff(currentIndicatorNumber);
                           emit checkCalibrationError(currentIndicatorNumber);
@@ -8876,7 +8876,7 @@ void ObjectThread::slotCalibration(QSerialPort *port1, QSerialPort *port2, QSeri
                                                           + QString::number(workPlaceNumber+1) + ". TMeasRevFloat " + QString::number(TMeasRevFloat));
                              emit errorStringSignal(label_StatusBar + '\n');
        //                      ui->label_Calibration->setVisible(true);
-                             vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                             vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                              emit workPlaceOff(currentIndicatorNumber);
                              emit checkCalibrationError(currentIndicatorNumber);
@@ -8929,7 +8929,7 @@ void ObjectThread::slotCalibration(QSerialPort *port1, QSerialPort *port2, QSeri
                                                        + QString::number(workPlaceNumber+1) + ". TMeasDirFloat " + QString::number(TMeasDirFloat));
                           emit errorStringSignal(label_StatusBar + '\n');
        //                   ui->label_Calibration->setVisible(true);
-                          vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                          vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                           emit workPlaceOff(currentIndicatorNumber);
                           emit checkCalibrationError(currentIndicatorNumber);
@@ -8961,7 +8961,7 @@ void ObjectThread::slotCalibration(QSerialPort *port1, QSerialPort *port2, QSeri
                                                           + QString::number(workPlaceNumber+1) + ". TMeasRevFloat " + QString::number(TMeasRevFloat));
                              emit errorStringSignal(label_StatusBar + '\n');
           //                   ui->label_Calibration->setVisible(true);
-                             vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                             vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                              emit workPlaceOff(currentIndicatorNumber);
                              emit checkCalibrationError(currentIndicatorNumber);
@@ -8996,7 +8996,7 @@ void ObjectThread::slotCalibration(QSerialPort *port1, QSerialPort *port2, QSeri
                                                        " Рабочее место: " + QString::number(workPlaceNumber+1));
                           emit errorStringSignal(label_StatusBar + '\n');
          //                 ui->label_Calibration->setVisible(true);
-                          vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                          vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                           emit workPlaceOff(currentIndicatorNumber);
                           emit checkCalibrationError(currentIndicatorNumber);
@@ -9032,7 +9032,7 @@ void ObjectThread::slotCalibration(QSerialPort *port1, QSerialPort *port2, QSeri
                                              + QString::number(workPlaceNumber+1));
                 emit errorStringSignal(label_StatusBar + '\n');
        //         ui->label_Calibration->setVisible(true);
-                vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                 emit workPlaceOff(currentIndicatorNumber);
                 emit checkCalibrationError(currentIndicatorNumber);
@@ -9062,7 +9062,7 @@ void ObjectThread::slotCalibration(QSerialPort *port1, QSerialPort *port2, QSeri
                                              + QString::number(workPlaceNumber+1));
                 emit errorStringSignal(label_StatusBar + '\n');
        //         ui->label_Calibration->setVisible(true);
-                vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                 emit workPlaceOff(currentIndicatorNumber);
                 emit checkCalibrationError(currentIndicatorNumber);
@@ -9092,7 +9092,7 @@ void ObjectThread::slotCalibration(QSerialPort *port1, QSerialPort *port2, QSeri
                                              + QString::number(workPlaceNumber+1));
                 emit errorStringSignal(label_StatusBar + '\n');
      //           ui->label_Calibration->setVisible(true);
-                vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                 emit workPlaceOff(currentIndicatorNumber);
                 emit checkCalibrationError(currentIndicatorNumber);
@@ -9122,7 +9122,7 @@ void ObjectThread::slotCalibration(QSerialPort *port1, QSerialPort *port2, QSeri
                                              + QString::number(workPlaceNumber+1));
                 emit errorStringSignal(label_StatusBar + '\n');
        //         ui->label_Calibration->setVisible(true);
-                vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                 emit workPlaceOff(currentIndicatorNumber);
                 emit checkCalibrationError(currentIndicatorNumber);
@@ -9145,7 +9145,7 @@ void ObjectThread::slotPulsesOutputHeat(QSerialPort *port1, QSerialPort *port2,
 
     //сбросить счётчик импульсов стенда
     if(!pulsesReset()) {
-        vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+        vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
         emit workPlaceOff(currentIndicatorNumber);
         emit checkPulsesOutputHeat(currentIndicatorNumber);
 
@@ -9229,7 +9229,7 @@ void ObjectThread::slotPulsesOutputHeat(QSerialPort *port1, QSerialPort *port2,
                     label_StatusBar = ("Не удалось открыть порт УСО-2. Рабочее место: " +
                                                  QString::number(workPlaceNumber + 1));
                     emit errorStringSignal(label_StatusBar + '\n');
-                    vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                    vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                     emit workPlaceOff(currentIndicatorNumber);
                     emit checkPulsesOutputHeat(currentIndicatorNumber);
@@ -9276,7 +9276,7 @@ void ObjectThread::slotPulsesOutputHeat(QSerialPort *port1, QSerialPort *port2,
                    label_StatusBar = (tr("Данные в порт не записаны") +
                                                 ". Рабочее место: " + QString::number(workPlaceNumber+1));
                    emit errorStringSignal(label_StatusBar + '\n');
-                   vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                   vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                    emit workPlaceOff(currentIndicatorNumber);
                    emit checkPulsesOutputHeat(currentIndicatorNumber);
@@ -9297,7 +9297,7 @@ void ObjectThread::slotPulsesOutputHeat(QSerialPort *port1, QSerialPort *port2,
                        label_StatusBar = (tr("Ошибка открытия парольной сессии") +
                                                     ". Рабочее место: " + QString::number(workPlaceNumber+1));
                        emit errorStringSignal(label_StatusBar + '\n');
-                       vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                       vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                        emit workPlaceOff(currentIndicatorNumber);
                        emit checkPulsesOutputHeat(currentIndicatorNumber);
@@ -9324,7 +9324,7 @@ void ObjectThread::slotPulsesOutputHeat(QSerialPort *port1, QSerialPort *port2,
                            label_StatusBar = (tr("Ошибка данных") +
                                                         " Рабочее место: " + QString::number(workPlaceNumber+1));
                            emit errorStringSignal(label_StatusBar + '\n');
-                           vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                           vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
                            emit workPlaceOff(currentIndicatorNumber);
                            emit checkPulsesOutputHeat(currentIndicatorNumber);
                            return;
@@ -9356,7 +9356,7 @@ void ObjectThread::slotPulsesOutputHeat(QSerialPort *port1, QSerialPort *port2,
                                 label_StatusBar = (tr("Ошибка открытия парольной сессии") +
                                                              ". Рабочее место: " + QString::number(workPlaceNumber+1));
                                 emit errorStringSignal(label_StatusBar + '\n');
-                                vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                                vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                                 emit workPlaceOff(currentIndicatorNumber);
                                 emit checkPulsesOutputHeat(currentIndicatorNumber);
@@ -9492,7 +9492,7 @@ void ObjectThread::slotPulsesOutputHeat(QSerialPort *port1, QSerialPort *port2,
                    label_StatusBar = (tr("Данные в порт не записаны") +
                                                 ". Рабочее место: " + QString::number(workPlaceNumber+1));
                    emit errorStringSignal(label_StatusBar + '\n');
-                   vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                   vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                    emit workPlaceOff(currentIndicatorNumber);
                    emit checkPulsesOutputHeat(currentIndicatorNumber);
@@ -9513,7 +9513,7 @@ void ObjectThread::slotPulsesOutputHeat(QSerialPort *port1, QSerialPort *port2,
                        label_StatusBar = (tr("Не удалось записать данные : Software Configuration") +
                                                     ". Рабочее место: " + QString::number(workPlaceNumber+1));
                        emit errorStringSignal(label_StatusBar + '\n');
-                       vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                       vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                        emit workPlaceOff(currentIndicatorNumber);
                        emit checkPulsesOutputHeat(currentIndicatorNumber);
@@ -9540,7 +9540,7 @@ void ObjectThread::slotPulsesOutputHeat(QSerialPort *port1, QSerialPort *port2,
                            label_StatusBar = (tr("Ошибка данных") +
                                                         " Рабочее место: " + QString::number(workPlaceNumber+1));
                            emit errorStringSignal(label_StatusBar + '\n');
-                           vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                           vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
                            emit workPlaceOff(currentIndicatorNumber);
                            emit checkPulsesOutputHeat(currentIndicatorNumber);
                            return;
@@ -9574,7 +9574,7 @@ void ObjectThread::slotPulsesOutputHeat(QSerialPort *port1, QSerialPort *port2,
                           label_StatusBar = (tr("Ошибка записи данных : Software Configuration") +
                                                        ". Рабочее место: " + QString::number(workPlaceNumber+1));
                           emit errorStringSignal(label_StatusBar + '\n');
-                          vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                          vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                           emit workPlaceOff(currentIndicatorNumber);
                           emit checkPulsesOutputHeat(currentIndicatorNumber);
@@ -9623,7 +9623,7 @@ void ObjectThread::slotPulsesOutputHeat(QSerialPort *port1, QSerialPort *port2,
                    label_StatusBar = (tr("Данные в порт не записаны") +
                                                 ". Рабочее место: " + QString::number(workPlaceNumber+1));
                    emit errorStringSignal(label_StatusBar + '\n');
-                   vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                   vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                    emit workPlaceOff(currentIndicatorNumber);
                    emit checkPulsesOutputHeat(currentIndicatorNumber);
@@ -9644,7 +9644,7 @@ void ObjectThread::slotPulsesOutputHeat(QSerialPort *port1, QSerialPort *port2,
                        label_StatusBar = (tr("Не удалось прочитать данные") +
                                                     ". Рабочее место: " + QString::number(workPlaceNumber+1));
                        emit errorStringSignal(label_StatusBar + '\n');
-                       vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                       vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                        emit workPlaceOff(currentIndicatorNumber);
                        emit checkPulsesOutputHeat(currentIndicatorNumber);
@@ -9671,7 +9671,7 @@ void ObjectThread::slotPulsesOutputHeat(QSerialPort *port1, QSerialPort *port2,
                            label_StatusBar = (tr("Ошибка данных") +
                                                         " Рабочее место: " + QString::number(workPlaceNumber+1));
                            emit errorStringSignal(label_StatusBar + '\n');
-                           vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                           vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
                            emit workPlaceOff(currentIndicatorNumber);
                            emit checkPulsesOutputHeat(currentIndicatorNumber);
                            return;
@@ -9943,7 +9943,7 @@ void ObjectThread::slotPulsesOutputHeat(QSerialPort *port1, QSerialPort *port2,
                           label_StatusBar = (tr("Ошибка данных") +
                                                        ". Рабочее место: " + QString::number(workPlaceNumber+1));
                           emit errorStringSignal(label_StatusBar + '\n');
-                          vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                          vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                           emit workPlaceOff(currentIndicatorNumber);
                           emit checkPulsesOutputHeat(currentIndicatorNumber);
@@ -10013,7 +10013,7 @@ void ObjectThread::slotPulsesOutputHeat(QSerialPort *port1, QSerialPort *port2,
                                                      " " + "чтение " + readVector[i].toHex() +
                                                      ". Рабочее место: " + QString::number(workPlaceNumber+1));
                         emit errorStringSignal(label_StatusBar + '\n');
-                        vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                        vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                         emit workPlaceOff(currentIndicatorNumber);
                         emit checkPulsesOutputHeat(currentIndicatorNumber);
@@ -10029,7 +10029,7 @@ void ObjectThread::slotPulsesOutputHeat(QSerialPort *port1, QSerialPort *port2,
                                                         " " + "чтение " + readVector[i].toHex() +
                                                         ". Рабочее место: " + QString::number(workPlaceNumber+1));
                            emit errorStringSignal(label_StatusBar + '\n');
-                           vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                           vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                            emit workPlaceOff(currentIndicatorNumber);
                            emit checkPulsesOutputHeat(currentIndicatorNumber);
@@ -10056,7 +10056,7 @@ void ObjectThread::slotPulsesOutputHeat(QSerialPort *port1, QSerialPort *port2,
 
                 label_StatusBar = ("Импульсные выходы по теплу не работают. Рабочее место: " + QString::number(workPlaceNumber+1));
                 emit errorStringSignal(label_StatusBar + '\n');
-                vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                 emit workPlaceOff(currentIndicatorNumber);
                 emit checkPulsesOutputHeat(currentIndicatorNumber);
@@ -10088,14 +10088,14 @@ void ObjectThread::slotPulsesInputVolume(QSerialPort *port1, QSerialPort *port2,
     int currentBoxNumber = 3;
 
 //    if(!writePulsesToGenChannel1()) {
-//        vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+//        vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 //        emit workPlaceOff(currentIndicatorNumber);
 //        emit checkPulsesInputVolume(currentIndicatorNumber);
 
 //        return;
 //    }
 //    if(!writePulsesToGenChannel1()) {
-//        vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+//        vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 //        emit workPlaceOff(currentIndicatorNumber);
 //        emit checkPulsesInputVolume(currentIndicatorNumber);
 
@@ -10171,7 +10171,7 @@ void ObjectThread::slotPulsesInputVolume(QSerialPort *port1, QSerialPort *port2,
                     label_StatusBar = ("Не удалось открыть порт УСО-2. Рабочее место: " +
                                                  QString::number(workPlaceNumber + 1));
                     emit errorStringSignal(label_StatusBar + '\n');
-                    vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                    vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                     emit workPlaceOff(currentIndicatorNumber);
                     emit checkPulsesInputVolume(currentIndicatorNumber);
@@ -10216,7 +10216,7 @@ void ObjectThread::slotPulsesInputVolume(QSerialPort *port1, QSerialPort *port2,
                    label_StatusBar = (tr("Данные в порт не записаны") +
                                                 " Рабочее место: " + QString::number(workPlaceNumber+1));
                    emit errorStringSignal(label_StatusBar + '\n');
-                   vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                   vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                    emit workPlaceOff(currentIndicatorNumber);
                    emit checkPulsesInputVolume(currentIndicatorNumber);
@@ -10235,7 +10235,7 @@ void ObjectThread::slotPulsesInputVolume(QSerialPort *port1, QSerialPort *port2,
                        label_StatusBar = (tr("Ошибка открытия парольной сессии") +
                                                     " Рабочее место: " + QString::number(workPlaceNumber+1));
                        emit errorStringSignal(label_StatusBar + '\n');
-                       vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                       vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                        emit workPlaceOff(currentIndicatorNumber);
                        emit checkPulsesInputVolume(currentIndicatorNumber);
@@ -10261,7 +10261,7 @@ void ObjectThread::slotPulsesInputVolume(QSerialPort *port1, QSerialPort *port2,
                            label_StatusBar = (tr("Ошибка данных") +
                                                         " Рабочее место: " + QString::number(workPlaceNumber+1));
                            emit errorStringSignal(label_StatusBar + '\n');
-                           vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                           vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
                            emit workPlaceOff(currentIndicatorNumber);
                            emit checkPulsesInputVolume(currentIndicatorNumber);
                            return;
@@ -10293,7 +10293,7 @@ void ObjectThread::slotPulsesInputVolume(QSerialPort *port1, QSerialPort *port2,
                                 label_StatusBar = (tr("Ошибка открытия парольной сессии") +
                                                              " Рабочее место: " + QString::number(workPlaceNumber+1));
                                 emit errorStringSignal(label_StatusBar + '\n');
-                                vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                                vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                                 emit workPlaceOff(currentIndicatorNumber);
                                 emit checkPulsesInputVolume(currentIndicatorNumber);
@@ -10424,7 +10424,7 @@ void ObjectThread::slotPulsesInputVolume(QSerialPort *port1, QSerialPort *port2,
                if(cnt == 0) {
     //               QMessageBox::information(this, "", tr("Данные в порт не записаны") +
     //                                        " Рабочее место: " + QString::number(workPlaceNumber+1));
-                   vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                   vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                    label_StatusBar = (tr("Данные в порт не записаны") +
                                                 " Рабочее место: " + QString::number(workPlaceNumber+1));
@@ -10448,7 +10448,7 @@ void ObjectThread::slotPulsesInputVolume(QSerialPort *port1, QSerialPort *port2,
                        label_StatusBar = (tr("Не удалось записать данные : Software Configuration") +
                                                     " Рабочее место: " + QString::number(workPlaceNumber+1));
                        emit errorStringSignal(label_StatusBar + '\n');
-                       vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                       vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                        emit workPlaceOff(currentIndicatorNumber);
                        emit checkPulsesInputVolume(currentIndicatorNumber);
@@ -10475,7 +10475,7 @@ void ObjectThread::slotPulsesInputVolume(QSerialPort *port1, QSerialPort *port2,
                            label_StatusBar = (tr("Ошибка данных") +
                                                         " Рабочее место: " + QString::number(workPlaceNumber+1));
                            emit errorStringSignal(label_StatusBar + '\n');
-                           vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                           vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
                            emit workPlaceOff(currentIndicatorNumber);
                            emit checkPulsesInputVolume(currentIndicatorNumber);
                            return;
@@ -10509,7 +10509,7 @@ void ObjectThread::slotPulsesInputVolume(QSerialPort *port1, QSerialPort *port2,
                           label_StatusBar = (tr("Ошибка записи данных : Software Configuration") +
                                                        " Рабочее место: " + QString::number(workPlaceNumber+1));
                           emit errorStringSignal(label_StatusBar + '\n');
-                          vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                          vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                           emit workPlaceOff(currentIndicatorNumber);
                           emit checkPulsesInputVolume(currentIndicatorNumber);
@@ -10558,7 +10558,7 @@ void ObjectThread::slotPulsesInputVolume(QSerialPort *port1, QSerialPort *port2,
                    label_StatusBar = (tr("Данные в порт не записаны") +
                                                 " Рабочее место: " + QString::number(workPlaceNumber+1));
                    emit errorStringSignal(label_StatusBar + '\n');
-                   vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                   vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                    emit workPlaceOff(currentIndicatorNumber);
                    emit checkPulsesInputVolume(currentIndicatorNumber);
@@ -10579,7 +10579,7 @@ void ObjectThread::slotPulsesInputVolume(QSerialPort *port1, QSerialPort *port2,
                        label_StatusBar = (tr("Не удалось прочитать данные") +
                                                     " Рабочее место: " + QString::number(workPlaceNumber+1));
                        emit errorStringSignal(label_StatusBar + '\n');
-                       vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                       vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                        emit workPlaceOff(currentIndicatorNumber);
                        emit checkPulsesInputVolume(currentIndicatorNumber);
@@ -10606,7 +10606,7 @@ void ObjectThread::slotPulsesInputVolume(QSerialPort *port1, QSerialPort *port2,
                            label_StatusBar = (tr("Ошибка данных") +
                                                         " Рабочее место: " + QString::number(workPlaceNumber+1));
                            emit errorStringSignal(label_StatusBar + '\n');
-                           vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                           vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
                            emit workPlaceOff(currentIndicatorNumber);
                            emit checkPulsesInputVolume(currentIndicatorNumber);
                            return;
@@ -10866,7 +10866,7 @@ void ObjectThread::slotPulsesInputVolume(QSerialPort *port1, QSerialPort *port2,
                           label_StatusBar = (tr("Недопустимое значение: Тип счётчика") +
                                                        " Рабочее место: " + QString::number(workPlaceNumber+1));
                           emit errorStringSignal(label_StatusBar + '\n');
-                          vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                          vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                           emit workPlaceOff(currentIndicatorNumber);
                           emit checkPulsesInputVolume(currentIndicatorNumber);
@@ -10890,7 +10890,7 @@ void ObjectThread::slotPulsesInputVolume(QSerialPort *port1, QSerialPort *port2,
                           label_StatusBar = (tr("Ошибка данных") +
                                                        " Рабочее место: " + QString::number(workPlaceNumber+1));
                           emit errorStringSignal(label_StatusBar + '\n');
-                          vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                          vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                           emit workPlaceOff(currentIndicatorNumber);
                           emit checkPulsesInputVolume(currentIndicatorNumber);
@@ -10958,7 +10958,7 @@ void ObjectThread::slotPulsesInputVolume(QSerialPort *port1, QSerialPort *port2,
                                                      " " + "чтение " + readVector[i].toHex() +
                                                      " Рабочее место: " + QString::number(workPlaceNumber+1));
                         emit errorStringSignal(label_StatusBar + '\n');
-                        vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                        vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                         emit workPlaceOff(currentIndicatorNumber);
                         emit checkPulsesInputVolume(currentIndicatorNumber);
@@ -10973,7 +10973,7 @@ void ObjectThread::slotPulsesInputVolume(QSerialPort *port1, QSerialPort *port2,
                                                         " " + "чтение " + readVector[i].toHex() +
                                                            " Рабочее место: " + QString::number(workPlaceNumber+1));
                            emit errorStringSignal(label_StatusBar + '\n');
-                           vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                           vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                            emit workPlaceOff(currentIndicatorNumber);
                            emit checkPulsesInputVolume(currentIndicatorNumber);
@@ -11002,7 +11002,7 @@ void ObjectThread::slotPulsesOutputDefault(QSerialPort *port1, QSerialPort *port
 
     //сбросить счётчик импульсов стенда
     if(!pulsesReset()) {
-        vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+        vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
         emit workPlaceOff(currentIndicatorNumber);
         emit checkPulsesOutputDefault(currentIndicatorNumber);
 
@@ -11072,7 +11072,7 @@ void ObjectThread::slotPulsesOutputDefault(QSerialPort *port1, QSerialPort *port
                                   QString::number((quint8)paramsMapToThreads["pulsesValue1PrimeInt"].toInt()) +
                                              ". Рабочее место: " + QString::number(workPlaceNumber + 1));
                 emit errorStringSignal(label_StatusBar + '\n');
-                vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                 emit workPlaceOff(currentIndicatorNumber);
                 emit checkPulsesOutputDefault(currentIndicatorNumber);
@@ -11086,7 +11086,7 @@ void ObjectThread::slotPulsesOutputDefault(QSerialPort *port1, QSerialPort *port
                                   QString::number((quint8)paramsMapToThreads["pulsesValue2PrimeInt"].toInt()) +
                                              ". Рабочее место: " + QString::number(workPlaceNumber + 1));
                 emit errorStringSignal(label_StatusBar + '\n');
-                vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                 emit workPlaceOff(currentIndicatorNumber);
                 emit checkPulsesOutputDefault(currentIndicatorNumber);
@@ -11110,7 +11110,7 @@ void ObjectThread::slotPulsesOutputDefault(QSerialPort *port1, QSerialPort *port
                     label_StatusBar =("Не удалось открыть порт УСО-2. Рабочее место: "
                                                  + QString::number(workPlaceNumber + 1));
                     emit errorStringSignal(label_StatusBar + '\n');
-                    vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                    vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                     emit workPlaceOff(currentIndicatorNumber);
                     emit checkPulsesOutputDefault(currentIndicatorNumber);
@@ -11157,7 +11157,7 @@ void ObjectThread::slotPulsesOutputDefault(QSerialPort *port1, QSerialPort *port
                    label_StatusBar =(tr("Данные в порт не записаны") + ". Рабочее место: "
                                                 + QString::number(workPlaceNumber + 1));
                    emit errorStringSignal(label_StatusBar + '\n');
-                   vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                   vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                    emit workPlaceOff(currentIndicatorNumber);
                    emit checkPulsesOutputDefault(currentIndicatorNumber);
@@ -11178,7 +11178,7 @@ void ObjectThread::slotPulsesOutputDefault(QSerialPort *port1, QSerialPort *port
                        label_StatusBar =(tr("Ошибка открытия парольной сессии") + ". Рабочее место: "
                                                     + QString::number(workPlaceNumber + 1));
                        emit errorStringSignal(label_StatusBar + '\n');
-                       vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                       vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                        emit workPlaceOff(currentIndicatorNumber);
                        emit checkPulsesOutputDefault(currentIndicatorNumber);
@@ -11205,7 +11205,7 @@ void ObjectThread::slotPulsesOutputDefault(QSerialPort *port1, QSerialPort *port
                            label_StatusBar = (tr("Ошибка данных") +
                                                         " Рабочее место: " + QString::number(workPlaceNumber+1));
                            emit errorStringSignal(label_StatusBar + '\n');
-                           vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                           vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
                            emit workPlaceOff(currentIndicatorNumber);
                            emit checkPulsesOutputDefault(currentIndicatorNumber);
                            return;
@@ -11237,7 +11237,7 @@ void ObjectThread::slotPulsesOutputDefault(QSerialPort *port1, QSerialPort *port
                                 label_StatusBar =(tr("Ошибка открытия парольной сессии") + ". Рабочее место: "
                                                              + QString::number(workPlaceNumber + 1));
                                 emit errorStringSignal(label_StatusBar + '\n');
-                                vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                                vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                                 emit workPlaceOff(currentIndicatorNumber);
                                 emit checkPulsesOutputDefault(currentIndicatorNumber);
@@ -11371,7 +11371,7 @@ void ObjectThread::slotPulsesOutputDefault(QSerialPort *port1, QSerialPort *port
                    label_StatusBar =(tr("Данные в порт не записаны") + ". Рабочее место: "
                                                 + QString::number(workPlaceNumber + 1));
                    emit errorStringSignal(label_StatusBar + '\n');
-                   vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                   vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                    emit workPlaceOff(currentIndicatorNumber);
                    emit checkPulsesOutputDefault(currentIndicatorNumber);
@@ -11393,7 +11393,7 @@ void ObjectThread::slotPulsesOutputDefault(QSerialPort *port1, QSerialPort *port
                        label_StatusBar =(tr("Не удалось записать данные : Software Configuration") + ". Рабочее место: "
                                                     + QString::number(workPlaceNumber + 1));
                        emit errorStringSignal(label_StatusBar + '\n');
-                       vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                       vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                        emit workPlaceOff(currentIndicatorNumber);
                        emit checkPulsesOutputDefault(currentIndicatorNumber);
@@ -11420,7 +11420,7 @@ void ObjectThread::slotPulsesOutputDefault(QSerialPort *port1, QSerialPort *port
                            label_StatusBar = (tr("Ошибка данных") +
                                                         " Рабочее место: " + QString::number(workPlaceNumber+1));
                            emit errorStringSignal(label_StatusBar + '\n');
-                           vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                           vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
                            emit workPlaceOff(currentIndicatorNumber);
                            emit checkPulsesOutputDefault(currentIndicatorNumber);
                            return;
@@ -11454,7 +11454,7 @@ void ObjectThread::slotPulsesOutputDefault(QSerialPort *port1, QSerialPort *port
                           label_StatusBar =(tr("Ошибка записи данных : Software Configuration") + ". Рабочее место: "
                                                        + QString::number(workPlaceNumber + 1));
                           emit errorStringSignal(label_StatusBar + '\n');
-                          vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                          vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                           emit workPlaceOff(currentIndicatorNumber);
                           emit checkPulsesOutputDefault(currentIndicatorNumber);
@@ -11503,7 +11503,7 @@ void ObjectThread::slotPulsesOutputDefault(QSerialPort *port1, QSerialPort *port
                    label_StatusBar =(tr("Данные в порт не записаны") + ". Рабочее место: "
                                                 + QString::number(workPlaceNumber + 1));
                    emit errorStringSignal(label_StatusBar + '\n');
-                   vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                   vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                    emit workPlaceOff(currentIndicatorNumber);
                    emit checkPulsesOutputDefault(currentIndicatorNumber);
@@ -11525,7 +11525,7 @@ void ObjectThread::slotPulsesOutputDefault(QSerialPort *port1, QSerialPort *port
                        label_StatusBar =(tr("Не удалось прочитать данные") + ". Рабочее место: "
                                                     + QString::number(workPlaceNumber + 1));
                        emit errorStringSignal(label_StatusBar + '\n');
-                       vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                       vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                        emit workPlaceOff(currentIndicatorNumber);
                        emit checkPulsesOutputDefault(currentIndicatorNumber);
@@ -11552,7 +11552,7 @@ void ObjectThread::slotPulsesOutputDefault(QSerialPort *port1, QSerialPort *port
                            label_StatusBar = (tr("Ошибка данных") +
                                                         " Рабочее место: " + QString::number(workPlaceNumber+1));
                            emit errorStringSignal(label_StatusBar + '\n');
-                           vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                           vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
                            emit workPlaceOff(currentIndicatorNumber);
                            emit checkPulsesOutputDefault(currentIndicatorNumber);
                            return;
@@ -11812,7 +11812,7 @@ void ObjectThread::slotPulsesOutputDefault(QSerialPort *port1, QSerialPort *port
                           label_StatusBar =(tr("Недопустимое значение: Тип счётчика") + ". Рабочее место: "
                                                        + QString::number(workPlaceNumber + 1));
                           emit errorStringSignal(label_StatusBar + '\n');
-                          vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                          vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                           emit workPlaceOff(currentIndicatorNumber);
                           emit checkPulsesOutputDefault(currentIndicatorNumber);
@@ -11836,7 +11836,7 @@ void ObjectThread::slotPulsesOutputDefault(QSerialPort *port1, QSerialPort *port
                                                        + QString::number(workPlaceNumber + 1));
                           emit errorStringSignal(label_StatusBar + '\n');
              //             ui->label_pulsesOutputOff->setVisible(true);
-                          vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                          vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                           emit workPlaceOff(currentIndicatorNumber);
                           emit checkPulsesOutputDefault(currentIndicatorNumber);
@@ -11907,7 +11907,7 @@ void ObjectThread::slotPulsesOutputDefault(QSerialPort *port1, QSerialPort *port
                                                      + QString::number(workPlaceNumber + 1));
                         emit errorStringSignal(label_StatusBar + '\n');
           //              ui->label_pulsesOutputOff->setVisible(true);
-                        vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                        vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                         emit workPlaceOff(currentIndicatorNumber);
                         emit checkPulsesOutputDefault(currentIndicatorNumber);
@@ -11925,7 +11925,7 @@ void ObjectThread::slotPulsesOutputDefault(QSerialPort *port1, QSerialPort *port
                                                            + QString::number(workPlaceNumber + 1));
                            emit errorStringSignal(label_StatusBar + '\n');
               //             ui->label_pulsesOutputOff->setVisible(true);
-                           vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                           vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                            emit workPlaceOff(currentIndicatorNumber);
                            emit checkPulsesOutputDefault(currentIndicatorNumber);
@@ -11952,7 +11952,7 @@ void ObjectThread::slotPulsesOutputDefault(QSerialPort *port1, QSerialPort *port
 
                   label_StatusBar = ("Импульсные выходы - по умолчанию не работают. Рабочее место: " + QString::number(workPlaceNumber+1));
                   emit errorStringSignal(label_StatusBar + '\n');
-                  vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                  vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                   emit workPlaceOff(currentIndicatorNumber);
                   emit checkPulsesOutputDefault(currentIndicatorNumber);
@@ -12029,7 +12029,7 @@ void ObjectThread::slotMBusOn(QSerialPort *port1, QSerialPort *port2,
                     label_StatusBar =("Не удалось открыть порт УСО-2. Рабочее место: " +
                                                  QString::number(workPlaceNumber + 1));
                     emit errorStringSignal(label_StatusBar + '\n');
-                    vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                    vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
 
                     emit checkMBusOn(currentIndicatorNumber);
@@ -12077,7 +12077,7 @@ void ObjectThread::slotMBusOn(QSerialPort *port1, QSerialPort *port2,
                    label_StatusBar =(tr("Данные в порт не записаны") + ". Рабочее место: " +
                                                 QString::number(workPlaceNumber + 1));
                    emit errorStringSignal(label_StatusBar + '\n');
-                   vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                   vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
                    emit checkMBusOn(currentIndicatorNumber);
 
                    return;
@@ -12096,7 +12096,7 @@ void ObjectThread::slotMBusOn(QSerialPort *port1, QSerialPort *port2,
                        label_StatusBar =(tr("Ошибка открытия парольной сессии") + ". Рабочее место: " +
                                                     QString::number(workPlaceNumber + 1));
                        emit errorStringSignal(label_StatusBar + '\n');
-                       vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                       vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
                        emit checkMBusOn(currentIndicatorNumber);
                        return;
                    } else{}
@@ -12119,7 +12119,7 @@ void ObjectThread::slotMBusOn(QSerialPort *port1, QSerialPort *port2,
                            label_StatusBar = (tr("Ошибка данных") +
                                                         " Рабочее место: " + QString::number(workPlaceNumber+1));
                            emit errorStringSignal(label_StatusBar + '\n');
-                           vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                           vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
                            emit workPlaceOff(currentIndicatorNumber);
                            emit checkMBusOn(currentIndicatorNumber);
                            return;
@@ -12151,7 +12151,7 @@ void ObjectThread::slotMBusOn(QSerialPort *port1, QSerialPort *port2,
                                 label_StatusBar =(tr("Ошибка открытия парольной сессии") + ". Рабочее место: " +
                                                              QString::number(workPlaceNumber + 1));
                                 emit errorStringSignal(label_StatusBar + '\n');
-                                vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                                vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
                                 emit checkMBusOn(currentIndicatorNumber);
                                 return;
                             }
@@ -12255,7 +12255,7 @@ void ObjectThread::slotMBusOn(QSerialPort *port1, QSerialPort *port2,
                    label_StatusBar =(tr("Данные в порт не записаны") + ". Рабочее место: " +
                                                 QString::number(workPlaceNumber + 1));
                    emit errorStringSignal(label_StatusBar + '\n');
-                   vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                   vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
                    emit checkMBusOn(currentIndicatorNumber);
                    return;
                }
@@ -12279,7 +12279,7 @@ void ObjectThread::slotMBusOn(QSerialPort *port1, QSerialPort *port2,
                    label_StatusBar =(tr("Ошибка ответа") + ". Рабочее место: " +
                                                 QString::number(workPlaceNumber + 1));
                    emit errorStringSignal(label_StatusBar + '\n');
-                   vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                   vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
                    emit checkMBusOn(currentIndicatorNumber);
                    return;
 
@@ -12320,7 +12320,7 @@ void ObjectThread::slotMBusOn(QSerialPort *port1, QSerialPort *port2,
 //                          label_StatusBar =(tr("Ошибка записи данных : External Interface Settings") + ". Рабочее место: " +
 //                                                       QString::number(workPlaceNumber + 1));
 //                          emit errorStringSignal(label_StatusBar + '\n');
-//                          vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+//                          vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 //                          emit checkMBusOn(currentIndicatorNumber);
 //                          return;
 //                       }
@@ -12365,7 +12365,7 @@ void ObjectThread::slotMBusOn(QSerialPort *port1, QSerialPort *port2,
 //                   label_StatusBar =(tr("Данные в порт не записаны") + ". Рабочее место: " +
 //                                                QString::number(workPlaceNumber + 1));
 //                   emit errorStringSignal(label_StatusBar + '\n');
-//                   vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+//                   vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 //                   emit checkMBusOn(currentIndicatorNumber);
 //                   return;
 //               }
@@ -12383,7 +12383,7 @@ void ObjectThread::slotMBusOn(QSerialPort *port1, QSerialPort *port2,
 //                       label_StatusBar =(tr("Не удалось прочитать данные") + ". Рабочее место: " +
 //                                                    QString::number(workPlaceNumber + 1));
 //                       emit errorStringSignal(label_StatusBar + '\n');
-//                       vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+//                       vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 //                       emit checkMBusOn(currentIndicatorNumber);
 //                       return;
 //                   } else{}
@@ -12569,7 +12569,7 @@ void ObjectThread::slotMBusOn(QSerialPort *port1, QSerialPort *port2,
 //                          label_StatusBar =(tr("Ошибка данных") + ". Рабочее место: " +
 //                                                       QString::number(workPlaceNumber + 1));
 //                          emit errorStringSignal(label_StatusBar + '\n');
-//                          vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+//                          vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 //                          emit checkMBusOn(currentIndicatorNumber);
 //                          return;
 //                       }
@@ -12617,7 +12617,7 @@ void ObjectThread::slotMBusOn(QSerialPort *port1, QSerialPort *port2,
     //                                                QString::number(workPlaceNumber + 1));
     //                       label_StatusBar =();
     //                       emit errorStringSignal(label_StatusBar + '\n');
-    //                       vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+    //                       vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
     //                       emit checkMBusOn(currentIndicatorNumber);
     //                       return;
     //                    }
@@ -12691,7 +12691,7 @@ void ObjectThread::slotMBusCheck(QSerialPort *port1, QSerialPort *port2,
     //                                         ". Рабочее место: " + QString::number(workPlaceNumber+1));
                     label_StatusBar =("Не удалось открыть порт. Рабочее место: " + QString::number(workPlaceNumber+1));
                     emit errorStringSignal(label_StatusBar + '\n');
-                    vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                    vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                     emit workPlaceOff(currentIndicatorNumber);
                     emit checkMBusCheck(currentIndicatorNumber);
@@ -12739,7 +12739,7 @@ void ObjectThread::slotMBusCheck(QSerialPort *port1, QSerialPort *port2,
                    label_StatusBar =(tr("Данные в порт не записаны") +
                                                 ". Рабочее место: " + QString::number(workPlaceNumber+1));
                    emit errorStringSignal(label_StatusBar + '\n');
-                   vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                   vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                    emit workPlaceOff(currentIndicatorNumber);
                    emit checkMBusCheck(currentIndicatorNumber);
@@ -12765,7 +12765,7 @@ void ObjectThread::slotMBusCheck(QSerialPort *port1, QSerialPort *port2,
                        label_StatusBar =(tr("Ошибка проверки M-Bus") +
                                                     ". Рабочее место: " + QString::number(workPlaceNumber+1));
                        emit errorStringSignal(label_StatusBar + '\n');
-                       vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                       vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                        emit workPlaceOff(currentIndicatorNumber);
                        emit checkMBusCheck(currentIndicatorNumber);
@@ -12880,7 +12880,7 @@ void ObjectThread::slotMBusCheck(QSerialPort *port1, QSerialPort *port2,
                           label_StatusBar =(tr("Ошибка проверки M-Bus") +
                                                        ". Рабочее место: " + QString::number(workPlaceNumber+1));
                           emit errorStringSignal(label_StatusBar + '\n');
-                          vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                          vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                           emit workPlaceOff(currentIndicatorNumber);
                           emit checkMBusCheck(currentIndicatorNumber);
@@ -12962,7 +12962,7 @@ void ObjectThread::slotCalibrationModeOff(QSerialPort *port1, QSerialPort *port2
       //              QMessageBox::information(this, "", "Не удалось открыть порт");
                     label_StatusBar = ("Не удалось открыть порт. Рабочее место: " + QString::number(workPlaceNumber+1));
                     emit errorStringSignal(label_StatusBar + '\n');
-                    vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                    vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                     emit workPlaceOff(currentIndicatorNumber);
                     emit checkCalibrationModeOff(currentIndicatorNumber);
@@ -13019,7 +13019,7 @@ void ObjectThread::slotCalibrationModeOff(QSerialPort *port1, QSerialPort *port2
     //               label_StatusBar = (tr("Данные в порт не записаны") +
     //                                            ". Рабочее место: " + QString::number(workPlaceNumber+1));
     //               emit errorStringSignal(label_StatusBar + '\n');
-                   vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                   vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
      //              emit checkCalibrationModeOff(currentIndicatorNumber);
      //              return;
                }
@@ -13039,7 +13039,7 @@ void ObjectThread::slotCalibrationModeOff(QSerialPort *port1, QSerialPort *port2
     //                                                ". Рабочее место: " + QString::number(workPlaceNumber+1));
     //                   emit errorStringSignal(label_StatusBar + '\n');
     //                   ui->label_writeParams->setVisible(true);
-                       vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                       vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
      //                  emit checkCalibrationModeOff(currentIndicatorNumber);
      //                  return;
                    } else{}
@@ -13062,7 +13062,7 @@ void ObjectThread::slotCalibrationModeOff(QSerialPort *port1, QSerialPort *port2
 //                           label_StatusBar = (tr("Ошибка данных") +
 //                                                        " Рабочее место: " + QString::number(workPlaceNumber+1));
 //                           emit errorStringSignal(label_StatusBar + '\n');
-                          vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                          vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                           if(buffer.size()<5)
                               buffer.resize(5);
@@ -13100,7 +13100,7 @@ void ObjectThread::slotCalibrationModeOff(QSerialPort *port1, QSerialPort *port2
     //                                                         ". Рабочее место: " + QString::number(workPlaceNumber+1));
     //                            emit errorStringSignal(label_StatusBar + '\n');
     //                            ui->label_writeParams->setVisible(true);
-                                vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                                vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
      //                           emit checkCalibrationModeOff(currentIndicatorNumber);
      //                           return;
                             }
@@ -13187,7 +13187,7 @@ void ObjectThread::slotCalibrationModeOff(QSerialPort *port1, QSerialPort *port2
     //               QMessageBox::information(this, "", tr("Данные в порт не записаны"));
                    label_StatusBar = ("Данные в порт не записаны. Рабочее место: " + QString::number(workPlaceNumber+1));
                    emit errorStringSignal(label_StatusBar + '\n');
-                   vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                   vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                    emit workPlaceOff(currentIndicatorNumber);
                    emit checkCalibrationModeOff(currentIndicatorNumber);
@@ -13212,7 +13212,7 @@ void ObjectThread::slotCalibrationModeOff(QSerialPort *port1, QSerialPort *port2
                        label_StatusBar = (tr("Ошибка выключения режима калибровки. Рабочее место: ")
                                                     + QString::number(workPlaceNumber+1));
                        emit errorStringSignal(label_StatusBar + '\n');
-                       vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                       vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                        emit workPlaceOff(currentIndicatorNumber);
                        emit checkCalibrationModeOff(currentIndicatorNumber);
@@ -13261,7 +13261,7 @@ void ObjectThread::slotCalibrationModeOff(QSerialPort *port1, QSerialPort *port2
                            label_StatusBar = (tr("Ошибка выключения режима калибровки. Рабочее место: ")
                                                         + QString::number(workPlaceNumber+1));
                            emit errorStringSignal(label_StatusBar + '\n');
-                           vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                           vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                            emit workPlaceOff(currentIndicatorNumber);
                            emit checkCalibrationModeOff(currentIndicatorNumber);
@@ -13356,7 +13356,7 @@ void ObjectThread::slotWireInterfaceChecking(QSerialPort *port1, QSerialPort *po
                     label_StatusBar = (tr("Не удалось открыть порт: ИК") +
                                                  ". Рабочее место: " + QString::number(workPlaceNumber+1));
                     emit errorStringSignal(label_StatusBar + '\n');
-                    vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                    vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                     emit workPlaceOff(currentIndicatorNumber);
                     emit checkWireInterfaceChecking(currentIndicatorNumber);
@@ -13401,7 +13401,7 @@ void ObjectThread::slotWireInterfaceChecking(QSerialPort *port1, QSerialPort *po
                    label_StatusBar = (tr("Данные в порт не записаны") +
                                                 ". Рабочее место: " + QString::number(workPlaceNumber+1));
                    emit errorStringSignal(label_StatusBar + '\n');
-                   vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                   vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                    emit workPlaceOff(currentIndicatorNumber);
                    emit checkWireInterfaceChecking(currentIndicatorNumber);
@@ -13421,7 +13421,7 @@ void ObjectThread::slotWireInterfaceChecking(QSerialPort *port1, QSerialPort *po
                        label_StatusBar = (tr("Ошибка открытия парольной сессии") +
                                                     ". Рабочее место: " + QString::number(workPlaceNumber+1));
                        emit errorStringSignal(label_StatusBar + '\n');
-                       vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                       vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                        emit workPlaceOff(currentIndicatorNumber);
                        emit checkWireInterfaceChecking(currentIndicatorNumber);
@@ -13447,7 +13447,7 @@ void ObjectThread::slotWireInterfaceChecking(QSerialPort *port1, QSerialPort *po
                            label_StatusBar = (tr("Ошибка данных") +
                                                         " Рабочее место: " + QString::number(workPlaceNumber+1));
                            emit errorStringSignal(label_StatusBar + '\n');
-                           vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                           vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
                            emit workPlaceOff(currentIndicatorNumber);
                            emit checkWireInterfaceChecking(currentIndicatorNumber);
                            return;
@@ -13479,7 +13479,7 @@ void ObjectThread::slotWireInterfaceChecking(QSerialPort *port1, QSerialPort *po
                                 label_StatusBar = (tr("Ошибка открытия парольной сессии") +
                                                              ". Рабочее место: " + QString::number(workPlaceNumber+1));
                                 emit errorStringSignal(label_StatusBar + '\n');
-                                vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                                vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                                 emit workPlaceOff(currentIndicatorNumber);
                                 emit checkWireInterfaceChecking(currentIndicatorNumber);
@@ -13583,7 +13583,7 @@ void ObjectThread::slotWireInterfaceChecking(QSerialPort *port1, QSerialPort *po
                    label_StatusBar = (tr("Данные в порт не записаны ") +
                                                 ". Рабочее место: " + QString::number(workPlaceNumber+1));
                    emit errorStringSignal(label_StatusBar + '\n');
-                   vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                   vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                    emit workPlaceOff(currentIndicatorNumber);
                    emit checkWireInterfaceChecking(currentIndicatorNumber);
@@ -13605,7 +13605,7 @@ void ObjectThread::slotWireInterfaceChecking(QSerialPort *port1, QSerialPort *po
                                                     ". Рабочее место: " + QString::number(workPlaceNumber+1));
                        emit errorStringSignal(label_StatusBar + '\n');
   //                     ui->label_writeParams->setVisible(true);
-                       vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                       vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                        emit workPlaceOff(currentIndicatorNumber);
                        emit checkWireInterfaceChecking(currentIndicatorNumber);
@@ -13631,7 +13631,7 @@ void ObjectThread::slotWireInterfaceChecking(QSerialPort *port1, QSerialPort *po
                            label_StatusBar = (tr("Ошибка данных") +
                                                         " Рабочее место: " + QString::number(workPlaceNumber+1));
                            emit errorStringSignal(label_StatusBar + '\n');
-                           vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                           vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
                            emit workPlaceOff(currentIndicatorNumber);
                            emit checkWireInterfaceChecking(currentIndicatorNumber);
                            return;
@@ -13666,7 +13666,7 @@ void ObjectThread::slotWireInterfaceChecking(QSerialPort *port1, QSerialPort *po
                                                        ". Рабочее место: " + QString::number(workPlaceNumber+1));
                           emit errorStringSignal(label_StatusBar + '\n');
       //                    ui->label_writeParams->setVisible(true);
-                          vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                          vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                           emit workPlaceOff(currentIndicatorNumber);
                           emit checkWireInterfaceChecking(currentIndicatorNumber);
@@ -13707,7 +13707,7 @@ void ObjectThread::slotWireInterfaceChecking(QSerialPort *port1, QSerialPort *po
                     label_StatusBar = tr("Не удалось открыть порт: Проводные интерфейсы");
  //                                                 ". Рабочее место: " + QString::number(workPlaceNumber+1));
                     emit errorStringSignal(label_StatusBar + '\n');
-                    vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                    vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                     emit checkWireInterfaceChecking(currentIndicatorNumber);
                     portDigitalInterfaceChecking->close();
@@ -13744,7 +13744,7 @@ void ObjectThread::slotWireInterfaceChecking(QSerialPort *port1, QSerialPort *po
                                                 ". Рабочее место: " + QString::number(workPlaceNumber+1));
                    emit errorStringSignal(label_StatusBar + '\n');
     //               ui->label_writeParams->setVisible(true);
-                   vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                   vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                    emit workPlaceOff(currentIndicatorNumber);
                    emit checkWireInterfaceChecking(currentIndicatorNumber);
@@ -13767,7 +13767,7 @@ void ObjectThread::slotWireInterfaceChecking(QSerialPort *port1, QSerialPort *po
                                                     ". Рабочее место: " + QString::number(workPlaceNumber+1));
                        emit errorStringSignal(label_StatusBar + '\n');
        //                ui->label_writeParams->setVisible(true);
-                       vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                       vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                        emit workPlaceOff(currentIndicatorNumber);
                        emit checkWireInterfaceChecking(currentIndicatorNumber);
@@ -13817,7 +13817,7 @@ void ObjectThread::slotWireInterfaceChecking(QSerialPort *port1, QSerialPort *po
                                                         ". Рабочее место: " + QString::number(workPlaceNumber+1));
                            emit errorStringSignal(label_StatusBar + '\n');
       //                     ui->label_writeParams->setVisible(true);
-                           vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                           vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                            emit workPlaceOff(currentIndicatorNumber);
                            emit checkWireInterfaceChecking(currentIndicatorNumber);
@@ -13944,7 +13944,7 @@ void ObjectThread::slotWireInterfaceChecking(QSerialPort *port1, QSerialPort *po
                                                     ". Рабочее место: " + QString::number(workPlaceNumber+1));
                        emit errorStringSignal(label_StatusBar + '\n');
       //                 ui->label_writeParams->setVisible(true);
-                       vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                       vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                        emit workPlaceOff(currentIndicatorNumber);
                        emit checkWireInterfaceChecking(currentIndicatorNumber);
@@ -14112,7 +14112,7 @@ void ObjectThread::setPrimeAddressDefault(int workPlaceNumber, QSerialPort *port
                label_StatusBar = (tr("Данные в порт не записаны ") +
                                             ". Рабочее место: " + QString::number(workPlaceNumber+1));
                emit errorStringSignal(label_StatusBar + '\n');
-               vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+               vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                emit workPlaceOff(currentIndicatorNumber);
                emit checkWireInterfaceChecking(currentIndicatorNumber);
@@ -14134,7 +14134,7 @@ void ObjectThread::setPrimeAddressDefault(int workPlaceNumber, QSerialPort *port
                                                 ". Рабочее место: " + QString::number(workPlaceNumber+1));
                    emit errorStringSignal(label_StatusBar + '\n');
    //                ui->label_writeParams->setVisible(true);
-                   vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                   vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                    emit workPlaceOff(currentIndicatorNumber);
                    emit checkWireInterfaceChecking(currentIndicatorNumber);
@@ -14160,7 +14160,7 @@ void ObjectThread::setPrimeAddressDefault(int workPlaceNumber, QSerialPort *port
                        label_StatusBar = (tr("Ошибка данных") +
                                                     " Рабочее место: " + QString::number(workPlaceNumber+1));
                        emit errorStringSignal(label_StatusBar + '\n');
-                       vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                       vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
                        emit workPlaceOff(currentIndicatorNumber);
                        emit checkWireInterfaceChecking(currentIndicatorNumber);
                        return;
@@ -14196,7 +14196,7 @@ void ObjectThread::setPrimeAddressDefault(int workPlaceNumber, QSerialPort *port
                                                    ". Рабочее место: " + QString::number(workPlaceNumber+1));
                       emit errorStringSignal(label_StatusBar + '\n');
    //                   ui->label_writeParams->setVisible(true);
-                      vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                      vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                       emit workPlaceOff(currentIndicatorNumber);
                       emit checkWireInterfaceChecking(currentIndicatorNumber);
@@ -14275,7 +14275,7 @@ void ObjectThread::slotMBusOff(QSerialPort *port1, QSerialPort *port2,
                     label_StatusBar = (tr("Не удалось открыть порт УСО-2") +
                                                  ". Рабочее место: " + QString::number(workPlaceNumber+1));
                     emit errorStringSignal(label_StatusBar + '\n');
-                    vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                    vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
                     emit checkMbusOff(currentIndicatorNumber);
                     emit workPlaceOff(currentIndicatorNumber);
                     return;
@@ -14350,7 +14350,7 @@ void ObjectThread::slotMBusOff(QSerialPort *port1, QSerialPort *port2,
                    label_StatusBar = (tr("Данные в порт не записаны") +
                                                 ". Рабочее место: " + QString::number(workPlaceNumber+1));
                    emit errorStringSignal(label_StatusBar + '\n');
-                   vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                   vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
                    emit checkMbusOff(currentIndicatorNumber);
                    emit workPlaceOff(currentIndicatorNumber);
                    return;
@@ -14372,7 +14372,7 @@ void ObjectThread::slotMBusOff(QSerialPort *port1, QSerialPort *port2,
                        label_StatusBar = (tr("Ошибка открытия парольной сессии по M-Bus") +
                                                     ". Рабочее место: " + QString::number(workPlaceNumber+1));
                        emit errorStringSignal(label_StatusBar + '\n');
-                       vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                       vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
                        emit checkMbusOff(currentIndicatorNumber);
                        emit workPlaceOff(currentIndicatorNumber);
                        return;
@@ -14413,7 +14413,7 @@ void ObjectThread::slotMBusOff(QSerialPort *port1, QSerialPort *port2,
                           label_StatusBar = (tr("Ошибка открытия парольной сессии по M-Bus") +
                                                        ". Рабочее место: " + QString::number(workPlaceNumber+1));
                           emit errorStringSignal(label_StatusBar + '\n');
-                          vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                          vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
                           emit checkMbusOff(currentIndicatorNumber);
                           emit workPlaceOff(currentIndicatorNumber);
                           return;
@@ -14509,7 +14509,7 @@ void ObjectThread::slotMBusOff(QSerialPort *port1, QSerialPort *port2,
                    label_StatusBar = (tr("Данные в порт не записаны") +
                                                 ". Рабочее место: " + QString::number(workPlaceNumber+1));
                    emit errorStringSignal(label_StatusBar + '\n');
-                   vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                   vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
                    emit checkMbusOff(currentIndicatorNumber);
                    emit workPlaceOff(currentIndicatorNumber);
                    return;
@@ -14531,7 +14531,7 @@ void ObjectThread::slotMBusOff(QSerialPort *port1, QSerialPort *port2,
     //                   ui->label_StatusBar->setText(tr("Ошибка выключения режима M-Bus") +
     //                                                ". Рабочее место: " + QString::number(workPlaceNumber+1));
     //                   errorString.append(ui->label_StatusBar->text() + '\n');
-    //                   vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+    //                   vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
     //                   checkMbusOff(currentIndicatorNumber);
     //                   workPlaceOff(currentIndicatorNumber);
                        return;
@@ -14572,7 +14572,7 @@ void ObjectThread::slotMBusOff(QSerialPort *port1, QSerialPort *port2,
     //                      ui->label_StatusBar->setText(tr("Ошибка выключения режима M-Bus") +
     //                                                   ". Рабочее место: " + QString::number(workPlaceNumber+1));
     //                      errorString.append(ui->label_StatusBar->text() + '\n');
-    //                      vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+    //                      vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
     //                      checkMbusOff(currentIndicatorNumber);
     //                      workPlaceOff(currentIndicatorNumber);
                           return;
@@ -15933,6 +15933,7 @@ bool ObjectThread::readTok()
                                   ". Рабочее место: " + QString::number(workPlace+1));
         emit errorStringSignal(label_StatusBar + '\n');
         vectorIndicatorTokPlaty[workPlace] = true;
+        errorIndicatorOn();
         emit workPlaceOff(workPlace);
         emit checkTokPlaty(workPlace);
 
@@ -16287,11 +16288,194 @@ bool ObjectThread::programmatorOff()
 bool ObjectThread::finishIndicatorOn()
 {
    //Включить индикатор ЗАВЕРШЕНО	FIN=1	OK
+
+    QByteArray buffer;
+
+//    кто и кому:
+//    ПК=0x01	стенд1=0x11	стенд2=0x22	стенд3=0x33	стенд4=0x44
+
+//    1 байт	2 байт	3 байт	4 байт	… байт	… байт	(N-1) байт	N байт
+//    кто	    кому	команда					                    Конец сообщения
+//    BIN	    BIN	    STRING					                    0x00
+
+    if(!isWorkPlaceUse.at(workPlace)) return false;
+
+    QString command = "FIN=1";
+
+    QByteArray parcel;
+
+    quint8 sender = 0x01;
+    quint8 receiver;
+    quint8 stopByte = 0x00;
+
+    if(workPlace == 0) receiver = 0x11;
+    if(workPlace == 1) receiver = 0x22;
+    if(workPlace == 2) receiver = 0x33;
+    if(workPlace == 3) receiver = 0x44;
+
+    QByteArray stringToByteArray;
+    stringToByteArray = command.toLocal8Bit();
+
+    //формирование посылки
+    parcel.append(sender);
+    parcel.append(receiver);
+    for(int m=0; m<stringToByteArray.size(); m++) {
+        parcel.append(stringToByteArray.at(m));
+    }
+    parcel.append(stopByte);
+
+    qDebug()<<"parcel"<<parcel.toHex();
+
+    if(!portStend->isOpen()) {
+
+        if(!portStend->open(QIODevice::ReadWrite)) {
+
+            QString label_StatusBar = (tr("Не удалось открыть порт стенда") +
+                                         ". Рабочее место: " + QString::number(workPlace+1));
+            emit errorStringSignal(label_StatusBar + '\n');
+
+            return false;
+        }
+    }
+
+    portStend->clear();
+
+    quint64 count = portStend->write(parcel);
+    emit textBrowser(">> " + portStend->portName() + " " + parcel.toHex());
+
+    //ждать ответа от стенда 10 мсек
+
+    global::pause(100);
+
+    buffer = portStend->readAll();
+ //   portStend->close();
+
+    if(!buffer.isEmpty()) emit textBrowser("<< " + portStend->portName() + " " + buffer.toHex());
+
+    if(buffer.isEmpty()) {
+        QString label_StatusBar = (tr("Нет ответа стенда. Команда \"Включить индикацию Завершено\" ") +
+                                     ". Рабочее место: " + QString::number(workPlace+1));
+        emit errorStringSignal(label_StatusBar + '\n');
+
+        return false;
+    }
+
+    QString answerStr;
+    QByteArray bufTmp = buffer;
+
+    bufTmp.remove(0, 2);
+    bufTmp.remove(bufTmp.size()-1, 1);
+
+    answerStr = QString::fromLocal8Bit(bufTmp);
+
+    if(buffer.at(0)!=receiver && buffer.at(1)!=sender && answerStr!="OK") {
+        QString label_StatusBar = (tr("Неверный ответ стенда. Команда \"Включить индикацию Завершено\" ") +
+                                     ". Рабочее место: " + QString::number(workPlace+1));
+        emit errorStringSignal(label_StatusBar + '\n');
+
+        return false;
+    }
+
+ //   portStend->close();
+
+   return true;
 }
 
 bool ObjectThread::finishIndicatorOff()
 {
    //Отключить индикатор ЗАВЕРШЕНО	FIN=0	OK
+
+    QByteArray buffer;
+
+//    кто и кому:
+//    ПК=0x01	стенд1=0x11	стенд2=0x22	стенд3=0x33	стенд4=0x44
+
+//    1 байт	2 байт	3 байт	4 байт	… байт	… байт	(N-1) байт	N байт
+//    кто	    кому	команда					                    Конец сообщения
+//    BIN	    BIN	    STRING					                    0x00
+
+    if(!isWorkPlaceUse.at(workPlace)) return false;
+
+    QString command = "FIN=0";
+
+    QByteArray parcel;
+
+    quint8 sender = 0x01;
+    quint8 receiver;
+    quint8 stopByte = 0x00;
+
+    if(workPlace == 0) receiver = 0x11;
+    if(workPlace == 1) receiver = 0x22;
+    if(workPlace == 2) receiver = 0x33;
+    if(workPlace == 3) receiver = 0x44;
+
+    QByteArray stringToByteArray;
+    stringToByteArray = command.toLocal8Bit();
+
+    //формирование посылки
+    parcel.append(sender);
+    parcel.append(receiver);
+    for(int m=0; m<stringToByteArray.size(); m++) {
+        parcel.append(stringToByteArray.at(m));
+    }
+    parcel.append(stopByte);
+
+    qDebug()<<"parcel"<<parcel.toHex();
+
+    if(!portStend->isOpen()) {
+
+        if(!portStend->open(QIODevice::ReadWrite)) {
+
+            QString label_StatusBar = (tr("Не удалось открыть порт стенда") +
+                                         ". Рабочее место: " + QString::number(workPlace+1));
+            emit errorStringSignal(label_StatusBar + '\n');
+
+            return false;
+        }
+    }
+
+    portStend->clear();
+
+    quint64 count = portStend->write(parcel);
+    emit textBrowser(">> " + portStend->portName() + " " + parcel.toHex());
+
+    //ждать ответа от стенда 10 мсек
+
+    global::pause(100);
+
+    buffer = portStend->readAll();
+ //   portStend->close();
+
+    if(!buffer.isEmpty()) emit textBrowser("<< " + portStend->portName() + " " + buffer.toHex());
+
+    if(buffer.isEmpty()) {
+        QString label_StatusBar = (tr("Нет ответа стенда. Команда \"Выключить индикацию Завершено\" ") +
+                                     ". Рабочее место: " + QString::number(workPlace+1));
+        emit errorStringSignal(label_StatusBar + '\n');
+
+        return false;
+    }
+
+    QString answerStr;
+    QByteArray bufTmp = buffer;
+
+    bufTmp.remove(0, 2);
+    bufTmp.remove(bufTmp.size()-1, 1);
+
+    answerStr = QString::fromLocal8Bit(bufTmp);
+
+    if(buffer.at(0)!=receiver && buffer.at(1)!=sender && answerStr!="OK") {
+        QString label_StatusBar = (tr("Неверный ответ стенда. Команда \"Выключить индикацию Завершено\" ") +
+                                     ". Рабочее место: " + QString::number(workPlace+1));
+        emit errorStringSignal(label_StatusBar + '\n');
+
+        return false;
+    }
+
+ //   portStend->close();
+
+   return true;
+
 }
 
 bool ObjectThread::errorIndicatorOn()
@@ -17061,13 +17245,15 @@ void ObjectThread::slotRealClockCalibration(QSerialPort *port1, QSerialPort *por
                               /*float period1, float period2, float period3, float period4*/)
 {
 
+    if(!isWorkPlaceUse.at(workPlace)) return;
+
     //сначала прочитать значения периодов из каждого стенда
 
     int currentIndicatorNumber = workPlace;
     int currentBoxNumber = 5;//вместо "Включить протокол Mbus"
 
     if(!readFreq()) {
-        vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+        vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
         emit workPlaceOff(currentIndicatorNumber);
         emit checkTimeCalError(currentIndicatorNumber);
 
@@ -17081,9 +17267,7 @@ void ObjectThread::slotRealClockCalibration(QSerialPort *port1, QSerialPort *por
     int workPlaceNumber = workPlace;    
 
     QString label_StatusBar;
-    QString errorString;
-
-    if(!isWorkPlaceUse.at(workPlace)) return;
+    QString errorString;    
 
     switch (workPlaceNumber) {
     case 0:
@@ -17127,7 +17311,7 @@ void ObjectThread::slotRealClockCalibration(QSerialPort *port1, QSerialPort *por
   //          QMessageBox::information(this, "" , tr("Недопустимое значение периода следования импульсов "));
             label_StatusBar =("Недопустимое значение периода следования импульсов. Рабочее место: " + QString::number(workPlaceNumber + 1));
             emit errorStringSignal(label_StatusBar + '\n');
-            vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+            vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
             emit workPlaceOff(currentIndicatorNumber);
             emit checkTimeCalError(currentIndicatorNumber);
 
@@ -17145,7 +17329,7 @@ void ObjectThread::slotRealClockCalibration(QSerialPort *port1, QSerialPort *por
             label_StatusBar =("Недопустимое значение коэффициента коррекции " + QString::number(correctionCoeff) +
                                         " Рабочее место: " + QString::number(workPlaceNumber + 1));
             emit errorStringSignal(label_StatusBar + '\n');
-            vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+            vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
             emit workPlaceOff(currentIndicatorNumber);
             emit checkTimeCalError(currentIndicatorNumber);
 
@@ -17186,7 +17370,7 @@ void ObjectThread::slotRealClockCalibration(QSerialPort *port1, QSerialPort *por
                 label_StatusBar =("Не удалось открыть порт УСО-2. Рабочее место: "
                                              + QString::number(workPlaceNumber + 1));
                 emit errorStringSignal(label_StatusBar + '\n');
-                vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                 emit workPlaceOff(currentIndicatorNumber);
                 emit checkTimeCalError(currentIndicatorNumber);
@@ -17244,7 +17428,7 @@ void ObjectThread::slotRealClockCalibration(QSerialPort *port1, QSerialPort *por
                label_StatusBar =("Данные в порт не записаны. Рабочее место: "
                                             + QString::number(workPlaceNumber + 1));
                emit errorStringSignal(label_StatusBar + '\n');
-               vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+               vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                emit workPlaceOff(currentIndicatorNumber);
                emit checkTimeCalError(currentIndicatorNumber);
@@ -17267,7 +17451,7 @@ void ObjectThread::slotRealClockCalibration(QSerialPort *port1, QSerialPort *por
                    label_StatusBar =("Ошибка калибровки часов. Рабочее место: "
                                                 + QString::number(workPlaceNumber + 1));
                    emit errorStringSignal(label_StatusBar + '\n');
-                   vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                   vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                    emit workPlaceOff(currentIndicatorNumber);
                    emit checkTimeCalError(currentIndicatorNumber);
@@ -17293,7 +17477,7 @@ void ObjectThread::slotRealClockCalibration(QSerialPort *port1, QSerialPort *por
                        label_StatusBar = (tr("Ошибка данных") +
                                                     " Рабочее место: " + QString::number(workPlaceNumber+1));
                        emit errorStringSignal(label_StatusBar + '\n');
-                       vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                       vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
                        emit workPlaceOff(currentIndicatorNumber);
                        emit checkTimeCalError(currentIndicatorNumber);
                        return;
@@ -17325,7 +17509,7 @@ void ObjectThread::slotRealClockCalibration(QSerialPort *port1, QSerialPort *por
                      label_StatusBar = (tr("Ошибка калибровки часов") +
                                                 " Рабочее место: " + QString::number(workPlaceNumber+1));
                       emit errorStringSignal(label_StatusBar + '\n');
-                      vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                      vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
                       emit workPlaceOff(currentIndicatorNumber);
                       emit checkTimeCalError(currentIndicatorNumber);
 
@@ -17373,7 +17557,7 @@ void ObjectThread::slotRealClockCalibration(QSerialPort *port1, QSerialPort *por
                label_StatusBar =("Данные в порт не записаны. Рабочее место: "
                                             + QString::number(workPlaceNumber + 1));
                emit errorStringSignal(label_StatusBar + '\n');
-               vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+               vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                emit workPlaceOff(currentIndicatorNumber);
                emit checkTimeCalError(currentIndicatorNumber);
@@ -17395,7 +17579,7 @@ void ObjectThread::slotRealClockCalibration(QSerialPort *port1, QSerialPort *por
                    label_StatusBar =("Ошибка калибровки часов. Рабочее место: "
                                                 + QString::number(workPlaceNumber + 1));
                    emit errorStringSignal(label_StatusBar + '\n');
-                   vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                   vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
                    emit workPlaceOff(currentIndicatorNumber);
                    emit checkTimeCalError(currentIndicatorNumber);
@@ -17421,7 +17605,7 @@ void ObjectThread::slotRealClockCalibration(QSerialPort *port1, QSerialPort *por
                        label_StatusBar = (tr("Ошибка данных") +
                                                     " Рабочее место: " + QString::number(workPlaceNumber+1));
                        emit errorStringSignal(label_StatusBar + '\n');
-                       vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                       vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
                        emit workPlaceOff(currentIndicatorNumber);
                        emit checkTimeCalError(currentIndicatorNumber);
                        return;
@@ -17473,7 +17657,7 @@ void ObjectThread::slotRealClockCalibration(QSerialPort *port1, QSerialPort *por
                        label_StatusBar = (tr("Ошибка калибровки часов") +
                                                   " Рабочее место: " + QString::number(workPlaceNumber+1));
                         emit errorStringSignal(label_StatusBar + '\n');
-                        vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                        vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
                         emit workPlaceOff(currentIndicatorNumber);
                         emit checkTimeCalError(currentIndicatorNumber);
 
@@ -17498,7 +17682,7 @@ void ObjectThread::slotRealClockCalibration(QSerialPort *port1, QSerialPort *por
           label_StatusBar = (tr("Не удалось корректно записать калибровочные коэффициенты.") +
                                      " Рабочее место: " + QString::number(workPlaceNumber+1));
            emit errorStringSignal(label_StatusBar + '\n');
-           vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+           vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
            emit workPlaceOff(currentIndicatorNumber);
            emit checkTimeCalError(currentIndicatorNumber);
 
@@ -17568,9 +17752,29 @@ void ObjectThread::slotRashodomer(QSerialPort *port1, QSerialPort *port2,
 //    4)	Выключить имитацию вращения (IM=0)
 
 
-    if(!setFreqRotation("100")) return;
+    if(!setFreqRotation("100")) {
+        label_StatusBar =("Не удалось установить частоту вращения. Рабочее место: "
+                                     + QString::number(workPlaceNumber + 1));
+        emit errorStringSignal(label_StatusBar + '\n');
+        vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
-    if(!imitRotationOn()) return;
+        emit workPlaceOff(currentIndicatorNumber);
+        emit checkRashodomerError(currentIndicatorNumber);
+
+        return;
+    }
+
+    if(!imitRotationOn()) {
+        label_StatusBar =("Не удалось включить имитацию вращения. Рабочее место: "
+                                     + QString::number(workPlaceNumber + 1));
+        emit errorStringSignal(label_StatusBar + '\n');
+        vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
+
+        emit workPlaceOff(currentIndicatorNumber);
+        emit checkRashodomerError(currentIndicatorNumber);
+
+       return;
+    }
 
     global::pause(5000);
 
@@ -17580,8 +17784,9 @@ void ObjectThread::slotRashodomer(QSerialPort *port1, QSerialPort *port2,
             label_StatusBar =("Не удалось открыть порт УСО-2. Рабочее место: "
                                          + QString::number(workPlaceNumber + 1));
             emit errorStringSignal(label_StatusBar + '\n');
-            vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+            vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
+            imitRotationOff();
             emit workPlaceOff(currentIndicatorNumber);
             emit checkRashodomerError(currentIndicatorNumber);
 
@@ -17628,7 +17833,7 @@ void ObjectThread::slotRashodomer(QSerialPort *port1, QSerialPort *port2,
 //           label_StatusBar = (tr("Данные в порт не записаны") +
 //                                        ". Рабочее место: " + QString::number(workPlaceNumber+1));
 //           emit errorStringSignal(label_StatusBar + '\n');
-//           vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+//           vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 // //                   checkWritingError(currentIndicatorNumber);
 // //                   emit workPlaceOff(currentIndicatorNumber);
 //           emit workPlaceOff(currentIndicatorNumber);
@@ -17652,7 +17857,7 @@ void ObjectThread::slotRashodomer(QSerialPort *port1, QSerialPort *port2,
 //                                            ". Рабочее место: " + QString::number(workPlaceNumber+1));
 //               emit errorStringSignal(label_StatusBar + '\n');
 // //                      ui->label_writeParams->setVisible(true);
-//               vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+//               vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 // //                       checkWritingError(currentIndicatorNumber);
 // //                       emit workPlaceOff(currentIndicatorNumber);
 //               emit workPlaceOff(currentIndicatorNumber);
@@ -17679,7 +17884,7 @@ void ObjectThread::slotRashodomer(QSerialPort *port1, QSerialPort *port2,
 //                   label_StatusBar = (tr("Ошибка данных") +
 //                                                " Рабочее место: " + QString::number(workPlaceNumber+1));
 //                   emit errorStringSignal(label_StatusBar + '\n');
-//                   vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+//                   vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 //                   emit workPlaceOff(currentIndicatorNumber);
 //                   emit checkRashodomerError(currentIndicatorNumber);
 //                   return;
@@ -17712,7 +17917,7 @@ void ObjectThread::slotRashodomer(QSerialPort *port1, QSerialPort *port2,
 //                                                     ". Рабочее место: " + QString::number(workPlaceNumber+1));
 //                        emit errorStringSignal(label_StatusBar + '\n');
 // //                            ui->label_writeParams->setVisible(true);
-//                        vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+//                        vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 // //                                checkWritingError(currentIndicatorNumber);
 //                        emit workPlaceOff(currentIndicatorNumber);
 //                        emit checkRashodomerError(currentIndicatorNumber);
@@ -17766,8 +17971,9 @@ void ObjectThread::slotRashodomer(QSerialPort *port1, QSerialPort *port2,
            label_StatusBar = (tr("Данные в порт не записаны") +
                                         " Рабочее место: " + QString::number(workPlaceNumber+1));
            emit errorStringSignal(label_StatusBar + '\n');
-           vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+           vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
+           imitRotationOff();
            emit workPlaceOff(currentIndicatorNumber);
            emit checkRashodomerError(currentIndicatorNumber);
 
@@ -17787,8 +17993,9 @@ void ObjectThread::slotRashodomer(QSerialPort *port1, QSerialPort *port2,
                label_StatusBar = (tr("Не удалось прочитать данные") +
                                             " Рабочее место: " + QString::number(workPlaceNumber+1));
                emit errorStringSignal(label_StatusBar + '\n');
-               vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+               vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
+               imitRotationOff();
                emit workPlaceOff(currentIndicatorNumber);
                emit checkRashodomerError(currentIndicatorNumber);
 
@@ -17813,7 +18020,8 @@ void ObjectThread::slotRashodomer(QSerialPort *port1, QSerialPort *port2,
                    label_StatusBar = (tr("Ошибка данных") +
                                                 " Рабочее место: " + QString::number(workPlaceNumber+1));
                    emit errorStringSignal(label_StatusBar + '\n');
-                   vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                   vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
+                   imitRotationOff();
                    emit workPlaceOff(currentIndicatorNumber);
                    emit checkRashodomerError(currentIndicatorNumber);
                    return;
@@ -17853,8 +18061,9 @@ void ObjectThread::slotRashodomer(QSerialPort *port1, QSerialPort *port2,
                                                " Рабочее место: " + QString::number(workPlaceNumber+1));
                   emit errorStringSignal(label_StatusBar + '\n');
  //                 ui->label_Calibration->setVisible(true);
-                  vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                  vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
+                  imitRotationOff();
                   emit workPlaceOff(currentIndicatorNumber);
                   emit checkRashodomerError(currentIndicatorNumber);
 
@@ -17878,8 +18087,9 @@ void ObjectThread::slotRashodomer(QSerialPort *port1, QSerialPort *port2,
                                                " Рабочее место: " + QString::number(workPlaceNumber+1));
                   emit errorStringSignal(label_StatusBar + '\n');
  //                 ui->label_Calibration->setVisible(true);
-                  vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+                  vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
+                  imitRotationOff();
                   emit workPlaceOff(currentIndicatorNumber);
                   emit checkRashodomerError(currentIndicatorNumber);
 
@@ -17894,8 +18104,17 @@ void ObjectThread::slotRashodomer(QSerialPort *port1, QSerialPort *port2,
     }
 
 
-    if(!imitRotationOff()) return;
+    if(!imitRotationOff()) {
+        label_StatusBar = (tr("Не удалось выключить имитацию вращения") +
+                                     " Рабочее место: " + QString::number(workPlaceNumber+1));
+        emit errorStringSignal(label_StatusBar + '\n');
+        vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
+        emit workPlaceOff(currentIndicatorNumber);
+        emit checkRashodomerError(currentIndicatorNumber);
+
+        return;
+    }
 
     emit checkRashodomerError(currentIndicatorNumber);
 
@@ -17952,7 +18171,7 @@ void ObjectThread::slotMagnSensor()
             QString label_StatusBar = (tr("Не удалось открыть порт стенда") +
                                          ". Рабочее место: " + QString::number(workPlace+1));
             emit errorStringSignal(label_StatusBar + '\n');
-            vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+            vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
 
             emit workPlaceOff(workPlace);
             emit checkMagnSensorError(workPlace);
@@ -17984,7 +18203,7 @@ void ObjectThread::slotMagnSensor()
         QString label_StatusBar = (tr("Нет ответа стенда. Команда \"Прочитать таймаут импульса питания на датчик резистивный датчик\" ") +
                                      ". Рабочее место: " + QString::number(workPlace+1));
         emit errorStringSignal(label_StatusBar + '\n');
-        vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+        vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
         emit workPlaceOff(workPlace);
         emit checkMagnSensorError(workPlace);
 
@@ -18011,7 +18230,7 @@ void ObjectThread::slotMagnSensor()
         QString label_StatusBar = (tr("Неверный ответ стенда. Команда \"Прочитать таймаут импульса питания на датчик резистивный датчик\" ") +
                                      ". Рабочее место: " + QString::number(workPlace+1));
         emit errorStringSignal(label_StatusBar + '\n');
-        vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+        vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
         emit workPlaceOff(workPlace);
         emit checkMagnSensorError(workPlace);
         return;
@@ -18029,7 +18248,7 @@ void ObjectThread::slotMagnSensor()
        QString label_StatusBar = (tr("Таймаут импульса питания на резистивный датчик не сбрасывается\" ") +
                                     ". Рабочее место: " + QString::number(workPlace+1));
        emit errorStringSignal(label_StatusBar + '\n');
-       vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true;
+       vectorIndicatorStateMatrix[currentBoxNumber][currentIndicatorNumber] = true; errorIndicatorOn();
        emit workPlaceOff(workPlace);
        emit checkMagnSensorError(workPlace);
        return;
@@ -18043,12 +18262,29 @@ void ObjectThread::slotMagnSensor()
 }
 
 
+void ObjectThread::setTimeIntervalWAL_WRS(int time)
+{
+    timeIntervalWAL_WRS = time;
+}
+void ObjectThread::setTimeIntervalWRF_WNS(int time)
+{
+    timeIntervalWRF_WNS = time;
+}
+void ObjectThread::setTimeIntervalWNB_WID(int time)
+{
+    timeIntervalWNB_WID = time;
+}
+
+void ObjectThread::setTimeIntervalWID_Read(int time)
+{
+    timeIntervalWID_Read = time;
+}
 
 
-
-
-
-
+void ObjectThread::slotGetFinishOff()
+{
+    finishIndicatorOn();
+}
 
 
 

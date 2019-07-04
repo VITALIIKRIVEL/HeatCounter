@@ -61,6 +61,11 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->lineEdit_serial_3->setMaxLength(3);
     ui->lineEdit_serial_4->setMaxLength(3);
 
+    ui->lineEdit_AL_RF->setText("10000");
+    ui->lineEdit_RF_NS->setText("30000");
+    ui->lineEdit_NS_ID->setText("30000");
+    ui->lineEdit_ID_R->setText("30000");
+
     ui->spinBox_serial_->setMinimum(00000);
     ui->spinBox_serial_->setMaximum(99999);
     ui->spinBox_serial_2->setMinimum(00000);
@@ -368,6 +373,11 @@ MainWindow::MainWindow(QWidget *parent) :
 //    ui->lineEdit_coef5->setEnabled(false);
 
 //    ui->lineEdit_FS_DiffThrs->setEnabled(false);
+
+    connect(this, SIGNAL(sendFinishOff1()), ObjectThread1, SLOT(slotGetFinishOff()));
+    connect(this, SIGNAL(sendFinishOff2()), ObjectThread1, SLOT(slotGetFinishOff()));
+    connect(this, SIGNAL(sendFinishOff3()), ObjectThread1, SLOT(slotGetFinishOff()));
+    connect(this, SIGNAL(sendFinishOff4()), ObjectThread1, SLOT(slotGetFinishOff()));
 
     connect(this, SIGNAL(sendbufferReadHardwareConfiguration(QByteArray, int)), formParamsEdit, SLOT(getbufferReadHardwareConfiguration(QByteArray, int)));
     connect(this, SIGNAL(sendbufferReadSoftWareConfiguration(QByteArray)), formParamsEdit, SLOT(getbufferReadSoftWareConfiguration(QByteArray)));
@@ -1115,6 +1125,8 @@ MainWindow::MainWindow(QWidget *parent) :
    ui->line_3->setVisible(false);
    ui->label_62->setVisible(false);
    ui->lineEdit_humanName->setVisible(false);
+
+   on_comboBox_portStend_currentIndexChanged(ui->comboBox_portStend->currentText());
 
 }
 /*************************************************************/
@@ -2812,6 +2824,18 @@ void MainWindow::paintEvent(QPaintEvent *event)
         //
         //
 
+        if(ui->checkBox_workPlace1->isChecked()) vectorIsWorkPlaceUse[0] = true;
+        if(ui->checkBox_workPlace2->isChecked()) vectorIsWorkPlaceUse[1] = true;
+        if(ui->checkBox_workPlace3->isChecked()) vectorIsWorkPlaceUse[2] = true;
+        if(ui->checkBox_workPlace4->isChecked()) vectorIsWorkPlaceUse[3] = true;
+
+        ObjectThread1->setIsWorkPlaceUseVector(vectorIsWorkPlaceUse);
+        ObjectThread2->setIsWorkPlaceUseVector(vectorIsWorkPlaceUse);
+        ObjectThread3->setIsWorkPlaceUseVector(vectorIsWorkPlaceUse);
+        ObjectThread4->setIsWorkPlaceUseVector(vectorIsWorkPlaceUse);
+
+
+
         if(workPlace1Result && ui->checkBox_workPlace1->isChecked()) {
                         QPainter painter(this); // Создаём объект отрисовщика
                         painter.setPen(QPen(Qt::lightGray, 1, Qt::SolidLine, Qt::FlatCap));
@@ -2825,6 +2849,8 @@ void MainWindow::paintEvent(QPaintEvent *event)
                         painter.setBrush(QBrush(Qt::green, Qt::SolidPattern));
 
                         painter.drawEllipse(xGroupBoxResult + 13, yGroupBoxResult + 45, 15, 15);
+
+                  //      emit sendFinishOff1();
         }
 
         //
@@ -2841,6 +2867,8 @@ void MainWindow::paintEvent(QPaintEvent *event)
                         painter.setBrush(QBrush(Qt::green, Qt::SolidPattern));
 
                         painter.drawEllipse(xGroupBoxResult + 13 + 33, yGroupBoxResult + 45, 15, 15);
+
+                  //      emit sendFinishOff2();
         }
 
         //
@@ -2857,6 +2885,8 @@ void MainWindow::paintEvent(QPaintEvent *event)
                         painter.setBrush(QBrush(Qt::green, Qt::SolidPattern));
 
                         painter.drawEllipse(xGroupBoxResult + 13 + 33 + 33, yGroupBoxResult + 45, 15, 15);
+
+                  //      emit sendFinishOff3();
         }
 
         //
@@ -2873,6 +2903,8 @@ void MainWindow::paintEvent(QPaintEvent *event)
                         painter.setBrush(QBrush(Qt::green, Qt::SolidPattern));
 
                         painter.drawEllipse(xGroupBoxResult + 13 + 33 + 33 + 33, yGroupBoxResult + 45, 15, 15);
+
+                   //     emit sendFinishOff4();
         }
 
 
@@ -35839,6 +35871,21 @@ void MainWindow::on_toolButton_executeCommands_clicked()
         isMBusCheck3 = false;
         isMBusCheck4 = false;
 
+        isTimeCalFinished1 = false;
+        isTimeCalFinished2 = false;
+        isTimeCalFinished3 = false;
+        isTimeCalFinished4 = false;
+
+        isRashodomerFinished1 = false;
+        isRashodomerFinished2 = false;
+        isRashodomerFinished3 = false;
+        isRashodomerFinished4 = false;
+
+        isMagnSensorFinished1 = false;
+        isMagnSensorFinished2 = false;
+        isMagnSensorFinished3 = false;
+        isMagnSensorFinished4 = false;
+
     }
 
     if(repeatParameter == 0 || repeatParameter == 1 || repeatParameter == 2) {
@@ -35853,6 +35900,11 @@ void MainWindow::on_toolButton_executeCommands_clicked()
         isMBusOff3 = false;
         isMBusOff4 = false;
 
+        isMagnSensorFinished1 = false;
+        isMagnSensorFinished2 = false;
+        isMagnSensorFinished3 = false;
+        isMagnSensorFinished4 = false;
+
     }
 
     isCalibrationModeOff1 = false;
@@ -35866,7 +35918,26 @@ void MainWindow::on_toolButton_executeCommands_clicked()
     //для всех рабочих мест команды посылаются параллельно
 
 
+    //выключаем индикацию "авария", выключаем индикатор "завершено"
+    ObjectThread1->setIsWorkPlaceUseVector(vectorIsWorkPlaceUse);
+    ObjectThread2->setIsWorkPlaceUseVector(vectorIsWorkPlaceUse);
+    ObjectThread3->setIsWorkPlaceUseVector(vectorIsWorkPlaceUse);
+    ObjectThread4->setIsWorkPlaceUseVector(vectorIsWorkPlaceUse);
+
+    ObjectThread1->errorIndicatorOff();
+    ObjectThread2->errorIndicatorOff();
+    ObjectThread3->errorIndicatorOff();
+    ObjectThread4->errorIndicatorOff();
+
+    ObjectThread1->finishIndicatorOff();
+    ObjectThread2->finishIndicatorOff();
+    ObjectThread3->finishIndicatorOff();
+    ObjectThread4->finishIndicatorOff();
+
+    portStend->close();
+
     //проверка тока платы
+  if(ui->checkBox_plataOn_Off->isChecked()) {
 
     ObjectThread1->setIsWorkPlaceUseVector(vectorIsWorkPlaceUse);
     ObjectThread2->setIsWorkPlaceUseVector(vectorIsWorkPlaceUse);
@@ -35916,7 +35987,9 @@ void MainWindow::on_toolButton_executeCommands_clicked()
             break;
     }
 
-//    //-------------------Ожидание завершения Проверка тока платы---------------
+  }
+
+    //-------------------Ожидание завершения Проверка тока платы---------------
 
     //проверка тока платы/
 
@@ -35927,6 +36000,30 @@ void MainWindow::on_toolButton_executeCommands_clicked()
 
     if(vectorIsCommandUse.at(0) && (repeatParameter == 0)) {
 
+        QString text1 = ui->lineEdit_AL_RF->text();
+        QString text2 = ui->lineEdit_RF_NS->text();
+        QString text3 = ui->lineEdit_NS_ID->text();
+        QString text4 = ui->lineEdit_ID_R->text();
+
+        ObjectThread1->setTimeIntervalWAL_WRS(text1.toInt());
+        ObjectThread1->setTimeIntervalWRF_WNS(text2.toInt());
+        ObjectThread1->setTimeIntervalWNB_WID(text3.toInt());
+        ObjectThread1->setTimeIntervalWID_Read(text4.toInt());
+
+        ObjectThread2->setTimeIntervalWAL_WRS(text1.toInt());
+        ObjectThread2->setTimeIntervalWRF_WNS(text2.toInt());
+        ObjectThread2->setTimeIntervalWNB_WID(text3.toInt());
+        ObjectThread2->setTimeIntervalWID_Read(text4.toInt());
+
+        ObjectThread3->setTimeIntervalWAL_WRS(text1.toInt());
+        ObjectThread3->setTimeIntervalWRF_WNS(text2.toInt());
+        ObjectThread3->setTimeIntervalWNB_WID(text3.toInt());
+        ObjectThread3->setTimeIntervalWID_Read(text4.toInt());
+
+        ObjectThread4->setTimeIntervalWAL_WRS(text1.toInt());
+        ObjectThread4->setTimeIntervalWRF_WNS(text2.toInt());
+        ObjectThread4->setTimeIntervalWNB_WID(text3.toInt());
+        ObjectThread4->setTimeIntervalWID_Read(text4.toInt());
 
         ObjectThread1->setIsWorkPlaceUseVector(vectorIsWorkPlaceUse);
         ObjectThread2->setIsWorkPlaceUseVector(vectorIsWorkPlaceUse);
@@ -35992,7 +36089,7 @@ void MainWindow::on_toolButton_executeCommands_clicked()
 //        if(!vectorIsWorkPlaceUse.at(2)) isWritingFinishedTmp3 = true;
 //        if(!vectorIsWorkPlaceUse.at(3)) isWritingFinishedTmp4 = true;
 
-        for(int e=0; e<1000; e++) { //100 sec
+        for(int e=0; e<1100; e++) { //110 sec
             global::pause(100);
 
 //            if(vectorIsWorkPlaceUse.at(0)) isWritingFinishedTmp1 = isWritingFinished1;
@@ -36351,7 +36448,7 @@ void MainWindow::on_toolButton_executeCommands_clicked()
 //          if(!vectorIsWorkPlaceUse.at(2)) isPulsesInputVolumeTmp3 = true;
 //          if(!vectorIsWorkPlaceUse.at(3)) isPulsesInputVolumeTmp4 = true;
 
-          for(int e=0; e<30; e++) { //3 sec
+          for(int e=0; e<70; e++) { //7 sec
               global::pause(100);
 
               if(ui->checkBox_workPlace1->isChecked()) {
@@ -36621,7 +36718,7 @@ void MainWindow::on_toolButton_executeCommands_clicked()
          bool isTimeCalFinishedTmp3 = true;
          bool isTimeCalFinishedTmp4 = true;
 
-                   for(int e=0; e<30; e++) { //3 sec
+                   for(int e=0; e<100; e++) { //10 sec
                        global::pause(100);
 
                        if(ui->checkBox_workPlace1->isChecked()) {
@@ -37223,6 +37320,11 @@ void MainWindow::on_toolButton_executeCommands_clicked()
 //    ui->groupBox_result->setVisible(true);
 
     isCommandsEnded = true;
+    portStend->close();
+    ObjectThread1->finishIndicatorOn();
+    ObjectThread2->finishIndicatorOn();
+    ObjectThread3->finishIndicatorOn();
+    ObjectThread4->finishIndicatorOn();
     repaint();
 
 
@@ -38565,6 +38667,7 @@ void MainWindow::on_toolButton_execSql_clicked()
 
 bool MainWindow::dublicatNumberCheckExtServ()
 {
+
     isDublExist1 = false;
     isDublExist2 = false;
     isDublExist3 = false;
@@ -38575,9 +38678,13 @@ bool MainWindow::dublicatNumberCheckExtServ()
     jsonByteArray3.clear();
     jsonByteArray4.clear();
 
+    //pcb_sn1
+
+  if(ui->checkBox_workPlace1->isChecked()) {
+
    //запрашиваем колонку pcb, eb_id таблицы dev, проверяем уникальность номера
 
-    QString queryStringDev = "Select \"pcb\", \"eb_id\" From dev;";
+    QString queryStringDev = "Select \"pcb\", \"eb_id\" From dev WHERE \"pcb\" = '" + PCB_SN_ByteArray.toHex() + "';";
 
     QSqlQuery sqlQueryDev(dataBase);
 
@@ -38589,11 +38696,8 @@ bool MainWindow::dublicatNumberCheckExtServ()
 
     //запрашиваем колонку pcb, eb_id таблицы dev, проверяем уникальность номера/
 
-    //
-
-    //разбираем результат запроса
-    while (sqlQueryDev.next()) {
-      QString PCBNum = sqlQueryDev.value(0).toString();
+    sqlQueryDev.first();
+    if(!sqlQueryDev.isNull(0)) {
       int ebIdInt = sqlQueryDev.value(1).toInt();
 
       //запрашиваем колонку id, date, result, count таблицы eb_test, для которой id = ebIdInt
@@ -38613,11 +38717,7 @@ bool MainWindow::dublicatNumberCheckExtServ()
 
        //запрашиваем колонку id, date, result таблицы eb_test, для которой id = ebIdInt/
 
-       //
-
- //     sqlQueryEbTest.seek(ebIdInt);
-
-      QVariantMap jsonMap;
+             QVariantMap jsonMap;
       QJsonDocument jsonDoc;
 //      "Rref1": "",
 //        "Rref2": "",
@@ -38625,91 +38725,342 @@ bool MainWindow::dublicatNumberCheckExtServ()
 //        "usable":
       QByteArray jsonByteArrayTmp1;
 
-      if(PCBNum == PCB_SN_ByteArray.toHex() /*serialNumber.toHex()*//*curSerNum*/  && ui->checkBox_workPlace1->isChecked()) {
-  //        QMessageBox::information(this, "", tr("Данный серийный номер уже существует в базе данных: Рабочее место 1"));
-//          jsonMap = sqlQueryDev.value(3).toJsonObject().toVariantMap();
-//          jsonDoc = sqlQueryDev.value(3).toJsonDocument();
+        if(ui->checkBox_workPlace1->isChecked()) {
 
-          jsonByteArrayTmp1 = sqlQueryEbTest.value(2).toByteArray();//
+           jsonByteArrayTmp1 = sqlQueryEbTest.value(2).toByteArray();//
 
-          isDublExist1 = true;
-          currentDublicatTime1 = sqlQueryEbTest.value(1).toString();
+           isDublExist1 = true;
+           currentDublicatTime1 = sqlQueryEbTest.value(1).toString();
 
-          currentDublicatUsable1 = sqlQueryEbTest.value(3).toInt();
+           currentDublicatUsable1 = sqlQueryEbTest.value(3).toInt();
 
-          jsonByteArray1 = jsonByteArrayTmp1;
+           jsonByteArray1 = jsonByteArrayTmp1;
 
-      }
+        }
 
 
-      //
+    }
+
+
+  }
+
+   //pcb_sn1/
+
+
+    //pcb_sn2
+
+  if(ui->checkBox_workPlace2->isChecked()) {
+
+   //запрашиваем колонку pcb, eb_id таблицы dev, проверяем уникальность номера
+
+    queryStringDev = "Select \"pcb\", \"eb_id\" From dev WHERE \"pcb\" = '" + PCB_SN_ByteArray2.toHex() + "';";
+
+    sqlQueryDev(dataBase);
+
+    if(!sqlQueryDev.exec(queryStringDev)) {
+       QString lastErrorQuery = tr("Ошибка запроса SQL: ") + sqlQueryDev.lastError().text();
+       QMessageBox::information(this, "", lastErrorQuery);
+       return false;
+    }
+
+    //запрашиваем колонку pcb, eb_id таблицы dev, проверяем уникальность номера/
+
+    sqlQueryDev.first();
+    if(!sqlQueryDev.isNull(0)) {
+      int ebIdInt = sqlQueryDev.value(1).toInt();
+
+      //запрашиваем колонку id, date, result, count таблицы eb_test, для которой id = ebIdInt
+
+       QString queryStringEbTest = "Select \"id\", \"date\", \"result\", \"count\" From eb_test WHERE \"id\" = " +
+               QString::number(ebIdInt) + ";";
+
+       QSqlQuery sqlQueryEbTest(dataBase);
+
+       if(!sqlQueryEbTest.exec(queryStringEbTest)) {
+          QString lastErrorQuery = tr("Ошибка запроса SQL: ") + sqlQueryEbTest.lastError().text();
+          QMessageBox::information(this, "", lastErrorQuery);
+          return false;
+       }
+
+       sqlQueryEbTest.first();
+
+       //запрашиваем колонку id, date, result таблицы eb_test, для которой id = ebIdInt/
 
       QByteArray jsonByteArrayTmp2;
 
-      if(PCBNum == PCB_SN_ByteArray2.toHex() /*serialNumber2.toHex()*//*curSerNum*/ && ui->checkBox_workPlace2->isChecked()) {
-   //       QMessageBox::information(this, "", tr("Данный серийный номер уже существует в базе данных: Рабочее место 2"));
-//          jsonMap = sqlQueryDev.value(3).toJsonObject().toVariantMap();
-//          jsonDoc = sqlQueryDev.value(3).toJsonDocument();
+        if(ui->checkBox_workPlace2->isChecked()) {
 
-          jsonByteArrayTmp2 = sqlQueryEbTest.value(2).toByteArray();
+           jsonByteArrayTmp2 = sqlQueryEbTest.value(2).toByteArray();//
 
-          isDublExist2 = true;
-          currentDublicatTime2 = sqlQueryEbTest.value(1).toString();
+           isDublExist2 = true;
+           currentDublicatTime2 = sqlQueryEbTest.value(1).toString();
 
-          currentDublicatUsable2 = sqlQueryEbTest.value(3).toInt();
+           currentDublicatUsable2 = sqlQueryEbTest.value(3).toInt();
 
-          jsonByteArray2 = jsonByteArrayTmp2;
+           jsonByteArray2 = jsonByteArrayTmp2;
 
-      }
+        }
 
 
-      //
+    }
+
+
+  }
+
+   //pcb_sn2/
+
+
+   //pcb_sn3
+
+  if(ui->checkBox_workPlace3->isChecked()) {
+
+   //запрашиваем колонку pcb, eb_id таблицы dev, проверяем уникальность номера
+
+    queryStringDev = "Select \"pcb\", \"eb_id\" From dev WHERE \"pcb\" = '" + PCB_SN_ByteArray3.toHex() + "';";
+
+    sqlQueryDev(dataBase);
+
+    if(!sqlQueryDev.exec(queryStringDev)) {
+       QString lastErrorQuery = tr("Ошибка запроса SQL: ") + sqlQueryDev.lastError().text();
+       QMessageBox::information(this, "", lastErrorQuery);
+       return false;
+    }
+
+    //запрашиваем колонку pcb, eb_id таблицы dev, проверяем уникальность номера/
+
+    sqlQueryDev.first();
+    if(!sqlQueryDev.isNull(0)) {
+      int ebIdInt = sqlQueryDev.value(1).toInt();
+
+      //запрашиваем колонку id, date, result, count таблицы eb_test, для которой id = ebIdInt
+
+       QString queryStringEbTest = "Select \"id\", \"date\", \"result\", \"count\" From eb_test WHERE \"id\" = " +
+               QString::number(ebIdInt) + ";";
+
+       QSqlQuery sqlQueryEbTest(dataBase);
+
+       if(!sqlQueryEbTest.exec(queryStringEbTest)) {
+          QString lastErrorQuery = tr("Ошибка запроса SQL: ") + sqlQueryEbTest.lastError().text();
+          QMessageBox::information(this, "", lastErrorQuery);
+          return false;
+       }
+
+       sqlQueryEbTest.first();
+
+       //запрашиваем колонку id, date, result таблицы eb_test, для которой id = ebIdInt/
 
       QByteArray jsonByteArrayTmp3;
 
-      if(PCBNum == PCB_SN_ByteArray3.toHex() /*curSerNum*/ && ui->checkBox_workPlace3->isChecked()) {
-   //       QMessageBox::information(this, "", tr("Данный серийный номер уже существует в базе данных: Рабочее место 3"));
-//          jsonMap = sqlQueryDev.value(3).toJsonObject().toVariantMap();
-//          jsonDoc = sqlQueryDev.value(3).toJsonDocument();
+        if(ui->checkBox_workPlace3->isChecked()) {
 
-          jsonByteArrayTmp3 = sqlQueryEbTest.value(2).toByteArray();
+           jsonByteArrayTmp3 = sqlQueryEbTest.value(2).toByteArray();//
 
-          isDublExist3 = true;
-          currentDublicatTime3 = sqlQueryEbTest.value(1).toString();
+           isDublExist3 = true;
+           currentDublicatTime3 = sqlQueryEbTest.value(1).toString();
 
-          currentDublicatUsable3 = sqlQueryEbTest.value(3).toInt();
+           currentDublicatUsable3 = sqlQueryEbTest.value(3).toInt();
 
-          jsonByteArray3 = jsonByteArrayTmp3;
+           jsonByteArray3 = jsonByteArrayTmp3;
 
-      }
+        }
 
 
-      //
+    }
+
+
+  }
+
+   //pcb_sn3/
+
+
+   //pcb_sn4
+
+  if(ui->checkBox_workPlace4->isChecked()) {
+
+   //запрашиваем колонку pcb, eb_id таблицы dev, проверяем уникальность номера
+
+    queryStringDev = "Select \"pcb\", \"eb_id\" From dev WHERE \"pcb\" = '" + PCB_SN_ByteArray4.toHex() + "';";
+
+    sqlQueryDev(dataBase);
+
+    if(!sqlQueryDev.exec(queryStringDev)) {
+       QString lastErrorQuery = tr("Ошибка запроса SQL: ") + sqlQueryDev.lastError().text();
+       QMessageBox::information(this, "", lastErrorQuery);
+       return false;
+    }
+
+    //запрашиваем колонку pcb, eb_id таблицы dev, проверяем уникальность номера/
+
+    sqlQueryDev.first();
+    if(!sqlQueryDev.isNull(0)) {
+      int ebIdInt = sqlQueryDev.value(1).toInt();
+
+      //запрашиваем колонку id, date, result, count таблицы eb_test, для которой id = ebIdInt
+
+       QString queryStringEbTest = "Select \"id\", \"date\", \"result\", \"count\" From eb_test WHERE \"id\" = " +
+               QString::number(ebIdInt) + ";";
+
+       QSqlQuery sqlQueryEbTest(dataBase);
+
+       if(!sqlQueryEbTest.exec(queryStringEbTest)) {
+          QString lastErrorQuery = tr("Ошибка запроса SQL: ") + sqlQueryEbTest.lastError().text();
+          QMessageBox::information(this, "", lastErrorQuery);
+          return false;
+       }
+
+       sqlQueryEbTest.first();
+
+       //запрашиваем колонку id, date, result таблицы eb_test, для которой id = ebIdInt/
 
       QByteArray jsonByteArrayTmp4;
 
-      if(PCBNum == PCB_SN_ByteArray4.toHex() /*curSerNum*/ && ui->checkBox_workPlace4->isChecked()) {
-   //       QMessageBox::information(this, "", tr("Данный серийный номер уже существует в базе данных: Рабочее место 4"));
-//          jsonMap = sqlQueryDev.value(3).toJsonObject().toVariantMap();
-//          jsonDoc = sqlQueryDev.value(3).toJsonDocument();
+        if(ui->checkBox_workPlace4->isChecked()) {
 
-          jsonByteArrayTmp4 = sqlQueryEbTest.value(2).toByteArray();
+           jsonByteArrayTmp4 = sqlQueryEbTest.value(2).toByteArray();//
 
-          isDublExist4 = true;
-          currentDublicatTime4 = sqlQueryEbTest.value(1).toString();
+           isDublExist4 = true;
+           currentDublicatTime4 = sqlQueryEbTest.value(1).toString();
 
-          currentDublicatUsable4 = sqlQueryEbTest.value(3).toInt();
+           currentDublicatUsable4 = sqlQueryEbTest.value(3).toInt();
 
-          jsonByteArray4 = jsonByteArrayTmp4;
+           jsonByteArray4 = jsonByteArrayTmp4;
 
-      }
+        }
 
 
-
-      qDebug()<<"serNum "<<PCBNum;
     }
 
+
+  }
+
+   //pcb_sn4/
+
     return true;
+
+//    isDublExist1 = false;
+//    isDublExist2 = false;
+//    isDublExist3 = false;
+//    isDublExist4 = false;
+
+//    jsonByteArray1.clear();
+//    jsonByteArray2.clear();
+//    jsonByteArray3.clear();
+//    jsonByteArray4.clear();
+
+//   //запрашиваем колонку pcb, eb_id таблицы dev, проверяем уникальность номера
+
+//    QString queryStringDev = "Select \"pcb\", \"eb_id\" From dev;";
+
+//    QSqlQuery sqlQueryDev(dataBase);
+
+//    if(!sqlQueryDev.exec(queryStringDev)) {
+//       QString lastErrorQuery = tr("Ошибка запроса SQL: ") + sqlQueryDev.lastError().text();
+//       QMessageBox::information(this, "", lastErrorQuery);
+//       return false;
+//    }
+
+//    //запрашиваем колонку pcb, eb_id таблицы dev, проверяем уникальность номера/
+
+//    //
+
+//    //разбираем результат запроса
+//    while (sqlQueryDev.next()) {
+//      QString PCBNum = sqlQueryDev.value(0).toString();
+//      int ebIdInt = sqlQueryDev.value(1).toInt();
+
+//      //запрашиваем колонку id, date, result, count таблицы eb_test, для которой id = ebIdInt
+
+//       QString queryStringEbTest = "Select \"id\", \"date\", \"result\", \"count\" From eb_test WHERE \"id\" = " +
+//               QString::number(ebIdInt) + ";";
+
+//       QSqlQuery sqlQueryEbTest(dataBase);
+
+//       if(!sqlQueryEbTest.exec(queryStringEbTest)) {
+//          QString lastErrorQuery = tr("Ошибка запроса SQL: ") + sqlQueryEbTest.lastError().text();
+//          QMessageBox::information(this, "", lastErrorQuery);
+//          return false;
+//       }
+
+//       sqlQueryEbTest.first();
+
+//       //запрашиваем колонку id, date, result таблицы eb_test, для которой id = ebIdInt/
+
+//       //
+
+// //     sqlQueryEbTest.seek(ebIdInt);
+
+//      QVariantMap jsonMap;
+//      QJsonDocument jsonDoc;
+// //      "Rref1": "",
+// //        "Rref2": "",
+// //        "PCB_SN": "9030000090311111",
+// //        "usable":
+//      QByteArray jsonByteArrayTmp1;
+
+//      if(PCBNum == PCB_SN_ByteArray.toHex() /*serialNumber.toHex()*//*curSerNum*/  && ui->checkBox_workPlace1->isChecked()) {
+//  //        QMessageBox::information(this, "", tr("Данный серийный номер уже существует в базе данных: Рабочее место 1"));
+// //          jsonMap = sqlQueryDev.value(3).toJsonObject().toVariantMap();
+// //          jsonDoc = sqlQueryDev.value(3).toJsonDocument();
+
+//          jsonByteArrayTmp1 = sqlQueryEbTest.value(2).toByteArray();//
+
+//          isDublExist1 = true;
+//          currentDublicatTime1 = sqlQueryEbTest.value(1).toString();
+
+//          currentDublicatUsable1 = sqlQueryEbTest.value(3).toInt();
+
+//          jsonByteArray1 = jsonByteArrayTmp1;
+
+//      }
+
+
+//      //
+
+//      QByteArray jsonByteArrayTmp2;
+
+//      if(PCBNum == PCB_SN_ByteArray2.toHex() /*serialNumber2.toHex()*//*curSerNum*/ && ui->checkBox_workPlace2->isChecked()) {
+
+//          jsonByteArrayTmp2 = sqlQueryEbTest.value(2).toByteArray();
+//          isDublExist2 = true;
+//          currentDublicatTime2 = sqlQueryEbTest.value(1).toString();
+//          currentDublicatUsable2 = sqlQueryEbTest.value(3).toInt();
+//          jsonByteArray2 = jsonByteArrayTmp2;
+
+//      }
+
+
+//      //
+
+//      QByteArray jsonByteArrayTmp3;
+
+//      if(PCBNum == PCB_SN_ByteArray3.toHex() /*curSerNum*/ && ui->checkBox_workPlace3->isChecked()) {
+
+//          jsonByteArrayTmp3 = sqlQueryEbTest.value(2).toByteArray();
+//          isDublExist3 = true;
+//          currentDublicatTime3 = sqlQueryEbTest.value(1).toString();
+//          currentDublicatUsable3 = sqlQueryEbTest.value(3).toInt();
+//          jsonByteArray3 = jsonByteArrayTmp3;
+
+//      }
+
+
+//      //
+
+//      QByteArray jsonByteArrayTmp4;
+
+//      if(PCBNum == PCB_SN_ByteArray4.toHex() /*curSerNum*/ && ui->checkBox_workPlace4->isChecked()) {
+//          jsonByteArrayTmp4 = sqlQueryEbTest.value(2).toByteArray();
+//          isDublExist4 = true;
+//          currentDublicatTime4 = sqlQueryEbTest.value(1).toString();
+//          currentDublicatUsable4 = sqlQueryEbTest.value(3).toInt();
+//          jsonByteArray4 = jsonByteArrayTmp4;
+
+//      }
+
+//      qDebug()<<"serNum "<<PCBNum;
+//    }
+
+//    return true;
 }
 
 bool MainWindow::dublicatNumberCheck(QString number) //аргумент не используется

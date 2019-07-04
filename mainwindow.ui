@@ -4482,6 +4482,74 @@
      <string>Сбросить импульсы</string>
     </property>
    </widget>
+   <widget class="QGroupBox" name="groupBox_4">
+    <property name="geometry">
+     <rect>
+      <x>1060</x>
+      <y>110</y>
+      <width>101</width>
+      <height>101</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string/>
+    </property>
+    <layout class="QGridLayout" name="gridLayout_29">
+     <item row="0" column="0">
+      <widget class="QLineEdit" name="lineEdit_AL_RF"/>
+     </item>
+     <item row="0" column="1">
+      <widget class="QLabel" name="label_60">
+       <property name="text">
+        <string>AL-RF</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QLineEdit" name="lineEdit_RF_NS"/>
+     </item>
+     <item row="1" column="1">
+      <widget class="QLabel" name="label_89">
+       <property name="text">
+        <string>RF-NS</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="0">
+      <widget class="QLineEdit" name="lineEdit_NS_ID"/>
+     </item>
+     <item row="2" column="1">
+      <widget class="QLabel" name="label_103">
+       <property name="text">
+        <string>NS-ID</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="0">
+      <widget class="QLineEdit" name="lineEdit_ID_R"/>
+     </item>
+     <item row="3" column="1">
+      <widget class="QLabel" name="label_104">
+       <property name="text">
+        <string>ID-R</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QCheckBox" name="checkBox_plataOn_Off">
+    <property name="geometry">
+     <rect>
+      <x>1040</x>
+      <y>140</y>
+      <width>21</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">

@@ -141,6 +141,12 @@ protected:
 //    virtual bool eventFilter(QObject *watched, QEvent *event);
 
 signals:
+
+    sendFinishOff1();
+    sendFinishOff2();
+    sendFinishOff3();
+    sendFinishOff4();
+
     sendCurrentUser(QString user);
 
     sendUserTable(QStringList list);
