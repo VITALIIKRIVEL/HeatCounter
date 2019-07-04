@@ -4433,8 +4433,8 @@
    <widget class="QPushButton" name="pushButton_openPortStend">
     <property name="geometry">
      <rect>
-      <x>590</x>
-      <y>80</y>
+      <x>1000</x>
+      <y>10</y>
       <width>75</width>
       <height>23</height>
      </rect>
@@ -4446,8 +4446,8 @@
    <widget class="QPushButton" name="pushButton_closePortStend">
     <property name="geometry">
      <rect>
-      <x>590</x>
-      <y>100</y>
+      <x>920</x>
+      <y>10</y>
       <width>75</width>
       <height>23</height>
      </rect>
@@ -4459,8 +4459,8 @@
    <widget class="QPushButton" name="pushButton_portStendSettings">
     <property name="geometry">
      <rect>
-      <x>670</x>
-      <y>80</y>
+      <x>1080</x>
+      <y>10</y>
       <width>75</width>
       <height>23</height>
      </rect>

@@ -35924,15 +35924,34 @@ void MainWindow::on_toolButton_executeCommands_clicked()
     ObjectThread3->setIsWorkPlaceUseVector(vectorIsWorkPlaceUse);
     ObjectThread4->setIsWorkPlaceUseVector(vectorIsWorkPlaceUse);
 
-    ObjectThread1->errorIndicatorOff();
-    ObjectThread2->errorIndicatorOff();
-    ObjectThread3->errorIndicatorOff();
-    ObjectThread4->errorIndicatorOff();
+    portStend->close();
 
-    ObjectThread1->finishIndicatorOff();
-    ObjectThread2->finishIndicatorOff();
-    ObjectThread3->finishIndicatorOff();
-    ObjectThread4->finishIndicatorOff();
+    if(ui->checkBox_workPlace1->isChecked()) {
+        if(!ObjectThread1->errorIndicatorOff()) return;
+    }
+    if(ui->checkBox_workPlace2->isChecked()) {
+        if(!ObjectThread2->errorIndicatorOff()) return;
+    }
+    if(ui->checkBox_workPlace3->isChecked()) {
+        if(!ObjectThread3->errorIndicatorOff()) return;
+    }
+    if(ui->checkBox_workPlace4->isChecked()) {
+        if(!ObjectThread4->errorIndicatorOff()) return;
+    }
+
+
+    if(ui->checkBox_workPlace1->isChecked()) {
+        if(!ObjectThread1->finishIndicatorOff()) return;
+    }
+    if(ui->checkBox_workPlace2->isChecked()) {
+        if(!ObjectThread2->finishIndicatorOff()) return;
+    }
+    if(ui->checkBox_workPlace3->isChecked()) {
+        if(!ObjectThread3->finishIndicatorOff()) return;
+    }
+    if(ui->checkBox_workPlace4->isChecked()) {
+        if(!ObjectThread4->finishIndicatorOff()) return;
+    }
 
     portStend->close();
 
@@ -38753,9 +38772,9 @@ bool MainWindow::dublicatNumberCheckExtServ()
 
    //запрашиваем колонку pcb, eb_id таблицы dev, проверяем уникальность номера
 
-    queryStringDev = "Select \"pcb\", \"eb_id\" From dev WHERE \"pcb\" = '" + PCB_SN_ByteArray2.toHex() + "';";
+    QString queryStringDev = "Select \"pcb\", \"eb_id\" From dev WHERE \"pcb\" = '" + PCB_SN_ByteArray2.toHex() + "';";
 
-    sqlQueryDev(dataBase);
+    QSqlQuery sqlQueryDev(dataBase);
 
     if(!sqlQueryDev.exec(queryStringDev)) {
        QString lastErrorQuery = tr("Ошибка запроса SQL: ") + sqlQueryDev.lastError().text();
@@ -38816,9 +38835,9 @@ bool MainWindow::dublicatNumberCheckExtServ()
 
    //запрашиваем колонку pcb, eb_id таблицы dev, проверяем уникальность номера
 
-    queryStringDev = "Select \"pcb\", \"eb_id\" From dev WHERE \"pcb\" = '" + PCB_SN_ByteArray3.toHex() + "';";
+    QString queryStringDev = "Select \"pcb\", \"eb_id\" From dev WHERE \"pcb\" = '" + PCB_SN_ByteArray3.toHex() + "';";
 
-    sqlQueryDev(dataBase);
+    QSqlQuery sqlQueryDev(dataBase);
 
     if(!sqlQueryDev.exec(queryStringDev)) {
        QString lastErrorQuery = tr("Ошибка запроса SQL: ") + sqlQueryDev.lastError().text();
@@ -38879,9 +38898,9 @@ bool MainWindow::dublicatNumberCheckExtServ()
 
    //запрашиваем колонку pcb, eb_id таблицы dev, проверяем уникальность номера
 
-    queryStringDev = "Select \"pcb\", \"eb_id\" From dev WHERE \"pcb\" = '" + PCB_SN_ByteArray4.toHex() + "';";
+    QString queryStringDev = "Select \"pcb\", \"eb_id\" From dev WHERE \"pcb\" = '" + PCB_SN_ByteArray4.toHex() + "';";
 
-    sqlQueryDev(dataBase);
+    QSqlQuery sqlQueryDev(dataBase);
 
     if(!sqlQueryDev.exec(queryStringDev)) {
        QString lastErrorQuery = tr("Ошибка запроса SQL: ") + sqlQueryDev.lastError().text();
