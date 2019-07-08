@@ -90,6 +90,9 @@ MainWindow::MainWindow(QWidget *parent) :
     dialogIsRunWithoutConnect = new DialogIsRunWithoutConnect();
 
     smartStend = new SmartStend();
+    smartStend2 = new SmartStend();
+    smartStend3 = new SmartStend();
+    smartStend4 = new SmartStend();
 
     formCalibration->setWindowTitle("Калибровка");
     formParamsEdit->setWindowTitle("Параметры");
@@ -114,6 +117,24 @@ MainWindow::MainWindow(QWidget *parent) :
         portStend->setDataBits(QSerialPort::Data8);
         portStend->setParity(QSerialPort::NoParity);
         portStend->setStopBits(QSerialPort::OneStop);
+
+        portStend2 = new QSerialPort(this);
+            portStend2->setBaudRate(QSerialPort::Baud115200);
+            portStend2->setDataBits(QSerialPort::Data8);
+            portStend2->setParity(QSerialPort::NoParity);
+            portStend2->setStopBits(QSerialPort::OneStop);
+
+            portStend3 = new QSerialPort(this);
+                portStend3->setBaudRate(QSerialPort::Baud115200);
+                portStend3->setDataBits(QSerialPort::Data8);
+                portStend3->setParity(QSerialPort::NoParity);
+                portStend3->setStopBits(QSerialPort::OneStop);
+
+                portStend4 = new QSerialPort(this);
+                    portStend4->setBaudRate(QSerialPort::Baud115200);
+                    portStend4->setDataBits(QSerialPort::Data8);
+                    portStend4->setParity(QSerialPort::NoParity);
+                    portStend4->setStopBits(QSerialPort::OneStop);
 
     port = new QSerialPort(this);
     port2 = new QSerialPort(this);
@@ -144,6 +165,9 @@ MainWindow::MainWindow(QWidget *parent) :
     QList<QSerialPortInfo> info = QSerialPortInfo::availablePorts();
     for(int i=0; i<info.size(); i++) {
        ui->comboBox_portStend->addItem(info[i].portName());
+       ui->comboBox_portStend_2->addItem(info[i].portName());
+       ui->comboBox_portStend_3->addItem(info[i].portName());
+       ui->comboBox_portStend_4->addItem(info[i].portName());
        ui->comboBox_portList->addItem(info[i].portName());
        ui->comboBox_portList_2->addItem(info[i].portName());
        ui->comboBox_portList_3->addItem(info[i].portName());
@@ -35709,6 +35733,9 @@ void MainWindow::on_toolButton_executeCommands_clicked()
     portOptical3->close();
     portOptical4->close();
     portStend->close();
+    portStend2->close();
+    portStend3->close();
+    portStend4->close();
     portDigitalInterfaceChecking->close();
 
 //    portOptical->clear();
@@ -35925,6 +35952,9 @@ void MainWindow::on_toolButton_executeCommands_clicked()
     ObjectThread4->setIsWorkPlaceUseVector(vectorIsWorkPlaceUse);
 
     portStend->close();
+    portStend2->close();
+    portStend3->close();
+    portStend4->close();
 
     if(ui->checkBox_workPlace1->isChecked()) {
         if(!ObjectThread1->errorIndicatorOff()) return;
@@ -35954,6 +35984,9 @@ void MainWindow::on_toolButton_executeCommands_clicked()
     }
 
     portStend->close();
+    portStend2->close();
+    portStend3->close();
+    portStend4->close();
 
     //проверка тока платы
   if(ui->checkBox_plataOn_Off->isChecked()) {
@@ -36563,9 +36596,9 @@ void MainWindow::on_toolButton_executeCommands_clicked()
         Thread4.start();
 
         ObjectThread1->getPortStendName(portStend);
-        ObjectThread2->getPortStendName(portStend);
-        ObjectThread3->getPortStendName(portStend);
-        ObjectThread4->getPortStendName(portStend);
+        ObjectThread2->getPortStendName(portStend2);
+        ObjectThread3->getPortStendName(portStend3);
+        ObjectThread4->getPortStendName(portStend4);
 
         ui->label_StatusBar->setFocus(Qt::MouseFocusReason);
 
@@ -36917,6 +36950,9 @@ void MainWindow::on_toolButton_executeCommands_clicked()
         portOptical4->close();
         portDigitalInterfaceChecking->close();
         portStend->close();
+        portStend2->close();
+        portStend3->close();
+        portStend4->close();
         portOptical->clear();
         portOptical2->clear();
         portOptical3->clear();
@@ -37339,11 +37375,17 @@ void MainWindow::on_toolButton_executeCommands_clicked()
 //    ui->groupBox_result->setVisible(true);
 
     isCommandsEnded = true;
+
     portStend->close();
-    ObjectThread1->finishIndicatorOn();
-    ObjectThread2->finishIndicatorOn();
-    ObjectThread3->finishIndicatorOn();
-    ObjectThread4->finishIndicatorOn();
+    portStend2->close();
+    portStend3->close();
+    portStend4->close();
+
+    if(ui->checkBox_workPlace1->isChecked()) ObjectThread1->finishIndicatorOn();
+    if(ui->checkBox_workPlace2->isChecked()) ObjectThread2->finishIndicatorOn();
+    if(ui->checkBox_workPlace3->isChecked()) ObjectThread3->finishIndicatorOn();
+    if(ui->checkBox_workPlace4->isChecked()) ObjectThread4->finishIndicatorOn();
+
     repaint();
 
 
@@ -41295,9 +41337,9 @@ void MainWindow::on_comboBox_portStend_currentIndexChanged(const QString &arg1)
     portStend->setPortName(arg1);
 
     ObjectThread1->getPortStendName(portStend);
-    ObjectThread2->getPortStendName(portStend);
-    ObjectThread3->getPortStendName(portStend);
-    ObjectThread4->getPortStendName(portStend);
+//    ObjectThread2->getPortStendName(portStend);
+//    ObjectThread3->getPortStendName(portStend);
+//    ObjectThread4->getPortStendName(portStend);
 }
 
 void MainWindow::on_pushButton_plataOn_clicked()
@@ -41619,4 +41661,34 @@ void MainWindow::slotReadyReadStend()
 void MainWindow::on_comboBox_portStend_currentTextChanged(const QString &arg1)
 {
 
+}
+
+void MainWindow::on_comboBox_portStend_2_currentIndexChanged(const QString &arg1)
+{
+    portStend2->setPortName(arg1);
+
+ //   ObjectThread1->getPortStendName(portStend);
+    ObjectThread2->getPortStendName(portStend2);
+//    ObjectThread3->getPortStendName(portStend);
+//    ObjectThread4->getPortStendName(portStend);
+}
+
+void MainWindow::on_comboBox_portStend_3_currentIndexChanged(const QString &arg1)
+{
+    portStend3->setPortName(arg1);
+
+ //   ObjectThread1->getPortStendName(portStend);
+    ObjectThread3->getPortStendName(portStend3);
+//    ObjectThread3->getPortStendName(portStend);
+//    ObjectThread4->getPortStendName(portStend);
+}
+
+void MainWindow::on_comboBox_portStend_4_currentIndexChanged(const QString &arg1)
+{
+    portStend4->setPortName(arg1);
+
+ //   ObjectThread1->getPortStendName(portStend);
+    ObjectThread4->getPortStendName(portStend4);
+//    ObjectThread3->getPortStendName(portStend);
+//    ObjectThread4->getPortStendName(portStend);
 }

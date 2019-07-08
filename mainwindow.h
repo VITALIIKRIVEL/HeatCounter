@@ -693,6 +693,12 @@ private slots:
 
     void on_comboBox_portStend_currentTextChanged(const QString &arg1);
 
+    void on_comboBox_portStend_2_currentIndexChanged(const QString &arg1);
+
+    void on_comboBox_portStend_3_currentIndexChanged(const QString &arg1);
+
+    void on_comboBox_portStend_4_currentIndexChanged(const QString &arg1);
+
 private:
     
  //   Ui::MainWindow *ui;
@@ -708,6 +714,9 @@ private:
     Formusercontrol * formUserControl;
 
     SmartStend * smartStend;
+    SmartStend * smartStend2;
+    SmartStend * smartStend3;
+    SmartStend * smartStend4;
 
     ObjectThread *ObjectThread1;
     ObjectThread *ObjectThread2;
@@ -759,7 +768,7 @@ private:
     QSerialPort *portOptical, *portOptical2, *portOptical3, *portOptical4;
     QSerialPort *portCurrentOptical;
     QSerialPort *portDigitalInterfaceChecking;
-    QSerialPort *portStend;
+    QSerialPort *portStend, *portStend2, *portStend3, *portStend4;
     QString portName, portName2, portName3, portName4;
     QString portNameOptical, portNameOptical2, portNameOptical3, portNameOptical4;
     QString portNameInterfaceChecking;
