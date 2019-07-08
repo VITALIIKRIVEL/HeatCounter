@@ -37539,18 +37539,18 @@ void MainWindow::on_toolButton_executeCommands_clicked()
     if(workPlace1ResultString == tr("Не годен") || workPlace2ResultString == tr("Не годен") ||
             workPlace3ResultString == tr("Не годен") || workPlace4ResultString == tr("Не годен")) {
 
-        if(dialogWritingDB->exec() == QDialog::Accepted) {
+//        if(dialogWritingDB->exec() == QDialog::Accepted) {
 
-            isNoteWriting = true;
+//            isNoteWriting = true;
 
-            on_toolButton_externalServerConnect_clicked();
+//            on_toolButton_externalServerConnect_clicked();
 
-        }
-        else {
-            isNoteWriting = false;
+//        }
+//        else {
+//            isNoteWriting = false;
 
-            saveCounterCheckingResult(1, QString());
-        }
+//            saveCounterCheckingResult(1, QString());
+//        }
 
     }
     else {
