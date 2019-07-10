@@ -37535,30 +37535,153 @@ void MainWindow::on_toolButton_executeCommands_clicked()
 
     global::pause(500);
 
+    isNoteWriting = false;
+    isNoteWriting2 = false;
+    isNoteWriting3 = false;
+    isNoteWriting4 = false;
+
+    isDublExist1 = false;
+    isDublExist2 = false;
+    isDublExist3 = false;
+    isDublExist4 = false;
+
+    //если какой-то Годен, сразу записываем его
+    if(workPlace1ResultString == tr("Годен")) {
+            isNoteWriting = true;
+            on_toolButton_externalServerConnect_clicked();
+            isNoteWriting = false;
+    }
+
+    if(workPlace2ResultString == tr("Годен")) {
+            isNoteWriting2 = true;
+            on_toolButton_externalServerConnect_clicked();
+            isNoteWriting2 = false;
+    }
+
+    if(workPlace3ResultString == tr("Годен")) {
+            isNoteWriting3 = true;
+            on_toolButton_externalServerConnect_clicked();
+            isNoteWriting3 = false;
+    }
+
+    if(workPlace4ResultString == tr("Годен")) {
+            isNoteWriting4 = true;
+            on_toolButton_externalServerConnect_clicked();
+            isNoteWriting4 = false;
+    }
+    //если какой-то Годен, сразу записываем его/
+
     //если хотя бы один результат Не годен, спрашиваем о необходимости записи в бд
     if(workPlace1ResultString == tr("Не годен") || workPlace2ResultString == tr("Не годен") ||
             workPlace3ResultString == tr("Не годен") || workPlace4ResultString == tr("Не годен")) {
 
-//        if(dialogWritingDB->exec() == QDialog::Accepted) {
+      //рабочее место 1
+      if(workPlace1ResultString == tr("Не годен")) {
 
-//            isNoteWriting = true;
+        dialogWritingDB->setText("Рабочее место: 1");
 
-//            on_toolButton_externalServerConnect_clicked();
+        if(dialogWritingDB->exec() == QDialog::Accepted) {
 
-//        }
-//        else {
-//            isNoteWriting = false;
+            isNoteWriting = true;
 
-//            saveCounterCheckingResult(1, QString());
-//        }
+            on_toolButton_externalServerConnect_clicked();
+
+            isNoteWriting = false;
+
+        }
+        else {
+            isNoteWriting = false;
+
+           // saveCounterCheckingResult(1, QString());
+        }
+
+      }
+      //рабочее место 1/
+
+
+      //рабочее место 2
+      if(workPlace2ResultString == tr("Не годен")) {
+
+        dialogWritingDB->setText("Рабочее место: 2");
+
+        if(dialogWritingDB->exec() == QDialog::Accepted) {
+
+            isNoteWriting2 = true;
+
+            on_toolButton_externalServerConnect_clicked();
+
+            isNoteWriting2 = false;
+
+        }
+        else {
+            isNoteWriting2 = false;
+
+           // saveCounterCheckingResult(1, QString());
+        }
+
+      }
+      //рабочее место 2/
+
+
+      //рабочее место 3
+      if(workPlace3ResultString == tr("Не годен")) {
+
+        dialogWritingDB->setText("Рабочее место: 3");
+
+        if(dialogWritingDB->exec() == QDialog::Accepted) {
+
+            isNoteWriting3 = true;
+
+            on_toolButton_externalServerConnect_clicked();
+
+            isNoteWriting3 = false;
+
+        }
+        else {
+            isNoteWriting3 = false;
+
+           // saveCounterCheckingResult(1, QString());
+        }
+
+      }
+      //рабочее место 3/
+
+
+     //рабочее место 4
+      if(workPlace4ResultString == tr("Не годен")) {
+
+        dialogWritingDB->setText("Рабочее место: 4");
+
+        if(dialogWritingDB->exec() == QDialog::Accepted) {
+
+            isNoteWriting4 = true;
+
+            on_toolButton_externalServerConnect_clicked();
+
+            isNoteWriting4 = false;
+
+        }
+        else {
+            isNoteWriting4 = false;
+
+           // saveCounterCheckingResult(1, QString());
+        }
+
+      }
+      //рабочее место 3/
+
+
 
     }
     else {
 
-        isNoteWriting = true;
+  /*      isNoteWriting = true;
+        isNoteWriting2 = true;
+        isNoteWriting3 = true;
+        isNoteWriting4 = true;
 
         on_toolButton_externalServerConnect_clicked();
-
+ */
     }
 
 
@@ -38729,11 +38852,6 @@ void MainWindow::on_toolButton_execSql_clicked()
 bool MainWindow::dublicatNumberCheckExtServ()
 {
 
-    isDublExist1 = false;
-    isDublExist2 = false;
-    isDublExist3 = false;
-    isDublExist4 = false;
-
     jsonByteArray1.clear();
     jsonByteArray2.clear();
     jsonByteArray3.clear();
@@ -38741,7 +38859,7 @@ bool MainWindow::dublicatNumberCheckExtServ()
 
     //pcb_sn1
 
-  if(ui->checkBox_workPlace1->isChecked()) {
+  if(ui->checkBox_workPlace1->isChecked() && isNoteWriting) {
 
    //запрашиваем колонку pcb, eb_id таблицы dev, проверяем уникальность номера
 
@@ -38810,7 +38928,7 @@ bool MainWindow::dublicatNumberCheckExtServ()
 
     //pcb_sn2
 
-  if(ui->checkBox_workPlace2->isChecked()) {
+  if(ui->checkBox_workPlace2->isChecked() && isNoteWriting2) {
 
    //запрашиваем колонку pcb, eb_id таблицы dev, проверяем уникальность номера
 
@@ -38873,7 +38991,7 @@ bool MainWindow::dublicatNumberCheckExtServ()
 
    //pcb_sn3
 
-  if(ui->checkBox_workPlace3->isChecked()) {
+  if(ui->checkBox_workPlace3->isChecked() && isNoteWriting3) {
 
    //запрашиваем колонку pcb, eb_id таблицы dev, проверяем уникальность номера
 
@@ -38936,7 +39054,7 @@ bool MainWindow::dublicatNumberCheckExtServ()
 
    //pcb_sn4
 
-  if(ui->checkBox_workPlace4->isChecked()) {
+  if(ui->checkBox_workPlace4->isChecked() && isNoteWriting4) {
 
    //запрашиваем колонку pcb, eb_id таблицы dev, проверяем уникальность номера
 
@@ -39666,11 +39784,6 @@ void MainWindow::on_toolButton_externalServerConnect_clicked()
     //запись результата в текстовый файл result_
     saveCounterCheckingResult(1, QString());
 
-    isDublExist1 = false;
-    isDublExist2 = false;
-    isDublExist3 = false;
-    isDublExist4 = false;
-
     //перед записью в базу данных (или не записью) записываем результат проверки в текстовый файл
 
         //подключение к серверу
@@ -39734,7 +39847,7 @@ void MainWindow::on_toolButton_externalServerConnect_clicked()
 
 
        //
-       if(!isDublExist1 && ui->checkBox_workPlace1->isChecked()) {
+       if(!isDublExist1 && ui->checkBox_workPlace1->isChecked() && isNoteWriting) {
 
           //запись в две таблицы, сначала eb_test(запоминаем id записи) потом dev(в поле eb_id записываем id, которое запомнили в eb_test)
 
@@ -39824,7 +39937,7 @@ void MainWindow::on_toolButton_externalServerConnect_clicked()
        }
 
        //если этот номер уже присутствует, тогда задаём вопрос оператору о перезаписи
-       if(isDublExist1 && ui->checkBox_workPlace1->isChecked()) {
+       if(isDublExist1 && ui->checkBox_workPlace1->isChecked() && isNoteWriting) {
 
           emit sendNoteDataToDialofForm(PCB_SN_ByteArray.toHex(), QString::fromUtf8(jsonByteArray1), 1,
                                         currentDublicatTime1, currentDublicatUsable1);
@@ -39849,7 +39962,7 @@ void MainWindow::on_toolButton_externalServerConnect_clicked()
        //если этот номер уже присутствует, тогда задаём вопрос оператору о перезаписи/
 
        //
-       if(!isDublExist2 && ui->checkBox_workPlace2->isChecked()) {
+       if(!isDublExist2 && ui->checkBox_workPlace2->isChecked() && isNoteWriting2) {
 
            //запись в две таблицы, сначала eb_test(запоминаем id записи) потом dev(в поле eb_id записываем id, которое запомнили в eb_test)
 
@@ -39927,7 +40040,7 @@ void MainWindow::on_toolButton_externalServerConnect_clicked()
  //          bool que = execQuery(queryString);
        }
 
-       if(isDublExist2 && ui->checkBox_workPlace2->isChecked()) {
+       if(isDublExist2 && ui->checkBox_workPlace2->isChecked() && isNoteWriting2) {
 
            emit sendNoteDataToDialofForm(PCB_SN_ByteArray2.toHex() /*serialNumber2.toHex()*/, QString::fromUtf8(jsonByteArray2), 2,
                                          currentDublicatTime2, currentDublicatUsable2);
@@ -39949,7 +40062,7 @@ void MainWindow::on_toolButton_externalServerConnect_clicked()
        }
 
        //
-       if(!isDublExist3 && ui->checkBox_workPlace3->isChecked()) {
+       if(!isDublExist3 && ui->checkBox_workPlace3->isChecked() && isNoteWriting3) {
 
            //запись в две таблицы, сначала eb_test(запоминаем id записи) потом dev(в поле eb_id записываем id, которое запомнили в eb_test)
 
@@ -40027,7 +40140,7 @@ void MainWindow::on_toolButton_externalServerConnect_clicked()
  //          bool que = execQuery(queryString);
        }
 
-       if(isDublExist3 && ui->checkBox_workPlace3->isChecked()) {
+       if(isDublExist3 && ui->checkBox_workPlace3->isChecked() && isNoteWriting3) {
 
            emit sendNoteDataToDialofForm(PCB_SN_ByteArray3.toHex() /*serialNumber3.toHex()*/, QString::fromUtf8(jsonByteArray3), 3,
                                          currentDublicatTime3, currentDublicatUsable3);
@@ -40049,7 +40162,7 @@ void MainWindow::on_toolButton_externalServerConnect_clicked()
        }
 
        //
-       if(!isDublExist4 && ui->checkBox_workPlace4->isChecked()) {
+       if(!isDublExist4 && ui->checkBox_workPlace4->isChecked() && isNoteWriting4) {
 
            //запись в две таблицы, сначала eb_test(запоминаем id записи) потом dev(в поле eb_id записываем id, которое запомнили в eb_test)
 
@@ -40127,7 +40240,7 @@ void MainWindow::on_toolButton_externalServerConnect_clicked()
  //          bool que = execQuery(queryString);
        }
 
-       if(isDublExist4 && ui->checkBox_workPlace4->isChecked()) {
+       if(isDublExist4 && ui->checkBox_workPlace4->isChecked() && isNoteWriting4) {
 
            emit sendNoteDataToDialofForm(PCB_SN_ByteArray4.toHex() /*serialNumber4.toHex()*/, QString::fromUtf8(jsonByteArray4), 4,
                                          currentDublicatTime4, currentDublicatUsable4);

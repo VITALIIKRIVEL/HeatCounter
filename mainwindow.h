@@ -1009,7 +1009,7 @@ private:
 
     bool isLoginPasswordOk;
 
-    bool isNoteWriting;
+    bool isNoteWriting, isNoteWriting2, isNoteWriting3, isNoteWriting4;
 
     int userId;
 

@@ -15,3 +15,8 @@ DialogWritingDB::~DialogWritingDB()
 {
     delete ui;
 }
+
+void DialogWritingDB::setText(QString text)
+{
+    ui->label_text->setText(text);
+}

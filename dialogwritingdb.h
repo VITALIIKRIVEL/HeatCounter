@@ -15,6 +15,8 @@ public:
     explicit DialogWritingDB(QWidget *parent = nullptr);
     ~DialogWritingDB();
 
+    void setText(QString text);
+
 private:
     Ui::DialogWritingDB *ui;
 };

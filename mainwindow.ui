@@ -474,8 +474,8 @@
    <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
-      <x>570</x>
-      <y>0</y>
+      <x>600</x>
+      <y>10</y>
       <width>221</width>
       <height>24</height>
      </rect>
@@ -628,7 +628,7 @@
       <x>10</x>
       <y>150</y>
       <width>153</width>
-      <height>201</height>
+      <height>221</height>
      </rect>
     </property>
     <property name="maximumSize">
@@ -641,90 +641,23 @@
      <string/>
     </property>
     <layout class="QGridLayout" name="gridLayout_17">
-     <item row="4" column="0" colspan="2">
-      <widget class="QGroupBox" name="groupBox_HarwareConfiguration">
+     <item row="7" column="0" colspan="2">
+      <widget class="QLineEdit" name="lineEdit_RMV_ErrorFlags">
        <property name="minimumSize">
         <size>
-         <width>70</width>
-         <height>50</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>16777215</width>
-         <height>250</height>
-        </size>
-       </property>
-       <property name="title">
-        <string>Серийный номер</string>
-       </property>
-       <layout class="QGridLayout" name="gridLayout_13">
-        <item row="0" column="1">
-         <widget class="QSpinBox" name="spinBox_serial_">
-          <property name="minimumSize">
-           <size>
-            <width>70</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>70</width>
-            <height>16777215</height>
-           </size>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="0">
-         <widget class="QLineEdit" name="lineEdit_serial">
-          <property name="minimumSize">
-           <size>
-            <width>30</width>
-            <height>15</height>
-           </size>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>30</width>
-            <height>16777215</height>
-           </size>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </widget>
-     </item>
-     <item row="5" column="1">
-      <widget class="QLabel" name="label_RMV_ErrorFlags_tick">
-       <property name="text">
-        <string/>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="0" colspan="2">
-      <widget class="QLineEdit" name="lineEdit_selectConfigFile">
-       <property name="minimumSize">
-        <size>
-         <width>0</width>
+         <width>100</width>
          <height>15</height>
         </size>
        </property>
        <property name="maximumSize">
         <size>
          <width>16777215</width>
-         <height>18</height>
+         <height>15</height>
         </size>
        </property>
       </widget>
      </item>
-     <item row="3" column="0" colspan="2">
-      <widget class="QToolButton" name="toolButton_selectConfigFile">
-       <property name="text">
-        <string>Выбрать конф. файл</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="0" colspan="2">
+     <item row="1" column="0" colspan="2">
       <layout class="QHBoxLayout" name="horizontalLayout">
        <item>
         <widget class="QComboBox" name="comboBox_portListOptical">
@@ -751,7 +684,7 @@
        </item>
       </layout>
      </item>
-     <item row="5" column="0">
+     <item row="6" column="0">
       <widget class="QLabel" name="label_RMV_ErrorFlags">
        <property name="minimumSize">
         <size>
@@ -764,23 +697,67 @@
        </property>
       </widget>
      </item>
-     <item row="6" column="0" colspan="2">
-      <widget class="QLineEdit" name="lineEdit_RMV_ErrorFlags">
+     <item row="5" column="0" colspan="2">
+      <widget class="QGroupBox" name="groupBox_HarwareConfiguration">
        <property name="minimumSize">
         <size>
-         <width>100</width>
-         <height>15</height>
+         <width>70</width>
+         <height>50</height>
         </size>
        </property>
        <property name="maximumSize">
         <size>
          <width>16777215</width>
-         <height>15</height>
+         <height>250</height>
         </size>
+       </property>
+       <property name="title">
+        <string>Серийный номер</string>
+       </property>
+       <layout class="QGridLayout" name="gridLayout_13">
+        <item row="0" column="1">
+         <widget class="QSpinBox" name="spinBox_serial_">
+          <property name="minimumSize">
+           <size>
+            <width>70</width>
+            <height>20</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>70</width>
+            <height>16777215</height>
+           </size>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="0">
+         <widget class="QLineEdit" name="lineEdit_serial">
+          <property name="minimumSize">
+           <size>
+            <width>30</width>
+            <height>20</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>30</width>
+            <height>16777215</height>
+           </size>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item row="4" column="0" colspan="2">
+      <widget class="QToolButton" name="toolButton_selectConfigFile">
+       <property name="text">
+        <string>Выбрать конф. файл</string>
        </property>
       </widget>
      </item>
-     <item row="1" column="0" colspan="2">
+     <item row="2" column="0" colspan="2">
       <layout class="QHBoxLayout" name="horizontalLayout_2">
        <item>
         <widget class="QComboBox" name="comboBox_portList">
@@ -801,6 +778,56 @@
        </item>
       </layout>
      </item>
+     <item row="6" column="1">
+      <widget class="QLabel" name="label_RMV_ErrorFlags_tick">
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="0" colspan="2">
+      <widget class="QLineEdit" name="lineEdit_selectConfigFile">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>15</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>18</height>
+        </size>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="0" colspan="2">
+      <layout class="QHBoxLayout" name="horizontalLayout_18">
+       <item>
+        <widget class="QComboBox" name="comboBox_portStend">
+         <property name="maximumSize">
+          <size>
+           <width>70</width>
+           <height>15</height>
+          </size>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="label_96">
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>15</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>Стенд</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
     </layout>
    </widget>
    <widget class="QGroupBox" name="groupBox_workPlace2">
@@ -809,7 +836,7 @@
       <x>170</x>
       <y>150</y>
       <width>151</width>
-      <height>201</height>
+      <height>221</height>
      </rect>
     </property>
     <property name="minimumSize">
@@ -828,109 +855,7 @@
      <string/>
     </property>
     <layout class="QGridLayout" name="gridLayout_23">
-     <item row="7" column="0">
-      <widget class="QLineEdit" name="lineEdit_RMV_ErrorFlags_2">
-       <property name="minimumSize">
-        <size>
-         <width>100</width>
-         <height>15</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>16777215</width>
-         <height>15</height>
-        </size>
-       </property>
-      </widget>
-     </item>
-     <item row="7" column="1">
-      <widget class="QLabel" name="label_RMV_ErrorFlags_tick_2">
-       <property name="text">
-        <string/>
-       </property>
-      </widget>
-     </item>
-     <item row="5" column="0" colspan="2">
-      <widget class="QGroupBox" name="groupBox_HarwareConfiguration_4">
-       <property name="minimumSize">
-        <size>
-         <width>70</width>
-         <height>50</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>16777215</width>
-         <height>250</height>
-        </size>
-       </property>
-       <property name="title">
-        <string>Серийный номер</string>
-       </property>
-       <layout class="QGridLayout" name="gridLayout_14">
-        <item row="0" column="1">
-         <widget class="QSpinBox" name="spinBox_serial_2">
-          <property name="minimumSize">
-           <size>
-            <width>70</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>70</width>
-            <height>16777215</height>
-           </size>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="0">
-         <widget class="QLineEdit" name="lineEdit_serial_2">
-          <property name="minimumSize">
-           <size>
-            <width>30</width>
-            <height>15</height>
-           </size>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>30</width>
-            <height>16777215</height>
-           </size>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </widget>
-     </item>
-     <item row="6" column="0">
-      <widget class="QLabel" name="label_RMV_ErrorFlags_2">
-       <property name="maximumSize">
-        <size>
-         <width>16777215</width>
-         <height>16777215</height>
-        </size>
-       </property>
-       <property name="text">
-        <string>rmv_error_flags</string>
-       </property>
-      </widget>
-     </item>
-     <item row="4" column="0">
-      <widget class="QToolButton" name="toolButton_selectConfigFile_2">
-       <property name="maximumSize">
-        <size>
-         <width>16777215</width>
-         <height>16777215</height>
-        </size>
-       </property>
-       <property name="text">
-        <string>Выбрать конф. файл</string>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="0" colspan="2">
+     <item row="4" column="0" colspan="2">
       <widget class="QLineEdit" name="lineEdit_selectConfigFile_2">
        <property name="minimumSize">
         <size>
@@ -946,7 +871,7 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="0" colspan="2">
+     <item row="1" column="0" colspan="2">
       <layout class="QHBoxLayout" name="horizontalLayout_4">
        <item>
         <widget class="QComboBox" name="comboBox_portListOptical_2">
@@ -973,7 +898,136 @@
        </item>
       </layout>
      </item>
-     <item row="2" column="0">
+     <item row="6" column="0" colspan="2">
+      <widget class="QGroupBox" name="groupBox_HarwareConfiguration_4">
+       <property name="minimumSize">
+        <size>
+         <width>70</width>
+         <height>50</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>250</height>
+        </size>
+       </property>
+       <property name="title">
+        <string>Серийный номер</string>
+       </property>
+       <layout class="QGridLayout" name="gridLayout_14">
+        <item row="0" column="1">
+         <widget class="QSpinBox" name="spinBox_serial_2">
+          <property name="minimumSize">
+           <size>
+            <width>70</width>
+            <height>20</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>70</width>
+            <height>16777215</height>
+           </size>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="0">
+         <widget class="QLineEdit" name="lineEdit_serial_2">
+          <property name="minimumSize">
+           <size>
+            <width>30</width>
+            <height>20</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>30</width>
+            <height>16777215</height>
+           </size>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item row="5" column="0">
+      <widget class="QToolButton" name="toolButton_selectConfigFile_2">
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>Выбрать конф. файл</string>
+       </property>
+      </widget>
+     </item>
+     <item row="8" column="1">
+      <widget class="QLabel" name="label_RMV_ErrorFlags_tick_2">
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+     </item>
+     <item row="7" column="0">
+      <widget class="QLabel" name="label_RMV_ErrorFlags_2">
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>rmv_error_flags</string>
+       </property>
+      </widget>
+     </item>
+     <item row="8" column="0">
+      <widget class="QLineEdit" name="lineEdit_RMV_ErrorFlags_2">
+       <property name="minimumSize">
+        <size>
+         <width>100</width>
+         <height>15</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>15</height>
+        </size>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="0" colspan="2">
+      <layout class="QHBoxLayout" name="horizontalLayout_19">
+       <item>
+        <widget class="QComboBox" name="comboBox_portStend_2">
+         <property name="maximumSize">
+          <size>
+           <width>70</width>
+           <height>15</height>
+          </size>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="label_105">
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>15</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>Стенд</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item row="3" column="0" colspan="2">
       <layout class="QHBoxLayout" name="horizontalLayout_15">
        <item>
         <widget class="QComboBox" name="comboBox_portList_2">
@@ -1002,7 +1056,7 @@
       <x>330</x>
       <y>150</y>
       <width>151</width>
-      <height>201</height>
+      <height>221</height>
      </rect>
     </property>
     <property name="minimumSize">
@@ -1021,7 +1075,80 @@
      <string/>
     </property>
     <layout class="QGridLayout" name="gridLayout_25">
-     <item row="5" column="0" colspan="2">
+     <item row="10" column="1">
+      <widget class="QLabel" name="label_RMV_ErrorFlags_tick_3">
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="0" colspan="2">
+      <widget class="QLineEdit" name="lineEdit_selectConfigFile_3">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>15</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>18</height>
+        </size>
+       </property>
+      </widget>
+     </item>
+     <item row="8" column="0">
+      <widget class="QLabel" name="label_RMV_ErrorFlags_3">
+       <property name="text">
+        <string>rmv_error_flags</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0" colspan="2">
+      <layout class="QHBoxLayout" name="horizontalLayout_5">
+       <item>
+        <widget class="QComboBox" name="comboBox_portListOptical_3">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>15</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>18</height>
+          </size>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="label_67">
+         <property name="text">
+          <string>УСО-2</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item row="9" column="0" rowspan="2" colspan="2">
+      <widget class="QLineEdit" name="lineEdit_RMV_ErrorFlags_3">
+       <property name="minimumSize">
+        <size>
+         <width>100</width>
+         <height>15</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>15</height>
+        </size>
+       </property>
+      </widget>
+     </item>
+     <item row="6" column="0" colspan="2">
       <widget class="QGroupBox" name="groupBox_HarwareConfiguration_5">
        <property name="minimumSize">
         <size>
@@ -1060,7 +1187,7 @@
           <property name="minimumSize">
            <size>
             <width>70</width>
-            <height>0</height>
+            <height>20</height>
            </size>
           </property>
           <property name="maximumSize">
@@ -1074,53 +1201,7 @@
        </layout>
       </widget>
      </item>
-     <item row="7" column="0">
-      <widget class="QLabel" name="label_RMV_ErrorFlags_3">
-       <property name="text">
-        <string>rmv_error_flags</string>
-       </property>
-      </widget>
-     </item>
-     <item row="8" column="0" rowspan="2" colspan="2">
-      <widget class="QLineEdit" name="lineEdit_RMV_ErrorFlags_3">
-       <property name="minimumSize">
-        <size>
-         <width>100</width>
-         <height>15</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>16777215</width>
-         <height>15</height>
-        </size>
-       </property>
-      </widget>
-     </item>
-     <item row="9" column="1">
-      <widget class="QLabel" name="label_RMV_ErrorFlags_tick_3">
-       <property name="text">
-        <string/>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="0" colspan="2">
-      <widget class="QLineEdit" name="lineEdit_selectConfigFile_3">
-       <property name="minimumSize">
-        <size>
-         <width>0</width>
-         <height>15</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>16777215</width>
-         <height>18</height>
-        </size>
-       </property>
-      </widget>
-     </item>
-     <item row="4" column="0" colspan="2">
+     <item row="5" column="0" colspan="2">
       <widget class="QToolButton" name="toolButton_selectConfigFile_3">
        <property name="text">
         <string>Выбрать конф. файл</string>
@@ -1128,33 +1209,33 @@
       </widget>
      </item>
      <item row="0" column="0" colspan="2">
-      <layout class="QHBoxLayout" name="horizontalLayout_5">
+      <layout class="QHBoxLayout" name="horizontalLayout_20">
        <item>
-        <widget class="QComboBox" name="comboBox_portListOptical_3">
-         <property name="minimumSize">
-          <size>
-           <width>0</width>
-           <height>15</height>
-          </size>
-         </property>
+        <widget class="QComboBox" name="comboBox_portStend_3">
          <property name="maximumSize">
           <size>
-           <width>16777215</width>
-           <height>18</height>
+           <width>70</width>
+           <height>15</height>
           </size>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QLabel" name="label_67">
+        <widget class="QLabel" name="label_106">
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>15</height>
+          </size>
+         </property>
          <property name="text">
-          <string>УСО-2</string>
+          <string>Стенд</string>
          </property>
         </widget>
        </item>
       </layout>
      </item>
-     <item row="2" column="0">
+     <item row="3" column="0" colspan="2">
       <layout class="QHBoxLayout" name="horizontalLayout_16">
        <item>
         <widget class="QComboBox" name="comboBox_portList_3">
@@ -1183,7 +1264,7 @@
       <x>490</x>
       <y>150</y>
       <width>151</width>
-      <height>201</height>
+      <height>221</height>
      </rect>
     </property>
     <property name="minimumSize">
@@ -1202,44 +1283,7 @@
      <string/>
     </property>
     <layout class="QGridLayout" name="gridLayout_27">
-     <item row="5" column="0">
-      <widget class="QLabel" name="label_RMV_ErrorFlags_4">
-       <property name="text">
-        <string>rmv_error_flags</string>
-       </property>
-      </widget>
-     </item>
-     <item row="6" column="0" rowspan="2" colspan="2">
-      <widget class="QLineEdit" name="lineEdit_RMV_ErrorFlags_4">
-       <property name="minimumSize">
-        <size>
-         <width>100</width>
-         <height>15</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>16777215</width>
-         <height>15</height>
-        </size>
-       </property>
-      </widget>
-     </item>
-     <item row="7" column="1">
-      <widget class="QLabel" name="label_RMV_ErrorFlags_tick_4">
-       <property name="text">
-        <string/>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="0" colspan="2">
-      <widget class="QToolButton" name="toolButton_selectConfigFile_4">
-       <property name="text">
-        <string>Выбрать конф. файл</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="0" colspan="2">
+     <item row="1" column="0" colspan="2">
       <layout class="QHBoxLayout" name="horizontalLayout_6">
        <item>
         <widget class="QComboBox" name="comboBox_portListOptical_4">
@@ -1266,7 +1310,7 @@
        </item>
       </layout>
      </item>
-     <item row="2" column="0" colspan="2">
+     <item row="3" column="0" colspan="2">
       <widget class="QLineEdit" name="lineEdit_selectConfigFile_4">
        <property name="minimumSize">
         <size>
@@ -1282,7 +1326,65 @@
        </property>
       </widget>
      </item>
+     <item row="7" column="0" rowspan="2" colspan="2">
+      <widget class="QLineEdit" name="lineEdit_RMV_ErrorFlags_4">
+       <property name="minimumSize">
+        <size>
+         <width>100</width>
+         <height>15</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>15</height>
+        </size>
+       </property>
+      </widget>
+     </item>
+     <item row="6" column="0">
+      <widget class="QLabel" name="label_RMV_ErrorFlags_4">
+       <property name="text">
+        <string>rmv_error_flags</string>
+       </property>
+      </widget>
+     </item>
      <item row="4" column="0" colspan="2">
+      <widget class="QToolButton" name="toolButton_selectConfigFile_4">
+       <property name="text">
+        <string>Выбрать конф. файл</string>
+       </property>
+      </widget>
+     </item>
+     <item row="8" column="1">
+      <widget class="QLabel" name="label_RMV_ErrorFlags_tick_4">
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="0" colspan="2">
+      <layout class="QHBoxLayout" name="horizontalLayout_17">
+       <item>
+        <widget class="QComboBox" name="comboBox_portList_4">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>15</height>
+          </size>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="label_102">
+         <property name="text">
+          <string>BSL</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item row="5" column="0" colspan="2">
       <widget class="QGroupBox" name="groupBox_HarwareConfiguration_6">
        <property name="minimumSize">
         <size>
@@ -1305,7 +1407,7 @@
           <property name="minimumSize">
            <size>
             <width>70</width>
-            <height>0</height>
+            <height>20</height>
            </size>
           </property>
           <property name="maximumSize">
@@ -1335,22 +1437,28 @@
        </layout>
       </widget>
      </item>
-     <item row="1" column="0" colspan="2">
-      <layout class="QHBoxLayout" name="horizontalLayout_17">
+     <item row="0" column="0" colspan="2">
+      <layout class="QHBoxLayout" name="horizontalLayout_21">
        <item>
-        <widget class="QComboBox" name="comboBox_portList_4">
-         <property name="minimumSize">
+        <widget class="QComboBox" name="comboBox_portStend_4">
+         <property name="maximumSize">
           <size>
-           <width>0</width>
+           <width>70</width>
            <height>15</height>
           </size>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QLabel" name="label_102">
+        <widget class="QLabel" name="label_107">
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>15</height>
+          </size>
+         </property>
          <property name="text">
-          <string>BSL</string>
+          <string>Стенд</string>
          </property>
         </widget>
        </item>
@@ -3327,7 +3435,7 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>350</y>
+      <y>370</y>
       <width>150</width>
       <height>221</height>
      </rect>
@@ -3549,7 +3657,7 @@
     <property name="geometry">
      <rect>
       <x>170</x>
-      <y>350</y>
+      <y>370</y>
       <width>150</width>
       <height>221</height>
      </rect>
@@ -3768,7 +3876,7 @@
     <property name="geometry">
      <rect>
       <x>330</x>
-      <y>350</y>
+      <y>370</y>
       <width>150</width>
       <height>221</height>
      </rect>
@@ -3987,7 +4095,7 @@
     <property name="geometry">
      <rect>
       <x>490</x>
-      <y>350</y>
+      <y>370</y>
       <width>150</width>
       <height>221</height>
      </rect>
@@ -4348,41 +4456,6 @@
      <string>R_Real1</string>
     </property>
    </widget>
-   <widget class="QWidget" name="layoutWidget">
-    <property name="geometry">
-     <rect>
-      <x>570</x>
-      <y>20</y>
-      <width>221</width>
-      <height>22</height>
-     </rect>
-    </property>
-    <layout class="QHBoxLayout" name="horizontalLayout_18">
-     <item>
-      <widget class="QComboBox" name="comboBox_portStend">
-       <property name="maximumSize">
-        <size>
-         <width>70</width>
-         <height>15</height>
-        </size>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLabel" name="label_96">
-       <property name="maximumSize">
-        <size>
-         <width>16777215</width>
-         <height>15</height>
-        </size>
-       </property>
-       <property name="text">
-        <string>Стенд1</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </widget>
    <widget class="QPushButton" name="pushButton_plataOn">
     <property name="geometry">
      <rect>
@@ -4567,111 +4640,6 @@
     <property name="text">
      <string/>
     </property>
-   </widget>
-   <widget class="QWidget" name="layoutWidget_3">
-    <property name="geometry">
-     <rect>
-      <x>570</x>
-      <y>40</y>
-      <width>221</width>
-      <height>22</height>
-     </rect>
-    </property>
-    <layout class="QHBoxLayout" name="horizontalLayout_19">
-     <item>
-      <widget class="QComboBox" name="comboBox_portStend_2">
-       <property name="maximumSize">
-        <size>
-         <width>70</width>
-         <height>15</height>
-        </size>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLabel" name="label_105">
-       <property name="maximumSize">
-        <size>
-         <width>16777215</width>
-         <height>15</height>
-        </size>
-       </property>
-       <property name="text">
-        <string>Стенд2</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </widget>
-   <widget class="QWidget" name="layoutWidget_4">
-    <property name="geometry">
-     <rect>
-      <x>570</x>
-      <y>60</y>
-      <width>221</width>
-      <height>22</height>
-     </rect>
-    </property>
-    <layout class="QHBoxLayout" name="horizontalLayout_20">
-     <item>
-      <widget class="QComboBox" name="comboBox_portStend_3">
-       <property name="maximumSize">
-        <size>
-         <width>70</width>
-         <height>15</height>
-        </size>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLabel" name="label_106">
-       <property name="maximumSize">
-        <size>
-         <width>16777215</width>
-         <height>15</height>
-        </size>
-       </property>
-       <property name="text">
-        <string>Стенд1</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </widget>
-   <widget class="QWidget" name="layoutWidget_5">
-    <property name="geometry">
-     <rect>
-      <x>570</x>
-      <y>80</y>
-      <width>221</width>
-      <height>22</height>
-     </rect>
-    </property>
-    <layout class="QHBoxLayout" name="horizontalLayout_21">
-     <item>
-      <widget class="QComboBox" name="comboBox_portStend_4">
-       <property name="maximumSize">
-        <size>
-         <width>70</width>
-         <height>15</height>
-        </size>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLabel" name="label_107">
-       <property name="maximumSize">
-        <size>
-         <width>16777215</width>
-         <height>15</height>
-        </size>
-       </property>
-       <property name="text">
-        <string>Стенд2</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">
