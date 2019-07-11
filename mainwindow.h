@@ -490,6 +490,9 @@ private slots:
     void slotTimerDigitalWireInterfaceChecking();
 
     void slotReadyReadStend();
+    void slotReadyReadStend2();
+    void slotReadyReadStend3();
+    void slotReadyReadStend4();
 
     void on_spinBox_serial_valueChanged(const QString &arg1);
 

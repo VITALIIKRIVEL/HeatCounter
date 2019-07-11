@@ -37427,10 +37427,10 @@ void MainWindow::on_toolButton_executeCommands_clicked()
 
     isCommandsEnded = true;
 
-    if(ui->checkBox_workPlace1->isChecked()) portStend->close();
-    if(ui->checkBox_workPlace2->isChecked()) portStend2->close();
-    if(ui->checkBox_workPlace3->isChecked()) portStend3->close();
-    if(ui->checkBox_workPlace4->isChecked()) portStend4->close();
+//    if(ui->checkBox_workPlace1->isChecked()) portStend->close();
+//    if(ui->checkBox_workPlace2->isChecked()) portStend2->close();
+//    if(ui->checkBox_workPlace3->isChecked()) portStend3->close();
+//    if(ui->checkBox_workPlace4->isChecked()) portStend4->close();
 
     if(ui->checkBox_workPlace1->isChecked()) ObjectThread1->finishIndicatorOn();
     if(ui->checkBox_workPlace2->isChecked()) ObjectThread2->finishIndicatorOn();
