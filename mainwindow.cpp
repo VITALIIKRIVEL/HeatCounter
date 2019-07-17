@@ -162,6 +162,13 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->comboBox_portListOptical_3->clear();
     ui->comboBox_portListOptical_4->clear();
 
+    //на время заполнение комбобоксов портов стендов отключанием их сигналы
+
+    ui->comboBox_portStend->blockSignals(true);
+    ui->comboBox_portStend_2->blockSignals(true);
+    ui->comboBox_portStend_3->blockSignals(true);
+    ui->comboBox_portStend_4->blockSignals(true);
+
     QList<QSerialPortInfo> info = QSerialPortInfo::availablePorts();
     for(int i=0; i<info.size(); i++) {
        ui->comboBox_portStend->addItem(info[i].portName());
@@ -185,6 +192,13 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->comboBox_portListOptical_4->setCurrentIndex(ui->comboBox_portListOptical_4->count() - 1);
     ui->comboBox_portListInterfaceChecking->setCurrentIndex(ui->comboBox_portListInterfaceChecking->count() - 1);
     //
+
+    ui->comboBox_portStend->blockSignals(false);
+    ui->comboBox_portStend_2->blockSignals(false);
+    ui->comboBox_portStend_3->blockSignals(false);
+    ui->comboBox_portStend_4->blockSignals(false);
+
+    //на время заполнение комбобоксов портов стендов отключанием их сигналы/
 
     ui->comboBox_portList->setCurrentIndex(0);
     port->setPortName(ui->comboBox_portList->itemText(0));
@@ -1116,7 +1130,88 @@ MainWindow::MainWindow(QWidget *parent) :
     primeStart();
 
     //чтение настроек из файла
+    ui->comboBox_portStend->blockSignals(true);
+    ui->comboBox_portStend_2->blockSignals(true);
+    ui->comboBox_portStend_3->blockSignals(true);
+    ui->comboBox_portStend_4->blockSignals(true);
+
     loadSettings();
+
+    ui->comboBox_portStend->blockSignals(false);
+    ui->comboBox_portStend_2->blockSignals(false);
+    ui->comboBox_portStend_3->blockSignals(false);
+    ui->comboBox_portStend_4->blockSignals(false);
+
+//    if(ui->checkBox_workPlace1->isChecked())
+//        on_comboBox_portStend_currentIndexChanged(ui->comboBox_portStend->currentText());
+//    if(ui->checkBox_workPlace2->isChecked())
+//        on_comboBox_portStend_2_currentIndexChanged(ui->comboBox_portStend_2->currentText());
+//    if(ui->checkBox_workPlace3->isChecked())
+//        on_comboBox_portStend_3_currentIndexChanged(ui->comboBox_portStend_3->currentText());
+//    if(ui->checkBox_workPlace4->isChecked())
+//        on_comboBox_portStend_4_currentIndexChanged(ui->comboBox_portStend_4->currentText());
+
+    //открытие портов стендов
+
+//    if(ui->checkBox_workPlace1->isChecked()) {
+//       if(!portStend->isOpen()) {
+
+//           if(!portStend->open(QIODevice::ReadWrite)) {
+
+//               QString label_StatusBar = (tr("Не удалось открыть порт стенда") +
+//                                         ". Рабочее место: 1");
+//               slotError(label_StatusBar + '\n');
+//           }
+//       }
+//    }
+
+//    //
+//    if(ui->checkBox_workPlace2->isChecked()) {
+//       if(!portStend2->isOpen()) {
+
+//           if(!portStend2->open(QIODevice::ReadWrite)) {
+
+//               QString label_StatusBar = (tr("Не удалось открыть порт стенда") +
+//                                         ". Рабочее место: 2");
+//               slotError(label_StatusBar + '\n');
+//           }
+//       }
+//    }
+
+//    //
+//    if(ui->checkBox_workPlace3->isChecked()) {
+//       if(!portStend3->isOpen()) {
+
+//           if(!portStend3->open(QIODevice::ReadWrite)) {
+
+//               QString label_StatusBar = (tr("Не удалось открыть порт стенда") +
+//                                         ". Рабочее место: 3");
+//               slotError(label_StatusBar + '\n');
+//           }
+//       }
+//    }
+
+//    //
+//    if(ui->checkBox_workPlace4->isChecked()) {
+//       if(!portStend4->isOpen()) {
+
+//           if(!portStend4->open(QIODevice::ReadWrite)) {
+
+//               QString label_StatusBar = (tr("Не удалось открыть порт стенда") +
+//                                         ". Рабочее место: 4");
+//               slotError(label_StatusBar + '\n');
+//           }
+//       }
+//    }
+
+    //открытие портов стендов/
+
+    //уменьшение главного окна до минимального
+
+    QWidget w;
+
+    //уменьшение главного окна до минимального/
+
 
     //соединение с сервером
     serverConnectWithPasswordExtServ("gefest", "gefest");
@@ -1154,7 +1249,7 @@ MainWindow::MainWindow(QWidget *parent) :
    ui->label_62->setVisible(false);
    ui->lineEdit_humanName->setVisible(false);
 
-   on_comboBox_portStend_currentIndexChanged(ui->comboBox_portStend->currentText());
+ //  on_comboBox_portStend_currentIndexChanged(ui->comboBox_portStend->currentText());
 
 }
 /*************************************************************/
@@ -1190,6 +1285,10 @@ MainWindow::~MainWindow()
     portOptical3->close();
     portOptical4->close();
     portDigitalInterfaceChecking->close();
+    portStend->close();
+    portStend2->close();
+    portStend3->close();
+    portStend4->close();
 
     writeSettings();
 
@@ -2852,15 +2951,15 @@ void MainWindow::paintEvent(QPaintEvent *event)
         //
         //
 
-        if(ui->checkBox_workPlace1->isChecked()) vectorIsWorkPlaceUse[0] = true;
-        if(ui->checkBox_workPlace2->isChecked()) vectorIsWorkPlaceUse[1] = true;
-        if(ui->checkBox_workPlace3->isChecked()) vectorIsWorkPlaceUse[2] = true;
-        if(ui->checkBox_workPlace4->isChecked()) vectorIsWorkPlaceUse[3] = true;
+//        if(ui->checkBox_workPlace1->isChecked()) vectorIsWorkPlaceUse[0] = true;
+//        if(ui->checkBox_workPlace2->isChecked()) vectorIsWorkPlaceUse[1] = true;
+//        if(ui->checkBox_workPlace3->isChecked()) vectorIsWorkPlaceUse[2] = true;
+//        if(ui->checkBox_workPlace4->isChecked()) vectorIsWorkPlaceUse[3] = true;
 
-        ObjectThread1->setIsWorkPlaceUseVector(vectorIsWorkPlaceUse);
-        ObjectThread2->setIsWorkPlaceUseVector(vectorIsWorkPlaceUse);
-        ObjectThread3->setIsWorkPlaceUseVector(vectorIsWorkPlaceUse);
-        ObjectThread4->setIsWorkPlaceUseVector(vectorIsWorkPlaceUse);
+//        ObjectThread1->setIsWorkPlaceUseVector(vectorIsWorkPlaceUse);
+//        ObjectThread2->setIsWorkPlaceUseVector(vectorIsWorkPlaceUse);
+//        ObjectThread3->setIsWorkPlaceUseVector(vectorIsWorkPlaceUse);
+//        ObjectThread4->setIsWorkPlaceUseVector(vectorIsWorkPlaceUse);
 
 
 
@@ -3595,6 +3694,10 @@ void MainWindow::writeSettings()
     settings.setValue("portName2", portOptical2->portName());
     settings.setValue("portName3", portOptical3->portName());
     settings.setValue("portName4", portOptical4->portName());
+    settings.setValue("portStend", portStend->portName());
+    settings.setValue("portStend2", portStend2->portName());
+    settings.setValue("portStend3", portStend3->portName());
+    settings.setValue("portStend4", portStend4->portName());
     settings.setValue("portDigitalInterfaceName", portDigitalInterfaceChecking->portName());
     settings.setValue("paramsFileName", ui->lineEdit_loadParamsFile->text());
 
@@ -3645,6 +3748,17 @@ void MainWindow::writeSettings()
 
    settings.setValue("vectorIsCommandUseSettings", vectorIsCommandUseSettings);
 
+   QString tokPlatyStr;
+
+   if(ui->checkBox_plataOn_Off->isChecked()) {
+       tokPlatyStr = '1';
+   }
+   else {
+       tokPlatyStr = '0';
+   }
+
+   settings.setValue("plata_On_Off", tokPlatyStr);
+
    //запоминание инженера и логина/пароля
    settings.setValue("engineer", humanNameResult);
 
@@ -3690,42 +3804,55 @@ void MainWindow::loadSettings()
     portDigitalInterfaceChecking->setPortName(settings.value("portDigitalInterfaceName", "COM1").toString());
     ui->comboBox_portListInterfaceChecking->setCurrentText(settings.value("portDigitalInterfaceName", "COM1").toString());
 
+    portStend->setPortName(settings.value("portStend", "COM1").toString());
+    ui->comboBox_portStend->setCurrentText(settings.value("portStend", "COM1").toString());
+
+    portStend2->setPortName(settings.value("portStend2", "COM1").toString());
+    ui->comboBox_portStend_2->setCurrentText(settings.value("portStend2", "COM1").toString());
+
+    portStend3->setPortName(settings.value("portStend3", "COM1").toString());
+    ui->comboBox_portStend_3->setCurrentText(settings.value("portStend3", "COM1").toString());
+
+    portStend4->setPortName(settings.value("portStend4", "COM1").toString());
+    ui->comboBox_portStend_4->setCurrentText(settings.value("portStend4", "COM1").toString());
+
     //установка галочек для рабочих мест
     QString vectorIsWorkPlaceUseSettings = settings.value("vectorIsWorkPlaceUseSettings", "0000").toString();
 
-    if(vectorIsWorkPlaceUseSettings.at(0) == "1") {
-        ui->checkBox_workPlace1->setChecked(true);
-        on_checkBox_workPlace1_clicked(true);
-    }
-    else {
-   //     ui->checkBox_workPlace1->setChecked(false);
-    }
+//    if(vectorIsWorkPlaceUseSettings.at(0) == "1") {
+//        ui->checkBox_workPlace1->setChecked(true);
+//        on_checkBox_workPlace1_clicked(true);
+//    }
+//    else {
+//   //     ui->checkBox_workPlace1->setChecked(false);
+//    }
 
-    if(vectorIsWorkPlaceUseSettings.at(1) == "1") {
-        ui->checkBox_workPlace2->setChecked(true);
-        on_checkBox_workPlace2_clicked(true);
-    }
-    else {
-   //     ui->checkBox_workPlace2->setChecked(false);
-    }
-
-
-    if(vectorIsWorkPlaceUseSettings.at(2) == "1") {
-        ui->checkBox_workPlace3->setChecked(true);
-        on_checkBox_workPlace3_clicked(true);
-    }
-    else {
- //       ui->checkBox_workPlace3->setChecked(false);
-    }
+//    if(vectorIsWorkPlaceUseSettings.at(1) == "1") {
+//        ui->checkBox_workPlace2->setChecked(true);
+//        on_checkBox_workPlace2_clicked(true);
+//    }
+//    else {
+//   //     ui->checkBox_workPlace2->setChecked(false);
+//    }
 
 
-    if(vectorIsWorkPlaceUseSettings.at(3) == "1") {
-        ui->checkBox_workPlace4->setChecked(true);
-        on_checkBox_workPlace4_clicked(true);
-    }
-    else {
-  //      ui->checkBox_workPlace4->setChecked(false);
-    }
+//    if(vectorIsWorkPlaceUseSettings.at(2) == "1") {
+//        ui->checkBox_workPlace3->setChecked(true);
+//        on_checkBox_workPlace3_clicked(true);
+//    }
+//    else {
+// //       ui->checkBox_workPlace3->setChecked(false);
+//    }
+
+
+//    if(vectorIsWorkPlaceUseSettings.at(3) == "1") {
+//        ui->checkBox_workPlace4->setChecked(true);
+//        on_checkBox_workPlace4_clicked(true);
+//    }
+//    else {
+//  //      ui->checkBox_workPlace4->setChecked(false);
+//    }
+    //установка галочек для рабочих мест/
 
     //установка галочек для комманд
     QString vectorIsCommandUseSettings = settings.value("vectorIsCommandUseSettings", "0000000000").toString();
@@ -3817,6 +3944,10 @@ void MainWindow::loadSettings()
     }
     else {
  //       ui->checkBox_calibrationModeOffUse->setChecked(false);
+    }
+
+    if(settings.value("plata_On_Off", "").toString() == "1") {
+        ui->checkBox_plataOn_Off->setChecked(true);
     }
 
 
@@ -4989,7 +5120,7 @@ void MainWindow::on_toolButton_loadTemplate_clicked()
     }
     qDebug()<<"fileToStringList"<<fileToStringList;
 
-    if(fileToStringList.size() == 81) {
+    if( (fileToStringList.size() == 81) || (fileToStringList.size() == 62) ) {
 //        ui->toolButton_writeParams->setEnabled(true);
 //        ui->toolButton_pulsesInputVolume->setEnabled(true);
 //        ui->toolButton_pulsesOutputHeat->setEnabled(true);
@@ -5127,6 +5258,13 @@ void MainWindow::on_toolButton_loadTemplate_clicked()
     if(type1 == 0x16 || type1 == 0x18 || type1 == 0x20 ||type1 == 0x22)
         extInterface1 = "RS485";
 
+    if(type1 == 0x72) {
+        ObjectThread1->setIs72("1");
+    }
+    else {
+        ObjectThread1->setIs72("");
+    }
+
 //    if(type1 != 0x10 && type1 != 0x44 && type1 != 0x14 &&
 //            type1 != 0x46 && type1 != 0x54 && type1 != 0x58 &&
 //            type1 != 0x20 && type1 != 0x22 && type1 != 0x62) {
@@ -5152,6 +5290,13 @@ void MainWindow::on_toolButton_loadTemplate_clicked()
 
     if(type2 == 0x16 || type2 == 0x18 || type2 == 0x20 ||type2 == 0x22)
         extInterface2 = "RS485";
+
+    if(type2 == 0x72) {
+        ObjectThread2->setIs72("1");
+    }
+    else {
+        ObjectThread2->setIs72("");
+    }
 
 //    if(type2 != 0x10 && type2 != 0x44 && type2 != 0x14 &&
 //            type2 != 0x46 && type2 != 0x54 && type2 != 0x58 &&
@@ -5179,6 +5324,13 @@ void MainWindow::on_toolButton_loadTemplate_clicked()
     if(type3 == 0x16 || type3 == 0x18 || type3 == 0x20 ||type3 == 0x22)
         extInterface3 = "RS485";
 
+    if(type3 == 0x72) {
+        ObjectThread3->setIs72("1");
+    }
+    else {
+        ObjectThread3->setIs72("");
+    }
+
 //    if(type3 != 0x10 && type3 != 0x44 && type3 != 0x14 &&
 //            type3 != 0x46 && type3 != 0x54 && type3 != 0x58 &&
 //            type3 != 0x20 && type3 != 0x22 && type3 != 0x62) {
@@ -5204,6 +5356,13 @@ void MainWindow::on_toolButton_loadTemplate_clicked()
 
     if(type4 == 0x16 || type4 == 0x18 || type4 == 0x20 ||type4 == 0x22)
         extInterface4 = "RS485";
+
+    if(type4 == 0x72) {
+        ObjectThread4->setIs72("1");
+    }
+    else {
+        ObjectThread4->setIs72("");
+    }
 
 //    if(type4 != 0x10 && type4 != 0x44 && type4 != 0x14 &&
 //            type4 != 0x46 && type4 != 0x54 && type4 != 0x58 &&
@@ -5418,10 +5577,16 @@ void MainWindow::on_toolButton_loadTemplate_clicked()
     FlowNomString.remove("\nFlowNom ");
     if(flowNomList.contains(FlowNomString)) {
        ui->comboBox_FlowNom->setCurrentText(FlowNomString);
+       //"0.6"<<"1.5"<<"2.5"
+       ObjectThread1->setFlowNom(FlowNomString);
+       ObjectThread2->setFlowNom(FlowNomString);
+       ObjectThread3->setFlowNom(FlowNomString);
+       ObjectThread4->setFlowNom(FlowNomString);
     }
     else {
         QMessageBox::information(this, "", tr("Неверное значение FlowNom: ") + FlowNomString);
     }
+
 
     //
     QString FlCoeff0String = fileToStringList[30];
@@ -5721,6 +5886,8 @@ void MainWindow::on_toolButton_loadTemplate_clicked()
     Service_P2String.remove("\nService_P2 ");
     ui->lineEdit_Service_P2->setText(Service_P2String);
 
+    if(type1!=0x72 || type2!=0x72 || type3!=0x72 || type4!=0x72)
+        return;
     //
     //дополнительные параметры
     //
@@ -25545,8 +25712,12 @@ void MainWindow::wireInterfaceChecking(int workPlaceNumber)
 
         QByteArray buffer;
 
-        if(!portDigitalInterfaceChecking->isOpen()) {
-            if(!portDigitalInterfaceChecking->open(QIODevice::ReadWrite)) {
+       //пытаемся в течение 10 сек открывать порт
+       for(int z=0; z<20; z++) {
+
+         if(!portDigitalInterfaceChecking->isOpen()) {
+
+            if(!portDigitalInterfaceChecking->open(QIODevice::ReadWrite) && z==19) {
  //               QMessageBox::information(this, "", "Не удалось открыть порт: Проводные интерфейсы");
                 ui->label_StatusBar->setText(tr("Не удалось открыть порт: Проводные интерфейсы") +
                                              ". Рабочее место: " + QString::number(workPlaceNumber+1));
@@ -25557,7 +25728,16 @@ void MainWindow::wireInterfaceChecking(int workPlaceNumber)
                 checkWireInterfaceChecking(currentIndicatorNumber);
                 return;
             }
-        }
+         }
+         else {
+             break;
+         }
+
+         global::pause(500);
+
+       }
+       //пытаемся в течение 10 сек открывать порт/
+
 
         if(!portTmp->isOpen()) {
             if(!portTmp->open(QIODevice::ReadWrite)) {
@@ -35545,6 +35725,15 @@ void MainWindow::on_checkBox_workPlace1_clicked(bool checked)
 
         ui->groupBox_workPlace1->setVisible(true);
         ui->groupBox_addition1->setVisible(true);
+
+//        if(!portStend->isOpen()) {
+//            if(!portStend->open(QIODevice::ReadWrite)) {
+//                 QMessageBox::information(this, "", "Не удалось открыть порт стенда. Рабочее место: 1");
+//            }
+//        }
+
+        on_comboBox_portStend_currentIndexChanged(ui->comboBox_portStend->currentText());
+
     }
     else {
         vectorIsWorkPlaceUse[0] = false;
@@ -35572,6 +35761,15 @@ void MainWindow::on_checkBox_workPlace2_clicked(bool checked)
 
         ui->groupBox_workPlace2->setVisible(true);
         ui->groupBox_addition2->setVisible(true);
+
+//        if(!portStend2->isOpen()) {
+//            if(!portStend2->open(QIODevice::ReadWrite)) {
+//                 QMessageBox::information(this, "", "Не удалось открыть порт стенда. Рабочее место: 2");
+//            }
+//        }
+
+        on_comboBox_portStend_2_currentIndexChanged(ui->comboBox_portStend_2->currentText());
+
     }
     else {
         vectorIsWorkPlaceUse[1] = false;
@@ -35599,6 +35797,15 @@ void MainWindow::on_checkBox_workPlace3_clicked(bool checked)
 
         ui->groupBox_workPlace3->setVisible(true);
         ui->groupBox_addition3->setVisible(true);
+
+//        if(!portStend3->isOpen()) {
+//            if(!portStend3->open(QIODevice::ReadWrite)) {
+//                 QMessageBox::information(this, "", "Не удалось открыть порт стенда. Рабочее место: 3");
+//            }
+//        }
+
+        on_comboBox_portStend_3_currentIndexChanged(ui->comboBox_portStend_3->currentText());
+
     }
     else {
         vectorIsWorkPlaceUse[2] = false;
@@ -35626,6 +35833,15 @@ void MainWindow::on_checkBox_workPlace4_clicked(bool checked)
 
         ui->groupBox_workPlace4->setVisible(true);
         ui->groupBox_addition4->setVisible(true);
+
+//        if(!portStend4->isOpen()) {
+//            if(!portStend4->open(QIODevice::ReadWrite)) {
+//                 QMessageBox::information(this, "", "Не удалось открыть порт стенда. Рабочее место: 4");
+//            }
+//        }
+
+        on_comboBox_portStend_4_currentIndexChanged(ui->comboBox_portStend_4->currentText());
+
     }
     else {
         vectorIsWorkPlaceUse[3] = false;
@@ -35772,14 +35988,26 @@ void MainWindow::on_toolButton_executeCommands_clicked()
     ui->label_StatusBar->clear();
     errorString.clear();
 
-    portOptical->close();
-    portOptical2->close();
-    portOptical3->close();
-    portOptical4->close();
-    portStend->close();
-    portStend2->close();
-    portStend3->close();
-    portStend4->close();
+    if(ui->checkBox_workPlace1->isChecked()) portOptical->close();
+    if(ui->checkBox_workPlace2->isChecked()) portOptical2->close();
+    if(ui->checkBox_workPlace3->isChecked()) portOptical3->close();
+    if(ui->checkBox_workPlace4->isChecked()) portOptical4->close();
+
+    if(ui->checkBox_workPlace1->isChecked()) portOptical->clear();
+    if(ui->checkBox_workPlace2->isChecked()) portOptical2->clear();
+    if(ui->checkBox_workPlace3->isChecked()) portOptical3->clear();
+    if(ui->checkBox_workPlace4->isChecked()) portOptical4->clear();
+
+    if(ui->checkBox_workPlace1->isChecked()) portStend->close();
+    if(ui->checkBox_workPlace2->isChecked()) portStend2->close();
+    if(ui->checkBox_workPlace3->isChecked()) portStend3->close();
+    if(ui->checkBox_workPlace4->isChecked()) portStend4->close();
+
+//    ObjectThread1->getPortStendName(portStend);
+//    ObjectThread2->getPortStendName(portStend2);
+//    ObjectThread3->getPortStendName(portStend3);
+//    ObjectThread4->getPortStendName(portStend4);
+
     portDigitalInterfaceChecking->close();
 
 //    portOptical->clear();
@@ -35995,10 +36223,10 @@ void MainWindow::on_toolButton_executeCommands_clicked()
     ObjectThread3->setIsWorkPlaceUseVector(vectorIsWorkPlaceUse);
     ObjectThread4->setIsWorkPlaceUseVector(vectorIsWorkPlaceUse);
 
-    portStend->close();
-    portStend2->close();
-    portStend3->close();
-    portStend4->close();
+//    portStend->close();
+//    portStend2->close();
+//    portStend3->close();
+//    portStend4->close();
 
     if(ui->checkBox_workPlace1->isChecked()) {
         if(!ObjectThread1->errorIndicatorOff()) return;
@@ -36027,10 +36255,10 @@ void MainWindow::on_toolButton_executeCommands_clicked()
         if(!ObjectThread4->finishIndicatorOff()) return;
     }
 
-    portStend->close();
-    portStend2->close();
-    portStend3->close();
-    portStend4->close();
+    if(ui->checkBox_workPlace1->isChecked()) portStend->close();
+    if(ui->checkBox_workPlace2->isChecked()) portStend2->close();
+    if(ui->checkBox_workPlace3->isChecked()) portStend3->close();
+    if(ui->checkBox_workPlace4->isChecked()) portStend4->close();
 
     //проверка тока платы
   if(ui->checkBox_plataOn_Off->isChecked()) {
@@ -36627,10 +36855,10 @@ void MainWindow::on_toolButton_executeCommands_clicked()
 
     if(vectorIsCommandUse.at(4) && (repeatParameter == 0 || repeatParameter == 1) ) {
 
-        if(ui->checkBox_workPlace1->isChecked()) portStend->close();
-        if(ui->checkBox_workPlace2->isChecked()) portStend2->close();
-        if(ui->checkBox_workPlace3->isChecked()) portStend3->close();
-        if(ui->checkBox_workPlace4->isChecked()) portStend4->close();
+//        if(ui->checkBox_workPlace1->isChecked()) portStend->close();
+//        if(ui->checkBox_workPlace2->isChecked()) portStend2->close();
+//        if(ui->checkBox_workPlace3->isChecked()) portStend3->close();
+//        if(ui->checkBox_workPlace4->isChecked()) portStend4->close();
 
         ObjectThread1->moveToThread(&Thread1);
         ObjectThread2->moveToThread(&Thread2);
@@ -36991,19 +37219,23 @@ void MainWindow::on_toolButton_executeCommands_clicked()
 
     if(vectorIsCommandUse.at(7) && (repeatParameter == 0 || repeatParameter == 1 || repeatParameter == 2) ) {
 
-        portOptical->close();
-        portOptical2->close();
-        portOptical3->close();
-        portOptical4->close();
         portDigitalInterfaceChecking->close();
+
         if(ui->checkBox_workPlace1->isChecked()) portStend->close();
         if(ui->checkBox_workPlace2->isChecked()) portStend2->close();
         if(ui->checkBox_workPlace3->isChecked()) portStend3->close();
         if(ui->checkBox_workPlace4->isChecked()) portStend4->close();
-        portOptical->clear();
-        portOptical2->clear();
-        portOptical3->clear();
-        portOptical4->clear();
+
+        if(ui->checkBox_workPlace1->isChecked()) portOptical->close();
+        if(ui->checkBox_workPlace2->isChecked()) portOptical2->close();
+        if(ui->checkBox_workPlace3->isChecked()) portOptical3->close();
+        if(ui->checkBox_workPlace4->isChecked()) portOptical4->close();
+
+        if(ui->checkBox_workPlace1->isChecked()) portOptical->clear();
+        if(ui->checkBox_workPlace2->isChecked()) portOptical2->clear();
+        if(ui->checkBox_workPlace3->isChecked()) portOptical3->clear();
+        if(ui->checkBox_workPlace4->isChecked()) portOptical4->clear();
+
         portDigitalInterfaceChecking->clear();
 
         ObjectThread1->moveToThread(&Thread1);
@@ -37092,6 +37324,10 @@ void MainWindow::on_toolButton_executeCommands_clicked()
         }
 
       }
+
+
+      portDigitalInterfaceChecking->close();
+      portDigitalInterfaceChecking->clear();
 
       int u=0;
 
@@ -37189,6 +37425,11 @@ void MainWindow::on_toolButton_executeCommands_clicked()
 
     if(vectorIsCommandUse.at(8) && (repeatParameter == 0 || repeatParameter == 1 || repeatParameter == 2) ) {
 
+        if(ui->checkBox_workPlace1->isChecked()) portStend->close();
+        if(ui->checkBox_workPlace2->isChecked()) portStend2->close();
+        if(ui->checkBox_workPlace3->isChecked()) portStend3->close();
+        if(ui->checkBox_workPlace4->isChecked()) portStend4->close();
+
         ObjectThread1->setIsWorkPlaceUseVector(vectorIsWorkPlaceUse);
         ObjectThread2->setIsWorkPlaceUseVector(vectorIsWorkPlaceUse);
         ObjectThread3->setIsWorkPlaceUseVector(vectorIsWorkPlaceUse);
@@ -37275,20 +37516,27 @@ void MainWindow::on_toolButton_executeCommands_clicked()
 
     if(vectorIsCommandUse.at(9)) {
 
-        portOptical->close();
-        portOptical2->close();
-        portOptical3->close();
-        portOptical4->close();
-        portDigitalInterfaceChecking->close();
-        portOptical->clear();
-        portOptical2->clear();
-        portOptical3->clear();
-        portOptical4->clear();
-        portDigitalInterfaceChecking->clear();
         if(ui->checkBox_workPlace1->isChecked()) portStend->close();
         if(ui->checkBox_workPlace2->isChecked()) portStend2->close();
         if(ui->checkBox_workPlace3->isChecked()) portStend3->close();
         if(ui->checkBox_workPlace4->isChecked()) portStend4->close();
+
+        if(ui->checkBox_workPlace1->isChecked()) portOptical->close();
+        if(ui->checkBox_workPlace2->isChecked()) portOptical2->close();
+        if(ui->checkBox_workPlace3->isChecked()) portOptical3->close();
+        if(ui->checkBox_workPlace4->isChecked()) portOptical4->close();
+
+        if(ui->checkBox_workPlace1->isChecked()) portOptical->clear();
+        if(ui->checkBox_workPlace2->isChecked()) portOptical2->clear();
+        if(ui->checkBox_workPlace3->isChecked()) portOptical3->clear();
+        if(ui->checkBox_workPlace4->isChecked()) portOptical4->clear();
+
+        portDigitalInterfaceChecking->close();
+        portDigitalInterfaceChecking->clear();
+//        if(ui->checkBox_workPlace1->isChecked()) portStend->close();
+//        if(ui->checkBox_workPlace2->isChecked()) portStend2->close();
+//        if(ui->checkBox_workPlace3->isChecked()) portStend3->close();
+//        if(ui->checkBox_workPlace4->isChecked()) portStend4->close();
 
         ObjectThread1->setIsWorkPlaceUseVector(vectorIsWorkPlaceUse);
         ObjectThread2->setIsWorkPlaceUseVector(vectorIsWorkPlaceUse);
@@ -37425,17 +37673,41 @@ void MainWindow::on_toolButton_executeCommands_clicked()
 
 //    ui->groupBox_result->setVisible(true);
 
-    isCommandsEnded = true;
-
     if(ui->checkBox_workPlace1->isChecked()) portStend->close();
     if(ui->checkBox_workPlace2->isChecked()) portStend2->close();
     if(ui->checkBox_workPlace3->isChecked()) portStend3->close();
     if(ui->checkBox_workPlace4->isChecked()) portStend4->close();
 
-    if(ui->checkBox_workPlace1->isChecked()) ObjectThread1->finishIndicatorOn();
-    if(ui->checkBox_workPlace2->isChecked()) ObjectThread2->finishIndicatorOn();
-    if(ui->checkBox_workPlace3->isChecked()) ObjectThread3->finishIndicatorOn();
-    if(ui->checkBox_workPlace4->isChecked()) ObjectThread4->finishIndicatorOn();
+//    ObjectThread1->moveToThread(&Thread1);
+//    ObjectThread2->moveToThread(&Thread2);
+//    ObjectThread3->moveToThread(&Thread3);
+//    ObjectThread4->moveToThread(&Thread4);
+
+//    Thread1.start();
+//    Thread2.start();
+//    Thread3.start();
+//    Thread4.start();
+
+//    ObjectThread1->getPortStendName(portStend);
+//    ObjectThread2->getPortStendName(portStend2);
+//    ObjectThread3->getPortStendName(portStend3);
+//    ObjectThread4->getPortStendName(portStend4);
+
+    if(ui->checkBox_workPlace1->isChecked() && vectorIsWorkPlaceUse.at(0)) ObjectThread1->finishIndicatorOn();
+    if(ui->checkBox_workPlace2->isChecked() && vectorIsWorkPlaceUse.at(1)) ObjectThread2->finishIndicatorOn();
+    if(ui->checkBox_workPlace3->isChecked() && vectorIsWorkPlaceUse.at(2)) ObjectThread3->finishIndicatorOn();
+    if(ui->checkBox_workPlace4->isChecked() && vectorIsWorkPlaceUse.at(3)) ObjectThread4->finishIndicatorOn();
+
+    if(ui->checkBox_workPlace1->isChecked())
+        on_comboBox_portStend_currentIndexChanged(ui->comboBox_portStend->currentText());
+    if(ui->checkBox_workPlace2->isChecked())
+        on_comboBox_portStend_2_currentIndexChanged(ui->comboBox_portStend_2->currentText());
+    if(ui->checkBox_workPlace3->isChecked())
+        on_comboBox_portStend_3_currentIndexChanged(ui->comboBox_portStend_3->currentText());
+    if(ui->checkBox_workPlace4->isChecked())
+        on_comboBox_portStend_4_currentIndexChanged(ui->comboBox_portStend_4->currentText());
+
+    isCommandsEnded = true;
 
     repaint();
 
@@ -41498,19 +41770,23 @@ void MainWindow::on_comboBox_portList_4_currentIndexChanged(const QString &arg1)
 
 void MainWindow::on_comboBox_portStend_currentIndexChanged(const QString &arg1)
 {
-    portStend->close();
-    portStend->setPortName(arg1);
+   if(ui->checkBox_workPlace1->isChecked()) {
 
-    ObjectThread1->getPortStendName(portStend);
+       portStend->close();
+       portStend->setPortName(arg1);
+
+       ObjectThread1->getPortStendName(portStend);
 //    ObjectThread2->getPortStendName(portStend);
 //    ObjectThread3->getPortStendName(portStend);
 //    ObjectThread4->getPortStendName(portStend);
 
-    if(!portStend->isOpen()) {
-        if(!portStend->open(QIODevice::ReadWrite)) {
+       if(!portStend->isOpen()) {
+           if(!portStend->open(QIODevice::ReadWrite)) {
                 QMessageBox::information(this, "", "Не удалось открыть порт стенда. Рабочее место: 1");
-        }
-    }
+           }
+       }
+
+   }
 
 
 }
@@ -41914,30 +42190,63 @@ void MainWindow::on_comboBox_portStend_currentTextChanged(const QString &arg1)
 
 void MainWindow::on_comboBox_portStend_2_currentIndexChanged(const QString &arg1)
 {
-    portStend2->setPortName(arg1);
+    if(ui->checkBox_workPlace2->isChecked()) {
 
- //   ObjectThread1->getPortStendName(portStend);
-    ObjectThread2->getPortStendName(portStend2);
-//    ObjectThread3->getPortStendName(portStend);
-//    ObjectThread4->getPortStendName(portStend);
+        portStend2->close();
+        portStend2->setPortName(arg1);
+
+        //   ObjectThread1->getPortStendName(portStend);
+        ObjectThread2->getPortStendName(portStend2);
+        //    ObjectThread3->getPortStendName(portStend);
+        //    ObjectThread4->getPortStendName(portStend);
+
+        if(!portStend2->isOpen()) {
+            if(!portStend2->open(QIODevice::ReadWrite)) {
+                QMessageBox::information(this, "", "Не удалось открыть порт стенда. Рабочее место: 2");
+            }
+        }
+
+    }
 }
 
 void MainWindow::on_comboBox_portStend_3_currentIndexChanged(const QString &arg1)
 {
-    portStend3->setPortName(arg1);
+    if(ui->checkBox_workPlace3->isChecked()) {
 
- //   ObjectThread1->getPortStendName(portStend);
-    ObjectThread3->getPortStendName(portStend3);
-//    ObjectThread3->getPortStendName(portStend);
-//    ObjectThread4->getPortStendName(portStend);
+        portStend3->close();
+        portStend3->setPortName(arg1);
+
+        //   ObjectThread1->getPortStendName(portStend);
+        ObjectThread3->getPortStendName(portStend3);
+        //    ObjectThread3->getPortStendName(portStend);
+        //    ObjectThread4->getPortStendName(portStend);
+
+        if(!portStend3->isOpen()) {
+            if(!portStend3->open(QIODevice::ReadWrite)) {
+                QMessageBox::information(this, "", "Не удалось открыть порт стенда. Рабочее место: 3");
+            }
+        }
+
+    }
 }
 
 void MainWindow::on_comboBox_portStend_4_currentIndexChanged(const QString &arg1)
 {
-    portStend4->setPortName(arg1);
+   if(ui->checkBox_workPlace4->isChecked()) {
 
- //   ObjectThread1->getPortStendName(portStend);
-    ObjectThread4->getPortStendName(portStend4);
-//    ObjectThread3->getPortStendName(portStend);
-//    ObjectThread4->getPortStendName(portStend);
+       portStend4->close();
+       portStend4->setPortName(arg1);
+
+       //   ObjectThread1->getPortStendName(portStend);
+       ObjectThread4->getPortStendName(portStend4);
+       //    ObjectThread3->getPortStendName(portStend);
+       //    ObjectThread4->getPortStendName(portStend);
+
+       if(!portStend4->isOpen()) {
+           if(!portStend4->open(QIODevice::ReadWrite)) {
+               QMessageBox::information(this, "", "Не удалось открыть порт стенда. Рабочее место: 4");
+           }
+       }
+
+   }
 }

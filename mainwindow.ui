@@ -7,8 +7,14 @@
     <x>0</x>
     <y>0</y>
     <width>970</width>
-    <height>881</height>
+    <height>890</height>
    </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
   </property>
   <property name="minimumSize">
    <size>
@@ -23,7 +29,7 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>Гефест Проверка 1.16 Test</string>
+   <string>Гефест Проверка 1.17 Test</string>
   </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QGridLayout" name="gridLayout_31">
@@ -438,7 +444,7 @@
             <property name="minimumSize">
              <size>
               <width>0</width>
-              <height>0</height>
+              <height>230</height>
              </size>
             </property>
             <property name="maximumSize">
@@ -646,7 +652,7 @@
             <property name="minimumSize">
              <size>
               <width>0</width>
-              <height>0</height>
+              <height>225</height>
              </size>
             </property>
             <property name="maximumSize">
@@ -878,7 +884,7 @@
             <property name="minimumSize">
              <size>
               <width>0</width>
-              <height>0</height>
+              <height>230</height>
              </size>
             </property>
             <property name="maximumSize">
@@ -1089,6 +1095,12 @@
           </item>
           <item>
            <widget class="QGroupBox" name="groupBox_addition2">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>225</height>
+             </size>
+            </property>
             <property name="maximumSize">
              <size>
               <width>151</width>
@@ -1315,7 +1327,7 @@
             <property name="minimumSize">
              <size>
               <width>0</width>
-              <height>0</height>
+              <height>230</height>
              </size>
             </property>
             <property name="maximumSize">
@@ -1514,6 +1526,12 @@
           </item>
           <item>
            <widget class="QGroupBox" name="groupBox_addition3">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>225</height>
+             </size>
+            </property>
             <property name="maximumSize">
              <size>
               <width>151</width>
@@ -1740,7 +1758,7 @@
             <property name="minimumSize">
              <size>
               <width>0</width>
-              <height>0</height>
+              <height>230</height>
              </size>
             </property>
             <property name="maximumSize">
@@ -1939,6 +1957,12 @@
           </item>
           <item>
            <widget class="QGroupBox" name="groupBox_addition4">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>225</height>
+             </size>
+            </property>
             <property name="maximumSize">
              <size>
               <width>151</width>
@@ -2162,6 +2186,81 @@
       </item>
      </layout>
     </item>
+    <item row="8" column="0" colspan="3">
+     <layout class="QVBoxLayout" name="verticalLayout_10">
+      <item>
+       <widget class="QLabel" name="label_StatusBar">
+        <property name="minimumSize">
+         <size>
+          <width>200</width>
+          <height>60</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>60</height>
+         </size>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_messageBar">
+        <property name="minimumSize">
+         <size>
+          <width>200</width>
+          <height>15</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>15</height>
+         </size>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item row="7" column="0">
+     <spacer name="verticalSpacer_3">
+      <property name="orientation">
+       <enum>Qt::Vertical</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>17</width>
+        <height>37</height>
+       </size>
+      </property>
+     </spacer>
+    </item>
+    <item row="4" column="3">
+     <widget class="QLabel" name="label_digitalWireInterfaceChecking">
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="3">
+     <spacer name="horizontalSpacer_9">
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>7</width>
+        <height>20</height>
+       </size>
+      </property>
+     </spacer>
+    </item>
     <item row="0" column="1">
      <widget class="QLabel" name="label_writeParams">
       <property name="text">
@@ -2173,19 +2272,6 @@
      <layout class="QGridLayout" name="gridLayout_39">
       <item row="1" column="0">
        <layout class="QVBoxLayout" name="verticalLayout">
-        <item>
-         <spacer name="verticalSpacer_6">
-          <property name="orientation">
-           <enum>Qt::Vertical</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>20</width>
-            <height>40</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
         <item>
          <layout class="QGridLayout" name="gridLayout_52">
           <item row="0" column="2">
@@ -3328,7 +3414,7 @@
       </item>
       <item row="0" column="0">
        <layout class="QGridLayout" name="gridLayout_36">
-        <item row="1" column="0">
+        <item row="2" column="0">
          <widget class="QGroupBox" name="groupBox_4">
           <property name="maximumSize">
            <size>
@@ -3469,22 +3555,6 @@
           </layout>
          </widget>
         </item>
-        <item row="1" column="1">
-         <spacer name="verticalSpacer_4">
-          <property name="orientation">
-           <enum>Qt::Vertical</enum>
-          </property>
-          <property name="sizeType">
-           <enum>QSizePolicy::Expanding</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>20</width>
-            <height>40</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
         <item row="0" column="0">
          <layout class="QHBoxLayout" name="horizontalLayout_3">
           <item>
@@ -3524,25 +3594,35 @@
           </item>
          </layout>
         </item>
+        <item row="1" column="0">
+         <spacer name="verticalSpacer_4">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeType">
+           <enum>QSizePolicy::Expanding</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>40</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
        </layout>
       </item>
      </layout>
     </item>
-    <item row="1" column="3">
-     <spacer name="horizontalSpacer_9">
-      <property name="orientation">
-       <enum>Qt::Horizontal</enum>
-      </property>
-      <property name="sizeHint" stdset="0">
-       <size>
-        <width>7</width>
-        <height>20</height>
-       </size>
-      </property>
-     </spacer>
-    </item>
     <item row="2" column="1">
      <widget class="QLabel" name="label_pulsesInputVolume">
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+    </item>
+    <item row="5" column="3">
+     <widget class="QLabel" name="label_MBusOn">
       <property name="text">
        <string/>
       </property>
@@ -5118,90 +5198,28 @@
       </layout>
      </widget>
     </item>
-    <item row="4" column="3">
-     <widget class="QLabel" name="label_digitalWireInterfaceChecking">
-      <property name="text">
-       <string/>
-      </property>
-     </widget>
-    </item>
-    <item row="5" column="3">
-     <widget class="QLabel" name="label_MBusOn">
-      <property name="text">
-       <string/>
-      </property>
-     </widget>
-    </item>
-    <item row="6" column="0" colspan="3">
-     <layout class="QVBoxLayout" name="verticalLayout_10">
-      <item>
-       <widget class="QLabel" name="label_StatusBar">
-        <property name="minimumSize">
-         <size>
-          <width>200</width>
-          <height>40</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>16777215</width>
-          <height>50</height>
-         </size>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLabel" name="label_messageBar">
-        <property name="minimumSize">
-         <size>
-          <width>200</width>
-          <height>15</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>16777215</width>
-          <height>15</height>
-         </size>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </item>
-    <item row="7" column="0">
-     <spacer name="verticalSpacer_3">
+    <item row="6" column="0">
+     <spacer name="verticalSpacer_6">
       <property name="orientation">
        <enum>Qt::Vertical</enum>
       </property>
       <property name="sizeHint" stdset="0">
        <size>
         <width>20</width>
-        <height>13</height>
+        <height>40</height>
        </size>
       </property>
      </spacer>
     </item>
    </layout>
-   <widget class="QLabel" name="label_pulsesOutputHeat">
+   <widget class="QLabel" name="label_CheckMbus">
     <property name="geometry">
      <rect>
-      <x>9</x>
-      <y>706</y>
-      <width>0</width>
-      <height>0</height>
+      <x>327</x>
+      <y>470</y>
+      <width>16</width>
+      <height>16</height>
      </rect>
-    </property>
-    <property name="maximumSize">
-     <size>
-      <width>0</width>
-      <height>0</height>
-     </size>
     </property>
     <property name="text">
      <string/>
@@ -5226,14 +5244,20 @@
      <string/>
     </property>
    </widget>
-   <widget class="QLabel" name="label_CheckMbus">
+   <widget class="QLabel" name="label_pulsesOutputHeat">
     <property name="geometry">
      <rect>
-      <x>327</x>
-      <y>470</y>
-      <width>16</width>
-      <height>16</height>
+      <x>9</x>
+      <y>706</y>
+      <width>0</width>
+      <height>0</height>
      </rect>
+    </property>
+    <property name="maximumSize">
+     <size>
+      <width>0</width>
+      <height>0</height>
+     </size>
     </property>
     <property name="text">
      <string/>

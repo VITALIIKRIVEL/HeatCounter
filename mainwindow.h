@@ -1028,6 +1028,8 @@ private:
     //стенд
     QString extInterface1, extInterface2, extInterface3, extInterface4;
 
+  //  QString is72modify1, is72modify2, is72modify3, is72modify4;
+
 };
 
 #endif // MAINWINDOW_H

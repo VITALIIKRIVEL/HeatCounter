@@ -116,6 +116,9 @@ public:
     void setTimeIntervalWNB_WID(int time);
     void setTimeIntervalWID_Read(int time);
 
+    void setIs72(QString str);
+    void setFlowNom(QString str);
+
 
 signals:
     checkBslError(int currentIndicatorNumber);
@@ -279,6 +282,8 @@ private:
     int timeIntervalWAL_WRS, timeIntervalWRF_WNS,
         timeIntervalWNB_WID, timeIntervalWID_Read;
 
+    QString is72modify;
+    QString flowNom;
 
 };
 
