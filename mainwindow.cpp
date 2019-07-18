@@ -1952,12 +1952,12 @@ void MainWindow::paintEvent(QPaintEvent *event)
 //        painter.drawEllipse(xGpourBoxBsl + 6 + 23 + 23, yGroupBoxBsl + 45, 15, 15);
 //        painter.drawEllipse(xGpourBoxBsl + 6 + 23 + 23 + 23, yGroupBoxBsl + 45, 15, 15);
 
-//        int xGpourBoxTokPlaty = ui->groupBox_tokPlaty->x();
-//        int yGroupBoxTokPlaty = ui->groupBox_tokPlaty->y();
-//        painter.drawEllipse(xGpourBoxTokPlaty + 13, yGroupBoxTokPlaty + 45, 15, 15);
-//        painter.drawEllipse(xGpourBoxTokPlaty + 6 + 23, yGroupBoxTokPlaty + 45, 15, 15);
-//        painter.drawEllipse(xGpourBoxTokPlaty + 6 + 23 + 23, yGroupBoxTokPlaty + 45, 15, 15);
-//        painter.drawEllipse(xGpourBoxTokPlaty + 6 + 23 + 23 + 23, yGroupBoxTokPlaty + 45, 15, 15);
+        int xGpourBoxTokPlaty = ui->groupBox_tokPlaty->x();
+        int yGroupBoxTokPlaty = ui->groupBox_tokPlaty->y();
+        painter.drawEllipse(xGpourBoxTokPlaty + 6, yGroupBoxTokPlaty + 40, 15, 15);
+        painter.drawEllipse(xGpourBoxTokPlaty + 6 + 23, yGroupBoxTokPlaty + 40, 15, 15);
+        painter.drawEllipse(xGpourBoxTokPlaty + 6 + 23 + 23, yGroupBoxTokPlaty + 40, 15, 15);
+        painter.drawEllipse(xGpourBoxTokPlaty + 6 + 23 + 23 + 23, yGroupBoxTokPlaty + 40, 15, 15);
 
 
         int xGpourBox = ui->groupBox_writeParams->x();
@@ -2040,71 +2040,71 @@ void MainWindow::paintEvent(QPaintEvent *event)
 
 //        //--------------------tok platy-------------------------
 
-//        if( vectorTokPlaty.at(0) && ui->checkBox_workPlace1->isChecked() && isTokPlatyFinished1) {
-//            QPainter painter(this); // Создаём объект отрисовщика
-//            painter.setPen(QPen(Qt::lightGray, 1, Qt::SolidLine, Qt::FlatCap));
-//            painter.setBrush(QBrush(Qt::red, Qt::SolidPattern));
+        if( vectorTokPlaty.at(0) && ui->checkBox_workPlace1->isChecked() && isTokPlatyFinished1) {
+            QPainter painter(this); // Создаём объект отрисовщика
+            painter.setPen(QPen(Qt::lightGray, 1, Qt::SolidLine, Qt::FlatCap));
+            painter.setBrush(QBrush(Qt::red, Qt::SolidPattern));
 
-//            painter.drawEllipse(xGpourBoxTokPlaty + 13, yGroupBoxTokPlaty + 45, 15, 15);
-//        }
-//        if( !vectorTokPlaty.at(0)  && ui->checkBox_workPlace1->isChecked() && isTokPlatyFinished1 ) {
-//            QPainter painter(this); // Создаём объект отрисовщика
-//            painter.setPen(QPen(Qt::lightGray, 1, Qt::SolidLine, Qt::FlatCap));
-//            painter.setBrush(QBrush(Qt::green, Qt::SolidPattern));
+            painter.drawEllipse(xGpourBoxTokPlaty + 6, yGroupBoxTokPlaty + 40, 15, 15);
+        }
+        if( !vectorTokPlaty.at(0)  && ui->checkBox_workPlace1->isChecked() && isTokPlatyFinished1 ) {
+            QPainter painter(this); // Создаём объект отрисовщика
+            painter.setPen(QPen(Qt::lightGray, 1, Qt::SolidLine, Qt::FlatCap));
+            painter.setBrush(QBrush(Qt::green, Qt::SolidPattern));
 
-//            painter.drawEllipse(xGpourBoxTokPlaty + 13, yGroupBoxTokPlaty + 45, 15, 15);
-//        }
-//        //
+            painter.drawEllipse(xGpourBoxTokPlaty + 6, yGroupBoxTokPlaty + 40, 15, 15);
+        }
+        //
 
-//        //
-//        if( vectorTokPlaty.at(1)  && ui->checkBox_workPlace2->isChecked() && isTokPlatyFinished2 ) {
-//            QPainter painter(this); // Создаём объект отрисовщика
-//            painter.setPen(QPen(Qt::lightGray, 1, Qt::SolidLine, Qt::FlatCap));
-//            painter.setBrush(QBrush(Qt::red, Qt::SolidPattern));
+        //
+        if( vectorTokPlaty.at(1)  && ui->checkBox_workPlace2->isChecked() && isTokPlatyFinished2 ) {
+            QPainter painter(this); // Создаём объект отрисовщика
+            painter.setPen(QPen(Qt::lightGray, 1, Qt::SolidLine, Qt::FlatCap));
+            painter.setBrush(QBrush(Qt::red, Qt::SolidPattern));
 
-//            painter.drawEllipse(xGpourBoxTokPlaty + 6 + 23, yGroupBoxTokPlaty + 45, 15, 15);
-//        }
-//        if( !vectorTokPlaty.at(1)  && ui->checkBox_workPlace2->isChecked() && isTokPlatyFinished2 ) {
-//            QPainter painter(this); // Создаём объект отрисовщика
-//            painter.setPen(QPen(Qt::lightGray, 1, Qt::SolidLine, Qt::FlatCap));
-//            painter.setBrush(QBrush(Qt::green, Qt::SolidPattern));
+            painter.drawEllipse(xGpourBoxTokPlaty + 6 + 23, yGroupBoxTokPlaty + 40, 15, 15);
+        }
+        if( !vectorTokPlaty.at(1)  && ui->checkBox_workPlace2->isChecked() && isTokPlatyFinished2 ) {
+            QPainter painter(this); // Создаём объект отрисовщика
+            painter.setPen(QPen(Qt::lightGray, 1, Qt::SolidLine, Qt::FlatCap));
+            painter.setBrush(QBrush(Qt::green, Qt::SolidPattern));
 
-//            painter.drawEllipse(xGpourBoxTokPlaty + 6 + 23, yGroupBoxTokPlaty + 45, 15, 15);
-//        }
-//        //
+            painter.drawEllipse(xGpourBoxTokPlaty + 6 + 23, yGroupBoxTokPlaty + 40, 15, 15);
+        }
+        //
 
-//        //
-//        if( vectorTokPlaty.at(2)  && ui->checkBox_workPlace3->isChecked() && isTokPlatyFinished3 ) {
-//            QPainter painter(this); // Создаём объект отрисовщика
-//            painter.setPen(QPen(Qt::lightGray, 1, Qt::SolidLine, Qt::FlatCap));
-//            painter.setBrush(QBrush(Qt::red, Qt::SolidPattern));
+        //
+        if( vectorTokPlaty.at(2)  && ui->checkBox_workPlace3->isChecked() && isTokPlatyFinished3 ) {
+            QPainter painter(this); // Создаём объект отрисовщика
+            painter.setPen(QPen(Qt::lightGray, 1, Qt::SolidLine, Qt::FlatCap));
+            painter.setBrush(QBrush(Qt::red, Qt::SolidPattern));
 
-//            painter.drawEllipse(xGpourBoxTokPlaty + 6 + 23 + 23, yGroupBoxTokPlaty + 45, 15, 15);
-//        }
-//        if( !vectorTokPlaty.at(2)  && ui->checkBox_workPlace3->isChecked() && isTokPlatyFinished3 ) {
-//            QPainter painter(this); // Создаём объект отрисовщика
-//            painter.setPen(QPen(Qt::lightGray, 1, Qt::SolidLine, Qt::FlatCap));
-//            painter.setBrush(QBrush(Qt::green, Qt::SolidPattern));
+            painter.drawEllipse(xGpourBoxTokPlaty + 6 + 23 + 23, yGroupBoxTokPlaty + 40, 15, 15);
+        }
+        if( !vectorTokPlaty.at(2)  && ui->checkBox_workPlace3->isChecked() && isTokPlatyFinished3 ) {
+            QPainter painter(this); // Создаём объект отрисовщика
+            painter.setPen(QPen(Qt::lightGray, 1, Qt::SolidLine, Qt::FlatCap));
+            painter.setBrush(QBrush(Qt::green, Qt::SolidPattern));
 
-//            painter.drawEllipse(xGpourBoxTokPlaty + 6 + 23 + 23, yGroupBoxTokPlaty + 45, 15, 15);
-//        }
-//        //
+            painter.drawEllipse(xGpourBoxTokPlaty + 6 + 23 + 23, yGroupBoxTokPlaty + 40, 15, 15);
+        }
+        //
 
-//        //
-//        if( vectorTokPlaty.at(3)  && ui->checkBox_workPlace4->isChecked() && isTokPlatyFinished4 ) {
-//            QPainter painter(this); // Создаём объект отрисовщика
-//            painter.setPen(QPen(Qt::lightGray, 1, Qt::SolidLine, Qt::FlatCap));
-//            painter.setBrush(QBrush(Qt::red, Qt::SolidPattern));
+        //
+        if( vectorTokPlaty.at(3)  && ui->checkBox_workPlace4->isChecked() && isTokPlatyFinished4 ) {
+            QPainter painter(this); // Создаём объект отрисовщика
+            painter.setPen(QPen(Qt::lightGray, 1, Qt::SolidLine, Qt::FlatCap));
+            painter.setBrush(QBrush(Qt::red, Qt::SolidPattern));
 
-//            painter.drawEllipse(xGpourBoxTokPlaty + 6 + 23 + 23 + 23, yGroupBoxTokPlaty + 45, 15, 15);
-//        }
-//        if( !vectorTokPlaty.at(3)  && ui->checkBox_workPlace4->isChecked() && isTokPlatyFinished4 ) {
-//            QPainter painter(this); // Создаём объект отрисовщика
-//            painter.setPen(QPen(Qt::lightGray, 1, Qt::SolidLine, Qt::FlatCap));
-//            painter.setBrush(QBrush(Qt::green, Qt::SolidPattern));
+            painter.drawEllipse(xGpourBoxTokPlaty + 6 + 23 + 23 + 23, yGroupBoxTokPlaty + 40, 15, 15);
+        }
+        if( !vectorTokPlaty.at(3)  && ui->checkBox_workPlace4->isChecked() && isTokPlatyFinished4 ) {
+            QPainter painter(this); // Создаём объект отрисовщика
+            painter.setPen(QPen(Qt::lightGray, 1, Qt::SolidLine, Qt::FlatCap));
+            painter.setBrush(QBrush(Qt::green, Qt::SolidPattern));
 
-//            painter.drawEllipse(xGpourBoxTokPlaty + 6 + 23 + 23 + 23, yGroupBoxTokPlaty + 45, 15, 15);
-//        }
+            painter.drawEllipse(xGpourBoxTokPlaty + 6 + 23 + 23 + 23, yGroupBoxTokPlaty + 40, 15, 15);
+        }
 
 //        //--------------------tok platy------------------------/
 
@@ -36268,6 +36268,26 @@ void MainWindow::on_toolButton_executeCommands_clicked()
     ObjectThread3->setIsWorkPlaceUseVector(vectorIsWorkPlaceUse);
     ObjectThread4->setIsWorkPlaceUseVector(vectorIsWorkPlaceUse);
 
+    if(ui->checkBox_workPlace1->isChecked()) ui->label_tok1->clear();
+    if(ui->checkBox_workPlace2->isChecked()) ui->label_tok2->clear();
+    if(ui->checkBox_workPlace3->isChecked()) ui->label_tok3->clear();
+    if(ui->checkBox_workPlace4->isChecked()) ui->label_tok4->clear();
+
+    QPalette palettePrime = ui->toolButton->palette();
+    QColor backgroundColorPrime = palettePrime.color(QPalette::Button);
+
+    QPalette palette = palettePrime;
+    palette.setColor( QPalette::Button, QColor( Qt::red )  );
+
+    QColor backgroundColor = palette.color(QPalette::Button);
+
+    qDebug()<<"palette "<<palette
+            <<"backgroundColor "<<backgroundColor.name()
+            <<"backgroundColorPrime "<<backgroundColorPrime.name();
+
+    ui->toolButton->setAutoFillBackground(true);
+    ui->toolButton->setPalette( palette );
+
     emit signalLog("<font color = \"#0000ff\">" + QString("Проверка тока платы")  + '\n' + "</font>");
 
     emit startTokPlatyRequest();
@@ -36310,6 +36330,9 @@ void MainWindow::on_toolButton_executeCommands_clicked()
         if(isTokPlatyFinishedTmp1 && isTokPlatyFinishedTmp2 && isTokPlatyFinishedTmp3 && isTokPlatyFinishedTmp4)
             break;
     }
+
+
+    ui->toolButton->setPalette(palettePrime);
 
   }
 
@@ -42250,3 +42273,143 @@ void MainWindow::on_comboBox_portStend_4_currentIndexChanged(const QString &arg1
 
    }
 }
+
+void MainWindow::on_toolButton_portListUpdate_clicked()
+{
+    //на время заполнение комбобоксов портов стендов отключанием их сигналы
+
+    QString portBSL1Str = ui->comboBox_portList->currentText();
+    QString portBSL2Str = ui->comboBox_portList_2->currentText();
+    QString portBSL3Str = ui->comboBox_portList_3->currentText();
+    QString portBSL4Str = ui->comboBox_portList_4->currentText();
+
+    QString portOptical1Str = ui->comboBox_portListOptical->currentText();
+    QString portOptical2Str = ui->comboBox_portListOptical_2->currentText();
+    QString portOptical3Str = ui->comboBox_portListOptical_3->currentText();
+    QString portOptical4Str = ui->comboBox_portListOptical_4->currentText();
+
+    QString portStend1Str = ui->comboBox_portStend->currentText();
+    QString portStend2Str = ui->comboBox_portStend_2->currentText();
+    QString portStend3Str = ui->comboBox_portStend_3->currentText();
+    QString portStend4Str = ui->comboBox_portStend_4->currentText();
+
+    QString portDigInterfCheckingStr = ui->comboBox_portListInterfaceChecking->currentText();
+
+    portDigitalInterfaceChecking->close();
+
+    if(ui->checkBox_workPlace1->isChecked()) ui->comboBox_portStend->blockSignals(true);
+    if(ui->checkBox_workPlace2->isChecked()) ui->comboBox_portStend_2->blockSignals(true);
+    if(ui->checkBox_workPlace3->isChecked()) ui->comboBox_portStend_3->blockSignals(true);
+    if(ui->checkBox_workPlace4->isChecked()) ui->comboBox_portStend_4->blockSignals(true);
+
+    if(ui->checkBox_workPlace1->isChecked()) {
+        port->close();
+        portStend->close();
+        portOptical->close();
+
+        ui->comboBox_portList->clear();
+        ui->comboBox_portStend->clear();
+        ui->comboBox_portListOptical->clear();
+    }
+
+    if(ui->checkBox_workPlace2->isChecked()) {
+        port2->close();
+        portStend2->close();
+        portOptical2->close();
+
+        ui->comboBox_portList_2->clear();
+        ui->comboBox_portStend_2->clear();
+        ui->comboBox_portListOptical_2->clear();
+    }
+
+    if(ui->checkBox_workPlace3->isChecked()) {
+        port3->close();
+        portStend3->close();
+        portOptical3->close();
+
+        ui->comboBox_portList_3->clear();
+        ui->comboBox_portStend_3->clear();
+        ui->comboBox_portListOptical_3->clear();
+    }
+
+    if(ui->checkBox_workPlace4->isChecked()) {
+        port4->close();
+        portStend4->close();
+        portOptical4->close();
+
+        ui->comboBox_portList_4->clear();
+        ui->comboBox_portStend_4->clear();
+        ui->comboBox_portListOptical_4->clear();
+    }
+
+
+    QList<QSerialPortInfo> info = QSerialPortInfo::availablePorts();
+    for(int i=0; i<info.size(); i++) {
+       if(ui->checkBox_workPlace1->isChecked()) ui->comboBox_portStend->addItem(info[i].portName());
+       if(ui->checkBox_workPlace2->isChecked()) ui->comboBox_portStend_2->addItem(info[i].portName());
+       if(ui->checkBox_workPlace3->isChecked()) ui->comboBox_portStend_3->addItem(info[i].portName());
+       if(ui->checkBox_workPlace4->isChecked()) ui->comboBox_portStend_4->addItem(info[i].portName());
+
+       if(ui->checkBox_workPlace1->isChecked()) ui->comboBox_portList->addItem(info[i].portName());
+       if(ui->checkBox_workPlace2->isChecked()) ui->comboBox_portList_2->addItem(info[i].portName());
+       if(ui->checkBox_workPlace3->isChecked()) ui->comboBox_portList_3->addItem(info[i].portName());
+       if(ui->checkBox_workPlace4->isChecked()) ui->comboBox_portList_4->addItem(info[i].portName());
+
+       if(ui->checkBox_workPlace1->isChecked()) ui->comboBox_portListOptical->addItem(info[i].portName());
+       if(ui->checkBox_workPlace2->isChecked()) ui->comboBox_portListOptical_2->addItem(info[i].portName());
+       if(ui->checkBox_workPlace3->isChecked()) ui->comboBox_portListOptical_3->addItem(info[i].portName());
+       if(ui->checkBox_workPlace4->isChecked()) ui->comboBox_portListOptical_4->addItem(info[i].portName());
+
+       ui->comboBox_portListInterfaceChecking->addItem(info[i].portName());
+    }
+
+    if(ui->checkBox_workPlace1->isChecked()) ui->comboBox_portList->setCurrentText(portBSL1Str);
+    if(ui->checkBox_workPlace2->isChecked()) ui->comboBox_portList_2->setCurrentText(portBSL2Str);
+    if(ui->checkBox_workPlace3->isChecked()) ui->comboBox_portList_3->setCurrentText(portBSL3Str);
+    if(ui->checkBox_workPlace4->isChecked()) ui->comboBox_portList_4->setCurrentText(portBSL4Str);
+
+    if(ui->checkBox_workPlace1->isChecked()) ui->comboBox_portListOptical->setCurrentText(portOptical1Str);
+    if(ui->checkBox_workPlace2->isChecked()) ui->comboBox_portListOptical_2->setCurrentText(portOptical2Str);
+    if(ui->checkBox_workPlace3->isChecked()) ui->comboBox_portListOptical_3->setCurrentText(portOptical3Str);
+    if(ui->checkBox_workPlace4->isChecked()) ui->comboBox_portListOptical_4->setCurrentText(portOptical4Str);
+
+    ui->comboBox_portListInterfaceChecking->setCurrentText(portDigInterfCheckingStr);
+    //
+
+    ui->comboBox_portStend->blockSignals(false);
+    ui->comboBox_portStend_2->blockSignals(false);
+    ui->comboBox_portStend_3->blockSignals(false);
+    ui->comboBox_portStend_4->blockSignals(false);
+
+    if(ui->checkBox_workPlace1->isChecked()) {
+        ui->comboBox_portStend->setCurrentText(portStend1Str);
+        on_comboBox_portStend_currentIndexChanged(ui->comboBox_portStend->currentText());
+    }
+    if(ui->checkBox_workPlace2->isChecked()) {
+        ui->comboBox_portStend_2->setCurrentText(portStend2Str);
+        on_comboBox_portStend_2_currentIndexChanged(ui->comboBox_portStend_2->currentText());
+    }
+    if(ui->checkBox_workPlace3->isChecked()) {
+        ui->comboBox_portStend_3->setCurrentText(portStend3Str);
+        on_comboBox_portStend_3_currentIndexChanged(ui->comboBox_portStend_3->currentText());
+    }
+    if(ui->checkBox_workPlace4->isChecked()) {
+        ui->comboBox_portStend_4->setCurrentText(portStend4Str);
+        on_comboBox_portStend_4_currentIndexChanged(ui->comboBox_portStend_4->currentText());
+    }
+
+    //на время заполнение комбобоксов портов стендов отключанием их сигналы/
+}
+
+
+
+
+
+
+
+
+
+
+
+
+

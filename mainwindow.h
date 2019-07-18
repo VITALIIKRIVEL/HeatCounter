@@ -702,6 +702,8 @@ private slots:
 
     void on_comboBox_portStend_4_currentIndexChanged(const QString &arg1);
 
+    void on_toolButton_portListUpdate_clicked();
+
 private:
     
  //   Ui::MainWindow *ui;

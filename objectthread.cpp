@@ -15960,128 +15960,293 @@ bool ObjectThread::readTok()
         emit workPlaceOff(workPlace);
         emit checkTokPlaty(workPlace);
 
-        errorIndicatorOn();
         return false;
     }
 
-//    QByteArray buffer;
+    QByteArray buffer;
 
-//   //Прочитать ток потребления	POW?	POW=xxxxxx(в мкА)
+   //Прочитать ток потребления	POW?	POW=xxxxxx(в мкА)
 
-//    //    кто и кому:
-//    //    ПК=0x01	стенд1=0x11	стенд2=0x22	стенд3=0x33	стенд4=0x44
+    //    кто и кому:
+    //    ПК=0x01	стенд1=0x11	стенд2=0x22	стенд3=0x33	стенд4=0x44
 
-//    //    1 байт	2 байт	3 байт	4 байт	… байт	… байт	(N-1) байт	N байт
-//    //    кто	    кому	команда					                    Конец сообщения
-//    //    BIN	    BIN	    STRING					                    0x00
+    //    1 байт	2 байт	3 байт	4 байт	… байт	… байт	(N-1) байт	N байт
+    //    кто	    кому	команда					                    Конец сообщения
+    //    BIN	    BIN	    STRING					                    0x00
 
-//        if(!isWorkPlaceUse.at(workPlace)) return false;
+        if(!isWorkPlaceUse.at(workPlace)) return false;
 
-//        QString command = "POW?";
+        QString command = "POW?";
 
-//        QByteArray parcel;
+        QByteArray parcel;
 
-//        quint8 sender = 0x01;
-//        quint8 receiver;
-//        quint8 stopByte = 0x00;
+        quint8 sender = 0x01;
+        quint8 receiver;
+        quint8 stopByte = 0x00;
 
-//        if(workPlace == 0) receiver = 0x11;
-//        if(workPlace == 1) receiver = 0x22;
-//        if(workPlace == 2) receiver = 0x33;
-//        if(workPlace == 3) receiver = 0x44;
+        if(workPlace == 0) receiver = 0x11;
+        if(workPlace == 1) receiver = 0x22;
+        if(workPlace == 2) receiver = 0x33;
+        if(workPlace == 3) receiver = 0x44;
 
-//        QByteArray stringToByteArray;
-//        stringToByteArray = command.toLocal8Bit();
+        QByteArray stringToByteArray;
+        stringToByteArray = command.toLocal8Bit();
 
-//        //формирование посылки
-//        parcel.append(sender);
-//        parcel.append(receiver);
-//        for(int m=0; m<stringToByteArray.size(); m++) {
-//            parcel.append(stringToByteArray.at(m));
-//        }
-//        parcel.append(stopByte);
+        //формирование посылки
+        parcel.append(sender);
+        parcel.append(receiver);
+        for(int m=0; m<stringToByteArray.size(); m++) {
+            parcel.append(stringToByteArray.at(m));
+        }
+        parcel.append(stopByte);
 
-//        qDebug()<<"parcel"<<parcel.toHex();
+        qDebug()<<"parcel"<<parcel.toHex();
 
-//        if(!portStend->isOpen()) {
+        if(!portStend->isOpen()) {
 
-//            if(!portStend->open(QIODevice::ReadWrite)) {
+            if(!portStend->open(QIODevice::ReadWrite)) {
 
-//                QString label_StatusBar = (tr("Не удалось открыть порт стенда") +
-//                                             ". Рабочее место: " + QString::number(workPlace+1));
-//                emit errorStringSignal(label_StatusBar + '\n');
-//                vectorIndicatorTokPlaty[workPlace] = true;
+                QString label_StatusBar = (tr("Не удалось открыть порт стенда") +
+                                             ". Рабочее место: " + QString::number(workPlace+1));
+                emit errorStringSignal(label_StatusBar + '\n');
+                vectorIndicatorTokPlaty[workPlace] = true; errorIndicatorOn();
 
-//                emit workPlaceOff(workPlace);
-//                emit checkTokPlaty(workPlace);
-//                return false;
-//            }
-//        }
+                emit workPlaceOff(workPlace);
+                emit checkTokPlaty(workPlace);
+                return false;
+            }
+        }
 
-//        portStend->clear();
+        portStend->clear();
 
-//        quint64 count = portStend->write(parcel);
-//        emit textBrowser(">> " + portStend->portName() + " " + parcel.toHex());
+      //прочитываем ток несколько раз, находим минимум
 
-//        //ждать ответа от стенда 10 мсек
+      QString answerStrValue;
+      int tokPlaty;
+      QVector<int> vectorTokInt;
 
-//        global::pause(100);
+      for(int h=0; h<50; h++) {
 
-//        buffer = portStend->readAll();
-//        portStend->close();
+        answerStrValue.clear();
+        tokPlaty = 0;
 
-//        if(!buffer.isEmpty()) emit textBrowser("<< " + portStend->portName() + " " + buffer.toHex());
+        quint64 count = portStend->write(parcel);
+        emit textBrowser(">> " + portStend->portName() + " " + parcel.toHex());
 
-//        if(buffer.isEmpty()) {
-//            QString label_StatusBar = (tr("Нет ответа стенда. Команда \"Прочитать ток платы\" ") +
-//                                         ". Рабочее место: " + QString::number(workPlace+1));
-//            emit errorStringSignal(label_StatusBar + '\n');
-//            vectorIndicatorTokPlaty[workPlace] = true;
-//            emit workPlaceOff(workPlace);
-//            emit checkTokPlaty(workPlace);
+        //ждать ответа от стенда 10 мсек
 
-//            return false;
-//        }
+        global::pause(100);
 
-//        QString answerStr;
-//        QByteArray bufTmp = buffer;
+        buffer = portStend->readAll();
 
-//        bufTmp.remove(0, 2);
-//        bufTmp.remove(bufTmp.size()-1, 1);
+        if(!buffer.isEmpty()) emit textBrowser("<< " + portStend->portName() + " " + buffer.toHex());
 
-//        answerStr = QString::fromLocal8Bit(bufTmp);
+        if(buffer.isEmpty()) {
+            QString label_StatusBar = (tr("Нет ответа стенда. Команда \"Прочитать ток платы\" ") +
+                                         ". Рабочее место: " + QString::number(workPlace+1));
+            emit errorStringSignal(label_StatusBar + '\n');
+            vectorIndicatorTokPlaty[workPlace] = true; errorIndicatorOn();
+            emit workPlaceOff(workPlace);
+            emit checkTokPlaty(workPlace);
 
-//        if(buffer.at(0)!=receiver && buffer.at(1)!=sender && answerStr.left(4) != "POW=") {
-//            QString label_StatusBar = (tr("Неверный ответ стенда. Команда \"Прочитать ток платы\" ") +
-//                                         ". Рабочее место: " + QString::number(workPlace+1));
-//            emit errorStringSignal(label_StatusBar + '\n');
-//            vectorIndicatorTokPlaty[workPlace] = true;
-//            emit workPlaceOff(workPlace);
-//            emit checkTokPlaty(workPlace);
-//  //          portStend->close();
-//            return false;
-//        }
+            return false;
+        }
 
-//       QString answerStrValue = answerStr.remove(0,4);
+        QString answerStr;
+        QByteArray bufTmp = buffer;
 
-//       int tokPlaty = answerStrValue.toInt();
+        bufTmp.remove(0, 2);
+        bufTmp.remove(bufTmp.size()-1, 1);
 
-//       if(workPlace == 0) emit tok1(answerStrValue);
-//       if(workPlace == 1) emit tok2(answerStrValue);
-//       if(workPlace == 2) emit tok3(answerStrValue);
-//       if(workPlace == 3) emit tok4(answerStrValue);
+        answerStr = QString::fromLocal8Bit(bufTmp);
 
-//       if(1) {
-//           //проверяем ток на допустимое значение
+        if(buffer.at(0)!=receiver && buffer.at(1)!=sender && answerStr.left(4) != "POW=") {
+            QString label_StatusBar = (tr("Неверный ответ стенда. Команда \"Прочитать ток платы\" ") +
+                                         ". Рабочее место: " + QString::number(workPlace+1));
+            emit errorStringSignal(label_StatusBar + '\n');
+            vectorIndicatorTokPlaty[workPlace] = true; errorIndicatorOn();
+            emit workPlaceOff(workPlace);
+            emit checkTokPlaty(workPlace);
 
-//  //           if(workPlace == 0) mainWnd->setLabelTok1(tokPlaty);
-//  //           if(workPlace == 1) mainWnd->setLabelTok2(tokPlaty);
-//  //           if(workPlace == 2) mainWnd->setLabelTok3(tokPlaty);
-//  //           if(workPlace == 3) mainWnd->setLabelTok4(tokPlaty);
+            return false;
+        }
 
-//       }
+       answerStrValue = answerStr.remove(0,4);
 
-//  //     portStend->close();
+       tokPlaty = answerStrValue.toInt();
+       emit textBrowser("ток платы " + answerStrValue);
+
+       vectorTokInt.append(tokPlaty);
+
+
+     }
+
+      int element = vectorTokInt.at(0);
+
+//      if(workPlace == 0) emit tok1(QString::number(element)/*answerStrValue*/);
+//      if(workPlace == 1) emit tok2(QString::number(element)/*answerStrValue*/);
+//      if(workPlace == 2) emit tok3(QString::number(element)/*answerStrValue*/);
+//      if(workPlace == 3) emit tok4(QString::number(element)/*answerStrValue*/);
+
+      int minimumIndex;
+      for(int m=1; m<vectorTokInt.size(); m++) {
+
+          if(vectorTokInt.at(m) < element) {
+              element = vectorTokInt.at(m);
+              minimumIndex = m;
+          }
+
+      }
+
+      QVector<int> minimumVector;
+      minimumVector.append(vectorTokInt.at(minimumIndex));
+      QVector<int> vectorMinIndexisOfMainVec;
+      vectorMinIndexisOfMainVec.append(minimumIndex);
+
+      //поиск соседних отсчётов первый раз, находящихся на участке минимума  в положительную сторону по индексам
+      for(int r=1; r<11; r++) {
+
+         if( vectorTokInt.size() >= (minimumIndex + r + 1) ) {//допустимые границы массива
+
+             int absValue1 = abs(vectorTokInt.at(minimumIndex + r) - vectorTokInt.at(minimumIndex + r - 1));
+
+             if( abs(vectorTokInt.at(minimumIndex + r) - vectorTokInt.at(minimumIndex + r - 1)) <= 5) {
+                    minimumVector.append(vectorTokInt.at(minimumIndex + r));
+                    vectorMinIndexisOfMainVec.append(minimumIndex + r);
+             }
+             else {
+                 break;
+             }
+
+         }
+
+      }
+
+      //поиск соседних отсчётов первый раз, находящихся на участке минимума  в отрицательную сторону по индексам
+      for(int r=1; r<11; r++) {
+
+         if( (minimumIndex - r) >=0 ) {//допустимые границы массива
+
+             int absValue2 = abs(vectorTokInt.at(minimumIndex - r) - vectorTokInt.at(minimumIndex - r + 1));
+
+             if( abs(vectorTokInt.at(minimumIndex - r) - vectorTokInt.at(minimumIndex - r + 1)) <= 5) {
+                    minimumVector.append(vectorTokInt.at(minimumIndex - r));
+                    vectorMinIndexisOfMainVec.append(minimumIndex - r);
+             }
+             else {
+                 break;
+             }
+
+         }
+
+      }
+
+      //если в векторе minimumVector меньше 7 элементов, выбрасываем
+      //этот фрагмент из основного вектора и повторяем поиск
+      //
+    if(minimumVector.size()<7) {
+
+      int minIndexOfVectMinIndOfMain = vectorMinIndexisOfMainVec.at(0);
+
+      for(int e=1; e<vectorMinIndexisOfMainVec.size(); e++) { //поиск минимального индекса элементах минимально участка
+            if(vectorMinIndexisOfMainVec.at(e)<vectorMinIndexisOfMainVec.at(e-1)) minIndexOfVectMinIndOfMain = e;
+      }
+
+      if(minimumVector.size()<7) {
+          for(int d=0; d<vectorMinIndexisOfMainVec.size(); d++) {
+              vectorTokInt.remove(vectorMinIndexisOfMainVec.at(minIndexOfVectMinIndOfMain), vectorMinIndexisOfMainVec.size());
+          }
+      }
+
+
+      element = vectorTokInt.at(0);
+      for(int m=1; m<vectorTokInt.size(); m++) {
+
+          if(vectorTokInt.at(m) < element) {
+              element = vectorTokInt.at(m);
+              minimumIndex = m;
+          }
+
+      }
+
+      minimumVector.clear();
+      minimumVector.append(vectorTokInt.at(minimumIndex));
+      vectorMinIndexisOfMainVec.clear();
+      vectorMinIndexisOfMainVec.append(minimumIndex);
+
+      //поиск соседних отсчётов второй раз, находящихся на участке минимума  в положительную сторону по индексам
+      for(int r=1; r<11; r++) {
+
+         if( vectorTokInt.size() >= (minimumIndex + r + 1) ) {//допустимые границы массива
+
+             int absValue1 = abs(vectorTokInt.at(minimumIndex + r) - vectorTokInt.at(minimumIndex + r - 1));
+
+             if( abs(vectorTokInt.at(minimumIndex + r) - vectorTokInt.at(minimumIndex + r - 1)) <= 5) {
+                    minimumVector.append(vectorTokInt.at(minimumIndex + r));
+                    vectorMinIndexisOfMainVec.append(minimumIndex + r);
+             }
+             else {
+                 break;
+             }
+
+         }
+
+      }
+
+      //поиск соседних отсчётов второй раз, находящихся на участке минимума  в отрицательную сторону по индексам
+      for(int r=1; r<11; r++) {
+
+         if( (minimumIndex - r) >=0 ) {//допустимые границы массива
+
+             int absValue2 = abs(vectorTokInt.at(minimumIndex - r) - vectorTokInt.at(minimumIndex - r + 1));
+
+             if( abs(vectorTokInt.at(minimumIndex - r) - vectorTokInt.at(minimumIndex - r + 1)) <= 5) {
+                    minimumVector.append(vectorTokInt.at(minimumIndex - r));
+                    vectorMinIndexisOfMainVec.append(minimumIndex - r);
+             }
+             else {
+                 break;
+             }
+
+         }
+
+      }
+
+     }
+      //
+      //если в векторе minimumVector меньше 7 элементов, выбрасываем
+      //этот фрагмент из основного вектора и повторяем поиск/
+
+      //среднее арифметическое элементов minimumVector
+      float sum = 0;
+      for(int u=0; u<minimumVector.size(); u++) {
+          sum = sum + minimumVector.at(u);
+      }
+
+      float srednee = sum/minimumVector.size();
+
+     //прочитываем ток несколько раз, находим минимум/
+
+       if(workPlace == 0) emit tok1(QString::number(srednee)/*answerStrValue*/);
+       if(workPlace == 1) emit tok2(QString::number(srednee)/*answerStrValue*/);
+       if(workPlace == 2) emit tok3(QString::number(srednee)/*answerStrValue*/);
+       if(workPlace == 3) emit tok4(QString::number(srednee)/*answerStrValue*/);
+
+       if(srednee > 25) {
+           //проверяем ток на допустимое значение
+
+           QString label_StatusBar = (tr("Недопустимый ток потребления") +
+                                        ". Рабочее место: " + QString::number(workPlace+1));
+           emit errorStringSignal(label_StatusBar + '\n');
+           vectorIndicatorTokPlaty[workPlace] = true; errorIndicatorOn();
+           emit workPlaceOff(workPlace);
+           emit checkTokPlaty(workPlace);
+
+           return false;
+
+       }
+
+  //     portStend->close();
 
        emit checkTokPlaty(workPlace);
 
