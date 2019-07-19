@@ -36109,27 +36109,32 @@ void MainWindow::on_toolButton_executeCommands_clicked()
 
     errorString.clear();
 
-    isTokPlatyFinished1 = false;
-    isTokPlatyFinished2 = false;
-    isTokPlatyFinished3 = false;
-    isTokPlatyFinished4 = false;
+//    isTokPlatyFinished1 = false;
+//    isTokPlatyFinished2 = false;
+//    isTokPlatyFinished3 = false;
+//    isTokPlatyFinished4 = false;
 
-    isTimeCalFinished1 = false;
-    isTimeCalFinished2 = false;
-    isTimeCalFinished3 = false;
-    isTimeCalFinished4 = false;
+//    isTimeCalFinished1 = false;
+//    isTimeCalFinished2 = false;
+//    isTimeCalFinished3 = false;
+//    isTimeCalFinished4 = false;
 
-    isRashodomerFinished1 = false;
-    isRashodomerFinished2 = false;
-    isRashodomerFinished3 = false;
-    isRashodomerFinished4 = false;
+//    isRashodomerFinished1 = false;
+//    isRashodomerFinished2 = false;
+//    isRashodomerFinished3 = false;
+//    isRashodomerFinished4 = false;
 
-    isMagnSensorFinished1 = false;
-    isMagnSensorFinished2 = false;
-    isMagnSensorFinished3 = false;
-    isMagnSensorFinished4 = false;
+//    isMagnSensorFinished1 = false;
+//    isMagnSensorFinished2 = false;
+//    isMagnSensorFinished3 = false;
+//    isMagnSensorFinished4 = false;
 
     if(repeatParameter == 0) {
+
+        isTokPlatyFinished1 = false;
+        isTokPlatyFinished2 = false;
+        isTokPlatyFinished3 = false;
+        isTokPlatyFinished4 = false;
 
         isWritingFinished1 = false;
         isWritingFinished2 = false;
@@ -36228,6 +36233,7 @@ void MainWindow::on_toolButton_executeCommands_clicked()
 //    portStend3->close();
 //    portStend4->close();
 
+    //выключение индикаторов авария и завершено
     if(ui->checkBox_workPlace1->isChecked()) {
         if(!ObjectThread1->errorIndicatorOff()) return;
     }
@@ -36254,6 +36260,7 @@ void MainWindow::on_toolButton_executeCommands_clicked()
     if(ui->checkBox_workPlace4->isChecked()) {
         if(!ObjectThread4->finishIndicatorOff()) return;
     }
+    //выключение индикаторов авария и завершено/
 
     if(ui->checkBox_workPlace1->isChecked()) portStend->close();
     if(ui->checkBox_workPlace2->isChecked()) portStend2->close();
@@ -36261,7 +36268,43 @@ void MainWindow::on_toolButton_executeCommands_clicked()
     if(ui->checkBox_workPlace4->isChecked()) portStend4->close();
 
     //проверка тока платы
-  if(ui->checkBox_plataOn_Off->isChecked()) {
+  if(ui->checkBox_plataOn_Off->isChecked() && (repeatParameter == 0) ) {
+
+      //выключение-включение платы
+
+      if(ui->checkBox_workPlace1->isChecked()) {
+          if(!ObjectThread1->plataOff()) return;
+      }
+      if(ui->checkBox_workPlace2->isChecked()) {
+          if(!ObjectThread2->plataOff()) return;
+      }
+      if(ui->checkBox_workPlace3->isChecked()) {
+          if(!ObjectThread3->plataOff()) return;
+      }
+      if(ui->checkBox_workPlace4->isChecked()) {
+          if(!ObjectThread4->plataOff()) return;
+      }
+
+
+      if(ui->checkBox_workPlace1->isChecked()) {
+          if(!ObjectThread1->plataOn()) return;
+      }
+      if(ui->checkBox_workPlace2->isChecked()) {
+          if(!ObjectThread2->plataOn()) return;
+      }
+      if(ui->checkBox_workPlace3->isChecked()) {
+          if(!ObjectThread3->plataOn()) return;
+      }
+      if(ui->checkBox_workPlace4->isChecked()) {
+          if(!ObjectThread4->plataOn()) return;
+      }
+
+      //выключение-включение платы/
+
+      if(ui->checkBox_workPlace1->isChecked()) portStend->close();
+      if(ui->checkBox_workPlace2->isChecked()) portStend2->close();
+      if(ui->checkBox_workPlace3->isChecked()) portStend3->close();
+      if(ui->checkBox_workPlace4->isChecked()) portStend4->close();
 
     ObjectThread1->setIsWorkPlaceUseVector(vectorIsWorkPlaceUse);
     ObjectThread2->setIsWorkPlaceUseVector(vectorIsWorkPlaceUse);
@@ -37869,6 +37912,11 @@ void MainWindow::on_toolButton_executeCommands_clicked()
     repeatParameter = 0;
 
 //    portStend->close();
+
+//    if(ui->checkBox_workPlace1->isChecked()) portStend->close();
+//    if(ui->checkBox_workPlace2->isChecked()) portStend2->close();
+//    if(ui->checkBox_workPlace3->isChecked()) portStend3->close();
+//    if(ui->checkBox_workPlace4->isChecked()) portStend4->close();
 
 //    if(ui->checkBox_workPlace1->isChecked()) ObjectThread1->plataOff();
 //    if(ui->checkBox_workPlace2->isChecked()) ObjectThread2->plataOff();

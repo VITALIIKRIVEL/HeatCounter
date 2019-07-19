@@ -15950,6 +15950,19 @@ bool ObjectThread::plataOff()
 
 bool ObjectThread::readTok()
 {
+//    //отключить плату
+//    if(!plataOff()) {
+//        QString label_StatusBar = (tr("Не удалось отключить питание платы") +
+//                                  ". Рабочее место: " + QString::number(workPlace+1));
+//        emit errorStringSignal(label_StatusBar + '\n');
+//        vectorIndicatorTokPlaty[workPlace] = true;
+//        errorIndicatorOn();
+//        emit workPlaceOff(workPlace);
+//        emit checkTokPlaty(workPlace);
+
+//        return false;
+//    }
+
     //подключить плату
     if(!plataOn()) {
         QString label_StatusBar = (tr("Не удалось включить питание платы") +
@@ -16081,14 +16094,119 @@ bool ObjectThread::readTok()
 
      }
 
+
+//      vectorTokInt.clear(); //ток платы задаём вручную
+//      vectorTokInt.append(23);
+//      vectorTokInt.append(23);
+//      vectorTokInt.append(25);
+//      vectorTokInt.append(25);
+//      vectorTokInt.append(25);
+//      vectorTokInt.append(25);
+//      vectorTokInt.append(25);
+//      vectorTokInt.append(26);
+//      vectorTokInt.append(26);
+//      vectorTokInt.append(25);
+//      vectorTokInt.append(25);
+
+//      vectorTokInt.append(27);
+//      vectorTokInt.append(26);
+//      vectorTokInt.append(26);
+//      vectorTokInt.append(26);
+//      vectorTokInt.append(26);
+//      vectorTokInt.append(26);
+//      vectorTokInt.append(25);
+//      vectorTokInt.append(25);
+//      vectorTokInt.append(23);
+//      vectorTokInt.append(43);
+//      vectorTokInt.append(104);
+
+//      vectorTokInt.append(166);
+//      vectorTokInt.append(227);
+//      vectorTokInt.append(288);
+//      vectorTokInt.append(350);
+//      vectorTokInt.append(442);
+//      vectorTokInt.append(503);
+//      vectorTokInt.append(514);
+//      vectorTokInt.append(514);
+//      vectorTokInt.append(514);
+//      vectorTokInt.append(514);
+
+//      vectorTokInt.append(513);
+//      vectorTokInt.append(513);
+//      vectorTokInt.append(513);
+//      vectorTokInt.append(513);
+//      vectorTokInt.append(513);
+//      vectorTokInt.append(513);
+//      vectorTokInt.append(513);
+//      vectorTokInt.append(513);
+//      vectorTokInt.append(513);
+
+//      vectorTokInt.append(482);
+//      vectorTokInt.append(421);
+//      vectorTokInt.append(360);
+//      vectorTokInt.append(268);
+//      vectorTokInt.append(207);
+//      vectorTokInt.append(146);
+//      vectorTokInt.append(85);
+//      vectorTokInt.append(26);
+//      vectorTokInt.append(26);
+
+//      vectorTokInt.clear();
+//      vectorTokInt.append(122);
+//      vectorTokInt.append(201);
+//      vectorTokInt.append(280);
+//      vectorTokInt.append(362);
+//      vectorTokInt.append(444);
+//      vectorTokInt.append(577);
+//      vectorTokInt.append(654);
+//      vectorTokInt.append(654);
+//      vectorTokInt.append(652);
+//      vectorTokInt.append(653);
+//      vectorTokInt.append(647);
+//      vectorTokInt.append(626);
+//      vectorTokInt.append(601);
+//      vectorTokInt.append(586);
+//      vectorTokInt.append(572);
+//      vectorTokInt.append(554);
+//      vectorTokInt.append(535);
+//      vectorTokInt.append(512);
+//      vectorTokInt.append(503);
+//      vectorTokInt.append(495);
+//      vectorTokInt.append(488);
+//      vectorTokInt.append(482);
+//      vectorTokInt.append(479);
+//      vectorTokInt.append(481);
+//      vectorTokInt.append(483);
+//      vectorTokInt.append(486);
+//      vectorTokInt.append(490);
+//      vectorTokInt.append(494);
+//      vectorTokInt.append(500);
+//      vectorTokInt.append(503);
+//      vectorTokInt.append(502);
+//      vectorTokInt.append(502);
+//      vectorTokInt.append(501);
+//      vectorTokInt.append(501);
+//      vectorTokInt.append(501);
+//      vectorTokInt.append(501);
+//      vectorTokInt.append(501);
+//      vectorTokInt.append(501);
+//      vectorTokInt.append(501);
+//      vectorTokInt.append(501);
+//      vectorTokInt.append(501);
+//      vectorTokInt.append(438);
+//      vectorTokInt.append(377);
+//      vectorTokInt.append(315);
+//      vectorTokInt.append(253);
+//      vectorTokInt.append(191);
+//      vectorTokInt.append(99);
+//      vectorTokInt.append(39);
+//      vectorTokInt.append(9);
+//      vectorTokInt.append(9);
+
+
       int element = vectorTokInt.at(0);
+      int minimumIndex = 0;
 
-//      if(workPlace == 0) emit tok1(QString::number(element)/*answerStrValue*/);
-//      if(workPlace == 1) emit tok2(QString::number(element)/*answerStrValue*/);
-//      if(workPlace == 2) emit tok3(QString::number(element)/*answerStrValue*/);
-//      if(workPlace == 3) emit tok4(QString::number(element)/*answerStrValue*/);
-
-      int minimumIndex;
       for(int m=1; m<vectorTokInt.size(); m++) {
 
           if(vectorTokInt.at(m) < element) {
@@ -16146,20 +16264,23 @@ bool ObjectThread::readTok()
       //
     if(minimumVector.size()<7) {
 
-      int minIndexOfVectMinIndOfMain = vectorMinIndexisOfMainVec.at(0);
+      int minIndexOfVectMinIndOfMain = 0;
 
-      for(int e=1; e<vectorMinIndexisOfMainVec.size(); e++) { //поиск минимального индекса элементах минимально участка
+      for(int e=1; e<vectorMinIndexisOfMainVec.size(); e++) { //поиск минимального индекса в элементах минимально участка
             if(vectorMinIndexisOfMainVec.at(e)<vectorMinIndexisOfMainVec.at(e-1)) minIndexOfVectMinIndOfMain = e;
       }
 
       if(minimumVector.size()<7) {
-          for(int d=0; d<vectorMinIndexisOfMainVec.size(); d++) {
-              vectorTokInt.remove(vectorMinIndexisOfMainVec.at(minIndexOfVectMinIndOfMain), vectorMinIndexisOfMainVec.size());
-          }
+
+              int count = vectorMinIndexisOfMainVec.size();
+              int indx = vectorMinIndexisOfMainVec.at(minIndexOfVectMinIndOfMain);
+
+              vectorTokInt.remove(indx, count);
       }
 
 
       element = vectorTokInt.at(0);
+      minimumIndex = 0;
       for(int m=1; m<vectorTokInt.size(); m++) {
 
           if(vectorTokInt.at(m) < element) {
@@ -16223,7 +16344,8 @@ bool ObjectThread::readTok()
           sum = sum + minimumVector.at(u);
       }
 
-      float srednee = sum/minimumVector.size();
+      float srednee = 0;
+      if(minimumVector.size() != 0) srednee = sum/minimumVector.size();
 
      //прочитываем ток несколько раз, находим минимум/
 
@@ -16232,7 +16354,7 @@ bool ObjectThread::readTok()
        if(workPlace == 2) emit tok3(QString::number(srednee)/*answerStrValue*/);
        if(workPlace == 3) emit tok4(QString::number(srednee)/*answerStrValue*/);
 
-       if(srednee > 25) {
+       if( (srednee > 25) || (srednee == 0) ) {
            //проверяем ток на допустимое значение
 
            QString label_StatusBar = (tr("Недопустимый ток потребления") +
