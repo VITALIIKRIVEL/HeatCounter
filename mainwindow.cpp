@@ -169,6 +169,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->comboBox_portStend_3->blockSignals(true);
     ui->comboBox_portStend_4->blockSignals(true);
 
+    QString portLabel;
+
     QList<QSerialPortInfo> info = QSerialPortInfo::availablePorts();
     for(int i=0; i<info.size(); i++) {
        ui->comboBox_portStend->addItem(info[i].portName());
@@ -184,6 +186,10 @@ MainWindow::MainWindow(QWidget *parent) :
        ui->comboBox_portListOptical_3->addItem(info[i].portName());
        ui->comboBox_portListOptical_4->addItem(info[i].portName());
        ui->comboBox_portListInterfaceChecking->addItem(info[i].portName());
+
+       portLabel = portLabel + '\n' + info[i].portName();
+       ui->label_portList->setText(portLabel);
+
     }
     ui->comboBox_portList->setCurrentIndex(ui->comboBox_portList->count() - 1);
     ui->comboBox_portListOptical->setCurrentIndex(ui->comboBox_portListOptical->count() - 1);
@@ -42344,6 +42350,7 @@ void MainWindow::on_toolButton_portListUpdate_clicked()
     QString portDigInterfCheckingStr = ui->comboBox_portListInterfaceChecking->currentText();
 
     portDigitalInterfaceChecking->close();
+    ui->comboBox_portListInterfaceChecking->clear();
 
     if(ui->checkBox_workPlace1->isChecked()) ui->comboBox_portStend->blockSignals(true);
     if(ui->checkBox_workPlace2->isChecked()) ui->comboBox_portStend_2->blockSignals(true);
@@ -42390,6 +42397,8 @@ void MainWindow::on_toolButton_portListUpdate_clicked()
         ui->comboBox_portListOptical_4->clear();
     }
 
+    QString portLabel;
+    ui->label_portList->clear();
 
     QList<QSerialPortInfo> info = QSerialPortInfo::availablePorts();
     for(int i=0; i<info.size(); i++) {
@@ -42407,6 +42416,9 @@ void MainWindow::on_toolButton_portListUpdate_clicked()
        if(ui->checkBox_workPlace2->isChecked()) ui->comboBox_portListOptical_2->addItem(info[i].portName());
        if(ui->checkBox_workPlace3->isChecked()) ui->comboBox_portListOptical_3->addItem(info[i].portName());
        if(ui->checkBox_workPlace4->isChecked()) ui->comboBox_portListOptical_4->addItem(info[i].portName());
+
+       portLabel = portLabel + '\n' + info[i].portName();
+       ui->label_portList->setText(portLabel);
 
        ui->comboBox_portListInterfaceChecking->addItem(info[i].portName());
     }

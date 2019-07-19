@@ -260,6 +260,28 @@
           </property>
          </spacer>
         </item>
+        <item>
+         <widget class="QGroupBox" name="groupBox_portList">
+          <property name="title">
+           <string>Доступные порты:</string>
+          </property>
+          <layout class="QGridLayout" name="gridLayout_53">
+           <item row="0" column="0">
+            <widget class="QLabel" name="label_portList">
+             <property name="maximumSize">
+              <size>
+               <width>70</width>
+               <height>130</height>
+              </size>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
        </layout>
       </item>
       <item>
